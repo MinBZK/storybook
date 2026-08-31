@@ -1,4 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
+// The token the measure comes from lives there, not in the test environment.
+import '../../../assets/styles/variables.css';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './text.js';
 
@@ -52,4 +54,14 @@ describe('nldd-text', () => {
 		expect(el.shadowRoot?.querySelector('slot')).not.toBeNull();
 		expect(el.textContent?.trim()).toBe('Toegewezen aan Yara');
 	});
+
+	it('a line stops at the measure, the same characters at every size', async () => {
+		el = await fixture('<div style="width: 2000px"><nldd-text>Een regel</nldd-text><nldd-text size="sm">Een regel</nldd-text></div>');
+		await waitForUpdate(el);
+		const [md, sm] = Array.from(el.querySelectorAll('nldd-text'));
+		// 40em against the size each one sets, so the px differ and the em do not.
+		expect(Math.round(md.getBoundingClientRect().width)).toBe(720);
+		expect(Math.round(sm.getBoundingClientRect().width)).toBe(640);
+	});
+
 });

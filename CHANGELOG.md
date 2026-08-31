@@ -21,6 +21,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Changed
 
+- **A line of `nldd-text` stops at 40em.** It had no maximum at all, so in a wide column one sentence ran the full width and became a ruler. 40em is the measure the rest of the system already holds: `nldd-rich-text` caps its main column at 720px and a blockquote at the same, both against a body-md of 18. In ems rather than pixels, so the line holds the same number of characters at every size and a size added later is covered without anyone remembering to. New token, `--semantics-text-max-width`; override it, or `max-width` on the element, where a line is meant to run the full width, such as a label in a table cell.
+
 - **`viewfinder` has the corners of `viewfinder-line`.** Each of its four arms is a pixel longer, so a corner now reaches 6 pixels out instead of 5. The two are one pair, `fit-to-view` and `scan`, and `viewfinder-line` already had the longer arms. Side by side the shorter ones read as a smaller icon rather than the same frame with a line through it.
 
 ## [0.8.84](https://github.com/MinBZK/storybook/compare/v0.8.83...v0.8.84) (2026-08-30)

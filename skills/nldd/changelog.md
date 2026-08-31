@@ -21,11 +21,13 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
-- **`box` on `nldd-icon`, for an icon on a filled square.** A feature card with a tinted tile, a menu with a colored category icon: common enough that consumers build it themselves out of a box and an icon, and then pick the two colors by eye. This turns the colour question around instead. `color` and `custom-color` paint the box, and the glyph takes whatever contrasts with it, white or black, chosen on luminance by the same token the badge uses. That pair is the reason this is an option on the icon rather than a composition: it is the part nobody can check by looking. `size` then measures the box, so the same size renders a smaller glyph with `box` than without: thirteen sixteenths of it, with a corner radius of a fifth. Both are ratios, so a decision about how a glyph sits in its box is one number in one place rather than a shape every consumer redraws.
+- **`box` on `nldd-icon`, for an icon on a filled square.** A feature card with a tinted tile, a menu with a colored category icon: common enough that consumers build it themselves out of a box and an icon, and then pick the two colors by eye. This turns the colour question around instead. `color` and `custom-color` paint the box, and the glyph takes whatever contrasts with it, white or black, chosen on luminance by the same token the badge uses. That pair is the reason this is an option on the icon rather than a composition: it is the part nobody can check by looking. `size` then measures the box, so the same size renders a smaller glyph with `box` than without: four fifths of it, with a corner radius of a fifth. Both are ratios, so a decision about how a glyph sits in its box is one number in one place rather than a shape every consumer redraws.
 
 - **Icons** — `tulip` and `tulip-light`. No aliases: the name is the flower, and it says what the icon draws.
 
 ### Changed
+
+- **A line of `nldd-text` stops at 40em.** It had no maximum at all, so in a wide column one sentence ran the full width and became a ruler. 40em is the measure the rest of the system already holds: `nldd-rich-text` caps its main column at 720px and a blockquote at the same, both against a body-md of 18. In ems rather than pixels, so the line holds the same number of characters at every size and a size added later is covered without anyone remembering to. New token, `--semantics-text-max-width`; override it, or `max-width` on the element, where a line is meant to run the full width, such as a label in a table cell.
 
 - **`viewfinder` has the corners of `viewfinder-line`.** Each of its four arms is a pixel longer, so a corner now reaches 6 pixels out instead of 5. The two are one pair, `fit-to-view` and `scan`, and `viewfinder-line` already had the longer arms. Side by side the shorter ones read as a smaller icon rather than the same frame with a line through it.
 
