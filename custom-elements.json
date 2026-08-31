@@ -3662,6 +3662,17 @@
               "description": "Handed to the styles as a custom property rather than read from the\nattribute in CSS: `attr()` with a type is not available everywhere yet,\nand this keeps one code path.",
               "attribute": "custom-color",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "box",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Draw the icon on a filled square instead of on its own.\n\nIt turns the colour question around: `color` and `custom-color` paint the\nbox, and the glyph takes whatever contrasts with it. That pair is the\nreason this is an option here rather than a box a consumer builds around\nan icon, because a hand-picked pair is the part nobody can check by eye.\n\n`size` then measures the box, so the same size renders a smaller glyph\nwith `box` than without: four fifths of it, with a radius of a fifth.",
+              "attribute": "box",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -3700,6 +3711,15 @@
               "name": "custom-color",
               "default": "''",
               "fieldName": "customColor"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the icon on a filled square. `color` and `custom-color` then paint the box and the glyph takes the contrasting color, and `size` measures the box: the glyph is four fifths of it, the corner radius a fifth.",
+              "name": "box",
+              "default": "false",
+              "fieldName": "box"
             }
           ],
           "superclass": {

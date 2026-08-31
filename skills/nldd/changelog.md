@@ -21,6 +21,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **`box` on `nldd-icon`, for an icon on a filled square.** A feature card with a tinted tile, a menu with a colored category icon: common enough that consumers build it themselves out of a box and an icon, and then pick the two colors by eye. This turns the colour question around instead. `color` and `custom-color` paint the box, and the glyph takes whatever contrasts with it, white or black, chosen on luminance by the same token the badge uses. That pair is the reason this is an option on the icon rather than a composition: it is the part nobody can check by looking. `size` then measures the box, so the same size renders a smaller glyph with `box` than without: thirteen sixteenths of it, with a corner radius of a fifth. Both are ratios, so a decision about how a glyph sits in its box is one number in one place rather than a shape every consumer redraws.
+
 - **Icons** — `tulip` and `tulip-light`. No aliases: the name is the flower, and it says what the icon draws.
 
 ### Changed

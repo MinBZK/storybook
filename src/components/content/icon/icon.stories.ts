@@ -62,6 +62,11 @@ export default {
 			description: 'Functionele semantic of rijkskleur. `(inherit)` = erft `color` van parent.',
 			table: { defaultValue: { summary: '(inherit)' } },
 		},
+		box: {
+			control: 'boolean',
+			description: 'Teken het icoon op een gevuld vlak. `color` en `custom-color` kleuren dan het vlak en het glyph krijgt de contrasterende kleur; `size` meet het vlak.',
+			table: { defaultValue: { summary: false } },
+		},
 		customColor: {
 			name: 'custom-color',
 			control: 'color',
@@ -72,15 +77,17 @@ export default {
 	args: {
 		name: 'heart',
 		size: '24',
+		box: false,
 		color: '(inherit)',
 		customColor: '',
 	},
 };
 
-const Template = ({ name, size, color, customColor }: Record<string, string>) => html`
+const Template = ({ name, size, box, color, customColor }: Record<string, any>) => html`
 	<nldd-icon
 		name=${name}
 		size=${size || nothing}
+		?box=${box}
 		color=${color || nothing}
 		custom-color=${customColor || nothing}
 	></nldd-icon>
@@ -161,6 +168,26 @@ export const OwnColor = {
 		docs: {
 			description: {
 				story: 'Voor een kleur die het design system niet kan kennen: de mantel van een kabel, een kleur die iemand zelf koos. `custom-color` neemt elke CSS-kleurwaarde en wint van `color`.',
+			},
+		},
+	},
+};
+
+export const Box = {
+	render: () => html`
+		<div style="display: flex; gap: 16px; align-items: center;">
+			<nldd-icon name="terminal" size="40" box color="accent"></nldd-icon>
+			<nldd-icon name="shield-check-mark" size="40" box color="success"></nldd-icon>
+			<nldd-icon name="cloud" size="40" box color="critical"></nldd-icon>
+			<nldd-icon name="puzzle-piece" size="40" box custom-color="#a90061"></nldd-icon>
+			<nldd-icon name="tulip" size="40" box custom-color="#f5c400"></nldd-icon>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Met `box` staat het icoon op een gevuld vlak. De kleurvraag draait daarmee om: `color` en `custom-color` kleuren het vlak, en het glyph krijgt de kleur die daarop leesbaar is, wit of zwart, gekozen op luminantie. Dat paar is precies wat je zelf niet wilt kiezen. `size` meet dan het vlak: het glyph is vier vijfde daarvan, de hoekradius een vijfde. De laatste twee tonen dat de flip ook werkt bij een kleur die het systeem niet kent.',
 			},
 		},
 	},
