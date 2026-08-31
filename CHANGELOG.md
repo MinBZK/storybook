@@ -9,6 +9,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.85](https://github.com/MinBZK/storybook/compare/v0.8.84...v0.8.85) (2026-08-31)
+
 ### Highlights
 
 - **`box` on `nldd-icon`, for an icon on a filled square.** A feature card with a tinted tile, a menu with a colored category icon: common enough that consumers build it themselves out of a box and an icon, and then pick the two colors by eye. This turns the color question around instead. `color` and `custom-color` paint the box, and the glyph takes whatever contrasts with it, white or black, chosen on luminance by the same token the badge uses. That pair is the reason this is an option on the icon rather than a composition: it is the part nobody can check by looking. `size` then measures the box, so the same size renders a smaller glyph with `box` than without: four fifths of it, with a corner radius of a fifth. Both are ratios, so a decision about how a glyph sits in its box is one number in one place rather than a shape every consumer redraws.
