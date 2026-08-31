@@ -603,6 +603,17 @@ export const buttonStyles = css`
 		justify-content: center;
 	}
 
+	/* Those spans are only rendered for the attribute; slotted content lands in a
+	   bare slot. Sizing it here rather than wrapping the slot in the same span,
+	   because that span has a width and would reserve icon space on every button
+	   that has no icon at all. */
+	::slotted([slot="start-icon"]),
+	::slotted([slot="end-icon"]) {
+		flex-shrink: 0;
+		width: var(--_icon-size);
+		height: var(--_icon-size);
+	}
+
 	:host([expandable]) .button {
 		padding-inline-end: calc(var(--_inline-padding) + var(--_gap) + var(--_disclosure-icon-size));
 	}
