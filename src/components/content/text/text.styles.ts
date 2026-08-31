@@ -9,10 +9,12 @@ export const textStyles = css`
 		--_font-size: var(--primitives-font-size-100);
 		--_font-weight: var(--primitives-font-weight-body-regular);
 		--_line-height: var(--primitives-line-height-snug);
+		--_max-width: var(--semantics-text-max-width);
 		--_color: var(--context-content-color, var(--semantics-content-color));
 		--_text-align: left;
 
 		display: block;
+		max-width: var(--_max-width);
 		color: var(--_color);
 		text-align: var(--_text-align);
 		font: var(--_font-weight) var(--_font-size) / var(--_line-height) var(--primitives-font-family-body);

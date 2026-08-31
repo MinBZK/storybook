@@ -2,6 +2,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDButton } from './button.js';
 import './button.js';
+import '../../../assets/styles/variables.css';
 import '../menu/menu.js';
 import '../../layout/popover/popover.js';
 
@@ -892,5 +893,27 @@ describe('nldd-button no-tab', () => {
 		el = await fixture<NLDDButton>('<nldd-button text="Ga" href="#x" no-tab></nldd-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('a')!.getAttribute('tabindex')).toBe('-1');
+	});
+
+	it('gives a slotted start icon the same size as its own icon', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Ga"><svg slot="start-icon" viewBox="0 0 24 24"></svg></nldd-button>');
+		await waitForUpdate(el);
+		const own = await fixture<NLDDButton>('<nldd-button text="Ga" start-icon="book"></nldd-button>');
+		await waitForUpdate(own);
+		const slotted = getComputedStyle(el.querySelector('svg')!);
+		const span = getComputedStyle(own.shadowRoot!.querySelector('.button__start-icon')!);
+
+		expect(slotted.width).toBe(span.width);
+		expect(slotted.height).toBe(span.height);
+		cleanup(own);
+	});
+
+	it('reserves no icon space on a button without an icon', async () => {
+		el = await fixture<NLDDButton>('<nldd-button text="Ga"></nldd-button>');
+		await waitForUpdate(el);
+		const content = el.shadowRoot!.querySelector('.button__content')!;
+		const text = el.shadowRoot!.querySelector('.button__text-area')!;
+
+		expect(content.getBoundingClientRect().width).toBeCloseTo(text.getBoundingClientRect().width, 1);
 	});
 });

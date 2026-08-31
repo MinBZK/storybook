@@ -1,4 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
+// The tokens themselves, because `box` leans on two of them: the spacer that a
+// fixed size resolves to, and the contrast color the glyph flips to.
+import '../../../assets/styles/variables.css';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './icon.js';
 import type { NLDDIcon } from './icon.js';
@@ -105,5 +108,42 @@ describe('nldd-icon – relative sizes', () => {
 		// one this size resolves to.
 		const icon = await mount('size="16"', 'div style="width: 40px; --primitives-space-16: 16px"');
 		expect(Math.round(icon.getBoundingClientRect().width)).toBe(16);
+	});
+
+	// — box —————————————————————————————————————————————————————————————————
+
+	const box = 'div style="width: 40px; height: 40px; color: rgb(17, 17, 17)"';
+
+	it('box: the size measures the box and the glyph is four fifths of it', async () => {
+		const icon = await mount('box', box);
+		expect(Math.round(icon.getBoundingClientRect().width)).toBe(40);
+		expect(Math.round(icon.getBoundingClientRect().height)).toBe(40);
+		const glyph = icon.shadowRoot!.querySelector('svg') as SVGElement;
+		expect(Math.round(glyph.getBoundingClientRect().width)).toBe(32);
+	});
+
+	it('box: the corner radius is a fifth of the size', async () => {
+		const icon = await mount('box size="40"', box);
+		expect(getComputedStyle(icon).borderRadius).toBe('8px');
+	});
+
+	it('box: the color paints the box, not the glyph', async () => {
+		const icon = await mount('box custom-color="rgb(17, 17, 17)"', box);
+		expect(getComputedStyle(icon).backgroundColor).toBe('rgb(17, 17, 17)');
+	});
+
+	it('box: the glyph takes whatever contrasts with the box', async () => {
+		const onDark = await mount('box custom-color="rgb(17, 17, 17)"', box);
+		expect(getComputedStyle(onDark.shadowRoot!.querySelector('svg')!).color).toBe('rgb(255, 255, 255)');
+		cleanup(el);
+
+		const onLight = await mount('box custom-color="rgb(238, 238, 238)"', box);
+		expect(getComputedStyle(onLight.shadowRoot!.querySelector('svg')!).color).toBe('rgb(0, 0, 0)');
+	});
+
+	it('without box the color is still the glyph\'s, and nothing is painted', async () => {
+		const icon = await mount('custom-color="rgb(17, 17, 17)"', box);
+		expect(getComputedStyle(icon).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+		expect(getComputedStyle(icon.shadowRoot!.querySelector('svg')!).color).toBe('rgb(17, 17, 17)');
 	});
 });

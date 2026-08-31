@@ -15,6 +15,26 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **`box` on `nldd-icon`, for an icon on a filled square.** A feature card with a tinted tile, a menu with a colored category icon: common enough that consumers build it themselves out of a box and an icon, and then pick the two colors by eye. This turns the color question around instead. `color` and `custom-color` paint the box, and the glyph takes whatever contrasts with it, white or black, chosen on luminance by the same token the badge uses. That pair is the reason this is an option on the icon rather than a composition: it is the part nobody can check by looking. `size` then measures the box, so the same size renders a smaller glyph with `box` than without: four fifths of it, with a corner radius of a fifth. Both are ratios, so a decision about how a glyph sits in its box is one number in one place rather than a shape every consumer redraws.
+
+- **A tulip, in two weights.** `tulip` draws the flower as an outline: three petals, the outer two curling up beside a pointed middle one, over a short stem. `tulip-light` is the same flower with a thinner line, drawn on a 32 view-box like the other light weights, so its line stays 2 pixels at the size it is meant for. In this set `-light` names a weight rather than a state, the way `circle-light` reads beside `circle`.
+
+### Added
+
+- **Icons** — `tulip` and `tulip-light`. No aliases: the name is the flower, and it says what the icon draws.
+
+### Changed
+
+- **A line of `nldd-text` stops at 40em.** It had no maximum at all, so in a wide column one sentence ran the full width and became a ruler. 40em is the measure the rest of the system already holds: `nldd-rich-text` caps its main column at 720px and a blockquote at the same, both against a body-md of 18. In ems rather than pixels, so the line holds the same number of characters at every size and a size added later is covered without anyone remembering to. New token, `--semantics-text-max-width`; override it, or `max-width` on the element, where a line is meant to run the full width, such as a label in a table cell.
+
+- **`viewfinder` has the corners of `viewfinder-line`.** Each of its four arms is a pixel longer, so a corner now reaches 6 pixels out instead of 5. The two are one pair, `fit-to-view` and `scan`, and `viewfinder-line` already had the longer arms. Side by side the shorter ones read as a smaller icon rather than the same frame with a line through it.
+
+### Fixed
+
+- **A slotted icon in `nldd-button` gets the size the button gives its own.** The button measures the icon it renders from `start-icon` in a span of `--_icon-size`, but anything you slot into `start-icon` or `end-icon` landed in a bare slot and kept whatever size it arrived with. That slot is where a mark that is not one of our icons goes, a third-party logo for instance, and every consumer had to size it by hand against a token they first had to find. The size now applies to the slotted element itself rather than to a wrapper around the slot, so a button with no icon at all still reserves no room for one.
+
 ## [0.8.84](https://github.com/MinBZK/storybook/compare/v0.8.83...v0.8.84) (2026-08-30)
 
 ### Highlights

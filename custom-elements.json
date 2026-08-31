@@ -3662,6 +3662,17 @@
               "description": "Handed to the styles as a custom property rather than read from the\nattribute in CSS: `attr()` with a type is not available everywhere yet,\nand this keeps one code path.",
               "attribute": "custom-color",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "box",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Draw the icon on a filled square instead of on its own.\n\nIt turns the colour question around: `color` and `custom-color` paint the\nbox, and the glyph takes whatever contrasts with it. That pair is the\nreason this is an option here rather than a box a consumer builds around\nan icon, because a hand-picked pair is the part nobody can check by eye.\n\n`size` then measures the box, so the same size renders a smaller glyph\nwith `box` than without: four fifths of it, with a radius of a fifth.",
+              "attribute": "box",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -3700,6 +3711,15 @@
               "name": "custom-color",
               "default": "''",
               "fieldName": "customColor"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Draw the icon on a filled square. `color` and `custom-color` then paint the box and the glyph takes the contrasting color, and `size` measures the box: the glyph is four fifths of it, the corner radius a fifth.",
+              "name": "box",
+              "default": "false",
+              "fieldName": "box"
             }
           ],
           "superclass": {
@@ -4882,7 +4902,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "One run of body text at a size from the type scale. It is what you reach for where an app would otherwise write a bare `<p>` and inherit whatever the page happens to set: a line under a title, a sentence in a panel, a caption. Every combination it offers exists as a token, so it cannot invent typography — it only names what the scale already has. The three axes are the same three the tokens carry: size, weight and line height. Not for headings, which is `nldd-title`, and not for a block of prose with its own rhythm, spacing and media widths, which is `nldd-rich-text`. This is one run of text and nothing around it. Color follows the context channel a list item, menu or table sets on its content, so text inside a row travels with that row as it is hovered or selected. Standalone that channel is unset and the semantic color answers.",
+          "description": "One run of body text at a size from the type scale. It is what you reach for where an app would otherwise write a bare `<p>` and inherit whatever the page happens to set: a line under a title, a sentence in a panel, a caption. Every combination it offers exists as a token, so it cannot invent typography — it only names what the scale already has. The three axes are the same three the tokens carry: size, weight and line height. Not for headings, which is `nldd-title`, and not for a block of prose with its own rhythm, spacing and media widths, which is `nldd-rich-text`. This is one run of text and nothing around it. Color follows the context channel a list item, menu or table sets on its content, so text inside a row travels with that row as it is hovered or selected. Standalone that channel is unset and the semantic color answers. A line stops at `--semantics-text-max-width`, 40em, so it holds the same number of characters at every size and a wide column does not turn one sentence into a ruler. Override that variable, or `max-width` on the element, where a line is meant to run the full width: a label in a table cell, a value beside its own heading.",
           "name": "NLDDText",
           "members": [
             {

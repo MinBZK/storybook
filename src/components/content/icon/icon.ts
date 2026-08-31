@@ -53,6 +53,7 @@ export type IconColor =
  * @attr {string} size - `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.
  * @attr {string} color - Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent.
  * @attr {string} custom-color - A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know. It wins over `color`.
+ * @attr {boolean} box - Draw the icon on a filled square. `color` and `custom-color` then paint the box and the glyph takes the contrasting color, and `size` measures the box: the glyph is four fifths of it, the corner radius a fifth.
  *
  * @example
  * ```html
@@ -80,6 +81,20 @@ export class NLDDIcon extends LitElement {
 	 *  and this keeps one code path. */
 	@property({ reflect: true, attribute: 'custom-color', converter: reflectNonDefault<string>('') })
 	customColor = '';
+
+	/**
+	 * Draw the icon on a filled square instead of on its own.
+	 *
+	 * It turns the colour question around: `color` and `custom-color` paint the
+	 * box, and the glyph takes whatever contrasts with it. That pair is the
+	 * reason this is an option here rather than a box a consumer builds around
+	 * an icon, because a hand-picked pair is the part nobody can check by eye.
+	 *
+	 * `size` then measures the box, so the same size renders a smaller glyph
+	 * with `box` than without: four fifths of it, with a radius of a fifth.
+	 */
+	@property({ type: Boolean, reflect: true })
+	box = false;
 
 	@state()
 	private _iconSvg: string | null = null;

@@ -16,6 +16,7 @@ export const iconStyles = css`
 		--_size: 100%;
 		--_color: inherit;
 		--_custom-color: inherit;
+		--_glyph-scale: 1;
 
 		display: inline-flex;
 		width: var(--_size);
@@ -90,6 +91,33 @@ export const iconStyles = css`
 
 	svg {
 		display: block;
-		width: 100%;
+		width: calc(100% * var(--_glyph-scale));
+	}
+
+
+	/* # Box
+	 *
+	 * The colour question turns around: [color] and [custom-color] paint the
+	 * box, and the glyph takes whatever contrasts with it. That flip is the
+	 * reason this is a component option and not a box a consumer builds; the
+	 * pair is the part a consumer cannot check by eye.
+	 *
+	 * [size] measures the box, so the same size renders a smaller glyph with
+	 * [box] than without. Four fifths of the box, and a radius of a fifth,
+	 * both written as a ratio so a change lands everywhere at once. */
+
+	:host([box]) {
+		--_glyph-scale: calc(4 / 5);
+
+		border-radius: calc(var(--_size) / 5);
+		background-color: currentColor;
+		height: var(--_size);
+		justify-content: center;
+	}
+
+	/* Resolved against the host's currentColor, which the rule above painted the
+	   box with, and only then assigned to the glyph. Same route as nldd-badge. */
+	:host([box]) svg {
+		color: var(--semantics-content-contrast-color);
 	}
 `;

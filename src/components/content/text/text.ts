@@ -17,6 +17,12 @@
  * content, so text inside a row travels with that row as it is hovered or
  * selected. Standalone that channel is unset and the semantic color answers.
  *
+ * A line stops at `--semantics-text-max-width`, 40em, so it holds the same
+ * number of characters at every size and a wide column does not turn one
+ * sentence into a ruler. Override that variable, or `max-width` on the element,
+ * where a line is meant to run the full width: a label in a table cell, a value
+ * beside its own heading.
+ *
  * @element nldd-text
  * @attr {string} size - Text size on the body scale: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {string} weight - Font weight: 'regular' | 'medium' | 'bold' (default: 'regular'). With 'bold' a slotted `<strong>` no longer stands out: there is nothing bolder in the scale.
