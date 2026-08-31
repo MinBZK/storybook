@@ -21921,9 +21921,9 @@
               "kind": "field",
               "name": "gap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "A step of the spacing scale, or a CSS length of your own, overriding the\nresponsive default at every breakpoint. Unset keeps the default.",
+              "description": "A step of the spacing scale, overriding the responsive default at every\nbreakpoint. Unset keeps the default.",
               "attribute": "gap",
               "reflects": true
             },
@@ -21931,7 +21931,7 @@
               "kind": "field",
               "name": "smGap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "attribute": "sm-gap",
               "reflects": true
@@ -21940,7 +21940,7 @@
               "kind": "field",
               "name": "mdGap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "attribute": "md-gap",
               "reflects": true
@@ -21949,7 +21949,7 @@
               "kind": "field",
               "name": "lgGap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "attribute": "lg-gap",
               "reflects": true
@@ -22018,15 +22018,15 @@
             {
               "name": "gap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "Gap between items: a bare number is a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'), anything with a unit is a length of your own ('16px', '2rem', 'clamp(...)'). Overrides the responsive default at every breakpoint; unset keeps the default.",
+              "description": "Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'). Overrides the responsive default at every breakpoint; unset keeps the default.",
               "fieldName": "gap"
             },
             {
               "name": "sm-gap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "fieldName": "smGap",
               "description": "Gap at sm, overriding `gap` there"
@@ -22034,7 +22034,7 @@
             {
               "name": "md-gap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "fieldName": "mdGap",
               "description": "Gap at md, overriding `gap` there"
@@ -22042,7 +22042,7 @@
             {
               "name": "lg-gap",
               "type": {
-                "text": "SpacingValue | undefined"
+                "text": "SpacingSize | undefined"
               },
               "fieldName": "lgGap",
               "description": "Gap at lg, overriding `gap` there"
@@ -37935,7 +37935,7 @@
               }
             }
           ],
-          "description": "A step of the scale as the token it stands for, or a length as it is.\n\nReturns null when there is nothing to set, so a caller can remove the\nproperty rather than write an empty one. `element` and `attribute` are only\nthere to name the offender in a dev warning."
+          "description": "A step of the scale as the token it stands for.\n\nReturns null when there is nothing to set, so a caller can remove the\nproperty rather than write an empty one. `element` and `attribute` are only\nthere to name the offender in a dev warning."
         }
       ],
       "exports": [

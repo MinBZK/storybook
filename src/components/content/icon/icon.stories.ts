@@ -247,7 +247,7 @@ export const IconGallery = {
 						<nldd-segmented-control-item value="updated" text="Bijgewerkt"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 				</nldd-container>
-				<nldd-collection item-width="180px" max-items="999" gap="16px">
+				<nldd-collection item-width="180px" max-items="999" gap="16">
 					${iconNames.map(iconName => {
 						const iconAliases = Object.entries(aliases)
 							.filter(([, target]) => target === iconName)

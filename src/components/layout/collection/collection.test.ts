@@ -54,20 +54,17 @@ describe('nldd-collection', () => {
 		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-32)');
 	});
 
-	it('passes a CSS length through as it is', async () => {
-		el = await fixture('<nldd-collection gap="23px"><div>Item</div></nldd-collection>');
-		await waitForUpdate(el);
-
-		// A unit makes it yours: the scale is the easy path, not the only one.
-		expect(el.style.getPropertyValue('--_gap')).toBe('23px');
-	});
-
-	it('refuses a bare number that is not on the scale rather than collapsing', async () => {
+	it('refuses anything that is not a step rather than collapsing', async () => {
+		// A number off the scale: var(--primitives-space-23) does not exist, so
+		// writing it would be the silent zero this is here to stop.
 		el = await fixture('<nldd-collection gap="23"><div>Item</div></nldd-collection>');
 		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_gap')).toBe('');
 
-		// Neither a step nor a length: var(--primitives-space-23) does not exist,
-		// so writing it would be the silent zero again. The default stands.
+		// And a length, which is a value beside the scale rather than on it.
+		cleanup(el);
+		el = await fixture('<nldd-collection gap="23px"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
 		expect(el.style.getPropertyValue('--_gap')).toBe('');
 	});
 
@@ -216,9 +213,9 @@ describe('nldd-collection', () => {
 	});
 
 	it('the gap attribute overrides the default gap via an inline --_gap', async () => {
-		el = await fixture('<nldd-collection gap="8px"><div>Item 1</div></nldd-collection>');
+		el = await fixture('<nldd-collection gap="8"><div>Item 1</div></nldd-collection>');
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--_gap')).toBe('8px');
+		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-8)');
 		// Clearing it restores the responsive default (no inline override).
 		(el as HTMLElement & { gap?: string }).gap = '';
 		await waitForUpdate(el);

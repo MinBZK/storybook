@@ -110,11 +110,10 @@ import { LitElement, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { containerStyles } from './container.styles.js';
 import { containerTemplate } from './container.template.js';
-import { spacingToValue, type SpacingValue } from '../../../utilities/spacing-scale.js';
+import { spacingToValue, type SpacingSize } from '../../../utilities/spacing-scale.js';
 
-/** A step of the scale, or a CSS length of your own. The resolver tells them
- *  apart on the value: a bare number is a step, a unit makes it a length. */
-type PaddingSize = SpacingValue;
+/** The scale lives in one place now; this alias keeps the local reads short. */
+type PaddingSize = SpacingSize;
 
 type Layout = 'stack' | 'row' | 'wrap' | 'grid' | 'columns' | 'lanes';
 type ColumnCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;

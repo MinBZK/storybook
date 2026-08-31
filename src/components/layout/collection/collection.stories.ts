@@ -23,6 +23,18 @@ import '../page-sections/simple-section/simple-section.js';
  * </nldd-collection>
  * ```
  */
+/* One shape for the four gap controls, so a step added to the scale is added
+   once. Mirrors sizeControl in the container stories. */
+const GAP_STEPS = ['0', '4', '8', '12', '16', '24', '32', '48'];
+
+const gapControl = (description: string) => ({
+	control: 'select' as const,
+	options: ['(standaard)', ...GAP_STEPS],
+	mapping: { '(standaard)': '' },
+	description,
+	table: { defaultValue: { summary: '(standaard)' } },
+});
+
 export default {
 	title: 'Components/Layout/Collection',
 	component: 'nldd-collection',
@@ -61,13 +73,10 @@ export default {
 			description: 'Aantal items per pagina',
 			table: { defaultValue: { summary: '24' } },
 		},
-		gap: {
-			control: 'select',
-			options: ['(standaard)', '0', '4', '8', '12', '16', '24', '32', '48', '2rem'],
-			mapping: { '(standaard)': '' },
-			description: 'Ruimte tussen items: een kaal getal is een stap op de schaal, met een eenheid is het een eigen lengte',
-			table: { defaultValue: { summary: '(standaard)' } },
-		},
+		gap: gapControl('Ruimte tussen items, als stap op de spacing-schaal'),
+		smGap: { name: 'sm-gap', ...gapControl('Ruimte tussen items bij sm') },
+		mdGap: { name: 'md-gap', ...gapControl('Ruimte tussen items bij md') },
+		lgGap: { name: 'lg-gap', ...gapControl('Ruimte tussen items bij lg') },
 		itemWidth: {
 			name: 'item-width',
 			control: 'text',
@@ -82,6 +91,9 @@ export default {
 		maxItems: 6,
 		itemWidth: '',
 		gap: '',
+		smGap: '',
+		mdGap: '',
+		lgGap: '',
 	},
 };
 
@@ -149,7 +161,7 @@ const scrollItems = Array.from({ length: 12 }, (_, i) => html`
 	</nldd-card>
 `);
 
-export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth, gap }: Record<string, any>) => html`
+export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth, gap, smGap, mdGap, lgGap }: Record<string, any>) => html`
 	<nldd-collection
 		layout=${layout}
 		?show-load-more=${showLoadMore}
@@ -157,6 +169,9 @@ export const Standaard = ({ layout, showLoadMore, lazyLoad, maxItems, itemWidth,
 		?lazy-load=${lazyLoad}
 		item-width=${itemWidth || nothing}
 		gap=${gap || nothing}
+		sm-gap=${smGap || nothing}
+		md-gap=${mdGap || nothing}
+		lg-gap=${lgGap || nothing}
 	>
 		${listItems}
 	</nldd-collection>

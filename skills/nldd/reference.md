@@ -1649,7 +1649,7 @@ A container for displaying collections of items. Supports grid, stack, lanes and
 | `max-items` | `number` | Number of visible items per page (default: 24) |
 | `lazy-load` | `boolean` | Automatically load more items when the button becomes visible |
 | `item-width` | `string` | Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width. |
-| `gap` | `string` | Gap between items: a bare number is a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'), anything with a unit is a length of your own ('16px', '2rem', 'clamp(...)'). Overrides the responsive default at every breakpoint; unset keeps the default. |
+| `gap` | `string` | Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'). Overrides the responsive default at every breakpoint; unset keeps the default. |
 | `sm-gap` | `string` | Gap at sm, overriding `gap` there |
 | `md-gap` | `string` | Gap at md, overriding `gap` there |
 | `lg-gap` | `string` | Gap at lg, overriding `gap` there |
