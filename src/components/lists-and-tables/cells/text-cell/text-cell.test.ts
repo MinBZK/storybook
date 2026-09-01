@@ -1,14 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, adoptedCss } from '../../../../test-utils.js';
 import './text-cell.js';
-
-// The CSS a component adopts, as text. Nested rules keep their inner blocks in
-// cssText, so a `:host(…) { @container … }` rule shows up whole.
-function adoptedCss(el: HTMLElement): string {
-	return Array.from(el.shadowRoot!.adoptedStyleSheets)
-		.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
-		.join('\n');
-}
 
 describe('nldd-text-cell', () => {
 	let el: HTMLElement;

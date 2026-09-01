@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, adoptedCss } from '../../../../test-utils.js';
 import type { NLDDTimelineTrackCell } from './timeline-track-cell.js';
 import './timeline-track-cell.js';
 
@@ -144,21 +144,15 @@ describe('nldd-timeline-track-cell', () => {
 	it('adopts a @container rule for hide-below (md → max-width 640px)', async () => {
 		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell hide-below="md"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
-		const adopted = Array.from(el.shadowRoot!.adoptedStyleSheets)
-			.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
-			.join('\n');
-		expect(adopted).toContain('max-width: 640px');
-		expect(adopted).toContain('display: none');
+		expect(adoptedCss(el)).toContain('max-width: 640px');
+		expect(adoptedCss(el)).toContain('display: none');
 		expect(el.shadowRoot!.querySelector('style')).toBeNull();
 	});
 
 	it('adopts a @container rule for hide-above (md → min-width 1008px)', async () => {
 		el = await fixture<NLDDTimelineTrackCell>('<nldd-timeline-track-cell hide-above="md"></nldd-timeline-track-cell>');
 		await waitForUpdate(el);
-		const adopted = Array.from(el.shadowRoot!.adoptedStyleSheets)
-			.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
-			.join('\n');
-		expect(adopted).toContain('min-width: 1008px');
+		expect(adoptedCss(el)).toContain('min-width: 1008px');
 	});
 });
 
