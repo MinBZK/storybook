@@ -2,6 +2,14 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../../test-utils.js';
 import './text-cell.js';
 
+// The CSS a component adopts, as text. Nested rules keep their inner blocks in
+// cssText, so a `:host(…) { @container … }` rule shows up whole.
+function adoptedCss(el: HTMLElement): string {
+	return Array.from(el.shadowRoot!.adoptedStyleSheets)
+		.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
+		.join('\n');
+}
+
 describe('nldd-text-cell', () => {
 	let el: HTMLElement;
 
@@ -106,31 +114,60 @@ describe('nldd-text-cell', () => {
 		expect(injected?.textContent).toContain('min-width: 480px');
 	});
 
+	// A named breakpoint is static CSS in the adopted stylesheet rather than an
+	// injected <style>: that is what lets a consumer keep 'unsafe-inline' out of
+	// its style-src.
 	it('resolves a named breakpoint for hide-below (lg → max-width 1007px)', async () => {
 		el = await fixture('<nldd-text-cell hide-below="lg"></nldd-text-cell>');
 		await waitForUpdate(el);
-		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
-			s.textContent?.includes('@container'),
-		);
-		expect(injected?.textContent).toContain('max-width: 1007px');
+		expect(adoptedCss(el)).toContain('max-width: 1007px');
 	});
 
 	it('resolves a named breakpoint for hide-below (md → max-width 640px)', async () => {
 		el = await fixture('<nldd-text-cell hide-below="md"></nldd-text-cell>');
 		await waitForUpdate(el);
-		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
-			s.textContent?.includes('@container'),
-		);
-		expect(injected?.textContent).toContain('max-width: 640px');
+		expect(adoptedCss(el)).toContain('max-width: 640px');
 	});
 
 	it('resolves a named breakpoint for hide-above (md → min-width 1008px)', async () => {
 		el = await fixture('<nldd-text-cell hide-above="md"></nldd-text-cell>');
 		await waitForUpdate(el);
+		expect(adoptedCss(el)).toContain('min-width: 1008px');
+	});
+
+	it('injects no <style> for a named breakpoint', async () => {
+		el = await fixture('<nldd-text-cell hide-below="md"></nldd-text-cell>');
+		await waitForUpdate(el);
 		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
 			s.textContent?.includes('@container'),
 		);
-		expect(injected?.textContent).toContain('min-width: 1008px');
+		expect(injected).toBeUndefined();
+	});
+
+	it('scopes the static rules to the cells-container', async () => {
+		el = await fixture('<nldd-text-cell hide-below="md"></nldd-text-cell>');
+		await waitForUpdate(el);
+		expect(adoptedCss(el)).toContain('cells-container');
+	});
+
+	it('hides below md inside a narrow cells-container', async () => {
+		el = await fixture(
+			'<div style="container-type: inline-size; container-name: cells-container; width: 320px;">'
+			+ '<nldd-text-cell hide-below="md" text="Test"></nldd-text-cell></div>',
+		);
+		const cell = el.querySelector('nldd-text-cell')!;
+		await waitForUpdate(cell);
+		expect(getComputedStyle(cell).display).toBe('none');
+	});
+
+	it('stays visible from md up inside a wide cells-container', async () => {
+		el = await fixture(
+			'<div style="container-type: inline-size; container-name: cells-container; width: 800px;">'
+			+ '<nldd-text-cell hide-below="md" text="Test"></nldd-text-cell></div>',
+		);
+		const cell = el.querySelector('nldd-text-cell')!;
+		await waitForUpdate(cell);
+		expect(getComputedStyle(cell).display).not.toBe('none');
 	});
 
 	it('treats hide-below="sm" as a no-op (nothing below sm)', async () => {
