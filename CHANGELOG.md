@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **A named `hide-below` or `hide-above` no longer costs you `'unsafe-inline'` in your `style-src`.** The `@container` rule arrived as a `<style>` element written into the shadow root, and a Content-Security-Policy counts that as an inline stylesheet wherever it sits. On a strict `style-src 'self'` the browser dropped it without a word and the cell showed at every width, so a timeline drew its mobile and its desktop variant on top of each other. The four named breakpoints are static CSS now; nothing changes in how you write them. A custom length (`hide-below="320px"`) still gets its rule at runtime and still needs `'unsafe-inline'`.
+
 ## [0.8.85](https://github.com/MinBZK/storybook/compare/v0.8.84...v0.8.85) (2026-08-31)
 
 ### Highlights
