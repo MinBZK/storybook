@@ -97,11 +97,24 @@ export default {
 	},
 };
 
+/* Descriptions of four lengths, because cards of one height make lanes look
+   exactly like the grid it falls back to. Handing them out in order would put
+   the same length in the same column on every row, and lanes would pack that
+   into a staircase, so the order below is a fixed shuffle. */
+const descriptions = [
+	'Een korte omschrijving.',
+	'Een omschrijving die wat langer is, zodat deze kaart hoger wordt dan de vorige.',
+	'Een omschrijving die wat langer is, zodat deze kaart hoger wordt dan de vorige. Er staat een zin bij die er nog een regel of drie aan toevoegt.',
+	'Een omschrijving die wat langer is, zodat deze kaart hoger wordt dan de vorige. Er staat een zin bij die er nog een regel of drie aan toevoegt. En een derde, zodat er ook een kaart tussen staat die er echt bovenuit steekt.',
+];
+
+const descriptionOrder = [0, 2, 3, 1, 2, 0, 1, 3, 3, 1, 0, 2];
+
 const itemContent = (i: any) => html`
 	<nldd-title size="4"><h3>Item ${i + 1}</h3></nldd-title>
 	<nldd-spacer size="4"></nldd-spacer>
 	<nldd-rich-text spacing="flat">
-		<p>Omschrijving van item ${i + 1}. Dit item bevat wat extra tekst om de kaart wat meer hoogte te geven en de layout beter tot zijn recht te laten komen.</p>
+		<p>${descriptions[descriptionOrder[i % descriptionOrder.length]]}</p>
 	</nldd-rich-text>
 	<nldd-spacer size="16"></nldd-spacer>
 	<nldd-button-group orientation="horizontal">
@@ -215,7 +228,7 @@ export const Banen = {
 		docs: {
 			description: {
 				story:
-					'Kaarten van ongelijke hoogte, in kolommen gepakt. Waar de browser `grid-lanes` kent sluiten ze op elkaar aan; waar niet, valt het terug op het raster hierboven. Die terugval is bewust geen multicol: die vult kolom voor kolom en verdeelt de hele set opnieuw zodra laad-meer erbij zet.',
+					'Kaarten van ongelijke hoogte, in kolommen gepakt. Kent de browser `grid-lanes`, dan sluiten ze op elkaar aan. Zo niet, dan valt het terug op het raster hierboven en worden de kaarten per rij weer even hoog. Die terugval is bewust geen multicol, want die vult kolom voor kolom en verdeelt de hele set opnieuw zodra laad-meer erbij zet. Vandaag kent alleen Safari 26.4 en nieuwer `grid-lanes`, in Chrome en Firefox zit het achter een vlag.',
 			},
 		},
 	},
