@@ -14,6 +14,40 @@ import '../../content/tag/tag.js';
 import '../../inputs/radio-button/radio-button.js';
 
 describe('nldd-list-item', () => {
+
+	describe('radio row', () => {
+		it('is a radio carrying its own checked state', async () => {
+			el = await fixture('<nldd-list-item radio checked><nldd-text-cell text="Error"></nldd-text-cell></nldd-list-item>');
+			await waitForUpdate(el);
+			const action = el.shadowRoot!.querySelector('.list-item__action')!;
+			expect(action.getAttribute('role')).toBe('radio');
+			expect(action.getAttribute('aria-checked')).toBe('true');
+		});
+
+		it('becomes checked on activation and says so once', async () => {
+			el = await fixture('<nldd-list-item radio><nldd-text-cell text="Error"></nldd-text-cell></nldd-list-item>');
+			await waitForUpdate(el);
+			const changes: boolean[] = [];
+			el.addEventListener('change', (e) => changes.push((e as CustomEvent).detail.checked));
+			const action = el.shadowRoot!.querySelector('.list-item__action') as HTMLElement;
+			action.click();
+			await waitForUpdate(el);
+			expect(el.hasAttribute('checked')).toBe(true);
+			// Picking what you already picked is not a change, and not a way to
+			// unpick it either.
+			action.click();
+			await waitForUpdate(el);
+			expect(el.hasAttribute('checked')).toBe(true);
+			expect(changes).toEqual([true]);
+		});
+
+		it('leaves the choice to href and checkbox, which both outrank it', async () => {
+			el = await fixture('<nldd-list-item radio checkbox><nldd-text-cell text="Error"></nldd-text-cell></nldd-list-item>');
+			await waitForUpdate(el);
+			expect(el.shadowRoot!.querySelector('.list-item__action')!.getAttribute('role')).toBe('checkbox');
+		});
+	});
+
 	let el: HTMLElement;
 
 	afterEach(() => {

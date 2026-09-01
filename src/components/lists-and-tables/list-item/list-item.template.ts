@@ -17,6 +17,7 @@ export const template = (
 	actionTabindex?: string,
 	isHighlighted = false,
 	checkbox = false,
+	radio = false,
 	checked = false,
 	expanded?: boolean,
 	showChildren = false,
@@ -69,6 +70,23 @@ export const template = (
 				?disabled=${disabled}
 				aria-checked=${String(checked)}
 				aria-expanded=${ariaExpanded}
+				tabindex=${actionTabindex ?? nothing}
+			>${content}</button>
+			${divider}
+		</div>${children}`;
+	}
+	if (radio) {
+		// Same reasoning as the checkbox row: the semantics live on the row's own
+		// action, so a real <input type="radio"> is not nested in it. A radio
+		// belongs to a group, which the parent nldd-list carries as
+		// role="radiogroup"; without one the row is a radio with no set to be
+		// part of, and AT says so.
+		return html`<div class=${blockClass}>
+			<button class="list-item__action"
+				type="button"
+				role="radio"
+				?disabled=${disabled}
+				aria-checked=${String(checked)}
 				tabindex=${actionTabindex ?? nothing}
 			>${content}</button>
 			${divider}

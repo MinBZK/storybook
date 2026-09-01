@@ -13,7 +13,7 @@ import '../../actions/icon-button/icon-button.js';
 export type ListDividers = 'always' | 'on-touch' | 'never';
 
 export type ListVariant = 'simple' | 'box-tinted' | 'box-base';
-export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form' | 'radiogroup';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -29,6 +29,10 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  *
  * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
+ * - `radiogroup` — `role="radiogroup"`, for a set of `nldd-list-item radio`
+ *   rows: one choice, laid out as rows so each option can carry a count or a
+ *   second line. The rows step out of the accessibility tree themselves
+ *   (`role="none"`), so the radios are the group's own children.
  * - `tree` — `role="tree"`, items `role="treeitem"`. Branch rows put their child
  *   rows in their own `slot="children"`, which the item renders as a
  *   `role="group"`. Level, position and set size are NOT authored: the
@@ -155,7 +159,7 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @element nldd-list
  *
  * @attr {'simple'|'box-tinted'|'box-base'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)
- * @attr {'list'|'navigation'|'listbox'|'tree'|'form'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'|'form'|'radiogroup'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus.
  * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.

@@ -20,6 +20,7 @@ import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
 import '../../inputs/date-field/date-field.js';
 import '../../inputs/combo-box/combo-box.js';
+import '../../inputs/radio-button/radio-button.js';
 
 export default {
 	title: 'Components/Lists & Tables/List',
@@ -490,6 +491,46 @@ export const EmptyWithoutSlot = {
 		docs: {
 			description: {
 				story: 'Vergeet je die slot, dan blijft het vlak leeg, zoals hier. Dat is geen bedoelde staat: er staat niets op het scherm en niets in de accessibility tree. In development waarschuwt de lijst je er een keer over.',
+			},
+		},
+	},
+};
+
+export const Radiogroup = {
+	render: () => html`
+		<nldd-list type="radiogroup" variant="box-tinted" accessible-label="Niveau">
+			<nldd-list-item radio checked>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative checked></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Alle niveaus"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="30"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item radio>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Fouten"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="5"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item radio>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Waarschuwingen"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="6"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story:
+					'Een keuze uit een handvol opties, als rijen. De rij is de radio: `radio` op het item maakt er een `role="radio"` van die bij activeren aangaat en niet meer uit, en de `nldd-radio-button` erin is `decorative`, want die tekent alleen de vorm. Rijen in plaats van een `nldd-radio-button-group` als een optie meer wil dragen dan een label, hier een aantal dat rechts uitlijnt en in secondary staat.',
 			},
 		},
 	},

@@ -46,7 +46,13 @@ export const template = ({
 	// The empty-state (a non-option) is now a SIBLING of .list__items inside
 	// .list__main, so .list__items only ever contains options/items — the role
 	// can be set unconditionally per type (it's hidden when empty anyway).
-	const itemsRole = isListbox ? 'listbox' : type === 'tree' ? 'tree' : 'list';
+	const itemsRole = isListbox
+		? 'listbox'
+		: type === 'tree'
+			? 'tree'
+			: type === 'radiogroup'
+				? 'radiogroup'
+				: 'list';
 	// In listbox mode an empty search has no "no results" meaning yet, so the
 	// empty state is suppressed — the consumer shows just the search field (and
 	// may place its own hint outside the list). It appears only once a query is

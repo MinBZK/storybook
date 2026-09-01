@@ -11,6 +11,23 @@ import '../../inputs/combo-box/combo-box.js';
 import '../../actions/menu/menu.js';
 
 describe('nldd-list', () => {
+
+	it('type="radiogroup": the items region is the group and the rows step aside for their radios', async () => {
+		el = await fixture(`
+			<nldd-list type="radiogroup" accessible-label="Niveau">
+				<nldd-list-item radio checked><nldd-text-cell text="Alles"></nldd-text-cell></nldd-list-item>
+				<nldd-list-item radio><nldd-text-cell text="Fouten"></nldd-text-cell></nldd-list-item>
+			</nldd-list>
+		`);
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('.list__items')!.getAttribute('role')).toBe('radiogroup');
+		const rows = el.querySelectorAll('nldd-list-item');
+		expect(rows[0].getAttribute('role')).toBe('none');
+		expect(
+			rows[0].shadowRoot!.querySelector('.list-item__action')!.getAttribute('aria-checked'),
+		).toBe('true');
+	});
+
 	let el: HTMLElement;
 
 	afterEach(() => {
