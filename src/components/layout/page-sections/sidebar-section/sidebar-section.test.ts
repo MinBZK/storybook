@@ -87,6 +87,44 @@ describe('nldd-sidebar-section', () => {
 		expect(el.hasAttribute('collapsed')).toBe(false);
 	});
 
+	it('the sticky box clears the layers above and below it, and caps its height on what is left', async () => {
+		// What a page with a sticky header publishes: 60px of chrome above the
+		// page plus its own 50px bar, and a 20px sticky footer below.
+		el = await fixture<NLDDSidebarSection>(`
+			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-layer-top: 110px; --context-layer-bottom: 20px;">
+				<p>Hoofdinhoud</p>
+				<div slot="sidebar">Zijbalk-inhoud</div>
+			</nldd-sidebar-section>
+		`);
+		await waitForUpdate(el);
+		await setWidth(1200);
+		const box = el.shadowRoot!.querySelector('.sidebar-section__sidebar-box') as HTMLElement;
+		const styles = getComputedStyle(box);
+		expect(styles.top).toBe('134px');
+		expect(styles.bottom).toBe('44px');
+		// Whatever the viewport has left between the two, so the whole sidebar is
+		// reachable however far the page has scrolled.
+		expect(Math.round(parseFloat(styles.maxHeight))).toBe(window.innerHeight - 134 - 44);
+	});
+
+	it('caps its height on the scroller it sticks in, not on the window', async () => {
+		// What a page that owns its scroller publishes: the bars around it are
+		// outside that box, so the height to cap on is the scroller's, not the
+		// viewport's.
+		el = await fixture<NLDDSidebarSection>(`
+			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-layer-top: 50px; --context-scroll-height: 700px;">
+				<p>Hoofdinhoud</p>
+				<div slot="sidebar">Zijbalk-inhoud</div>
+			</nldd-sidebar-section>
+		`);
+		await waitForUpdate(el);
+		await setWidth(1200);
+		const box = el.shadowRoot!.querySelector('.sidebar-section__sidebar-box') as HTMLElement;
+		const styles = getComputedStyle(box);
+		expect(styles.top).toBe('74px');
+		expect(Math.round(parseFloat(styles.maxHeight))).toBe(700 - 74 - 24);
+	});
+
 	it('collapsed (sm/md): the sidebar moves into the sheet and reflects [collapsed]', async () => {
 		await make();
 		await setWidth(500);

@@ -10,6 +10,16 @@ export const pageStyles = css`
 
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
+		/* The layers above and below this page, captured before the page adds its
+		   own: republishing --context-layer-top on the same element it reads from
+		   would be a cycle, so the value is parked here first. */
+		--_layer-top-above: var(--context-layer-top, 0px);
+		--_layer-bottom-below: var(--context-layer-bottom, 0px);
+		--_header-height: 0px;
+		--_footer-height: 0px;
+		/* Set from JS while the page owns the scroller. initial, not a length, so
+		   the fallback stands when the document scrolls instead. */
+		--_scroll-height: initial;
 
 		display: flex;
 		background-color: var(--_background-color);
@@ -121,7 +131,7 @@ export const pageStyles = css`
 		opacity: 0;
 		background: linear-gradient(to bottom, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
-		height: var(--primitives-space-32);
+		height: var(--primitives-space-24);
 		transition: opacity var(--primitives-transition-duration-medium) var(--primitives-transition-easing-default);
 	}
 
@@ -140,11 +150,30 @@ export const pageStyles = css`
 		right: auto;
 	}
 
+	/* A sticky header is a layer like any bar above the page, so the page tells
+	   its content how far to clear. Anything sticky inside (a sidebar-section, a
+	   table head) reads --context-layer-top and needs no number of its own.
+	   The page's own header sits outside this element and keeps reading the
+	   value it inherited, which is the one without itself in it. */
 	.page__scroll {
+		--context-layer-top: calc(var(--_layer-top-above) + var(--_header-height));
+		--context-layer-bottom: calc(var(--_layer-bottom-below) + var(--_footer-height));
+		/* The height sticky content can cap itself on. Unset while the document
+		   scrolls, where the viewport is the whole story. */
+		--context-scroll-height: var(--_scroll-height, 100dvh);
+
 		display: flex;
 		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
+	}
+
+	/* Nested scrolling: this element is the scroller, so a sticky child inside it
+	   is measured against its box. The bars above the page are outside that box
+	   and no longer count; only the page's own header does. */
+	:host(:not([data-scroll="root"])) .page__scroll {
+		--context-layer-top: var(--_header-height);
+		--context-layer-bottom: var(--_footer-height);
 	}
 
 	:host([sticky-header]) .page__scroll {
@@ -185,7 +214,7 @@ export const pageStyles = css`
 		right: 0;
 		background: linear-gradient(to top, color-mix(in srgb, var(--_background-color) 95%, transparent), transparent);
 		pointer-events: none;
-		height: var(--primitives-space-32);
+		height: var(--primitives-space-24);
 	}
 
 	/* Root-scroll mode: footer sticks to the document bottom, above any bottom bars. */
