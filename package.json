@@ -538,7 +538,7 @@
     "@vitest/browser-playwright": "4.1.11",
     "@vitest/coverage-v8": "4.1.11",
     "conventional-changelog": "^8.1.0",
-    "conventional-changelog-conventionalcommits": "10.2.1",
+    "conventional-changelog-conventionalcommits": "10.4.0",
     "eslint": "^10.8.0",
     "eslint-plugin-lit-a11y": "^5.1.1",
     "eslint-plugin-storybook": "^10.5.7",
@@ -586,6 +586,6 @@
   },
   "customElements": "custom-elements.json",
   "overrides": {
-    "conventional-changelog-conventionalcommits": "10.2.1"
+    "conventional-changelog-conventionalcommits": "10.4.0"
   }
 }
