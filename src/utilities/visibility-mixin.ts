@@ -61,9 +61,9 @@ function warnNoOp(
  * through `finalizeStyles` so that a component's own `static styles` does not
  * have to know about them. A custom length has no static form: the threshold
  * is only known at runtime and a container query cannot read one from a CSS
- * variable, so that case alone still injects a `<style>` element into the
- * shadow root. Consumers that stick to named breakpoints therefore need no
- * `'unsafe-inline'` in their `style-src`.
+ * variable, so its rule is written at runtime into a constructable stylesheet
+ * the shadow root adopts. Neither path is an inline stylesheet, so no consumer
+ * needs `'unsafe-inline'` in its `style-src` for either.
  *
  * @mixin VisibilityMixin
  *
@@ -103,17 +103,22 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(
 		@property({ type: String, reflect: true, attribute: 'hide-above' })
 		hideAbove?: string;
 
-		private _visibilityStyle?: HTMLStyleElement;
+		private _visibilitySheet?: CSSStyleSheet;
 
 		override updated(changed: PropertyValues): void {
 			super.updated(changed);
 			if (changed.has('hideBelow') || changed.has('hideAbove')) {
-				this._updateVisibilityStyle();
+				this._updateVisibilityRules();
 			}
 		}
 
-		private _updateVisibilityStyle(): void {
-			if (!this.shadowRoot) return;
+		// The rule for a custom length is built here, into a stylesheet the shadow
+		// root adopts rather than a <style> element written into it. A CSP judges
+		// the element and leaves the CSSOM alone, so this path needs no
+		// 'unsafe-inline' either.
+		private _updateVisibilityRules(): void {
+			const root = this.shadowRoot;
+			if (!root) return;
 			const containerPrefix = containerName ? `${containerName} ` : '';
 			const rules: string[] = [];
 
@@ -134,15 +139,20 @@ export function VisibilityMixin<TBase extends Constructor<LitElement>>(
 			}
 
 			if (rules.length === 0) {
-				this._visibilityStyle?.remove();
-				this._visibilityStyle = undefined;
+				if (this._visibilitySheet) {
+					const dropped = this._visibilitySheet;
+					root.adoptedStyleSheets = Array.from(root.adoptedStyleSheets)
+						.filter((sheet) => sheet !== dropped);
+					this._visibilitySheet = undefined;
+				}
 				return;
 			}
-			if (!this._visibilityStyle) {
-				this._visibilityStyle = document.createElement('style');
-				this.shadowRoot.appendChild(this._visibilityStyle);
+			if (!this._visibilitySheet) {
+				this._visibilitySheet = new CSSStyleSheet();
+				// Last, so it outranks the static sheet on a tie.
+				root.adoptedStyleSheets = [...root.adoptedStyleSheets, this._visibilitySheet];
 			}
-			this._visibilityStyle.textContent = rules.join('\n');
+			this._visibilitySheet.replaceSync(rules.join('\n'));
 		}
 	}
 	return WithVisibility as unknown as TBase &

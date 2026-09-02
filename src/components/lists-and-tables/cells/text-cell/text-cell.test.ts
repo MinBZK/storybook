@@ -85,25 +85,30 @@ describe('nldd-text-cell', () => {
 		expect(el.style.getPropertyValue('--_min-width')).toBe('5rem');
 	});
 
-	it('injects a @container rule for hide-below', async () => {
+	// A custom length is written at runtime, but into a stylesheet the shadow
+	// root adopts rather than a <style> element: the CSSOM is not what a CSP
+	// judges, so this path needs no 'unsafe-inline' either.
+	it('adopts a @container rule for a custom hide-below length', async () => {
 		el = await fixture('<nldd-text-cell hide-below="320px"></nldd-text-cell>');
 		await waitForUpdate(el);
-		const styleEls = el.shadowRoot!.querySelectorAll('style');
-		const injected = Array.from(styleEls).find((s) =>
-			s.textContent?.includes('@container'),
-		);
-		expect(injected?.textContent).toContain('max-width: 320px');
-		expect(injected?.textContent).toContain('display: none');
+		expect(adoptedCss(el)).toContain('max-width: 320px');
+		expect(adoptedCss(el)).toContain('display: none');
+		expect(el.shadowRoot!.querySelector('style')).toBeNull();
 	});
 
-	it('injects a @container rule for hide-above', async () => {
+	it('adopts a @container rule for a custom hide-above length', async () => {
 		el = await fixture('<nldd-text-cell hide-above="480px"></nldd-text-cell>');
 		await waitForUpdate(el);
-		const styleEls = el.shadowRoot!.querySelectorAll('style');
-		const injected = Array.from(styleEls).find((s) =>
-			s.textContent?.includes('@container'),
-		);
-		expect(injected?.textContent).toContain('min-width: 480px');
+		expect(adoptedCss(el)).toContain('min-width: 480px');
+		expect(el.shadowRoot!.querySelector('style')).toBeNull();
+	});
+
+	it('drops the adopted rule again when the attribute goes away', async () => {
+		el = await fixture('<nldd-text-cell hide-below="320px"></nldd-text-cell>');
+		await waitForUpdate(el);
+		el.removeAttribute('hide-below');
+		await waitForUpdate(el);
+		expect(adoptedCss(el)).not.toContain('max-width: 320px');
 	});
 
 	// A named breakpoint is static CSS in the adopted stylesheet rather than an
@@ -162,13 +167,36 @@ describe('nldd-text-cell', () => {
 		expect(getComputedStyle(cell).display).not.toBe('none');
 	});
 
+	// The static sheet is adopted whatever the attribute says, so what proves the
+	// open edge is a no-op is the cell staying visible where md would hide it.
 	it('treats hide-below="sm" as a no-op (nothing below sm)', async () => {
-		el = await fixture('<nldd-text-cell hide-below="sm"></nldd-text-cell>');
-		await waitForUpdate(el);
-		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
-			s.textContent?.includes('@container'),
+		el = await fixture(
+			'<div style="container-type: inline-size; container-name: cells-container; width: 320px;">'
+			+ '<nldd-text-cell hide-below="sm" text="Test"></nldd-text-cell></div>',
 		);
-		expect(injected).toBeUndefined();
+		const cell = el.querySelector('nldd-text-cell')!;
+		await waitForUpdate(cell);
+		expect(getComputedStyle(cell).display).not.toBe('none');
+	});
+
+	it('hides below a custom length inside a narrower cells-container', async () => {
+		el = await fixture(
+			'<div style="container-type: inline-size; container-name: cells-container; width: 320px;">'
+			+ '<nldd-text-cell hide-below="480px" text="Test"></nldd-text-cell></div>',
+		);
+		const cell = el.querySelector('nldd-text-cell')!;
+		await waitForUpdate(cell);
+		expect(getComputedStyle(cell).display).toBe('none');
+	});
+
+	it('stays visible above a custom length', async () => {
+		el = await fixture(
+			'<div style="container-type: inline-size; container-name: cells-container; width: 800px;">'
+			+ '<nldd-text-cell hide-below="480px" text="Test"></nldd-text-cell></div>',
+		);
+		const cell = el.querySelector('nldd-text-cell')!;
+		await waitForUpdate(cell);
+		expect(getComputedStyle(cell).display).not.toBe('none');
 	});
 
 	it('defaults to left horizontal alignment', async () => {

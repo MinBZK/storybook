@@ -15,8 +15,8 @@ const sheets = new Map<string, CSSResult>();
  *
  * Static, so they reach the shadow root through `adoptedStyleSheets` instead
  * of a `<style>` element. That keeps consumers on a `style-src` without
- * `'unsafe-inline'`; a custom CSS length has no static form and still gets a
- * runtime rule from the mixin.
+ * `'unsafe-inline'`; a custom CSS length has no static form and gets its rule
+ * from the mixin at runtime, into an adopted sheet of its own.
  *
  * The rules are nested (`:host { @container … }`) rather than flattened, because
  * `@container { :host { … } }` is unreliable in Safari.

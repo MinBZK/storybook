@@ -50,13 +50,14 @@ describe('VisibilityMixin across every cell that applies it', () => {
 		expect(el.shadowRoot!.querySelector('style')).toBeNull();
 	});
 
-	it.each(visibilityTags)('%s keeps the runtime rule for a custom length', async (tag) => {
+	// A custom length is the one threshold that cannot be static, so it is written
+	// at runtime. Into an adopted stylesheet, though, so no cell injects a <style>
+	// and a consumer needs no 'unsafe-inline' whichever value it writes.
+	it.each(visibilityTags)('%s adopts the runtime rule for a custom length', async (tag) => {
 		el = await fixture(`<${tag} hide-below="320px"></${tag}>`);
 		await waitForUpdate(el);
 
-		const injected = Array.from(el.shadowRoot!.querySelectorAll('style')).find((s) =>
-			s.textContent?.includes('@container'),
-		);
-		expect(injected?.textContent).toContain('max-width: 320px');
+		expect(adoptedCss(el)).toContain('max-width: 320px');
+		expect(el.shadowRoot!.querySelector('style')).toBeNull();
 	});
 });
