@@ -2908,7 +2908,8 @@ A container for `nldd-list-item` elements. The `type` attribute switches the lis
 | _(default)_ | List items (`nldd-list-item`) |
 | `toolbar` | Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty. |
 | `search-bar-end` | Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty. |
-| `empty` | Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. |
+| `empty` | Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type="listbox"` and a `[slot="toolbar"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant="loading"` here to hold the place rather than have the controls appear a moment later. |
+| `no-results` | Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven filtering leaves behind. A different state from `empty` and a different sentence: here the search field and the `[slot="toolbar"]` stay, because they are the way back to the rows. Falls back to `[slot="empty"]` when not given. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list. |
 
 **Events**
 

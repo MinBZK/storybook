@@ -24,6 +24,9 @@ export interface ListTemplateProps {
 	hasToolbar: boolean;
 	type: ListType;
 	isEmpty: boolean;
+	hasItems: boolean;
+	hasEmptyState: boolean;
+	hasNoResultsState: boolean;
 	listbox: ListboxOptions;
 }
 
@@ -32,6 +35,9 @@ export const template = ({
 	hasToolbar,
 	type,
 	isEmpty,
+	hasItems,
+	hasEmptyState,
+	hasNoResultsState,
 	listbox,
 }: ListTemplateProps) => {
 	const isNavigation = type === 'navigation';
@@ -53,18 +59,30 @@ export const template = ({
 			: type === 'radiogroup'
 				? 'radiogroup'
 				: 'list';
+	// Two ways to show nothing, and they are not the same thing. Rows that exist
+	// but are all filtered away is "no results": the way back is the search field
+	// and the toolbar, so those stay. No rows at all is "empty": there is nothing
+	// to search or filter, so the controls go with it. A list that loads its rows
+	// later is empty for a moment; that is the consumer's to cover, with a
+	// loading state in [slot="empty"].
+	const isNoResults = isEmpty && hasItems;
 	// In listbox mode an empty search has no "no results" meaning yet, so the
-	// empty state is suppressed — the consumer shows just the search field (and
-	// may place its own hint outside the list). It appears only once a query is
-	// present. .list__main collapses when it would hold neither visible options
-	// nor the empty state, leaving no bare box behind.
-	const showEmpty = isEmpty && !(isListbox && listbox.searchValue === '');
-	const showMain = !isEmpty || showEmpty;
+	// message is suppressed — the consumer shows just the search field (and may
+	// place its own hint outside the list). It appears only once a query is
+	// present. A slot with nothing in it is nothing to show either: the surface
+	// would be a bare box, which reads as a skeleton that never loaded.
+	const noResultsFallsBack = isNoResults && !hasNoResultsState && hasEmptyState;
+	const showNoResults = isNoResults && hasNoResultsState && !(isListbox && listbox.searchValue === '');
+	const showEmpty = (!isNoResults && isEmpty && hasEmptyState)
+		|| (noResultsFallsBack && !(isListbox && listbox.searchValue === ''));
+	const showMain = !isEmpty || showEmpty || showNoResults;
+	// Nothing to search in and nothing to filter: the controls belong to the rows.
+	const showControls = hasItems;
 	return html`
 		<div class="list">
 			<div class="list__header">
 				${isListbox ? html`
-					<div class="list__search-bar">
+					<div class="list__search-bar" ?hidden=${!showControls}>
 						<div class="list__search-field">
 							<label class="list__search-field-label">
 								<div class="list__search-field-icon"
@@ -108,7 +126,7 @@ export const template = ({
 						</div>
 					</div>
 				` : nothing}
-				<div class="list__toolbar" ?hidden=${!hasToolbar}>
+				<div class="list__toolbar" ?hidden=${!hasToolbar || !showControls}>
 					<slot name="toolbar"></slot>
 				</div>
 			</div>
@@ -122,9 +140,10 @@ export const template = ({
 					<slot></slot>
 				</div>
 				<div class="list__empty"
-					?hidden=${!showEmpty}
+					?hidden=${!showEmpty && !showNoResults}
 				>
-					<slot name="empty"></slot>
+					<slot name="empty" ?hidden=${!showEmpty}></slot>
+					<slot name="no-results" ?hidden=${!showNoResults}></slot>
 				</div>
 			</div>
 		</div>

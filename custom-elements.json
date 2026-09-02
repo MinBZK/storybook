@@ -30887,7 +30887,11 @@
             },
             {
               "name": "empty",
-              "description": "Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
+              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type=\"listbox\"` and a `[slot=\"toolbar\"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
+            },
+            {
+              "name": "no-results",
+              "description": "Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven filtering leaves behind. A different state from `empty` and a different sentence: here the search field and the `[slot=\"toolbar\"]` stay, because they are the way back to the rows. Falls back to `[slot=\"empty\"]` when not given. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
             }
           ],
           "members": [

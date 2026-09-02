@@ -377,6 +377,12 @@ const buildListbox = (variant: 'box' | 'simple') => {
 					<nldd-text-cell text="${label}"></nldd-text-cell>
 				</nldd-list-item>
 			`)}
+			<nldd-inline-dialog
+				slot="no-results"
+				icon="magnifier"
+				text="Niets gevonden"
+				supporting-text="Probeer een andere zoekterm of een andere categorie."
+			></nldd-inline-dialog>
 		</nldd-list>
 	`, el);
 	return el;

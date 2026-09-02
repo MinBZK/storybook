@@ -6,9 +6,11 @@ import '../cells/text-cell/text-cell.js';
 import '../cells/icon-cell/icon-cell.js';
 import '../list-item-segment/list-item-segment.js';
 import '../cells/cell/cell.js';
+import '../../actions/button/button.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../inputs/combo-box/combo-box.js';
 import '../../actions/menu/menu.js';
+import '../../status-and-feedback/inline-dialog/inline-dialog.js';
 
 describe('nldd-list', () => {
 
@@ -447,8 +449,10 @@ describe('nldd-list', () => {
 		expect(toolbar.hasAttribute('hidden')).toBe(true);
 	});
 
+	// With rows, because a toolbar belongs to them: an empty list hides it (see
+	// "empty and no-results" below).
 	it('toolbar slot: visible when filled, for any type', async () => {
-		el = await fixture('<nldd-list type="navigation"><div slot="toolbar">Filters</div></nldd-list>');
+		el = await fixture('<nldd-list type="navigation"><div slot="toolbar">Filters</div><nldd-list-item>A</nldd-list-item></nldd-list>');
 		await waitForUpdate(el);
 		const toolbar = el.shadowRoot!.querySelector<HTMLElement>('.list__toolbar')!;
 		expect(toolbar.hasAttribute('hidden')).toBe(false);
@@ -1145,9 +1149,22 @@ describe('nldd-list – listbox', () => {
 		items.forEach(i => i.setAttribute('hidden', ''));
 		await settle(el);
 		expect(searchInput().getAttribute('aria-activedescendant')).toBe(null);
+
 		const empty = el.shadowRoot!.querySelector<HTMLElement>('.list__empty')!;
-		expect(empty.hasAttribute('hidden')).toBe(false);
 		const main = el.shadowRoot!.querySelector<HTMLElement>('.list__main')!;
+		// Nothing in [slot="empty"] is nothing to show: a bare box under the
+		// search field reads as a skeleton that never loaded. The field stays.
+		expect(empty.hasAttribute('hidden')).toBe(true);
+		expect(main.hasAttribute('hidden')).toBe(true);
+		expect(getComputedStyle(el).display).not.toBe('none');
+
+		const dialog = document.createElement('nldd-inline-dialog');
+		dialog.setAttribute('slot', 'empty');
+		dialog.setAttribute('text', 'Niets gevonden');
+		el.appendChild(dialog);
+		await settle(el);
+
+		expect(empty.hasAttribute('hidden')).toBe(false);
 		expect(main.hasAttribute('hidden')).toBe(false);
 	});
 
@@ -1493,5 +1510,89 @@ describe('nldd-list roving and the controls in a row', () => {
 		await new Promise((resolve) => { queueMicrotask(() => resolve(null)); });
 		await waitForUpdate(list);
 		expect(field.getAttribute('tabindex')).toBe('-1');
+	});
+});
+
+// Two ways to show nothing, and they are not the same state. Rows filtered away
+// is "no results": the search field and the toolbar are the way back, so they
+// stay. No rows at all is "empty": there is nothing to search or filter, so the
+// controls go with them.
+describe('nldd-list – empty and no-results', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const display = (list: Element) => getComputedStyle(list).display;
+	const shown = (node: Element | null) => !!node && node.getClientRects().length > 0;
+	const surface = (list: Element) => shown((list as HTMLElement & { shadowRoot: ShadowRoot })
+		.shadowRoot.querySelector('.list__main'));
+	const row = '<nldd-list-item><nldd-text-cell text="Appel"></nldd-text-cell></nldd-list-item>';
+	const hiddenRow = '<nldd-list-item hidden><nldd-text-cell text="Appel"></nldd-text-cell></nldd-list-item>';
+	const toolbar = '<nldd-button slot="toolbar" text="Sorteer"></nldd-button>';
+	const emptyState = '<nldd-inline-dialog slot="empty" text="Nog geen assets"></nldd-inline-dialog>';
+	const noResults = '<nldd-inline-dialog slot="no-results" text="Niets gevonden"></nldd-inline-dialog>';
+
+	const mount = async (inner: string) => {
+		el = await fixture(`<nldd-list variant="box">${inner}</nldd-list>`);
+		await waitForUpdate(el);
+		return el;
+	};
+
+	it('takes itself off the page when it has no rows and nothing to say', async () => {
+		await mount(toolbar);
+		expect(display(el)).toBe('none');
+	});
+
+	it('hides the toolbar with the rows it belongs to', async () => {
+		await mount(toolbar + emptyState);
+		expect(display(el)).not.toBe('none');
+		expect(shown(el.querySelector('[slot="empty"]'))).toBe(true);
+		expect(shown(el.querySelector('[slot="toolbar"]'))).toBe(false);
+	});
+
+	it('keeps the toolbar when rows exist but are filtered away', async () => {
+		await mount(toolbar + noResults + hiddenRow);
+		expect(shown(el.querySelector('[slot="no-results"]'))).toBe(true);
+		expect(shown(el.querySelector('[slot="toolbar"]'))).toBe(true);
+	});
+
+	it('falls back to the empty state when no-results is not given', async () => {
+		await mount(toolbar + emptyState + hiddenRow);
+		expect(shown(el.querySelector('[slot="empty"]'))).toBe(true);
+		expect(shown(el.querySelector('[slot="toolbar"]'))).toBe(true);
+	});
+
+	it('says the one that fits when both are given', async () => {
+		await mount(toolbar + emptyState + noResults + hiddenRow);
+		expect(shown(el.querySelector('[slot="no-results"]'))).toBe(true);
+		expect(shown(el.querySelector('[slot="empty"]'))).toBe(false);
+	});
+
+	it('draws no bare box when the filter matches nothing and nothing was said', async () => {
+		await mount(toolbar + hiddenRow);
+		expect(display(el)).not.toBe('none');
+		expect(shown(el.querySelector('[slot="toolbar"]'))).toBe(true);
+		expect(surface(el)).toBe(false);
+	});
+
+	it('hides a listbox search field when there are no options at all', async () => {
+		el = await fixture(`<nldd-list type="listbox" variant="box">${noResults}</nldd-list>`);
+		await waitForUpdate(el);
+		expect(display(el)).toBe('none');
+	});
+
+	it('keeps a listbox search field when a query matches nothing', async () => {
+		el = await fixture(`<nldd-list type="listbox" variant="box">${noResults}${row}</nldd-list>`);
+		await waitForUpdate(el);
+		const field = el.shadowRoot!.querySelector<HTMLInputElement>('.list__search-field-input')!;
+		field.value = 'zzz';
+		field.dispatchEvent(new Event('input', { bubbles: true }));
+		el.querySelector('nldd-list-item')!.setAttribute('hidden', '');
+		await waitForUpdate(el);
+
+		expect(shown(field)).toBe(true);
+		expect(shown(el.querySelector('[slot="no-results"]'))).toBe(true);
 	});
 });
