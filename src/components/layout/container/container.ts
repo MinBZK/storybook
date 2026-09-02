@@ -341,10 +341,13 @@ export class NLDDContainer extends LitElement {
 			setProp('--_justify-items', null);
 		}
 
-		setProp('--_gap', sizeToValue(this.gap));
-		setProp('--_sm-gap', sizeToValue(this.smGap));
-		setProp('--_md-gap', sizeToValue(this.mdGap));
-		setProp('--_lg-gap', sizeToValue(this.lgGap));
+		// These three are what the styles read, so a plain gap fills each
+		// breakpoint the consumer left open. Writing --_gap itself would beat the
+		// blocks that pick between them, being inline.
+		const plainGap = sizeToValue(this.gap);
+		setProp('--_sm-gap', sizeToValue(this.smGap) ?? plainGap);
+		setProp('--_md-gap', sizeToValue(this.mdGap) ?? plainGap);
+		setProp('--_lg-gap', sizeToValue(this.lgGap) ?? plainGap);
 
 		for (const scope of ['', 'sm', 'md', 'lg'] as const) {
 			const [top, right, bottom, left] = this.resolvePadding(scope);

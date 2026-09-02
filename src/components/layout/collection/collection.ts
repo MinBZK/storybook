@@ -180,21 +180,24 @@ export class NLDDCollection extends LitElement {
 			}
 		}
 
-		// Inline vars beat the responsive defaults in the styles; removing one
-		// restores the default. The per-breakpoint vars fall back to --_gap in
-		// the stylesheet, so only what the consumer sets is written here.
+		// The three breakpoint vars are what the styles read, so a plain gap is
+		// written into each one the consumer left open. Writing --_gap itself
+		// would beat the breakpoint blocks, being inline, and a gap set beside a
+		// sm/md/lg one would swallow it.
 		if (
 			changedProperties.has('gap') ||
 			changedProperties.has('smGap') ||
 			changedProperties.has('mdGap') ||
 			changedProperties.has('lgGap')
 		) {
+			const plain = spacingToValue(this.gap, 'nldd-collection', 'gap');
 			const write = (name: string, size: SpacingSize | undefined, attribute: string) => {
-				const value = spacingToValue(size, 'nldd-collection', attribute);
+				const value = size === undefined
+					? plain
+					: spacingToValue(size, 'nldd-collection', attribute) ?? plain;
 				if (value === null) this.style.removeProperty(name);
 				else this.style.setProperty(name, value);
 			};
-			write('--_gap', this.gap, 'gap');
 			write('--_sm-gap', this.smGap, 'sm-gap');
 			write('--_md-gap', this.mdGap, 'md-gap');
 			write('--_lg-gap', this.lgGap, 'lg-gap');

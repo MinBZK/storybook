@@ -23,10 +23,10 @@ export const containerStyles = css`
 		--_justify-content: initial;
 		--_justify-items: initial;
 		--_align-items: initial;
-		--_gap: 0;
-		--_sm-gap: var(--_gap);
-		--_md-gap: var(--_gap);
-		--_lg-gap: var(--_gap);
+		--_sm-gap: 0;
+		--_md-gap: 0;
+		--_lg-gap: 0;
+		--_gap: var(--_sm-gap);
 		--_padding-top: 0;
 		--_padding-right: 0;
 		--_padding-bottom: 0;
@@ -47,19 +47,17 @@ export const containerStyles = css`
 		--_slot-sm-order: var(--_slot-order);
 		--_slot-md-order: var(--_slot-order);
 		--_slot-lg-order: var(--_slot-order);
-		/* One resolved gap for every layout to read. Multicol splits the gap
-		   over two properties (column-gap plus a margin on the items), so a
-		   per-breakpoint declaration would have to be repeated in three
-		   rules; swapping the var keeps that in one place. */
-		--_resolved-gap: var(--_gap);
+		/* Two sets, because a container inside a layout-container follows that
+		   container and anywhere else the viewport. Multicol reads the gap in three
+		   rules, so the value is swapped here rather than declared in each. The
+		   bare --_gap is what stands when neither set matches. */
+		@media (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@media (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
-		@media (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
-		@media (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
-
-		@container layout-container (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
-		@container layout-container (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
+		@container layout-container (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@container layout-container (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
 		display: block;
 		width: var(--_width);
@@ -142,7 +140,7 @@ export const containerStyles = css`
 		justify-content: var(--_justify-content);
 		justify-items: var(--_justify-items);
 		align-items: var(--_align-items);
-		gap: var(--_resolved-gap);
+		gap: var(--_gap);
 	}
 
 	:host([layout="row"]) .container__inner {
@@ -165,7 +163,7 @@ export const containerStyles = css`
 	:host([layout="columns"]) .container__inner {
 		display: block;
 		columns: var(--_min-column-width);
-		column-gap: var(--_resolved-gap);
+		column-gap: var(--_gap);
 	}
 
 	:host([layout="columns"]) ::slotted(*) {
@@ -178,14 +176,14 @@ export const containerStyles = css`
 	:host([layout="lanes"]) .container__inner {
 		display: block;
 		columns: var(--_min-column-width);
-		column-gap: var(--_resolved-gap);
+		column-gap: var(--_gap);
 	}
 
 	:host([layout="lanes"]) ::slotted(*) {
 		break-inside: avoid;
 		/* multicol has no row-gap; item margin supplies the vertical gap. The
 		   native branch resets this (grid-lanes gap covers both axes). */
-		margin-bottom: var(--_resolved-gap);
+		margin-bottom: var(--_gap);
 	}
 
 	@supports (display: grid-lanes) {

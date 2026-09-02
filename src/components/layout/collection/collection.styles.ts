@@ -18,52 +18,27 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
-		@media (max-width: ${smMax}) {
-			--_gap: var(--components-collection-sm-gap);
-		}
+		/* Two sets, because a collection inside a layout-container follows that
+		   container and anywhere else the viewport. The bare --_gap is what
+		   stands when neither set matches. */
+		--_sm-gap: var(--components-collection-sm-gap);
+		--_md-gap: var(--components-collection-md-gap);
+		--_lg-gap: var(--components-collection-lg-gap);
+		--_gap: var(--_sm-gap);
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_gap: var(--components-collection-md-gap);
-		}
+		@media (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@media (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
-		@media (min-width: ${lgMin}) {
-			--_gap: var(--components-collection-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			--_gap: var(--components-collection-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_gap: var(--components-collection-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			--_gap: var(--components-collection-lg-gap);
-		}
-
-		/* The per-breakpoint gaps fall back to the plain one, which is either
-		   the component default set above or what the consumer wrote inline.
-		   One resolved value for every rule to read, so a breakpoint is
-		   declared once instead of in each of them. */
-		--_sm-gap: var(--_gap);
-		--_md-gap: var(--_gap);
-		--_lg-gap: var(--_gap);
-		--_resolved-gap: var(--_gap);
-
-		@media (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
-		@media (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
-
-		@container layout-container (max-width: ${smMax}) { --_resolved-gap: var(--_sm-gap); }
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_resolved-gap: var(--_md-gap); }
-		@container layout-container (min-width: ${lgMin}) { --_resolved-gap: var(--_lg-gap); }
+		@container layout-container (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@container layout-container (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
 		display: flex;
 		width: 100%;
 		min-width: 0;
 		flex-direction: column;
-		gap: var(--_resolved-gap);
+		gap: var(--_gap);
 	}
 
 	:host([hidden]) {
@@ -76,7 +51,7 @@ export const collectionStyles = css`
 	.collection__items {
 		display: flex;
 		width: 100%;
-		gap: var(--_resolved-gap);
+		gap: var(--_gap);
 	}
 
 	/* ## Grid */
@@ -107,13 +82,9 @@ export const collectionStyles = css`
 
 	/* ## Lanes */
 
-	/* Items of unequal height packed into columns, native CSS grid-lanes where
-	   there is such a thing. The fallback is the grid above rather than the
-	   multicol nldd-container falls back to, because this component pages:
-	   multicol fills column by column and redistributes the whole set every
-	   time load-more adds to it, so what you had read jumps. Grid fills row by
-	   row like native lanes and grows at the bottom. The ragged edge is what
-	   you lose, and that is a look rather than a behaviour. */
+	/* Falls back to the grid above, not to the multicol nldd-container uses:
+	   this component pages, and multicol redistributes the whole set every time
+	   load-more adds to it. */
 	:host([layout="lanes"]) .collection__items {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));

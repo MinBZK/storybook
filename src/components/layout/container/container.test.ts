@@ -112,10 +112,21 @@ describe('nldd-container', () => {
 		expect(el.style.getPropertyValue('--_sm-padding-left')).toBe('var(--primitives-space-8)');
 	});
 
-	it('writes --_gap from gap attr', async () => {
+	// The three breakpoint vars are what the styles read; a plain gap fills each
+	// one the consumer left open.
+	it('writes the plain gap into every breakpoint var', async () => {
 		el = await fixture('<nldd-container gap="12"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-12)');
+	});
+
+	it('keeps a breakpoint gap set beside a plain one', async () => {
+		el = await fixture('<nldd-container gap="12" md-gap="32"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-32)');
 	});
 
 	it('writes responsive --_sm-gap', async () => {
