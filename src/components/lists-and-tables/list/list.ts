@@ -32,7 +32,9 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * - `radiogroup` — `role="radiogroup"`, for a set of `nldd-list-item radio`
  *   rows: one choice, laid out as rows so each option can carry a count or a
  *   second line. The rows step out of the accessibility tree themselves
- *   (`role="none"`), so the radios are the group's own children.
+ *   (`role="none"`), so the radios are the group's own children. The arrows
+ *   move focus here and activation checks, rather than the selection following
+ *   focus as it does in `nldd-radio-button-group`.
  * - `tree` — `role="tree"`, items `role="treeitem"`. Branch rows put their child
  *   rows in their own `slot="children"`, which the item renders as a
  *   `role="group"`. Level, position and set size are NOT authored: the
