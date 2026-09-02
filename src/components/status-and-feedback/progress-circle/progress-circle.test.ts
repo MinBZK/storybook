@@ -143,6 +143,26 @@ describe('nldd-progress-circle', () => {
 		expect(el.shadowRoot!.querySelector('[id^="progress-circle-border-accent-"] feFlood')).not.toBeNull();
 	});
 
+	// A flood color written as a literal style attribute is an inline style, and a
+	// strict style-src drops it: the ring would lose its border without a word.
+	// The two fixed colors come from the stylesheet; the per-segment one is set
+	// through the CSSOM, which the policy leaves alone.
+	it('takes the track flood color from the stylesheet rather than a style attribute', async () => {
+		el = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const flood = el.shadowRoot!.querySelector('[id^="progress-circle-border-track-"] feFlood')!;
+		expect(flood.classList.contains('progress-circle__flood--track')).toBe(true);
+		expect(flood.getAttribute('style')).toBeNull();
+	});
+
+	it('takes the indeterminate flood color from the stylesheet rather than a style attribute', async () => {
+		el = await fixture('<nldd-progress-circle indeterminate></nldd-progress-circle>');
+		await waitForUpdate(el);
+		const flood = el.shadowRoot!.querySelector('[id^="progress-circle-border-indeterminate-"] feFlood')!;
+		expect(flood.classList.contains('progress-circle__flood--indeterminate')).toBe(true);
+		expect(flood.getAttribute('style')).toBeNull();
+	});
+
 	it('scopes the highlight-border filter ids per instance so two circles do not collide', async () => {
 		const a = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
 		const b = await fixture('<nldd-progress-circle value="60" color="accent"></nldd-progress-circle>');
