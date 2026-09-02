@@ -136,12 +136,9 @@ export const progressCircleStyles = css`
 
 	/* ## Filter flood color
 
-	   The border filters paint their edge with an feFlood, and flood-color is a
-	   CSS property like any other. It sits here rather than in a style attribute
-	   on the element, because a strict style-src drops those and the ring loses
-	   its border without a word. The color of an arc varies per segment and has
-	   no place in a stylesheet; it is set on that feFlood through the CSSOM,
-	   which the policy leaves alone. */
+	   Here rather than in a style attribute, which a strict style-src drops.
+	   The color of an arc varies per segment, so that one is set through the
+	   CSSOM instead. */
 
 	.progress-circle__flood--track {
 		flood-color: var(--_track-border-color);
