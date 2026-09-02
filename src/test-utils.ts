@@ -60,6 +60,19 @@ export async function waitForUpdate(el: HTMLElement): Promise<void> {
 }
 
 /**
+ * The CSS a component adopts, as text. Use it to assert that a rule reaches the
+ * shadow root through `adoptedStyleSheets` rather than an injected `<style>`,
+ * which is the difference between styling that survives a strict `style-src`
+ * and styling that needs `'unsafe-inline'`. Nested rules keep their inner
+ * blocks in `cssText`, so a `:host(…) { @container … }` rule shows up whole.
+ */
+export function adoptedCss(el: HTMLElement): string {
+	return Array.from(el.shadowRoot!.adoptedStyleSheets)
+		.flatMap((sheet) => Array.from(sheet.cssRules, (rule) => rule.cssText))
+		.join('\n');
+}
+
+/**
  * Installs a consumer-style universal reset in the test document and returns
  * a function that removes it again. Outer-context rules that match a shadow
  * host beat the component's normal \`:host\` declarations (CSS Scoping), so
