@@ -35,7 +35,7 @@ export const barSplitViewStyles = css`
 	/* Root-scroll mode: the document scrolls (ScrollModeController /
 	   --context-scroll-mode). Bars become sticky layers that stay put while the
 	   main content scrolls under them; their measured heights are published into
-	   --context-layer-top/bottom (see bar-split-view.ts) so a descendant
+	   --context-inset-top/bottom (see bar-split-view.ts) so a descendant
 	   nldd-page's sticky header/footer stack below/above them. The sticky insets
 	   and those offsets are set by JS; bars paint above the content. */
 	:host([data-scroll="root"]) {

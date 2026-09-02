@@ -9,13 +9,13 @@
  *
  * In root-scroll mode (--context-scroll-mode: root, derived upstream by
  * nldd-app-view) the page stops owning a scroller: the document scrolls and the
- * sticky header/footer become position:sticky layers offset by
- * --context-layer-top/bottom. The mode is read on connect/resize and reflected
+ * sticky header/footer stick against the document, offset by
+ * --context-inset-top/bottom. The mode is read on connect/resize and reflected
  * to [data-scroll] so the CSS can branch.
  *
- * The page passes those layers on to its own content, with its sticky header
+ * The page passes those insets on to its own content, with its sticky header
  * and footer added: anything sticky inside (an nldd-sidebar-section, a sticky
- * table head) reads --context-layer-top / --context-layer-bottom and clears
+ * table head) reads --context-inset-top / --context-inset-bottom and clears
  * every bar above and below it without being told a number. The heights are
  * measured, because a top title bar shrinks as you scroll past its anchor. While
  * the page owns the scroller, only its own bars count: the chrome above the page
@@ -58,7 +58,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	private _scrollTarget: EventTarget | null = null;
 	private _scrollProvider: ScrollModeProvider | null = null;
 	private _headerObserver: ResizeObserver | null = null;
-	private _layerObserver: ResizeObserver | null = null;
+	private _insetObserver: ResizeObserver | null = null;
 	private _mainSlot: HTMLSlotElement | null = null;
 	private _resizeRaf = 0;
 
@@ -135,7 +135,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		if (this._resizeRaf) cancelAnimationFrame(this._resizeRaf);
 		this._teardownScrollListener();
 		this._teardownHeaderObserver();
-		this._teardownLayerObserver();
+		this._teardownInsetObserver();
 		this._teardownMainSlotListener();
 	}
 
@@ -189,21 +189,21 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		// The absolute-header padding hack is nested-mode only; a root-mode
 		// sticky header sits in flow and reserves its own space.
 		if (this.stickyHeader && !this._isRoot) this._setupHeaderObserver();
-		this._setupLayerObserver();
+		this._setupInsetObserver();
 		this._onScroll();
 	}
 
 	/**
-	 * Publishes the page's own sticky bars as layer heights, so sticky content
-	 * inside the page knows how far to clear.
+	 * Publishes the page's own sticky bars as insets, so sticky content inside
+	 * the page knows how far to clear.
 	 *
 	 * Measured rather than assumed: a top title bar shrinks as you scroll past
 	 * its anchor, and a consumer that had written the number down would be wrong
 	 * from that moment on. A bar that is not sticky scrolls away and adds
 	 * nothing, so it stays at zero.
 	 */
-	private _setupLayerObserver() {
-		this._teardownLayerObserver();
+	private _setupInsetObserver() {
+		this._teardownInsetObserver();
 		const header = this._headerEl;
 		const footer = this._footerEl;
 		if (!header || !footer) return;
@@ -225,16 +225,16 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 			else this.style.setProperty('--_scroll-height', `${this._scrollEl?.clientHeight ?? 0}px`);
 		};
 		publish();
-		this._layerObserver = new ResizeObserver(publish);
-		this._layerObserver.observe(header);
-		this._layerObserver.observe(footer);
-		if (this._scrollEl) this._layerObserver.observe(this._scrollEl);
+		this._insetObserver = new ResizeObserver(publish);
+		this._insetObserver.observe(header);
+		this._insetObserver.observe(footer);
+		if (this._scrollEl) this._insetObserver.observe(this._scrollEl);
 	}
 
-	private _teardownLayerObserver() {
-		if (this._layerObserver) {
-			this._layerObserver.disconnect();
-			this._layerObserver = null;
+	private _teardownInsetObserver() {
+		if (this._insetObserver) {
+			this._insetObserver.disconnect();
+			this._insetObserver = null;
 		}
 	}
 

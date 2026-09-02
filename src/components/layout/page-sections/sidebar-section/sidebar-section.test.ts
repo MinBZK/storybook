@@ -91,7 +91,7 @@ describe('nldd-sidebar-section', () => {
 		// What a page with a sticky header publishes: 60px of chrome above the
 		// page plus its own 50px bar, and a 20px sticky footer below.
 		el = await fixture<NLDDSidebarSection>(`
-			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-layer-top: 110px; --context-layer-bottom: 20px;">
+			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-inset-top: 110px; --context-inset-bottom: 20px;">
 				<p>Hoofdinhoud</p>
 				<div slot="sidebar">Zijbalk-inhoud</div>
 			</nldd-sidebar-section>
@@ -112,7 +112,7 @@ describe('nldd-sidebar-section', () => {
 		// outside that box, so the height to cap on is the scroller's, not the
 		// viewport's.
 		el = await fixture<NLDDSidebarSection>(`
-			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-layer-top: 50px; --context-scroll-height: 700px;">
+			<nldd-sidebar-section style="--primitives-space-24: 24px; --context-inset-top: 50px; --context-scroller-height: 700px;">
 				<p>Hoofdinhoud</p>
 				<div slot="sidebar">Zijbalk-inhoud</div>
 			</nldd-sidebar-section>

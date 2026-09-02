@@ -33,14 +33,10 @@ export const sidebarSectionStyles = css`
 		--_lg-padding-top: initial;
 		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
-		/* 24px away from whatever sticks above and below: nldd-page publishes its
-		   own sticky header and footer as layer heights, and the bars outside the
-		   page are already in there. The 24 is the depth of the fade a sticky
-		   header casts, so the box starts where that fade ends instead of inside
-		   it. Override via sticky-top / sticky-bottom only for chrome the page
-		   cannot know about. */
-		--_sticky-top: calc(var(--context-layer-top, 0px) + var(--primitives-space-24));
-		--_sticky-bottom: calc(var(--context-layer-bottom, 0px) + var(--primitives-space-24));
+		/* 24px clear of the insets nldd-page publishes. 24 is the depth of a
+		   sticky header's fade, so the box starts where the fade ends. */
+		--_sticky-top: calc(var(--context-inset-top, 0px) + var(--primitives-space-24));
+		--_sticky-bottom: calc(var(--context-inset-bottom, 0px) + var(--primitives-space-24));
 		--_sidebar-width: var(--primitives-area-320);
 
 		display: flex;
@@ -173,11 +169,9 @@ export const sidebarSectionStyles = css`
 			position: sticky;
 			top: var(--_sticky-top);
 			bottom: var(--_sticky-bottom);
-			/* What the scroller shows, not what the window is: with the page as the
-			   scroller, the bars around it lie outside the box this sticks in, and
-			   a viewport-tall cap hangs out the bottom by exactly their height.
-			   nldd-page publishes the number it knows. */
-			max-height: calc(var(--context-scroll-height, 100dvh) - var(--_sticky-top) - var(--_sticky-bottom));
+			/* What the scroller shows, not what the window is: a viewport-tall cap
+			   hangs out the bottom by the height of the chrome around the page. */
+			max-height: calc(var(--context-scroller-height, 100dvh) - var(--_sticky-top) - var(--_sticky-bottom));
 			overflow-y: auto;
 		}
 	}

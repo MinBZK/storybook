@@ -10,11 +10,11 @@ export const pageStyles = css`
 
 	:host {
 		--_background-color: var(--context-parent-background-color, var(--semantics-surfaces-base-background-color));
-		/* The layers above and below this page, captured before the page adds its
-		   own: republishing --context-layer-top on the same element it reads from
-		   would be a cycle, so the value is parked here first. */
-		--_layer-top-above: var(--context-layer-top, 0px);
-		--_layer-bottom-below: var(--context-layer-bottom, 0px);
+		/* The insets this page arrived with, parked before it adds its own:
+		   republishing --context-inset-top on the element it reads from would be
+		   a cycle. */
+		--_outer-inset-top: var(--context-inset-top, 0px);
+		--_outer-inset-bottom: var(--context-inset-bottom, 0px);
 		--_header-height: 0px;
 		--_footer-height: 0px;
 		/* Set from JS while the page owns the scroller. initial, not a length, so
@@ -58,9 +58,8 @@ export const pageStyles = css`
 
 	/* Root-scroll mode: the DOCUMENT scrolls (see nldd-app-view), not the page.
 	   The page stops owning an inner scroll container and its sticky-header/footer
-	   become real position:sticky layers against the document, offset by the
-	   cumulative layer heights above/below (--context-layer-top/bottom, published
-	   by any bars sitting outside the page). The mode is derived upstream and
+	   stick against the document, offset by the insets above and below
+	   (--context-inset-top/bottom, published by any bars outside the page). The mode is derived upstream and
 	   delivered as --context-scroll-mode; nldd-page reflects it to [data-scroll]
 	   so these (higher-specificity, later) rules win over the nested ones. */
 	:host([data-scroll="root"]) {
@@ -96,7 +95,7 @@ export const pageStyles = css`
 	:host([data-scroll="root"]) .page {
 		overflow: visible;
 		flex-shrink: 0;
-		min-height: calc(100dvh - var(--context-layer-top, 0px) - var(--context-layer-bottom, 0px));
+		min-height: calc(100dvh - var(--context-inset-top, 0px) - var(--context-inset-bottom, 0px));
 	}
 
 
@@ -145,22 +144,20 @@ export const pageStyles = css`
 	   only mattered for the absolute overlay. */
 	:host([data-scroll="root"][sticky-header]) .page__header {
 		position: sticky;
-		top: var(--context-layer-top, 0px);
+		top: var(--context-inset-top, 0px);
 		left: auto;
 		right: auto;
 	}
 
-	/* A sticky header is a layer like any bar above the page, so the page tells
-	   its content how far to clear. Anything sticky inside (a sidebar-section, a
-	   table head) reads --context-layer-top and needs no number of its own.
-	   The page's own header sits outside this element and keeps reading the
-	   value it inherited, which is the one without itself in it. */
+	/* The page adds its own bars to the insets it inherited, so sticky content
+	   inside clears them without knowing a number. The header sits outside this
+	   element and keeps the value without itself in it. */
 	.page__scroll {
-		--context-layer-top: calc(var(--_layer-top-above) + var(--_header-height));
-		--context-layer-bottom: calc(var(--_layer-bottom-below) + var(--_footer-height));
+		--context-inset-top: calc(var(--_outer-inset-top) + var(--_header-height));
+		--context-inset-bottom: calc(var(--_outer-inset-bottom) + var(--_footer-height));
 		/* The height sticky content can cap itself on. Unset while the document
 		   scrolls, where the viewport is the whole story. */
-		--context-scroll-height: var(--_scroll-height, 100dvh);
+		--context-scroller-height: var(--_scroll-height, 100dvh);
 
 		display: flex;
 		min-height: 0;
@@ -168,12 +165,11 @@ export const pageStyles = css`
 		flex-grow: 1;
 	}
 
-	/* Nested scrolling: this element is the scroller, so a sticky child inside it
-	   is measured against its box. The bars above the page are outside that box
-	   and no longer count; only the page's own header does. */
+	/* Nested scrolling: a sticky child is measured against this element, so the
+	   bars above the page fall outside it and only its own header counts. */
 	:host(:not([data-scroll="root"])) .page__scroll {
-		--context-layer-top: var(--_header-height);
-		--context-layer-bottom: var(--_footer-height);
+		--context-inset-top: var(--_header-height);
+		--context-inset-bottom: var(--_footer-height);
 	}
 
 	:host([sticky-header]) .page__scroll {
@@ -219,6 +215,6 @@ export const pageStyles = css`
 
 	/* Root-scroll mode: footer sticks to the document bottom, above any bottom bars. */
 	:host([data-scroll="root"][sticky-footer]) .page__footer {
-		bottom: var(--context-layer-bottom, 0px);
+		bottom: var(--context-inset-bottom, 0px);
 	}
 `;

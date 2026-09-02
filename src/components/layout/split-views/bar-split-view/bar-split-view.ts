@@ -50,7 +50,7 @@ export class NLDDBarSplitView extends LitElement {
 
 	// Reflects --context-scroll-mode to [data-scroll]; on change, re-computes the
 	// sticky-bar offsets below.
-	private _scrollMode = new ScrollModeController(this, () => this._updateLayerOffsets());
+	private _scrollMode = new ScrollModeController(this, () => this._updateInsets());
 
 	@property({ type: String, reflect: true })
 	background: 'inherit' | 'base' | 'tinted' = 'inherit';
@@ -78,9 +78,9 @@ export class NLDDBarSplitView extends LitElement {
 				this._currentBreakpoint = bp;
 				this.requestUpdate();
 			}
-			// Bar heights (and thus the published layer offsets) can change on any
+			// Bar heights (and thus the published insets) can change on any
 			// resize; in root mode the flowing host resizes with them.
-			this._updateLayerOffsets();
+			this._updateInsets();
 		});
 		this._resizeObserver.observe(this);
 	}
@@ -139,14 +139,14 @@ export class NLDDBarSplitView extends LitElement {
 	override updated(): void {
 		// Re-apply after every render — the bar wrappers are re-created, so their
 		// inline sticky insets would otherwise be lost.
-		this._updateLayerOffsets();
+		this._updateInsets();
 	}
 
-	// In root-scroll mode, stack the bars as sticky layers: each top bar sticks
+	// In root-scroll mode the bars stack: each top bar sticks
 	// below the ones above it, each bottom bar above the ones below it, and the
-	// cumulative heights are published as --context-layer-top/bottom on the main
+	// cumulative heights are published as --context-inset-top/bottom on the main
 	// so a descendant nldd-page's sticky header/footer stack against them.
-	private _updateLayerOffsets = (): void => {
+	private _updateInsets = (): void => {
 		const block = this.shadowRoot?.querySelector<HTMLElement>('.bar-split-view') ?? null;
 		const main = block?.querySelector<HTMLElement>('.bar-split-view__main') ?? null;
 		if (!block || !main) return;
@@ -155,8 +155,8 @@ export class NLDDBarSplitView extends LitElement {
 
 		if (this._scrollMode.mode !== 'root') {
 			children.forEach(el => { el.style.top = ''; el.style.bottom = ''; });
-			main.style.removeProperty('--context-layer-top');
-			main.style.removeProperty('--context-layer-bottom');
+			main.style.removeProperty('--context-inset-top');
+			main.style.removeProperty('--context-inset-bottom');
 			return;
 		}
 
@@ -165,21 +165,21 @@ export class NLDDBarSplitView extends LitElement {
 		// and count toward the offset. Base offsets are inherited from any
 		// bars/app-view above this one (px values, so nested bars compose).
 		const cs = getComputedStyle(this);
-		let top = parseFloat(cs.getPropertyValue('--context-layer-top')) || 0;
+		let top = parseFloat(cs.getPropertyValue('--context-inset-top')) || 0;
 		for (let i = 0; i < mainIndex; i++) {
 			children[i].style.top = `${top}px`;
 			children[i].style.bottom = '';
 			top += children[i].offsetHeight;
 		}
-		main.style.setProperty('--context-layer-top', `${top}px`);
+		main.style.setProperty('--context-inset-top', `${top}px`);
 
-		let bottom = parseFloat(cs.getPropertyValue('--context-layer-bottom')) || 0;
+		let bottom = parseFloat(cs.getPropertyValue('--context-inset-bottom')) || 0;
 		for (let i = children.length - 1; i > mainIndex; i--) {
 			children[i].style.bottom = `${bottom}px`;
 			children[i].style.top = '';
 			bottom += children[i].offsetHeight;
 		}
-		main.style.setProperty('--context-layer-bottom', `${bottom}px`);
+		main.style.setProperty('--context-inset-bottom', `${bottom}px`);
 	};
 
 	override render() {

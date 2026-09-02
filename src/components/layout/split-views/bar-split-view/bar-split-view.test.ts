@@ -273,17 +273,17 @@ describe('nldd-bar-split-view', () => {
 
 
 /* ============================================================
-   Root-scroll mode — sticky bar layer offsets (_updateLayerOffsets)
+   Root-scroll mode — sticky bar insets (_updateInsets)
    ============================================================ */
 
-describe('nldd-bar-split-view – root-scroll sticky layer offsets', () => {
+describe('nldd-bar-split-view – root-scroll sticky insets', () => {
 	let el: NLDDBarSplitView;
 
 	afterEach(() => { if (el) cleanup(el); });
 
 	// Drive the shared ScrollModeController into (or out of) root mode by writing
 	// the inherited var it reads, then re-reading — which re-runs the onChange
-	// (_updateLayerOffsets). In root mode the bars become stacked sticky layers.
+	// (_updateInsets). In root mode the bars become stacked sticky bars.
 	async function setRootScroll(host: NLDDBarSplitView, on: boolean) {
 		host.style.setProperty('--context-scroll-mode', on ? 'root' : 'nested');
 		(host as unknown as { _scrollMode: { read(): void } })._scrollMode.read();
@@ -315,8 +315,8 @@ describe('nldd-bar-split-view – root-scroll sticky layer offsets', () => {
 			expect(bar.style.top).toBe('');
 			expect(bar.style.bottom).toBe('');
 		}
-		expect(main.style.getPropertyValue('--context-layer-top')).toBe('');
-		expect(main.style.getPropertyValue('--context-layer-bottom')).toBe('');
+		expect(main.style.getPropertyValue('--context-inset-top')).toBe('');
+		expect(main.style.getPropertyValue('--context-inset-bottom')).toBe('');
 	});
 
 	it('stacks top bars from the top and bottom bars from the bottom in root mode', async () => {
@@ -337,7 +337,7 @@ describe('nldd-bar-split-view – root-scroll sticky layer offsets', () => {
 		expect(bottomBar.style.top).toBe('');
 	});
 
-	it('publishes the cumulative layer heights as --context-layer-top/bottom on main', async () => {
+	it('publishes the cumulative layer heights as --context-inset-top/bottom on main', async () => {
 		el = await fixtureBars();
 		await setRootScroll(el, true);
 
@@ -350,14 +350,14 @@ describe('nldd-bar-split-view – root-scroll sticky layer offsets', () => {
 
 		expect(expectedTop).toBeGreaterThan(0);
 		expect(expectedBottom).toBeGreaterThan(0);
-		expect(main.style.getPropertyValue('--context-layer-top')).toBe(`${expectedTop}px`);
-		expect(main.style.getPropertyValue('--context-layer-bottom')).toBe(`${expectedBottom}px`);
+		expect(main.style.getPropertyValue('--context-inset-top')).toBe(`${expectedTop}px`);
+		expect(main.style.getPropertyValue('--context-inset-bottom')).toBe(`${expectedBottom}px`);
 	});
 
 	it('offsets the first bars by the inherited base layer heights (nested bars compose)', async () => {
 		el = await fixtureBars();
-		el.style.setProperty('--context-layer-top', '100px');
-		el.style.setProperty('--context-layer-bottom', '50px');
+		el.style.setProperty('--context-inset-top', '100px');
+		el.style.setProperty('--context-inset-bottom', '50px');
 		await setRootScroll(el, true);
 
 		const topBar = el.shadowRoot!.querySelector<HTMLElement>('.bar-split-view__bar--top')!;
@@ -376,7 +376,7 @@ describe('nldd-bar-split-view – root-scroll sticky layer offsets', () => {
 			expect(bar.style.top).toBe('');
 			expect(bar.style.bottom).toBe('');
 		}
-		expect(main.style.getPropertyValue('--context-layer-top')).toBe('');
-		expect(main.style.getPropertyValue('--context-layer-bottom')).toBe('');
+		expect(main.style.getPropertyValue('--context-inset-top')).toBe('');
+		expect(main.style.getPropertyValue('--context-inset-bottom')).toBe('');
 	});
 });

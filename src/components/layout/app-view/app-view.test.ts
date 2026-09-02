@@ -333,11 +333,11 @@ describe('nldd-app-view – derived scroll mode', () => {
 	// around it scrolls: in root mode it would otherwise stick its header against
 	// the document, offset by an app bar that stands outside the overlay, and
 	// paint it over the first field.
-	it('keeps a page inside a sheet out of root mode, and resets the layer offsets', async () => {
+	it('keeps a page inside a sheet out of root mode, and resets the insets', async () => {
 		el = await fixture<NLDDAppView>(`
 			<nldd-app-view>
 				<nldd-navigation-split-view>
-					<nldd-split-view-pane slot="main" has-content style="--context-layer-top: 60px;">
+					<nldd-split-view-pane slot="main" has-content style="--context-inset-top: 60px;">
 						<nldd-page id="in-pane"></nldd-page>
 						<nldd-sheet accessible-label="Edit">
 							<nldd-page id="in-sheet" sticky-header></nldd-page>
@@ -353,7 +353,7 @@ describe('nldd-app-view – derived scroll mode', () => {
 		await setNavWidth(nav, 320);   // full-stack → the app scrolls the document
 
 		expect(inPane.dataset.scroll).toBe('root');
-		expect(getComputedStyle(inPane).getPropertyValue('--context-layer-top').trim()).toBe('60px');
+		expect(getComputedStyle(inPane).getPropertyValue('--context-inset-top').trim()).toBe('60px');
 
 		// Nested is the default, so the page leaves [data-scroll] off rather than
 		// writing it: what counts is that it never flips to root and keeps its own
@@ -362,7 +362,7 @@ describe('nldd-app-view – derived scroll mode', () => {
 		expect((inSheet as unknown as { scrollTarget: HTMLElement }).scrollTarget)
 			.toBe(inSheet.shadowRoot!.querySelector('.page__scroll'));
 		expect(getComputedStyle(inSheet).getPropertyValue('--context-scroll-mode').trim()).toBe('nested');
-		expect(getComputedStyle(inSheet).getPropertyValue('--context-layer-top').trim()).toBe('0px');
+		expect(getComputedStyle(inSheet).getPropertyValue('--context-inset-top').trim()).toBe('0px');
 	});
 
 	it('keeps a page inside a modal dialog out of root mode', async () => {

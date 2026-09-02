@@ -52,7 +52,7 @@ describe('nldd-page', () => {
 		/* A custom property hands on its calc() untouched, so the value only
 		   resolves where it lands. This probe is what a consumer writes anyway:
 		   something sticky inside the page, clearing whatever is above it. */
-		const stickyProbe = '<div id="probe" style="position: sticky; top: var(--context-layer-top, 0px); bottom: var(--context-layer-bottom, 0px);">Probe</div>';
+		const stickyProbe = '<div id="probe" style="position: sticky; top: var(--context-inset-top, 0px); bottom: var(--context-inset-bottom, 0px);">Probe</div>';
 		const probeTop = (el: HTMLElement) =>
 			getComputedStyle(el.querySelector('#probe')!).top;
 		const probeBottom = (el: HTMLElement) =>
@@ -60,7 +60,7 @@ describe('nldd-page', () => {
 
 		it('adds its own sticky header to the layers above, so content inside can clear it', async () => {
 			el = await fixture(`
-				<nldd-page sticky-header style="--context-scroll-mode: root; --context-layer-top: 60px;">
+				<nldd-page sticky-header style="--context-scroll-mode: root; --context-inset-top: 60px;">
 					<div slot="header" style="height: 50px;">Header</div>
 					${stickyProbe}
 				</nldd-page>
@@ -72,7 +72,7 @@ describe('nldd-page', () => {
 
 		it('counts only its own header while it owns the scroller, since the bars above sit outside it', async () => {
 			el = await fixture(`
-				<nldd-page sticky-header style="--context-layer-top: 60px;">
+				<nldd-page sticky-header style="--context-inset-top: 60px;">
 					<div slot="header" style="height: 50px;">Header</div>
 					${stickyProbe}
 				</nldd-page>
@@ -84,7 +84,7 @@ describe('nldd-page', () => {
 
 		it('adds nothing for a header that is not sticky: it scrolls away and leaves no layer', async () => {
 			el = await fixture(`
-				<nldd-page style="--context-scroll-mode: root; --context-layer-top: 60px;">
+				<nldd-page style="--context-scroll-mode: root; --context-inset-top: 60px;">
 					<div slot="header" style="height: 50px;">Header</div>
 					${stickyProbe}
 				</nldd-page>
@@ -96,7 +96,7 @@ describe('nldd-page', () => {
 
 		it('publishes a sticky footer the same way', async () => {
 			el = await fixture(`
-				<nldd-page sticky-footer style="--context-scroll-mode: root; --context-layer-bottom: 20px;">
+				<nldd-page sticky-footer style="--context-scroll-mode: root; --context-inset-bottom: 20px;">
 					<div slot="footer" style="height: 40px;">Footer</div>
 					${stickyProbe}
 				</nldd-page>
@@ -108,7 +108,7 @@ describe('nldd-page', () => {
 	});
 
 	describe('scroll height for sticky content', () => {
-		const probe = '<div id="probe" style="max-height: var(--context-scroll-height, 100dvh);">Probe</div>';
+		const probe = '<div id="probe" style="max-height: var(--context-scroller-height, 100dvh);">Probe</div>';
 
 		it('publishes the scroller height while the page owns the scroller', async () => {
 			el = await fixture(`
