@@ -35,6 +35,21 @@ export const topNavigationBarStyles = css`
 	/* # Block */
 
 	.top-navigation-bar {
+		/* The ribbon's width, and with it everything measured against the ribbon:
+		   its own height and the wordmark beside it. Here rather than on :host,
+		   because a container query cannot measure the container it sits on. */
+		@container (max-width: ${smMax}) {
+			--_logo-width: var(--semantics-brand-ribbon-sm-width);
+		}
+
+		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
+			--_logo-width: var(--semantics-brand-ribbon-md-width);
+		}
+
+		@container (min-width: ${lgMin}) {
+			--_logo-width: var(--semantics-brand-ribbon-lg-width);
+		}
+
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
@@ -83,18 +98,6 @@ export const topNavigationBarStyles = css`
 		align-self: start;
 		align-items: center;
 		justify-content: center;
-
-		@container (max-width: ${smMax}) {
-			--_logo-width: var(--semantics-brand-ribbon-sm-width);
-		}
-
-		@container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_logo-width: var(--semantics-brand-ribbon-md-width);
-		}
-
-		@container (min-width: ${lgMin}) {
-			--_logo-width: var(--semantics-brand-ribbon-lg-width);
-		}
 	}
 
 	.top-navigation-bar__logo svg {
@@ -147,17 +150,37 @@ export const topNavigationBarStyles = css`
 	/* ## Wordmark */
 
 	.top-navigation-bar__wordmark {
+		box-sizing: border-box;
 		display: flex;
+		/* A grid item is at least as wide as its longest word unless told
+		   otherwise, and the column it sits in is one of the two that keep the
+		   ribbon centred. One unbreakable name would push the ribbon off centre
+		   and the page past the screen. */
+		min-width: 0;
 		min-height: calc(var(--_logo-width) * 2);
 		grid-column: 3;
 		flex-direction: column;
 		color: var(--_wordmark-content-color);
+
+		/* The distance the text keeps from the top edge once it outgrows the
+		   ribbon. Only at the top: space under it would raise the bar for
+		   nothing. The minimum gives up the same 12, so the text still centres
+		   on the middle of the ribbon rather than 6px below it. */
+		@container (max-width: ${smMax}) {
+			align-self: start;
+			min-height: calc(var(--_logo-width) * 2 - var(--primitives-space-12));
+			padding-block-start: var(--primitives-space-12);
+		}
 	}
 
 	.top-navigation-bar__wordmark-spacer {
 		height: var(--_logo-width);
 		flex-grow: 0;
 		flex-shrink: 0;
+
+		@container (max-width: ${smMax}) {
+			display: none;
+		}
 	}
 
 	.top-navigation-bar__wordmark-content {
@@ -167,6 +190,21 @@ export const topNavigationBarStyles = css`
 		flex-shrink: 1;
 		flex-basis: 50%;
 		max-width: var(--_wordmark-max-width);
+		/* anywhere rather than break-word: only this one takes the break into
+		   the min-content width, which is what the track measures. A name that
+		   cannot break wraps mid-word here, because a name cut off by an
+		   ellipsis cannot be read at all. */
+		overflow-wrap: anywhere;
+
+		/* Centred against the ribbon, and what does not fit grows downward: an
+		   auto margin takes positive free space and never negative, so the text
+		   cannot ride up past the top. Growing is the flex item's job here, and
+		   an item that grows leaves nothing for the margins to centre with. */
+		@container (max-width: ${smMax}) {
+			flex-grow: 0;
+			flex-basis: auto;
+			margin-block: auto;
+		}
 	}
 
 	.top-navigation-bar__wordmark-title {

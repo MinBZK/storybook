@@ -525,3 +525,85 @@ describe('nldd-top-navigation-bar – i18n', () => {
 		expect(menuBar.getAttribute('accessible-label')).toBe('Main navigation');
 	});
 });
+
+// Beside the ribbon on a narrow screen the wordmark is centred against it, and
+// only what does not fit grows downward: centring a taller wordmark would push
+// its first line off the top of the viewport, where the ribbon starts.
+describe('nldd-top-navigation-bar – wordmark beside the ribbon', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	const tokens = '--semantics-brand-ribbon-sm-width: 40px; --semantics-brand-ribbon-lg-width: 48px; --primitives-space-12: 12px;';
+
+	const mount = async (width: string, attrs: string) => {
+		el = await fixture(
+			`<div style="width: ${width}; ${tokens}">`
+			+ `<nldd-top-navigation-bar ${attrs.includes('logo-title') ? '' : 'logo-title="Nederlandse Digitale Dienst"'} ${attrs}></nldd-top-navigation-bar></div>`,
+		);
+		const bar = el.querySelector('nldd-top-navigation-bar') as NLDDTopNavigationBar;
+		await waitForUpdate(bar);
+		const q = (selector: string) => bar.shadowRoot!.querySelector(selector)!.getBoundingClientRect();
+		return { bar, logo: q('.top-navigation-bar__logo'), content: q('.top-navigation-bar__wordmark-content') };
+	};
+
+	it('centres a wordmark that fits against the ribbon', async () => {
+		const { logo, content } = await mount('375px', '');
+		const midden = (r: DOMRect) => r.top + r.height / 2;
+		expect(content.height).toBeLessThan(logo.height);
+		expect(Math.abs(midden(content) - midden(logo))).toBeLessThan(1);
+	});
+
+	it('keeps 12px from the top and grows downward when it does not fit', async () => {
+		const { logo, content } = await mount(
+			'375px',
+			'logo-subtitle="Ministerie van Economische Zaken en Klimaat" logo-supporting-text1="Directie Digitale Overheid"',
+		);
+		expect(content.height).toBeGreaterThan(logo.height);
+		expect(Math.round(content.top - logo.top)).toBe(12);
+	});
+
+	// Room under the text would raise the whole bar for nothing.
+	it('leaves no room under the text it grew for', async () => {
+		const { bar, content } = await mount(
+			'375px',
+			'logo-subtitle="Ministerie van Economische Zaken en Klimaat" logo-supporting-text1="Directie Digitale Overheid"',
+		);
+		const wordmark = bar.shadowRoot!.querySelector('.top-navigation-bar__wordmark')!.getBoundingClientRect();
+		expect(Math.round(wordmark.bottom)).toBe(Math.round(content.bottom));
+	});
+
+	// A grid item is at least as wide as its longest word, and the wordmark sits
+	// in one of the two tracks that keep the ribbon centred. One long name used
+	// to shove the ribbon 137px off centre and the page 43px past the screen.
+	it('breaks a long word rather than pushing the ribbon off centre', async () => {
+		const { bar, logo } = await mount('375px', 'logo-title="Rijksinstituutvoorvolksgezondheidenmilieuhygiene"');
+		const wrapper = el.getBoundingClientRect();
+		const midden = (r: DOMRect) => r.left + r.width / 2;
+
+		expect(Math.abs(midden(logo) - midden(wrapper))).toBeLessThan(1);
+		expect(el.scrollWidth).toBeLessThanOrEqual(el.clientWidth);
+
+		// It wrapped instead. Measured against a short title in the same run,
+		// because the test browser has no RijksSans and lines it differently.
+		const lang = bar.shadowRoot!.querySelector('.top-navigation-bar__wordmark-title')!.getBoundingClientRect();
+		cleanup(el);
+		const kort = await mount('375px', 'logo-title="Dienst"');
+		const kortTitle = kort.bar.shadowRoot!.querySelector('.top-navigation-bar__wordmark-title')!.getBoundingClientRect();
+		expect(lang.height).toBeGreaterThan(kortTitle.height * 1.5);
+	});
+
+	// The ribbon width is declared per breakpoint on the block, not inside the
+	// logo: a wordmark that measures itself against the ribbon read the sm width
+	// at every size, so on lg it reserved 80px beside a 96px ribbon.
+	it('measures the wordmark against the ribbon of the breakpoint it is in', async () => {
+		const { bar } = await mount('1200px', '');
+		const shadow = bar.shadowRoot!;
+		const wordmark = getComputedStyle(shadow.querySelector('.top-navigation-bar__wordmark')!);
+		const logo = getComputedStyle(shadow.querySelector('.top-navigation-bar__logo')!);
+		expect(wordmark.minHeight).toBe(logo.height);
+		expect(logo.height).toBe('96px');
+	});
+});
