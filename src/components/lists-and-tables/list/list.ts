@@ -543,7 +543,14 @@ export class NLDDList extends LitElement {
 	}
 
 	private _updateEmpty() {
-		const items = this._getItems();
+		// The rows are read off the slot, and a slot has nothing assigned until it
+		// has rendered. Before that they are read from the children, where they
+		// already are: judging on the slot called every list empty for one render,
+		// which hid the controls that belong to the rows and latched a warning
+		// naming the wrong state.
+		const items = this.hasUpdated
+			? this._getItems()
+			: Array.from(this.querySelectorAll<NLDDListItem>(':scope > nldd-list-item'));
 		this._isEmpty = items.length === 0 || items.every(item => item.hasAttribute('hidden'));
 		// Nothing in it and nothing said about that is not a thing on the page.
 		// Drawing the surface anyway makes "nothing" look different per variant:
@@ -570,17 +577,27 @@ export class NLDDList extends LitElement {
 	 * the app's to write and a house sentence was wrong more often than right.
 	 * That leaves a real risk of a blank area with nothing in the accessibility
 	 * tree either, so the list asks the person building it rather than
-	 * answering for them. A listbox before you have typed is left alone: an
-	 * empty search is not an empty list.
+	 * answering for them. It asks about the state it is actually in: rows that
+	 * are all hidden are covered by [slot="no-results"] as well as by the
+	 * [slot="empty"] it falls back to. A listbox before you have typed is left
+	 * alone: an empty search is not an empty list.
 	 */
 	private _warnSilentEmpty() {
 		if (!import.meta.env?.DEV) return;
 		if (!this._isEmpty || this._warnedSilentEmpty) return;
 		if (this.type === 'listbox' && !this._searchValue) return;
-		if (this.querySelector(':scope > [slot="empty"]')) return;
+		if (this._hasEmptyState) return;
+		// Rows that are all hidden are the no-results state, and a slot that covers
+		// it answers the question: warning about the empty slot there would ask for
+		// a second sentence nobody will ever read.
+		if (this._hasItems && this._hasNoResultsState) return;
+		const slot = this._hasItems ? '[slot="no-results"]' : '[slot="empty"]';
+		const what = this._hasItems
+			? 'every item hidden and nothing in ' + slot
+			: 'no items and nothing in ' + slot;
 		this._warnedSilentEmpty = true;
 		console.warn(
-			'nldd-list: no items and nothing in [slot="empty"], so the list renders a blank area. '
+			`nldd-list: ${what}, so the list renders a blank area. `
 			+ 'Put an nldd-inline-dialog in that slot saying what is not there and what the next move is.',
 			this,
 		);

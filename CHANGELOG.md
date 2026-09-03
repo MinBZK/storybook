@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **The warning about a list that says nothing no longer fires for a list that has rows.** It read the rows off the slot, and a slot has nothing assigned until it has rendered, so the first pass called every list empty. It only warns once, so that first verdict stuck: a console with a line per list on the page teaches people to scroll past it. The rows are read from the children before that first render, where they already are, and the warning names the state the list is actually in: rows that are all hidden ask for `[slot="no-results"]` rather than for `[slot="empty"]`, and a slot that covers the state answers the question.
+
 ## [0.8.86](https://github.com/MinBZK/storybook/compare/v0.8.85...v0.8.86) (2026-09-03)
 
 ### Highlights
