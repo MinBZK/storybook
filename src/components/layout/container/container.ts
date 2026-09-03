@@ -135,8 +135,11 @@ const VERTICAL_TO_FLEX: Record<VerticalAlignment, string> = {
 
 const ORDER_ATTRS = ['order', 'sm-order', 'md-order', 'lg-order'] as const;
 
-function sizeToValue(size: PaddingSize | undefined): string | null {
-	return spacingToValue(size, 'nldd-container', 'padding/gap');
+/** A step as its token. `attribute` only names the offender in a dev warning,
+ *  so it has to be the attribute the value was written on: with a dozen padding
+ *  attributes, "padding/gap is not a step" does not say which one to fix. */
+function sizeToValue(size: PaddingSize | undefined, attribute: string): string | null {
+	return spacingToValue(size, 'nldd-container', attribute);
 }
 
 @customElement('nldd-container')
@@ -344,25 +347,31 @@ export class NLDDContainer extends LitElement {
 		// These three are what the styles read, so a plain gap fills each
 		// breakpoint the consumer left open. Writing --_gap itself would beat the
 		// blocks that pick between them, being inline.
-		const plainGap = sizeToValue(this.gap);
-		setProp('--_sm-gap', sizeToValue(this.smGap) ?? plainGap);
-		setProp('--_md-gap', sizeToValue(this.mdGap) ?? plainGap);
-		setProp('--_lg-gap', sizeToValue(this.lgGap) ?? plainGap);
+		const plainGap = sizeToValue(this.gap, 'gap');
+		setProp('--_sm-gap', sizeToValue(this.smGap, 'sm-gap') ?? plainGap);
+		setProp('--_md-gap', sizeToValue(this.mdGap, 'md-gap') ?? plainGap);
+		setProp('--_lg-gap', sizeToValue(this.lgGap, 'lg-gap') ?? plainGap);
 
 		for (const scope of ['', 'sm', 'md', 'lg'] as const) {
 			const [top, right, bottom, left] = this.resolvePadding(scope);
 			const prefix = scope ? `${scope}-` : '';
-			setProp(`--_${prefix}padding-top`, sizeToValue(top));
-			setProp(`--_${prefix}padding-right`, sizeToValue(right));
-			setProp(`--_${prefix}padding-bottom`, sizeToValue(bottom));
-			setProp(`--_${prefix}padding-left`, sizeToValue(left));
+			setProp(`--_${prefix}padding-top`, sizeToValue(top?.size, top?.attribute ?? 'padding'));
+			setProp(`--_${prefix}padding-right`, sizeToValue(right?.size, right?.attribute ?? 'padding'));
+			setProp(`--_${prefix}padding-bottom`, sizeToValue(bottom?.size, bottom?.attribute ?? 'padding'));
+			setProp(`--_${prefix}padding-left`, sizeToValue(left?.size, left?.attribute ?? 'padding'));
 		}
 	}
 
-	private resolvePadding(scope: Scope): (PaddingSize | undefined)[] {
-		const get = (key: string): PaddingSize | undefined => {
+	/** The four sides, each with the attribute it came from: `padding-top` wins
+	 *  over `padding-block`, which wins over `padding`, and a warning about a bad
+	 *  value has to name the one that was actually written. */
+	private resolvePadding(scope: Scope): ({ size: PaddingSize; attribute: string } | undefined)[] {
+		const get = (key: string) => {
 			const prop = scope ? `${scope}${key}` as keyof this : key.charAt(0).toLowerCase() + key.slice(1) as keyof this;
-			return this[prop] as PaddingSize | undefined;
+			const size = this[prop] as PaddingSize | undefined;
+			if (size === undefined) return undefined;
+			const name = key.replace(/([A-Z])/g, (match, letter: string, index: number) => (index ? '-' : '') + letter.toLowerCase());
+			return { size, attribute: scope ? `${scope}-${name}` : name };
 		};
 		const all = get('Padding');
 		const inline = get('PaddingInline');
