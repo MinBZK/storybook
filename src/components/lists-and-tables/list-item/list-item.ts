@@ -149,7 +149,8 @@ function releaseTabbable(el: RovingControl): void {
  * @attr {boolean} current - Marks the item as the one you are on: the page a menu row points at, the record a list has open. Exactly one row in a list carries it, where `selected` may be on many. It paints like `selected` at rest, and takes the highlighted fill while focus is anywhere in the row — including inside a nested `nldd-list-item-segment`, which is what a segmented row needs: the focus never reaches the row's own control, because there is none. In a `navigation` parent it puts `aria-current="page"` on the inner action. On a segmented row set it on the segment that holds the link instead: the row reads `current` off its own segments and paints itself, so it is written once, where `aria-current` belongs.
  * @attr {boolean} button - Renders the item as a `<button>`. Last of the three: `href` and `checkbox` both win over it.
  * @attr {boolean} checkbox - Makes the whole row a `role="checkbox"` control. Wins over `button`, loses to `href`.
- * @attr {boolean} checked - Checked state of a `checkbox` row; the item toggles it on activation
+ * @attr {boolean} radio - Makes the whole row one radio of a group: the action becomes a `role="radio"` button carrying `aria-checked`, and activation sets `checked` (never clears it) and fires `change`. Put the rows in an `nldd-list type="radiogroup"`, which is what makes them a set. Wins over `button`, loses to `href` and `checkbox`. The arrow keys move focus without checking, where a native radio group and `nldd-radio-button-group` check as they go: a row can carry more than a label, so stepping past one should not commit it.
+ * @attr {boolean} checked - Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on activation, a radio row only ever sets it
  * @attr {boolean} disabled - Switches the row's own control off: a `button` or `checkbox` row stops responding and dims, a `href` row gets `aria-disabled` and its click is blocked (a link cannot be disabled natively). A row without a control of its own has nothing to switch off, and segments carry their own `disabled`. The arrow keys skip a disabled row.
  * @attr {boolean} expanded - Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segment marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live.
  * @attr {string} href - Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a plain container with no action.
@@ -160,7 +161,7 @@ function releaseTabbable(el: RovingControl): void {
  * @slot - Cells and segments, in source order
  * @slot children - Child rows of a branch in an `nldd-list type="tree"`. Rendered as a `role="group"` below the row, hidden while `expanded` is false. The nesting IS the hierarchy, so aria-level / -posinset / -setsize are derived, not authored. The group has no styling of its own: repeat a spacer-cell per level to indent, or show depth some other way.
  *
- * @fires change - On a `checkbox` row after it toggles; detail: { checked: boolean }
+ * @fires change - On a `checkbox` row after it toggles, and on a `radio` row when it becomes checked; detail: { checked: boolean }
  */
 @customElement('nldd-list-item')
 export class NLDDListItem extends withTranslations(LitElement, nlddListItemTranslations) {
@@ -191,7 +192,13 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	@property({ type: Boolean, reflect: true })
 	checkbox = false;
 
-	/** Checked state of a `checkbox` row. Toggled by the item on activation. */
+	/** When set, the whole row is one radio of a group. Ignored when href is set. */
+	@property({ type: Boolean, reflect: true })
+	radio = false;
+
+	/** Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on
+	 *  activation; a radio row only ever sets it, because picking the option you
+	 *  already have is not a way to unpick it. */
 	@property({ type: Boolean, reflect: true })
 	checked = false;
 
@@ -399,7 +406,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// Nothing to land on: a disabled control is not focusable, so a stop there
 		// would swallow the arrow key and leave focus where it was.
 		if (this.disabled) return false;
-		if (this.href || this.button || this.checkbox) return true;
+		if (this.href || this.button || this.checkbox || this.radio) return true;
 		if (this._ownDescendants('nldd-list-item-segment:not([disabled])').length > 0) return true;
 		return this._rovingControls().some((control) => !control.hasAttribute('disabled'));
 	}
@@ -441,7 +448,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	 *  `::slotted()` rule could only reach the segment. */
 	private _updateInteractive(): void {
 		const interactive =
-			!!this.href || this.button || this.checkbox ||
+			!!this.href || this.button || this.checkbox || this.radio ||
 			this._ownDescendants('nldd-list-item-segment').length > 0;
 		this.classList.toggle('is-interactive', interactive);
 
@@ -533,10 +540,10 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 	}
 
 	override updated(changed: Map<string, unknown>) {
-		if (changed.has('selected') || changed.has('current') || changed.has('button') || changed.has('checkbox') || changed.has('href') || changed.has('_parentType')) {
+		if (changed.has('selected') || changed.has('current') || changed.has('button') || changed.has('checkbox') || changed.has('radio') || changed.has('href') || changed.has('_parentType')) {
 			this._updateAriaState();
 		}
-		if (changed.has('button') || changed.has('checkbox') || changed.has('href')) {
+		if (changed.has('button') || changed.has('checkbox') || changed.has('radio') || changed.has('href')) {
 			this._updateInteractive();
 		}
 		if (changed.has('expanded')) {
@@ -644,7 +651,12 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 		// carries aria-selected so AT announces selection state. The active
 		// option (the input's aria-activedescendant) is conveyed via `_highlighted`
 		// (a highlight class), kept separate from selection.
-		if (this._parentType === 'tree') {
+		if (this._parentType === 'radiogroup') {
+			// The action inside carries role="radio", and a radiogroup's children
+			// are its radios: a listitem in between would break that pairing.
+			this.setAttribute('role', 'none');
+			this.removeAttribute('aria-selected');
+		} else if (this._parentType === 'tree') {
 			this.setAttribute('role', 'treeitem');
 			this.removeAttribute('aria-selected');
 		} else if (this._isListboxOption) {
@@ -811,6 +823,18 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			this.checked = !this.checked;
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { checked: this.checked },
+				bubbles: true,
+				composed: true,
+			}));
+		}
+		// A radio only ever becomes checked, and says so once: activating the
+		// option that is already picked changes nothing, so it announces nothing
+		// either, the way a native radio does.
+		if (this.radio && !this.checkbox && !this.href && !this.checked
+			&& e.composedPath().includes(this._action as EventTarget)) {
+			this.checked = true;
+			this.dispatchEvent(new CustomEvent('change', {
+				detail: { checked: true },
 				bubbles: true,
 				composed: true,
 			}));
@@ -1067,6 +1091,7 @@ export class NLDDListItem extends withTranslations(LitElement, nlddListItemTrans
 			actionTabindex,
 			this._highlighted,
 			this.checkbox,
+			this.radio,
 			this.checked,
 			this._resolvedExpanded,
 			this._showChildren,

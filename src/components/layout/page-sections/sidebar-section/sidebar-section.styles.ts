@@ -33,10 +33,10 @@ export const sidebarSectionStyles = css`
 		--_lg-padding-top: initial;
 		--_lg-padding-bottom: initial;
 		--_max-width: var(--semantics-page-sections-body-max-width);
-		/* Sticky insets default to 16px top and bottom; override via sticky-top /
-		   sticky-bottom to clear other sticky page elements (e.g. a sticky header). */
-		--_sticky-top: var(--primitives-space-16);
-		--_sticky-bottom: var(--primitives-space-16);
+		/* 24px clear of the insets nldd-page publishes. 24 is the depth of a
+		   sticky header's fade, so the box starts where the fade ends. */
+		--_sticky-top: calc(var(--context-inset-top, 0px) + var(--primitives-space-24));
+		--_sticky-bottom: calc(var(--context-inset-bottom, 0px) + var(--primitives-space-24));
 		--_sidebar-width: var(--primitives-area-320);
 
 		display: flex;
@@ -169,7 +169,9 @@ export const sidebarSectionStyles = css`
 			position: sticky;
 			top: var(--_sticky-top);
 			bottom: var(--_sticky-bottom);
-			max-height: calc(100dvh - var(--_sticky-top) - var(--_sticky-bottom));
+			/* What the scroller shows, not what the window is: a viewport-tall cap
+			   hangs out the bottom by the height of the chrome around the page. */
+			max-height: calc(var(--context-scroller-height, 100dvh) - var(--_sticky-top) - var(--_sticky-bottom));
 			overflow-y: auto;
 		}
 	}

@@ -48,6 +48,97 @@ describe('nldd-page', () => {
 		expect(scroll.style.paddingTop).not.toBe('');
 	});
 
+	describe('layer heights for sticky content', () => {
+		/* A custom property hands on its calc() untouched, so the value only
+		   resolves where it lands. This probe is what a consumer writes anyway:
+		   something sticky inside the page, clearing whatever is above it. */
+		const stickyProbe = '<div id="probe" style="position: sticky; top: var(--context-inset-top, 0px); bottom: var(--context-inset-bottom, 0px);">Probe</div>';
+		const probeTop = (el: HTMLElement) =>
+			getComputedStyle(el.querySelector('#probe')!).top;
+		const probeBottom = (el: HTMLElement) =>
+			getComputedStyle(el.querySelector('#probe')!).bottom;
+
+		it('adds its own sticky header to the layers above, so content inside can clear it', async () => {
+			el = await fixture(`
+				<nldd-page sticky-header style="--context-scroll-mode: root; --context-inset-top: 60px;">
+					<div slot="header" style="height: 50px;">Header</div>
+					${stickyProbe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			expect(probeTop(el)).toBe('110px');
+		});
+
+		it('counts only its own header while it owns the scroller, since the bars above sit outside it', async () => {
+			el = await fixture(`
+				<nldd-page sticky-header style="--context-inset-top: 60px;">
+					<div slot="header" style="height: 50px;">Header</div>
+					${stickyProbe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			expect(probeTop(el)).toBe('50px');
+		});
+
+		it('adds nothing for a header that is not sticky: it scrolls away and leaves no layer', async () => {
+			el = await fixture(`
+				<nldd-page style="--context-scroll-mode: root; --context-inset-top: 60px;">
+					<div slot="header" style="height: 50px;">Header</div>
+					${stickyProbe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			expect(probeTop(el)).toBe('60px');
+		});
+
+		it('publishes a sticky footer the same way', async () => {
+			el = await fixture(`
+				<nldd-page sticky-footer style="--context-scroll-mode: root; --context-inset-bottom: 20px;">
+					<div slot="footer" style="height: 40px;">Footer</div>
+					${stickyProbe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			expect(probeBottom(el)).toBe('60px');
+		});
+	});
+
+	describe('scroll height for sticky content', () => {
+		const probe = '<div id="probe" style="max-height: var(--context-scroller-height, 100dvh);">Probe</div>';
+
+		it('publishes the scroller height while the page owns the scroller', async () => {
+			el = await fixture(`
+				<nldd-page sticky-header style="height: 400px;">
+					<div slot="header" style="height: 50px;">Header</div>
+					${probe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			const scroll = el.shadowRoot!.querySelector('.page__scroll') as HTMLElement;
+			expect(getComputedStyle(el.querySelector('#probe')!).maxHeight).toBe(
+				`${scroll.clientHeight}px`,
+			);
+		});
+
+		it('leaves it to the viewport in root mode, where the document scrolls', async () => {
+			el = await fixture(`
+				<nldd-page sticky-header style="--context-scroll-mode: root;">
+					<div slot="header" style="height: 50px;">Header</div>
+					${probe}
+				</nldd-page>
+			`);
+			await waitForUpdate(el);
+			await new Promise(r => setTimeout(r, 100));
+			expect(Math.round(parseFloat(getComputedStyle(el.querySelector('#probe')!).maxHeight)))
+				.toBe(window.innerHeight);
+		});
+	});
+
 	describe('root scroll mode', () => {
 		it('reflects --context-scroll-mode: root to [data-scroll] and targets the document scroller', async () => {
 			el = await fixture('<nldd-page sticky-header style="--context-scroll-mode: root;"></nldd-page>');

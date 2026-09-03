@@ -134,6 +134,21 @@ export const progressCircleStyles = css`
 	.progress-circle__segment-indicator--mintgroen { stroke: var(--semantics-categories-mintgroen-filled-background-color); }
 
 
+	/* ## Filter flood color
+
+	   Here rather than in a style attribute, which a strict style-src drops.
+	   The color of an arc varies per segment, so that one is set through the
+	   CSSOM instead. */
+
+	.progress-circle__flood--track {
+		flood-color: var(--_track-border-color);
+	}
+
+	.progress-circle__flood--indeterminate {
+		flood-color: var(--_indeterminate-border-color);
+	}
+
+
 	/* # Spinner (indeterminate)
 	   GitHub-style: a fixed-width arc (25 / 100 = quarter turn, 90°) that
 	   simply rotates around the circle. Calmer than Material's elastic

@@ -70,6 +70,12 @@ const exports = {
 	// Opt-in FOUC guard — hides the page until custom elements upgrade. Kept out
 	// of ./styles because hiding the body is opinionated; import it explicitly.
 	'./styles/fouc': './dist/css/fouc.css',
+	// The identity marks, for the tab strip and the home screen. Plain paths, so
+	// a bundler resolves them to a URL and a build step can copy them; an entry
+	// here is what makes that possible at all, since a package with an exports
+	// map answers nothing that is not listed in it.
+	'./favicon.svg': './dist/favicon.svg',
+	'./touch-icon.png': './dist/touch-icon.png',
 	// Breakpoints for consumers that drive matchMedia / layout logic from the
 	// same source as CSS. Replaced the ./tokens aggregator, which only ever
 	// re-exported this one module.

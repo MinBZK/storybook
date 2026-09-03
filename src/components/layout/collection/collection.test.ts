@@ -35,6 +35,96 @@ describe('nldd-collection', () => {
 		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
 	});
 
+	it('reads gap as a step of the spacing scale', async () => {
+		el = await fixture('<nldd-collection gap="16"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+
+		// The token, not the number. Writing "16" through was the old bug: not a
+		// length, so the declaration fell away and the gap became zero in silence.
+		// A plain gap fills all three breakpoints, which is what the styles read.
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-16)');
+		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-16)');
+	});
+
+	it('lets a breakpoint gap override the plain one', async () => {
+		el = await fixture(
+			'<nldd-collection gap="8" lg-gap="32"><div>Item</div></nldd-collection>',
+		);
+		await waitForUpdate(el);
+
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-8)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-8)');
+		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-32)');
+	});
+
+	// The breakpoint blocks swap --_gap between the three, so writing a plain gap
+	// to --_gap itself would beat them from the style attribute and the 32 below
+	// would never reach the screen.
+	it('renders the breakpoint gap beside a plain one, per container width', async () => {
+		const wrapper = (width: string) =>
+			`<div style="container-type: inline-size; container-name: layout-container; width: ${width};`
+			+ ' --primitives-space-8: 8px; --primitives-space-32: 32px;">'
+			+ '<nldd-collection gap="8" md-gap="32"><div>Item</div></nldd-collection></div>';
+
+		el = await fixture(wrapper('800px'));
+		let collection = el.querySelector('nldd-collection')!;
+		await waitForUpdate(collection);
+		let items = collection.shadowRoot!.querySelector('.collection__items')!;
+		expect(getComputedStyle(items).gap).toBe('32px');
+
+		cleanup(el);
+		el = await fixture(wrapper('320px'));
+		collection = el.querySelector('nldd-collection')!;
+		await waitForUpdate(collection);
+		items = collection.shadowRoot!.querySelector('.collection__items')!;
+		expect(getComputedStyle(items).gap).toBe('8px');
+	});
+
+	it('refuses anything that is not a step rather than collapsing', async () => {
+		// A number off the scale: var(--primitives-space-23) does not exist, so
+		// writing it would be the silent zero this is here to stop.
+		el = await fixture('<nldd-collection gap="23"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('');
+
+		// And a length, which is a value beside the scale rather than on it.
+		cleanup(el);
+		el = await fixture('<nldd-collection gap="23px"><div>Item</div></nldd-collection>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('');
+	});
+
+	it('lays lanes out in columns of the item width', async () => {
+		el = await fixture(`
+			<nldd-collection layout="lanes" item-width="200px" style="width: 640px;">
+				<div>Item 1</div>
+				<div>Item 2</div>
+				<div>Item 3</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+		const items = el.shadowRoot!.querySelector('.collection__items')!;
+		const columns = getComputedStyle(items).gridTemplateColumns.split(' ');
+
+		expect(columns.length).toBe(3);
+	});
+
+	it('keeps the load-more button on lanes', async () => {
+		// Where grid keeps it and horizontal-scroll does not: lanes pages like a
+		// grid, which is also why its fallback is one.
+		el = await fixture(`
+			<nldd-collection layout="lanes" show-load-more max-items="2">
+				<div>Item 1</div>
+				<div>Item 2</div>
+				<div>Item 3</div>
+			</nldd-collection>
+		`);
+		await waitForUpdate(el);
+
+		expect(el.shadowRoot!.querySelector('nldd-button')).not.toBeNull();
+	});
+
 	it('does not render load-more button on horizontal-scroll layout', async () => {
 		el = await fixture(`
 			<nldd-collection layout="horizontal-scroll" show-load-more>
@@ -149,14 +239,14 @@ describe('nldd-collection', () => {
 		expect(itemsEl.hasAttribute('tabindex')).toBe(false);
 	});
 
-	it('the gap attribute overrides the default gap via an inline --_gap', async () => {
-		el = await fixture('<nldd-collection gap="8px"><div>Item 1</div></nldd-collection>');
+	it('the gap attribute fills every breakpoint, and clearing it gives them back', async () => {
+		el = await fixture('<nldd-collection gap="8"><div>Item 1</div></nldd-collection>');
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--_gap')).toBe('8px');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-8)');
 		// Clearing it restores the responsive default (no inline override).
 		(el as HTMLElement & { gap?: string }).gap = '';
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--_gap')).toBe('');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('');
 	});
 
 	// The arrows used to step by a fixed item + gap. From the end of the strip,

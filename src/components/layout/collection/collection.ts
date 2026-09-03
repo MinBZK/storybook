@@ -2,7 +2,7 @@
  * Nederlandse Digitale Dienst Collection Component (Lit + TypeScript)
  *
  * A container for displaying collections of items.
- * Supports grid, stack, and horizontal scroll layouts.
+ * Supports grid, stack, lanes and horizontal scroll layouts.
  * In grid and stack modes, items are paginated via a load-more button. In
  * horizontal scroll, the prev/next controls and the edge fade appear only when
  * the items overflow the container.
@@ -11,12 +11,15 @@
  *
  * @element nldd-collection
  *
- * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')
+ * @attr {string} layout - Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')
  * @attr {boolean} show-load-more - Show load-more button in grid/stack (default: false)
  * @attr {number} max-items - Number of visible items per page (default: 24)
  * @attr {boolean} lazy-load - Automatically load more items when the button becomes visible
- * @attr {string} item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width.
- * @attr {string} gap - Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default.
+ * @attr {string} item-width - Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width.
+ * @attr {string} gap - Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'). Overrides the responsive default at every breakpoint; unset keeps the default.
+ * @attr {string} sm-gap - Gap at sm, overriding `gap` there
+ * @attr {string} md-gap - Gap at md, overriding `gap` there
+ * @attr {string} lg-gap - Gap at lg, overriding `gap` there
  * @attr {object} translations - Translation overrides; unset keys fall back to Dutch. Available keys: 'components.collection.previous-action', 'components.collection.next-action', 'components.collection.load-more-action'
  *
  * @migration The `load-more-label` attribute has been removed.
@@ -38,8 +41,9 @@ import '../../actions/button/button.js';
 import '../../actions/button-bar/button-bar.js';
 import '../../actions/icon-button/icon-button.js';
 import '../../content/icon/icon.js';
+import { spacingToValue, type SpacingSize } from '../../../utilities/spacing-scale.js';
 
-type Layout = 'grid' | 'stack' | 'horizontal-scroll';
+type Layout = 'grid' | 'stack' | 'lanes' | 'horizontal-scroll';
 
 @customElement('nldd-collection')
 export class NLDDCollection extends LitElement {
@@ -60,10 +64,19 @@ export class NLDDCollection extends LitElement {
 	@property({ type: String, reflect: true, attribute: 'item-width' })
 	itemWidth: string | undefined;
 
-	/** Custom gap between items (any CSS length, e.g. '8px'). Overrides the
-	 *  responsive default at every breakpoint. Unset keeps the default. */
+	/** A step of the spacing scale, overriding the responsive default at every
+	 *  breakpoint. Unset keeps the default. */
 	@property({ type: String, reflect: true })
-	gap: string | undefined;
+	gap: SpacingSize | undefined;
+
+	@property({ type: String, reflect: true, attribute: 'sm-gap' })
+	smGap: SpacingSize | undefined;
+
+	@property({ type: String, reflect: true, attribute: 'md-gap' })
+	mdGap: SpacingSize | undefined;
+
+	@property({ type: String, reflect: true, attribute: 'lg-gap' })
+	lgGap: SpacingSize | undefined;
 
 	@property({ type: Object })
 	translations: Partial<NLDDCollectionTranslations> = {};
@@ -167,14 +180,27 @@ export class NLDDCollection extends LitElement {
 			}
 		}
 
-		if (changedProperties.has('gap')) {
-			// Inline --_gap overrides the responsive default in the styles at every
-			// breakpoint; removing it restores the default.
-			if (this.gap) {
-				this.style.setProperty('--_gap', this.gap);
-			} else {
-				this.style.removeProperty('--_gap');
-			}
+		// The three breakpoint vars are what the styles read, so a plain gap is
+		// written into each one the consumer left open. Writing --_gap itself
+		// would beat the breakpoint blocks, being inline, and a gap set beside a
+		// sm/md/lg one would swallow it.
+		if (
+			changedProperties.has('gap') ||
+			changedProperties.has('smGap') ||
+			changedProperties.has('mdGap') ||
+			changedProperties.has('lgGap')
+		) {
+			const plain = spacingToValue(this.gap, 'nldd-collection', 'gap');
+			const write = (name: string, size: SpacingSize | undefined, attribute: string) => {
+				const value = size === undefined
+					? plain
+					: spacingToValue(size, 'nldd-collection', attribute) ?? plain;
+				if (value === null) this.style.removeProperty(name);
+				else this.style.setProperty(name, value);
+			};
+			write('--_sm-gap', this.smGap, 'sm-gap');
+			write('--_md-gap', this.mdGap, 'md-gap');
+			write('--_lg-gap', this.lgGap, 'lg-gap');
 		}
 
 		if (this.lazyLoad && this._loadMoreBtn && !this._intersectionObserver) {

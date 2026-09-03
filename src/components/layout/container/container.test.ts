@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { fixture, cleanup, waitForUpdate, installUniversalReset } from '../../../test-utils.js';
 import './container.js';
 
@@ -112,10 +112,21 @@ describe('nldd-container', () => {
 		expect(el.style.getPropertyValue('--_sm-padding-left')).toBe('var(--primitives-space-8)');
 	});
 
-	it('writes --_gap from gap attr', async () => {
+	// The three breakpoint vars are what the styles read; a plain gap fills each
+	// one the consumer left open.
+	it('writes the plain gap into every breakpoint var', async () => {
 		el = await fixture('<nldd-container gap="12"></nldd-container>');
 		await waitForUpdate(el);
-		expect(el.style.getPropertyValue('--_gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_lg-gap')).toBe('var(--primitives-space-12)');
+	});
+
+	it('keeps a breakpoint gap set beside a plain one', async () => {
+		el = await fixture('<nldd-container gap="12" md-gap="32"></nldd-container>');
+		await waitForUpdate(el);
+		expect(el.style.getPropertyValue('--_sm-gap')).toBe('var(--primitives-space-12)');
+		expect(el.style.getPropertyValue('--_md-gap')).toBe('var(--primitives-space-32)');
 	});
 
 	it('writes responsive --_sm-gap', async () => {
@@ -258,5 +269,38 @@ describe('nldd-container onder een universele reset', () => {
 		const content = container.querySelector('p')!;
 		const offset = content.getBoundingClientRect().left - container.getBoundingClientRect().left;
 		expect(offset).toBe(16);
+	});
+});
+
+// With a dozen padding attributes, "padding/gap is not a step" tells you the
+// value was wrong but not which attribute to go and fix.
+describe('nldd-container – a warning names the attribute it came from', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		vi.restoreAllMocks();
+	});
+
+	const warnFor = async (markup: string) => {
+		const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+		el = await fixture(markup);
+		await waitForUpdate(el);
+		return warn.mock.calls.map(call => String(call[0])).join('\n');
+	};
+
+	it('names lg-padding-right, not padding/gap', async () => {
+		const message = await warnFor('<nldd-container lg-padding-right="17"></nldd-container>');
+		expect(message).toContain('lg-padding-right="17"');
+	});
+
+	it('names the shorthand when the value came from the shorthand', async () => {
+		const message = await warnFor('<nldd-container padding-block="17"></nldd-container>');
+		expect(message).toContain('padding-block="17"');
+	});
+
+	it('names the breakpoint gap', async () => {
+		const message = await warnFor('<nldd-container md-gap="17"></nldd-container>');
+		expect(message).toContain('md-gap="17"');
 	});
 });

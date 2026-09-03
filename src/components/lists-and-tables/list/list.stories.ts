@@ -20,6 +20,7 @@ import '../../layout/spacer/spacer.js';
 import '../../layout/box/box.js';
 import '../../inputs/date-field/date-field.js';
 import '../../inputs/combo-box/combo-box.js';
+import '../../inputs/radio-button/radio-button.js';
 
 export default {
 	title: 'Components/Lists & Tables/List',
@@ -376,6 +377,12 @@ const buildListbox = (variant: 'box' | 'simple') => {
 					<nldd-text-cell text="${label}"></nldd-text-cell>
 				</nldd-list-item>
 			`)}
+			<nldd-inline-dialog
+				slot="no-results"
+				icon="magnifier"
+				text="Niets gevonden"
+				supporting-text="Probeer een andere zoekterm of een andere categorie."
+			></nldd-inline-dialog>
 		</nldd-list>
 	`, el);
 	return el;
@@ -490,6 +497,63 @@ export const EmptyWithoutSlot = {
 		docs: {
 			description: {
 				story: 'Vergeet je die slot, dan blijft het vlak leeg, zoals hier. Dat is geen bedoelde staat: er staat niets op het scherm en niets in de accessibility tree. In development waarschuwt de lijst je er een keer over.',
+			},
+		},
+	},
+};
+
+export const Radiogroup = {
+	render: () => {
+		// Consumer-managed selection, and this story is the example of it: a radio
+		// row goes on and never off, not even when another is picked, because which
+		// one is on is the app's state. Without this listener a second click leaves
+		// two rows checked. The dot is a decorative glyph the row does not drive
+		// either, so it is set here too.
+		const onChange = (e: Record<string, any>) => {
+			const picked = e.target.closest('nldd-list-item');
+			if (!picked) return;
+			picked.closest('nldd-list').querySelectorAll('nldd-list-item[radio]').forEach((row: any) => {
+				const on = row === picked;
+				row.checked = on;
+				row.querySelector('nldd-radio-button').checked = on;
+			});
+		};
+
+		return html`
+		<nldd-list type="radiogroup" variant="box-tinted" accessible-label="Niveau" @change=${onChange}>
+			<nldd-list-item radio checked>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative checked></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Alle niveaus"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="30"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item radio>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Fouten"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="5"></nldd-text-cell>
+			</nldd-list-item>
+			<nldd-list-item radio>
+				<nldd-cell width="fit-content">
+					<nldd-radio-button decorative></nldd-radio-button>
+				</nldd-cell>
+				<nldd-spacer-cell size="12"></nldd-spacer-cell>
+				<nldd-text-cell width="full" text="Waarschuwingen"></nldd-text-cell>
+				<nldd-text-cell width="fit-content" color="secondary" text="6"></nldd-text-cell>
+			</nldd-list-item>
+		</nldd-list>
+	`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story:
+					'Een keuze uit een handvol opties, als rijen. De rij is de radio: `radio` op het item maakt er een `role="radio"` van die bij activeren aangaat en niet meer uit, en de `nldd-radio-button` erin is `decorative`, want die tekent alleen de vorm. Rijen in plaats van een `nldd-radio-button-group` als een optie meer wil dragen dan een label, hier een aantal dat rechts uitlijnt en in secondary staat.\n\nWelke rij aan staat is de staat van je app, niet van de lijst: een rij zet zichzelf aan en nooit meer uit, en haalt `checked` ook niet bij zijn buren weg. Die bedrading staat in deze story en is niet meer dan dit: luister op de lijst naar `change`, zet `checked` op de gekozen rij en haal het bij de rest weg. De decoratieve `nldd-radio-button` erin gaat mee, want de rij tekent die stip niet zelf.',
 			},
 		},
 	},

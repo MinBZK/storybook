@@ -112,6 +112,27 @@ import '@nldd/design-system';          // registreert alle nldd-* componenten
 import '@nldd/design-system/styles';   // CSS-variabelen + Rijksoverheid-fonts
 ```
 
+### Favicon
+
+Het pakket levert het rijkswapen op een lintblauw vlak mee, als
+`@nldd/design-system/favicon.svg`. Kopieer het bestand naar de map die je
+statisch serveert en verwijs ernaar:
+
+```html
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/touch-icon.png">
+```
+
+Het pakket levert allebei: `@nldd/design-system/favicon.svg` voor de tab, en
+`@nldd/design-system/touch-icon.png` voor het icoon op het beginscherm, want
+daar accepteert Safari geen SVG. Die PNG is 180 bij 180, de maat die Apple
+vraagt.
+
+Wil je een andere achtergrond, bijvoorbeeld je eigen huiskleur, kopieer de SVG
+dan en verander de `fill` van het eerste pad. Een favicon laadt de browser los
+van de pagina, dus CSS van je site komt er niet bij: een variabele of een class
+werkt hier niet.
+
 RijksSans is uitsluitend bestemd voor publicaties van de Rijksoverheid en voor
 partijen die in haar opdracht werken. De voorwaarden staan in
 [`NOTICES.md`](https://github.com/MinBZK/storybook/blob/main/NOTICES.md). Bouw

@@ -21866,7 +21866,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A container for displaying collections of items. Supports grid, stack, and horizontal scroll layouts. In grid and stack modes, items are paginated via a load-more button. In horizontal scroll, the prev/next controls and the edge fade appear only when the items overflow the container. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.",
+          "description": "A container for displaying collections of items. Supports grid, stack, lanes and horizontal scroll layouts. In grid and stack modes, items are paginated via a load-more button. In horizontal scroll, the prev/next controls and the edge fade appear only when the items overflow the container. With `lazy-load`, the next items are automatically loaded when the load-more button comes into view.",
           "name": "NLDDCollection",
           "members": [
             {
@@ -21921,10 +21921,37 @@
               "kind": "field",
               "name": "gap",
               "type": {
-                "text": "string | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the\nresponsive default at every breakpoint. Unset keeps the default.",
+              "description": "A step of the spacing scale, overriding the responsive default at every\nbreakpoint. Unset keeps the default.",
               "attribute": "gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "smGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "sm-gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "mdGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "md-gap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lgGap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "attribute": "lg-gap",
               "reflects": true
             },
             {
@@ -21951,7 +21978,7 @@
               },
               "default": "'grid'",
               "fieldName": "layout",
-              "description": "Layout mode: 'grid' | 'stack' | 'horizontal-scroll' (default: 'grid')"
+              "description": "Layout mode: 'grid' | 'stack' | 'lanes' | 'horizontal-scroll' (default: 'grid')"
             },
             {
               "name": "show-load-more",
@@ -21986,15 +22013,39 @@
                 "text": "string | undefined"
               },
               "fieldName": "itemWidth",
-              "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid layout used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width."
+              "description": "Preferred width for each item (e.g. '280px', '20rem'). In grid and lanes layouts used as the minimum column width (columns will be at least this wide; 1fr if container allows more). In horizontal scroll used as flex-basis. Never forces horizontal overflow — the value is clamped to container width."
             },
             {
               "name": "gap",
               "type": {
-                "text": "string | undefined"
+                "text": "SpacingSize | undefined"
               },
-              "description": "Custom gap between items (any CSS length, e.g. '8px'). Overrides the responsive default at every breakpoint; unset keeps the default.",
+              "description": "Gap between items, as a step of the spacing scale ('0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'). Overrides the responsive default at every breakpoint; unset keeps the default.",
               "fieldName": "gap"
+            },
+            {
+              "name": "sm-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "smGap",
+              "description": "Gap at sm, overriding `gap` there"
+            },
+            {
+              "name": "md-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "mdGap",
+              "description": "Gap at md, overriding `gap` there"
+            },
+            {
+              "name": "lg-gap",
+              "type": {
+                "text": "SpacingSize | undefined"
+              },
+              "fieldName": "lgGap",
+              "description": "Gap at lg, overriding `gap` there"
             },
             {
               "name": "translations",
@@ -22049,7 +22100,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, per axis (inline/block), or per individual side. Specificity: per side > per axis > all sides. Responsive padding and gap have sm/md/lg variants. Each variant emits both an @media (viewport) and @container (layout-container) query. When inside a layout-container the @container query wins; otherwise the @media query provides the viewport-based fallback. Layout modes: - `stack` (default): block items, stacked vertically. The \"what you expect from DOM flow\" mode. - `row`: flex row, no wrapping. Items shrink or overflow. - `wrap`: flex row, items wrap to new lines. - `grid`: CSS grid, auto-fit columns at min 280px wide. - `columns`: CSS multi-column flow, 280px minimum column width, items don't split across column breaks. Alignment maps to the layout's natural axis: - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items) - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis - `grid`: horizontal = justify-items, vertical = align-items (per cell) - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment) Item order is set per-child via attributes on the slotted children themselves: `<child order=\"3\">` for a fixed position, or `<child sm-order=\"N\">` / `<child md-order=\"N\">` / `<child lg-order=\"N\">` to override per breakpoint (resolved against THIS container's width via @container queries, same scope as the responsive padding/gap). The container observes slot changes and child attribute mutations and bridges these to `--_slot-order` / `--_slot-sm-order` / etc. custom properties on each child's inline style, which the container's CSS then reads via `::slotted(*)` inside @container queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm (and analogously for md/lg). No-op for `layout=\"columns\"` (CSS multicol has no per-item ordering hook). The `column-count` attribute (1-8) forces an exact column count for `layout=\"grid\"` (overrides auto-fit) and `layout=\"columns\"` (overrides the natural width-driven count). `sm-column-count` / `md-column-count` / `lg-column-count` resolve against this container's OWN width via an `@container (...)` query on the host — not against the viewport. That lets a footer in a narrow sidebar choose its own column count independent of the surrounding page width. `layout=\"lanes\"` packs items into balanced columns using native CSS grid lanes where supported, falling back to CSS multicol (column-order) elsewhere. CSS-only, no JS. Honours `gap` on both axes and `column-count`.",
+          "description": "A simple layout primitive: pick a layout mode, give it a gap, optionally align contents, and add padding. Padding can be set for all sides, per axis (inline/block), or per individual side. Specificity: per side > per axis > all sides. Responsive padding and gap have sm/md/lg variants. Each variant emits both an @media (viewport) and @container (layout-container) query. When inside a layout-container the @container query wins; otherwise the @media query provides the viewport-based fallback. Layout modes: - `stack` (default): block items, stacked vertically. The \"what you expect from DOM flow\" mode. - `row`: flex row, no wrapping. Items shrink or overflow. - `wrap`: flex row, items wrap to new lines. - `grid`: CSS grid, auto-fit columns at min 280px wide. - `columns`: CSS multi-column flow, 280px minimum column width, items don't split across column breaks. Alignment maps to the layout's natural axis: - `stack`: vertical = main-axis (justify-content), horizontal = cross-axis (align-items) - `row` / `wrap`: horizontal = main-axis, vertical = cross-axis - `grid`: horizontal = justify-items, vertical = align-items (per cell) - `columns`: alignment props have no effect (CSS multicol doesn't expose alignment) Item order is set per-child via attributes on the slotted children themselves: `<child order=\"3\">` for a fixed position, or `<child sm-order=\"N\">` / `<child md-order=\"N\">` / `<child lg-order=\"N\">` to override per breakpoint (resolved against THIS container's width via @container queries, same scope as the responsive padding/gap). The container observes slot changes and child attribute mutations and bridges these to `--_slot-order` / `--_slot-sm-order` / etc. custom properties on each child's inline style, which the container's CSS then reads via `::slotted(*)` inside @container queries. Cascade: `sm-order` falls back to `order` falls back to `0` at sm (and analogously for md/lg). No-op for `layout=\"columns\"` (CSS multicol has no per-item ordering hook). The `column-count` attribute (1-8) forces an exact column count for `layout=\"grid\"` (overrides auto-fit) and `layout=\"columns\"` (overrides the natural width-driven count). `sm-column-count` / `md-column-count` / `lg-column-count` resolve against this container's OWN width via an `@container (...)` query on the host — not against the viewport. That lets a footer in a narrow sidebar choose its own column count independent of the surrounding page width. `layout=\"lanes\"` packs items into balanced columns using native CSS grid lanes where supported, falling back to CSS multicol (column-order) elsewhere. CSS-only, no JS. Honours `gap` on both axes and `column-count`. Note that nldd-collection's lanes falls back to its own grid rather than to multicol: that component pages, and multicol redistributes the whole set every time load-more adds to it.",
           "name": "NLDDContainer",
           "members": [
             {
@@ -26708,7 +26759,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A page layout with optional sticky header and footer. Without sticky-header, the host is the scroll container and the header is in normal flow. With sticky-header, the header becomes absolute and .page__scroll takes over scrolling. A ResizeObserver on the header sets padding-top on the scroll wrapper (only when not scrolled). In root-scroll mode (--context-scroll-mode: root, derived upstream by nldd-app-view) the page stops owning a scroller: the document scrolls and the sticky header/footer become position:sticky layers offset by --context-layer-top/bottom. The mode is read on connect/resize and reflected to [data-scroll] so the CSS can branch.",
+          "description": "A page layout with optional sticky header and footer. Without sticky-header, the host is the scroll container and the header is in normal flow. With sticky-header, the header becomes absolute and .page__scroll takes over scrolling. A ResizeObserver on the header sets padding-top on the scroll wrapper (only when not scrolled). In root-scroll mode (--context-scroll-mode: root, derived upstream by nldd-app-view) the page stops owning a scroller: the document scrolls and the sticky header/footer stick against the document, offset by --context-inset-top/bottom. The mode is read on connect/resize and reflected to [data-scroll] so the CSS can branch. The page passes those insets on to its own content, with its sticky header and footer added: anything sticky inside (an nldd-sidebar-section, a sticky table head) reads --context-inset-top / --context-inset-bottom and clears every bar above and below it without being told a number. The heights are measured, because a top title bar shrinks as you scroll past its anchor. While the page owns the scroller, only its own bars count: the chrome above the page sits outside that scroller and does not push sticky content down.",
           "name": "NLDDPage",
           "members": [
             {
@@ -30514,12 +30565,23 @@
             },
             {
               "kind": "field",
+              "name": "radio",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "When set, the whole row is one radio of a group. Ignored when href is set.",
+              "attribute": "radio",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "checked",
               "type": {
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Checked state of a `checkbox` row. Toggled by the item on activation.",
+              "description": "Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on\nactivation; a radio row only ever sets it, because picking the option you\nalready have is not a way to unpick it.",
               "attribute": "checked",
               "reflects": true
             },
@@ -30639,7 +30701,7 @@
           "events": [
             {
               "name": "change",
-              "description": "On a `checkbox` row after it toggles; detail: { checked: boolean }"
+              "description": "On a `checkbox` row after it toggles, and on a `radio` row when it becomes checked; detail: { checked: boolean }"
             }
           ],
           "attributes": [
@@ -30692,7 +30754,16 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Checked state of a `checkbox` row; the item toggles it on activation",
+              "description": "Makes the whole row one radio of a group: the action becomes a `role=\"radio\"` button carrying `aria-checked`, and activation sets `checked` (never clears it) and fires `change`. Put the rows in an `nldd-list type=\"radiogroup\"`, which is what makes them a set. Wins over `button`, loses to `href` and `checkbox`. The arrow keys move focus without checking, where a native radio group and `nldd-radio-button-group` check as they go: a row can carry more than a label, so stepping past one should not commit it.",
+              "name": "radio",
+              "default": "false",
+              "fieldName": "radio"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Checked state of a `checkbox` or `radio` row. A checkbox row toggles it on activation, a radio row only ever sets it",
               "name": "checked",
               "default": "false",
               "fieldName": "checked"
@@ -30799,7 +30870,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list\"`, items `role=\"listitem\"`. Reorderable allowed. - `tree` — `role=\"tree\"`, items `role=\"treeitem\"`. Branch rows put their child rows in their own `slot=\"children\"`, which the item renders as a `role=\"group\"`. Level, position and set size are NOT authored: the nesting represents the hierarchy, so assistive technology derives them. A branch row must carry `expanded`; the group is hidden while it is false. Visual indentation is the consumer's — repeat a spacer-cell per level. Comes with its own keyboard, see \"Tree\" below. - `navigation` — host `role=\"navigation\"`, items with `selected` get `aria-current=\"page\"` on their inner `<a>` or `<button>`. - `form` — rows that are not actions themselves: the controls inside them are. A row of a label and a field, a switch, a menu button, or a value you cannot change at all. Semantically the same as `list` (`role=\"list\"`, `role=\"listitem\"`), and everything visual is unchanged; what falls away is the keyboard of a list you walk through. No arrow navigation, so no promise of it either, and no tab stop on the row: Tab goes straight to the controls, in source order, the way it does in any form. Rows that ARE actions (`href`, `button`, `checkbox`, or a segment) contradict that and warn in development. SwiftUI draws the same line between `List` and `Form`, for the same reason. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role=\"combobox\"`) pinned above the options; `.list__items` becomes `role=\"listbox\"` and items become `role=\"option\"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See \"Listbox\" below. Selection state is consumer-managed: the list never mutates `selected` itself. A list you walk through answers to the arrow keys, and there is no attribute to switch that on. Whether the keys do something is not a property of one list: it is what a reader may assume about all of them, and a per-list setting made that unknowable from the outside. It follows the type, which you can see before you touch a key. - ArrowUp / ArrowDown — move focus between the rows there is something to do with. A row of nothing but text is skipped, because focus that leads nowhere is a dead end. - Home / End — the first / last of those rows. - Tab — the list is ONE tab stop, so Tab moves past it rather than through it. Within the current row Tab walks that row's own controls: a chevron beside a checkbox, a menu button at the end. The same controls in the other rows are held out of the tab order (`tabindex=\"-1\"`, or `no-tab` on a design-system control that keeps its tab stop in its own shadow root), and so are this row's once focus leaves the list, so tabbing back in lands on the row again. - Escape — out of a control the row holds, back onto the row. One level up, where Shift+Tab is one step back. On the row itself the list claims nothing, so Escape carries on to whatever holds the list, and a control showing a menu keeps the first press for closing that menu. While focus sits in a control a row holds, the list stands down: those keys are the control's, and a list that took them anyway would pull focus out of a combo box or a text field mid-word. What the row IS — its own link, button or segments — keeps answering here. Arrows move focus only; selection stays consumer-managed. Three types answer differently, and all three say so on screen before you touch a key: a listbox runs its keyboard from its search field, a reorderable list moves rows with the arrows, and a form has no rows to move between at all. In `type=\"listbox\"` the list owns a native `<input role=\"combobox\">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and the roving arrow keys are ignored in listbox mode (listbox has its own keyboard). A tree adds to that keyboard, and counts the rows of an open branch as part of the order the arrows walk: - ArrowRight — opens a closed branch; on an open one it steps to its first child. - ArrowLeft — closes an open branch; on a leaf it steps out to the parent row. - Enter — follows the row: its own link or button, or on a segmented branch the first action that is not the chevron. A branch with only a chevron folds instead. - Space — open and close, the same as Right and Left. Only while focus sits on the row itself: a row that is its own control, and a segmented action you tabbed into, handle both keys themselves. Opening and closing runs through the row's own disclosure control — the segment marked `disclosure`, or the row itself when it is a button. The list activates that control rather than writing `expanded`, so the state keeps being set in one place: the consumer's handler. A row that is a link is never activated this way, since that would navigate away. The tree is one tab stop. Focus lands on the row itself when the row has no control of its own, because that is where `treeitem` sits and it makes assistive technology announce the row rather than a button inside it. Tab then walks the controls of THAT row (a chevron beside a checkbox, say) and leaves the list after the last one. A deliberate deviation: strictly speaking a row with several controls is a `treegrid`, not a `tree`. We keep the tree semantics — level and set size are what matters here, not rows and columns — and borrow the \"Tab within the row\" behavior from the grid pattern. Should a tree with real columns come up, that is when `treegrid` earns its own type. On reorder (type=\"list\" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.",
+          "description": "A container for `nldd-list-item` elements. The `type` attribute switches the list's a11y role and behavior: - `list` (default) — `role=\"list\"`, items `role=\"listitem\"`. Reorderable allowed. - `radiogroup` — `role=\"radiogroup\"`, for a set of `nldd-list-item radio` rows: one choice, laid out as rows so each option can carry a count or a second line. The rows step out of the accessibility tree themselves (`role=\"none\"`), so the radios are the group's own children. The arrows move focus here and activation checks, rather than the selection following focus as it does in `nldd-radio-button-group`. - `tree` — `role=\"tree\"`, items `role=\"treeitem\"`. Branch rows put their child rows in their own `slot=\"children\"`, which the item renders as a `role=\"group\"`. Level, position and set size are NOT authored: the nesting represents the hierarchy, so assistive technology derives them. A branch row must carry `expanded`; the group is hidden while it is false. Visual indentation is the consumer's — repeat a spacer-cell per level. Comes with its own keyboard, see \"Tree\" below. - `navigation` — host `role=\"navigation\"`, items with `selected` get `aria-current=\"page\"` on their inner `<a>` or `<button>`. - `form` — rows that are not actions themselves: the controls inside them are. A row of a label and a field, a switch, a menu button, or a value you cannot change at all. Semantically the same as `list` (`role=\"list\"`, `role=\"listitem\"`), and everything visual is unchanged; what falls away is the keyboard of a list you walk through. No arrow navigation, so no promise of it either, and no tab stop on the row: Tab goes straight to the controls, in source order, the way it does in any form. Rows that ARE actions (`href`, `button`, `checkbox`, or a segment) contradict that and warn in development. SwiftUI draws the same line between `List` and `Form`, for the same reason. - `listbox` — an accessible, filterable listbox (combobox pattern). The list renders its OWN search input (`role=\"combobox\"`) pinned above the options; `.list__items` becomes `role=\"listbox\"` and items become `role=\"option\"`. Focus stays in the input, the active option moves via `aria-activedescendant`, and filtering is consumer-managed via the `input` event (toggle `[hidden]` on items). See \"Listbox\" below. Selection state is consumer-managed: the list never mutates `selected` itself. A list you walk through answers to the arrow keys, and there is no attribute to switch that on. Whether the keys do something is not a property of one list: it is what a reader may assume about all of them, and a per-list setting made that unknowable from the outside. It follows the type, which you can see before you touch a key. - ArrowUp / ArrowDown — move focus between the rows there is something to do with. A row of nothing but text is skipped, because focus that leads nowhere is a dead end. - Home / End — the first / last of those rows. - Tab — the list is ONE tab stop, so Tab moves past it rather than through it. Within the current row Tab walks that row's own controls: a chevron beside a checkbox, a menu button at the end. The same controls in the other rows are held out of the tab order (`tabindex=\"-1\"`, or `no-tab` on a design-system control that keeps its tab stop in its own shadow root), and so are this row's once focus leaves the list, so tabbing back in lands on the row again. - Escape — out of a control the row holds, back onto the row. One level up, where Shift+Tab is one step back. On the row itself the list claims nothing, so Escape carries on to whatever holds the list, and a control showing a menu keeps the first press for closing that menu. While focus sits in a control a row holds, the list stands down: those keys are the control's, and a list that took them anyway would pull focus out of a combo box or a text field mid-word. What the row IS — its own link, button or segments — keeps answering here. Arrows move focus only; selection stays consumer-managed. Three types answer differently, and all three say so on screen before you touch a key: a listbox runs its keyboard from its search field, a reorderable list moves rows with the arrows, and a form has no rows to move between at all. In `type=\"listbox\"` the list owns a native `<input role=\"combobox\">` (mirroring how `nldd-combo-box` wires an input to a slotted listbox). Keyboard, handled on the input so focus never leaves it: - ArrowDown / ArrowUp — move the active option among the VISIBLE (non-`[hidden]`) options (wrap around). - Home / End — first / last visible option. - Enter — activate the active option by triggering its inner action (a link navigates, a button fires the consumer's handler). Selection stays consumer-managed. - Escape — clear the search value (and refire `input`). On every active change the input's `aria-activedescendant` is set to the active option's id and the option is scrolled into view. The active option (`_highlighted` on the item, a highlight) is distinct from `selected`. Filtering is the consumer's job: listen to `input` (`{ detail: { value } }`) and toggle `[hidden]` on items; after the visible set changes the list resets the active option to the first visible one. `reorderable` and the roving arrow keys are ignored in listbox mode (listbox has its own keyboard). A tree adds to that keyboard, and counts the rows of an open branch as part of the order the arrows walk: - ArrowRight — opens a closed branch; on an open one it steps to its first child. - ArrowLeft — closes an open branch; on a leaf it steps out to the parent row. - Enter — follows the row: its own link or button, or on a segmented branch the first action that is not the chevron. A branch with only a chevron folds instead. - Space — open and close, the same as Right and Left. Only while focus sits on the row itself: a row that is its own control, and a segmented action you tabbed into, handle both keys themselves. Opening and closing runs through the row's own disclosure control — the segment marked `disclosure`, or the row itself when it is a button. The list activates that control rather than writing `expanded`, so the state keeps being set in one place: the consumer's handler. A row that is a link is never activated this way, since that would navigate away. The tree is one tab stop. Focus lands on the row itself when the row has no control of its own, because that is where `treeitem` sits and it makes assistive technology announce the row rather than a button inside it. Tab then walks the controls of THAT row (a chevron beside a checkbox, say) and leaves the list after the last one. A deliberate deviation: strictly speaking a row with several controls is a `treegrid`, not a `tree`. We keep the tree semantics — level and set size are what matters here, not rows and columns — and borrow the \"Tab within the row\" behavior from the grid pattern. Should a tree with real columns come up, that is when `treegrid` earns its own type. On reorder (type=\"list\" + reorderable), the list dispatches `nldd-reorder` with `fromIndex` / `toIndex` and expects the consumer to mutate the DOM (or their data model that renders the DOM). Focus is restored to the moved item's drag handle via a single `requestAnimationFrame` — this assumes the consumer reorders **synchronously** in the event handler. Async renderers (React, Vue, …) that update the DOM on a later tick will miss the focus restore and should manage focus themselves after their render commits.",
           "name": "NLDDList",
           "slots": [
             {
@@ -30816,7 +30887,11 @@
             },
             {
               "name": "empty",
-              "description": "Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
+              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type=\"listbox\"` and a `[slot=\"toolbar\"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
+            },
+            {
+              "name": "no-results",
+              "description": "Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven filtering leaves behind. A different state from `empty` and a different sentence: here the search field and the `[slot=\"toolbar\"]` stay, because they are the way back to the rows. Falls back to `[slot=\"empty\"]` when not given. In `type=\"listbox\"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list."
             }
           ],
           "members": [
@@ -37845,11 +37920,74 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/utilities/spacing-scale.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "SPACING_SCALE",
+          "type": {
+            "text": "[\n\t'0', '2', '4', '6', '8', '10', '12', '16', '20', '24',\n\t'28', '32', '40', '44', '48', '56', '64', '80', '96',\n]"
+          },
+          "default": "[ '0', '2', '4', '6', '8', '10', '12', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96', ]",
+          "description": "Every step there is. `'0'` is a value, not the absence of one."
+        },
+        {
+          "kind": "function",
+          "name": "spacingToValue",
+          "return": {
+            "type": {
+              "text": "string | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "name": "element",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "attribute",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "description": "A step of the scale as the token it stands for.\n\nReturns null when there is nothing to set, so a caller can remove the\nproperty rather than write an empty one. `element` and `attribute` are only\nthere to name the offender in a dev warning."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SPACING_SCALE",
+          "declaration": {
+            "name": "SPACING_SCALE",
+            "module": "src/utilities/spacing-scale.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "spacingToValue",
+          "declaration": {
+            "name": "spacingToValue",
+            "module": "src/utilities/spacing-scale.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/utilities/visibility-mixin.ts",
       "declarations": [
         {
           "kind": "mixin",
-          "description": "Adds `hide-below` and `hide-above` attributes that toggle visibility based\non the inline-size of an ancestor CSS container.\n\nWithout a `containerName` argument the generated rule is an anonymous\n`@container (…)` query — it matches the nearest ancestor that declares\n`container-type: inline-size`. Pass a name to target a specific container\n(e.g. `'cells-container'` for cells inside `nldd-list`, which sets that\nname inline on its host as a Safari shadow-DOM workaround).\n\nValues are either a named breakpoint — `sm` / `md` / `lg` — or a CSS length\n(e.g. '320px', '20rem'). Named values resolve to the standard breakpoint\nthresholds: `hide-below` uses the breakpoint's lower bound (e.g.\n`hide-below=\"lg\"` hides in sm+md and shows in lg), `hide-above` its upper\nbound; the open edges (below sm, above lg) are no-ops. Container queries can't\nread CSS variables in their conditions, so the query rule is generated at\nruntime and injected as a <style> element in the component's shadow root,\nwrapped in `:host {",
+          "description": "Adds `hide-below` and `hide-above` attributes that toggle visibility based\non the inline-size of an ancestor CSS container.\n\nWithout a `containerName` argument the rule is an anonymous `@container (…)`\nquery — it matches the nearest ancestor that declares\n`container-type: inline-size`. Pass a name to target a specific container\n(e.g. `'cells-container'` for cells inside `nldd-list`, which sets that\nname inline on its host as a Safari shadow-DOM workaround).\n\nValues are either a named breakpoint — `sm` / `md` / `lg` — or a CSS length\n(e.g. '320px', '20rem'). Named values resolve to the standard breakpoint\nthresholds: `hide-below` uses the breakpoint's lower bound (e.g.\n`hide-below=\"lg\"` hides in sm+md and shows in lg), `hide-above` its upper\nbound; the open edges (below sm, above lg) are no-ops.\n\nThe named values are static CSS (see `visibility-mixin.styles.ts`), added\nthrough `finalizeStyles` so that a component's own `static styles` does not\nhave to know about them. A custom length has no static form: the threshold\nis only known at runtime and a container query cannot read one from a CSS\nvariable, so its rule is written at runtime into a constructable stylesheet\nthe shadow root adopts. Neither path is an inline stylesheet, so no consumer\nneeds `'unsafe-inline'` in its `style-src` for either.",
           "name": "VisibilityMixin",
           "members": [
             {
@@ -37872,15 +38010,15 @@
             },
             {
               "kind": "field",
-              "name": "_visibilityStyle",
+              "name": "_visibilitySheet",
               "type": {
-                "text": "HTMLStyleElement | undefined"
+                "text": "CSSStyleSheet | undefined"
               },
               "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "_updateVisibilityStyle",
+              "name": "_updateVisibilityRules",
               "privacy": "private",
               "return": {
                 "type": {

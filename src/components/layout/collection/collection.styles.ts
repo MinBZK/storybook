@@ -18,29 +18,21 @@ export const collectionStyles = css`
 		--_item-width: var(--primitives-area-280);
 		--_focus-ring-z-index: 1;
 
-		@media (max-width: ${smMax}) {
-			--_gap: var(--components-collection-sm-gap);
-		}
+		/* Two sets, because a collection inside a layout-container follows that
+		   container and anywhere else the viewport. The bare --_gap is what
+		   stands when neither set matches. */
+		--_sm-gap: var(--components-collection-sm-gap);
+		--_md-gap: var(--components-collection-md-gap);
+		--_lg-gap: var(--components-collection-lg-gap);
+		--_gap: var(--_sm-gap);
 
-		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_gap: var(--components-collection-md-gap);
-		}
+		@media (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@media (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@media (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
-		@media (min-width: ${lgMin}) {
-			--_gap: var(--components-collection-lg-gap);
-		}
-
-		@container layout-container (max-width: ${smMax}) {
-			--_gap: var(--components-collection-sm-gap);
-		}
-
-		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) {
-			--_gap: var(--components-collection-md-gap);
-		}
-
-		@container layout-container (min-width: ${lgMin}) {
-			--_gap: var(--components-collection-lg-gap);
-		}
+		@container layout-container (max-width: ${smMax}) { --_gap: var(--_sm-gap); }
+		@container layout-container (min-width: ${mdMin}) and (max-width: ${mdMax}) { --_gap: var(--_md-gap); }
+		@container layout-container (min-width: ${lgMin}) { --_gap: var(--_lg-gap); }
 
 		display: flex;
 		width: 100%;
@@ -85,6 +77,27 @@ export const collectionStyles = css`
 
 	:host([layout="stack"]) .collection__items {
 		flex-direction: column;
+	}
+
+
+	/* ## Lanes */
+
+	/* Falls back to the grid above, not to the multicol nldd-container uses:
+	   this component pages, and multicol redistributes the whole set every time
+	   load-more adds to it. */
+	:host([layout="lanes"]) .collection__items {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(var(--_item-width), 100%), 1fr));
+	}
+
+	:host([layout="lanes"]) .collection__items ::slotted(*) {
+		min-width: 0;
+	}
+
+	@supports (display: grid-lanes) {
+		:host([layout="lanes"]) .collection__items {
+			display: grid-lanes;
+		}
 	}
 
 	/* ## Horizontal scroll */

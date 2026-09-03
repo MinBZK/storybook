@@ -13,7 +13,7 @@ import '../../actions/icon-button/icon-button.js';
 export type ListDividers = 'always' | 'on-touch' | 'never';
 
 export type ListVariant = 'simple' | 'box-tinted' | 'box-base';
-export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form';
+export type ListType = 'list' | 'navigation' | 'listbox' | 'tree' | 'form' | 'radiogroup';
 
 export interface NLDDReorderEventDetail {
 	fromIndex: number;
@@ -29,6 +29,12 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  *
  * The `type` attribute switches the list's a11y role and behavior:
  * - `list` (default) — `role="list"`, items `role="listitem"`. Reorderable allowed.
+ * - `radiogroup` — `role="radiogroup"`, for a set of `nldd-list-item radio`
+ *   rows: one choice, laid out as rows so each option can carry a count or a
+ *   second line. The rows step out of the accessibility tree themselves
+ *   (`role="none"`), so the radios are the group's own children. The arrows
+ *   move focus here and activation checks, rather than the selection following
+ *   focus as it does in `nldd-radio-button-group`.
  * - `tree` — `role="tree"`, items `role="treeitem"`. Branch rows put their child
  *   rows in their own `slot="children"`, which the item renders as a
  *   `role="group"`. Level, position and set size are NOT authored: the
@@ -155,7 +161,7 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @element nldd-list
  *
  * @attr {'simple'|'box-tinted'|'box-base'} variant - Visual style (default 'simple'): `simple` is a plain vertical strip with no chrome, the two `box` values a framed card with rounded corners, fill and inset border ring. `box-tinted` for a list on a plain page, `box-base` for one on an already-tinted parent (the border ring gets +2 palette steps so it still reads against a card-on-card)
- * @attr {'list'|'navigation'|'listbox'|'tree'|'form'} type - A11y role and behavior (default 'list'). See the docblock above.
+ * @attr {'list'|'navigation'|'listbox'|'tree'|'form'|'radiogroup'} type - A11y role and behavior (default 'list'). See the docblock above.
  * @attr {boolean} reorderable - Enables drag-to-reorder and pushes `reorderable` onto the items. Only valid with `type="list"`; there the arrow keys move rows instead of focus.
  * @attr {'always'|'on-touch'|'never'} dividers - When to draw the lines between the items (default 'always'). `on-touch` draws them only where the primary input is touch, under `(pointer: coarse)`: a pointer has the hover highlight to tell one row from the next and a finger has nothing, so the line earns its place in the one case and is clutter in the other. `never` hides them everywhere
  * @attr {string} height - Listbox only: caps the options' scroll region at this CSS length (e.g. '320px'). Unset means no cap.
@@ -165,7 +171,8 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @slot        - List items (`nldd-list-item`)
  * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
  * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
- * @slot empty - Shown when no items are visible (all `[hidden]` or none). Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
+ * @slot empty - Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type="listbox"` and a `[slot="toolbar"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant="loading"` here to hold the place rather than have the controls appear a moment later.
+ * @slot no-results - Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven filtering leaves behind. A different state from `empty` and a different sentence: here the search field and the `[slot="toolbar"]` stay, because they are the way back to the rows. Falls back to `[slot="empty"]` when not given. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
  * @fires input - `type="listbox"`: search value changed; `{ value }`. Toggle `[hidden]` on items to filter.
@@ -223,6 +230,15 @@ export class NLDDList extends LitElement {
 
 	@state()
 	private _hasSearchBarEnd = false;
+
+	@state()
+	private _hasEmptyState = false;
+
+	@state()
+	private _hasNoResultsState = false;
+
+	@state()
+	private _hasItems = false;
 
 	@state()
 	private _isEmpty = false;
@@ -313,6 +329,14 @@ export class NLDDList extends LitElement {
 		toolbarSlot?.addEventListener('slotchange', () => queueMicrotask(() => {
 			this._hasToolbar = toolbarSlot.assignedElements().length > 0;
 		}));
+
+		// An app that renders its empty state conditionally adds and removes this
+		// one while the list is already on the page, and whether it holds anything
+		// decides whether the surface is drawn at all.
+		const emptySlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="empty"]');
+		emptySlot?.addEventListener('slotchange', () => queueMicrotask(() => this._updateEmpty()));
+		const noResultsSlot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="no-results"]');
+		noResultsSlot?.addEventListener('slotchange', () => queueMicrotask(() => this._updateEmpty()));
 
 		// Watch for rows being added or removed, for `hidden` toggles on them
 		// (consumer-driven filtering) and for branches opening and closing, since
@@ -525,9 +549,16 @@ export class NLDDList extends LitElement {
 		// Drawing the surface anyway makes "nothing" look different per variant:
 		// invisible on a plain list, an empty tinted bar on a boxed one, which
 		// reads as a skeleton that never loaded.
+		this._hasItems = items.length > 0;
+		this._hasEmptyState = !!this.querySelector(':scope > [slot="empty"]');
+		this._hasNoResultsState = !!this.querySelector(':scope > [slot="no-results"]');
+		// No rows at all and nothing said about that: not a thing on the page, so
+		// a parent that spaces its children keeps no room for it either. Rows that
+		// are only filtered away are a different state: the list stays, because
+		// the search field and the toolbar in it are the way back.
 		this.classList.toggle(
 			'is-blank',
-			this._isEmpty && !this.querySelector(':scope > [slot="empty"]'),
+			this._isEmpty && !this._hasItems && !this._hasEmptyState,
 		);
 		this._warnSilentEmpty();
 	}
@@ -1428,6 +1459,9 @@ export class NLDDList extends LitElement {
 			hasToolbar: this._hasToolbar,
 			type: this.type,
 			isEmpty: this._isEmpty,
+			hasItems: this._hasItems,
+			hasEmptyState: this._hasEmptyState,
+			hasNoResultsState: this._hasNoResultsState,
 			listbox: {
 				listboxId: this._listboxId,
 				searchValue: this._searchValue,

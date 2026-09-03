@@ -5,7 +5,10 @@ export const listStyles = css`
 		box-sizing: border-box;
 	}
 
-	/* Nothing in it and nothing said about it: not a thing on the page. */
+	/* Nothing in it, nothing said about it and no controls of its own: not a
+	   thing on the page, so a parent that spaces its children keeps no room for
+	   it either. The surface is already gone with .list__main; this takes the
+	   box out of the flow. */
 	:host(.is-blank) {
 		display: none;
 	}
@@ -85,6 +88,10 @@ export const listStyles = css`
 	}
 
 	.list__toolbar[hidden] {
+		display: none;
+	}
+
+	.list__search-bar[hidden] {
 		display: none;
 	}
 

@@ -72,8 +72,8 @@ export const sheetStyles = css`
 		   sticky header sticks to that edge instead of to a bar that stands
 		   outside. See findScrollModeProvider for the other half. */
 		--context-scroll-mode: nested;
-		--context-layer-top: 0px;
-		--context-layer-bottom: 0px;
+		--context-inset-top: 0px;
+		--context-inset-bottom: 0px;
 
 		display: flex;
 		position: fixed;

@@ -1,5 +1,6 @@
 import { html, svg, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import type { NLDDProgressCircle } from './progress-circle.js';
 
 // SVG geometry: viewBox 100×100, ring centered. The stroke would extend
@@ -87,7 +88,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 					<filter id="progress-circle-border-track-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 						<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 						<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
-						<feFlood style="flood-color: var(--_track-border-color)" result="flood"></feFlood>
+						<feFlood class="progress-circle__flood progress-circle__flood--track" result="flood"></feFlood>
 						<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
 						<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 					</filter>
@@ -95,7 +96,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						<filter id="progress-circle-border-${color}-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
-							<feFlood style="flood-color: var(--semantics-categories-${color}-filled-highlight-border-color)" result="flood"></feFlood>
+							<feFlood class="progress-circle__flood" style=${styleMap({ floodColor: `var(--semantics-categories-${color}-filled-highlight-border-color)` })} result="flood"></feFlood>
 							<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
 							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 						</filter>
@@ -104,7 +105,7 @@ export function progressCircleTemplate(component: NLDDProgressCircle, onSlotChan
 						<filter id="progress-circle-border-indeterminate-${uid}" filterUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120" color-interpolation-filters="sRGB">
 							<feMorphology in="SourceGraphic" operator="erode" radius=${borderErodeRadius} result="eroded"></feMorphology>
 							<feComposite operator="out" in="SourceGraphic" in2="eroded" result="edge"></feComposite>
-							<feFlood style="flood-color: var(--_indeterminate-border-color)" result="flood"></feFlood>
+							<feFlood class="progress-circle__flood progress-circle__flood--indeterminate" result="flood"></feFlood>
 							<feComposite operator="in" in="flood" in2="edge" result="colored"></feComposite>
 							<feComposite operator="over" in="colored" in2="SourceGraphic"></feComposite>
 						</filter>
