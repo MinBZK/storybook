@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.86](https://github.com/MinBZK/storybook/compare/v0.8.85...v0.8.86) (2026-09-03)
+
 ### Highlights
 
 - **No `'unsafe-inline'` in your `style-src` for our components.** Two of them wrote styling into the page itself, which is exactly what a Content-Security-Policy stops: under a strict policy a cell hid at no width at all, and a progress circle lost the color of its ring, both without a word. The rules travel through the CSSOM now, which a policy leaves alone. What each one did is in Fixed below.
