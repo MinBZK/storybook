@@ -16,9 +16,9 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
+			options: ['content', 'secondary', 'accent', 'success', 'warning', 'critical'],
 			description: 'Kleurvariant van het icoon',
-			table: { defaultValue: { summary: 'default' } },
+			table: { defaultValue: { summary: 'content' } },
 		},
 		verticalAlignment: {
 			name: 'vertical-alignment',
@@ -50,7 +50,7 @@ export default {
 export const Default = {
 	args: {
 		size: '24',
-		color: 'default',
+		color: 'content',
 		verticalAlignment: 'center',
 		icon: 'icon-placeholder',
 		hideBelow: '',

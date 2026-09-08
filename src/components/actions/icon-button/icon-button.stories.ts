@@ -132,10 +132,10 @@ export default {
 		tooltipTiming: {
 			name: 'tooltip-timing',
 			control: 'select',
-			options: ['default', 'instant', 'never'],
+			options: ['delay', 'instant', 'never'],
 			description: 'Forwarded naar de inner nldd-tooltip `timing`. `never` onderdrukt de visuele tooltip (aria-label blijft intact). Gebruik `never` wanneer de context al duidelijk is (bv. spin-knoppen in nldd-number-field, chevron in nldd-split-button).',
 			table: {
-				defaultValue: { summary: 'default' },
+				defaultValue: { summary: 'delay' },
 			},
 		},
 		loading: {
@@ -167,7 +167,7 @@ export default {
 		href: '',
 		target: '',
 		accessibleLabel: '',
-		tooltipTiming: 'default',
+		tooltipTiming: 'delay',
 		loading: false,
 		disabled: false,
 	},

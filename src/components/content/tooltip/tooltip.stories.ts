@@ -40,8 +40,8 @@ export default {
 		timing: {
 			control: 'select',
 			options: ['instant', 'delay', 'never'],
-			description: 'Wanneer de tooltip verschijnt op hover. `instant`: direct zonder show-delay. `default`: na de standaard show-delay (700ms). `never`: tooltip wordt nooit getoond, aria-describedby wordt onderdrukt.',
-			table: { defaultValue: { summary: 'default' } },
+			description: 'Wanneer de tooltip verschijnt op hover. `instant`: direct zonder show-delay. `delay`: na de standaard show-delay (700ms). `never`: tooltip wordt nooit getoond, aria-describedby wordt onderdrukt.',
+			table: { defaultValue: { summary: 'delay' } },
 		},
 	},
 	args: {

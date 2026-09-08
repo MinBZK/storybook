@@ -36,17 +36,17 @@ export default {
 			control: 'text',
 			description: 'Tekst van het token',
 		},
-		dismissText: {
-			name: 'dismiss-text',
-			control: 'text',
-			description: 'Tekst van de dismiss-knop',
-			table: { defaultValue: { summary: 'Verwijder' } },
-		},
 		control: {
 			control: 'select',
 			options: ['none', 'dismiss', 'menu'],
 			description: 'Control type',
 			table: { defaultValue: { summary: 'none' } },
+		},
+		dismissText: {
+			name: 'dismiss-text',
+			control: 'text',
+			description: 'Tekst van de dismiss-knop',
+			table: { defaultValue: { summary: 'Verwijder' } },
 		},
 		disabled: {
 			control: 'boolean',
@@ -56,8 +56,8 @@ export default {
 	},
 	args: {
 		text: 'Token',
-		dismissText: '',
 		control: 'none',
+		dismissText: '',
 		disabled: false,
 	},
 };
@@ -65,8 +65,8 @@ export default {
 const Template = (args: Record<string, any>) => html`
 	<nldd-token
 		text=${args.text}
-		dismiss-text=${args.dismissText || nothing}
 		control=${args.control}
+		dismiss-text=${args.dismissText || nothing}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
 	></nldd-token>

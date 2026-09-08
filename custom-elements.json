@@ -28973,7 +28973,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -29038,9 +29038,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Color variant of the icon (default: 'default')"
+              "description": "Color variant of the icon (default: 'content')"
             },
             {
               "name": "icon",
@@ -29250,7 +29250,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -29402,9 +29402,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state."
+              "description": "Text color variant: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'. All variants other than those two apply to all three text fields so the cell reads as a coherent state."
             },
             {
               "name": "width",
@@ -29859,7 +29859,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -30021,9 +30021,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state."
+              "description": "Text color variant (default: 'content'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state."
             },
             {
               "name": "width",

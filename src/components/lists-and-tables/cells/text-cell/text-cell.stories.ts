@@ -15,9 +15,9 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
+			options: ['content', 'secondary', 'accent', 'success', 'warning', 'critical'],
 			description: 'Kleurvariant. `accent`, `success`, `warning` en `critical` gelden voor alle drie tekstvelden zodat de cel als één samenhangende status leest.',
-			table: { defaultValue: { summary: 'default' } },
+			table: { defaultValue: { summary: 'content' } },
 		},
 		width: {
 			control: 'text',
@@ -84,7 +84,7 @@ export default {
 export const Default = {
 	args: {
 		size: 'md',
-		color: 'default',
+		color: 'content',
 		width: '',
 		minWidth: '',
 		maxWidth: '',

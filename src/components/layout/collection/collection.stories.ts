@@ -89,11 +89,11 @@ export default {
 		showLoadMore: false,
 		lazyLoad: false,
 		maxItems: 6,
-		itemWidth: '',
 		gap: '',
 		smGap: '',
 		mdGap: '',
 		lgGap: '',
+		itemWidth: '',
 	},
 };
 

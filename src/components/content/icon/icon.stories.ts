@@ -77,8 +77,8 @@ export default {
 	args: {
 		name: 'heart',
 		size: '24',
-		box: false,
 		color: '(inherit)',
+		box: false,
 		customColor: '',
 	},
 };

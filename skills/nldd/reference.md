@@ -2876,7 +2876,7 @@ A cell component for displaying icons in lists with configurable alignment and s
 | --- | --- | --- |
 | `vertical-alignment` | `string` | Vertical alignment: 'top' \| 'center' \| 'bottom' (default: 'center') |
 | `size` | `string` | Size: '16' \| '20' \| '24' \| '32' (default: '24') |
-| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'default') |
+| `color` | `'content' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Color variant of the icon (default: 'content') |
 | `icon` | `string` | Icon name (renders `<nldd-icon>`). Takes precedence over the default slot. |
 | `hide-below` | `string` | Hides the element below this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. The value names the breakpoint you hide BELOW, so `hide-below="md"` is hidden in sm and visible from md up. `sm` is the open edge and never hides (DEV-warns). |
 | `hide-above` | `string` | Hides the element above this breakpoint: `sm` \| `md` \| `lg`, or a CSS length. `hide-above="sm"` is hidden in md and lg. `lg` is the open edge and never hides (DEV-warns). |
@@ -3048,7 +3048,7 @@ A cell component for displaying text content in lists with configurable alignmen
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `size` | `string` | Cell size: 'sm' \| 'md' (default: 'md') |
-| `color` | `string` | Text color variant: 'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state. |
+| `color` | `string` | Text color variant: 'content' (the default) \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'. All variants other than those two apply to all three text fields so the cell reads as a coherent state. |
 | `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
 | `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
 | `max-width` | `string` | Maximum width as CSS length (e.g. '200px', '20rem') |
@@ -3105,7 +3105,7 @@ A cell component for displaying a title with optional overline and subtitle in l
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `size` | `1\|2\|3\|4\|5\|6` | Visual size of the title (default: 5) |
-| `color` | `'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state. |
+| `color` | `'content' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical'` | Text color variant (default: 'content'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state. |
 | `width` | `string` | 'full' \| 'fit-content' \| CSS length (e.g. '200px', '20rem'). Default: 'full' |
 | `min-width` | `string` | Minimum width as CSS length (e.g. '80px', '5rem') |
 | `max-width` | `string` | Maximum width as CSS length (e.g. '300px', '20rem') |

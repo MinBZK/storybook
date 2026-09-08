@@ -20,7 +20,7 @@
  *
  * @element nldd-title-cell
  * @attr {1|2|3|4|5|6} size - Visual size of the title (default: 5)
- * @attr {'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'} color - Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state.
+ * @attr {'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'} color - Text color variant (default: 'content'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state.
  * @attr {string} width - 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'
  * @attr {string} min-width - Minimum width as CSS length (e.g. '80px', '5rem')
  * @attr {string} max-width - Maximum width as CSS length (e.g. '300px', '20rem')
@@ -61,7 +61,7 @@ import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 import type { QueryMarkMode } from '../../../../utilities/render-marked.js';
 
 export type TitleCellSize = 1 | 2 | 3 | 4 | 5 | 6;
-type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
+type Color = 'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
 type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
@@ -72,8 +72,8 @@ export class NLDDTitleCell extends VisibilityMixin(LitElement, 'cells-container'
 	@property({ type: Number, reflect: true })
 	size: TitleCellSize = 5;
 
-	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
-	color: Color = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<Color>('content') })
+	color: Color = 'content';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';

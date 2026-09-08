@@ -28,10 +28,10 @@ describe('nldd-text-cell', () => {
 		expect(el.getAttribute('size')).toBe('sm');
 	});
 
-	it('defaults to default color', async () => {
+	it('defaults to the content color', async () => {
 		el = await fixture('<nldd-text-cell></nldd-text-cell>');
 		await waitForUpdate(el);
-		expect((el as unknown as { color: string }).color).toBe('default');
+		expect((el as unknown as { color: string }).color).toBe('content');
 		expect(el.hasAttribute('color')).toBe(false);
 	});
 

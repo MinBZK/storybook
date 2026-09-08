@@ -66,8 +66,8 @@ export default {
 		timing: {
 			control: 'select',
 			options: ['delay', 'instant'],
-			description: '`default` wacht 1000ms (anti-flash); `instant` toont direct (fade-in speelt nog).',
-			table: { defaultValue: { summary: 'default' } },
+			description: '`delay` wacht 1000ms (anti-flash). `instant` toont direct (fade-in speelt nog).',
+			table: { defaultValue: { summary: 'delay' } },
 		},
 		noBackdrop: {
 			name: 'no-backdrop',
