@@ -9,6 +9,22 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A dialog that holds something reads left.** Everything in this system aligns left except dialog text, which was always centered. That is right for an empty state, where an icon sits above a short line in a container with nothing else in it. It is wrong the moment the dialog holds a task: a field you slot in starts at the left edge while the heading above it sits on a second axis, and the two fight. So the alignment now follows the default slot, in `nldd-inline-dialog` and in the `nldd-modal-dialog` that renders one. Nothing to set: an empty slot is a message and stays centered, anything in the slot is a task and aligns left.
+
+### Changed
+
+- **`nldd-inline-dialog` and `nldd-modal-dialog` take their alignment from their slot.** Content in the default slot aligns the text, the icon and the actions left, and lays those actions out in a row at their own width instead of stacked full-width. An empty slot keeps the centered empty state exactly as it was. Both are derived rather than defaulted, so an empty state needs no attribute and a form dialog stops needing a workaround. `horizontal-alignment` overrides it in both directions, for a long message that reads badly centered or for slotted content that is symmetric on its own. `nldd-modal-dialog` forwards it. Two things the slotted case exposed along the way, neither reachable before: content in the slot now keeps its distance from the text above it, and in the centered mode it is genuinely centered rather than merely full-width.
+
+### Breaking
+
+- **`timing="default"` is now `timing="delay"`.** On `nldd-tooltip` (a 700ms show delay) and on `nldd-activity-indicator` (a 1000ms anti-flash delay), and on the `tooltip-timing` of `nldd-avatar` and `nldd-icon-button`, which forward it. A value named for its position in the list says nothing about what it does, and it breaks the day the default moves. Beside `instant` and `never`, `delay` is the only word that says when the thing appears, which is what those two already do. Which value is the default lives in the component, and an attribute equal to the default is dropped from the DOM anyway, so leaving it out and writing it are the same thing.
+
+- **`color="default"` on `nldd-avatar` is now `color="neutral"`.** Same reason. Not `neutral-tinted`: that fill is neutral-100 in light and neutral-300 in dark, where the shared neutral-tinted family is 75/200 on buttons and 50/150 on categories, so the name would promise a scale it is not on.
+
+- **`size` on `nldd-avatar` defaults to `full` instead of an empty string.** `full` was already implemented, already in the type and already documented as the default. Only the property disagreed. Nothing renders differently. Read `size` back and you now get `full` where you got `''`.
+
 ### Fixed
 
 - **The warning about a list that says nothing no longer fires for a list that has rows.** It read the rows off the slot, and a slot has nothing assigned until it has rendered, so the first pass called every list empty. It only warns once, so that first verdict stuck: a console with a line per list on the page teaches people to scroll past it. The rows are read from the children before that first render, where they already are, and the warning names the state the list is actually in: rows that are all hidden ask for `[slot="no-results"]` rather than for `[slot="empty"]`, and a slot that covers the state answers the question.
