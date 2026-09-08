@@ -29,10 +29,10 @@ const GAP_STEPS = ['0', '4', '8', '12', '16', '24', '32', '48'];
 
 const gapControl = (description: string) => ({
 	control: 'select' as const,
-	options: ['(standaard)', ...GAP_STEPS],
-	mapping: { '(standaard)': '' },
+	options: ['(auto)', ...GAP_STEPS],
+	mapping: { '(auto)': '' },
 	description,
-	table: { defaultValue: { summary: '(standaard)' } },
+	table: { defaultValue: { summary: '(auto)' } },
 });
 
 export default {

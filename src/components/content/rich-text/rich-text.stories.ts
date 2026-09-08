@@ -9,10 +9,10 @@ export default {
 	argTypes: {
 		color: {
 			control: 'select',
-			options: ['(default)', 'inherit'],
-			mapping: { '(default)': '' },
+			options: ['(auto)', 'inherit'],
+			mapping: { '(auto)': '' },
 			description: 'inherit laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken)',
-			table: { defaultValue: { summary: '(default)' } },
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		spacing: {
 			control: 'select',

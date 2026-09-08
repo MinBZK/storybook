@@ -40,10 +40,10 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['(default)', 'inherit'],
-			mapping: { '(default)': '' },
+			options: ['(auto)', 'inherit'],
+			mapping: { '(auto)': '' },
 			description: 'inherit laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken)',
-			table: { defaultValue: { summary: '(default)' } },
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 	},
 	args: {

@@ -67,7 +67,7 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Breedte: full (vult de container) of een CSS-lengte (bv. 560px); leeg is de intrinsieke zeven-cellen-breedte',
-			table: { defaultValue: { summary: '(intrinsiek)' } },
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
