@@ -48,7 +48,7 @@
  * @attr {string} size - Circle diameter on the icon scale: 16,20,24,28,32,40,44,48,56,64,80,96 (default '32')
  * @attr {boolean} show-text - Show the label under the indicator (default false; the label still feeds the accessible name)
  * @attr {string} text - Label text. Falls back to the translated "Laden" when unset.
- * @attr {'default'|'instant'} timing - 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'.
+ * @attr {'delay'|'instant'} timing - 'delay' (the default) waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays).
  * @attr {boolean} complete - Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator.
  * @attr {boolean} no-backdrop - Overlay mode dims and blurs the wrapped content with a frosted backdrop by default; set this to show only the indicator panel without dimming. No effect in standalone mode.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
@@ -77,7 +77,7 @@ const DELAY_MS = 1000;
 
 export type ActivityIndicatorSize =
 	'16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
-export type ActivityIndicatorTiming = 'default' | 'instant';
+export type ActivityIndicatorTiming = 'delay' | 'instant';
 
 @customElement('nldd-activity-indicator')
 export class NLDDActivityIndicator extends LitElement {
@@ -94,10 +94,10 @@ export class NLDDActivityIndicator extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';
 
-	/** 'default' waits {@link DELAY_MS} before showing; 'instant' shows
+	/** 'delay' waits {@link DELAY_MS} before showing; 'instant' shows
 	 *  immediately. The fade-in plays either way. */
-	@property({ reflect: true, converter: reflectNonDefault<ActivityIndicatorTiming>('default') })
-	timing: ActivityIndicatorTiming = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<ActivityIndicatorTiming>('delay') })
+	timing: ActivityIndicatorTiming = 'delay';
 
 	/** Mark the loader as finished while keeping the element mounted.
 	 *  Clears aria-busy and hides the indicator. Default false. */

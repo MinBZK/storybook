@@ -25,8 +25,8 @@
  * @element nldd-avatar
  *
  * @attr {string} type - `person` (circle, person icon) or `organization` (rounded, building icon); default `person`
- * @attr {string} size - `full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along
- * @attr {string} color - `default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default`
+ * @attr {string} size - `full` (the default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). The initials and the icon scale along
+ * @attr {string} color - `neutral` (the default, a neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance)
  * @attr {boolean} icon-aligned - Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an icon glyph has built-in margin)
  * @attr {string} name - Name of the person or organization; supplies the derived initials and the accessible label
  * @attr {string} initials - Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms)
@@ -35,7 +35,7 @@
  * @attr {string} icon - Overrides the type-dependent fallback icon
  * @attr {string} accessible-label - Name of the link or button; without it `name` is used
  * @attr {boolean} decorative - Hides the avatar from assistive software (use when the name already stands beside it as text)
- * @attr {string} tooltip-timing - When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text
+ * @attr {string} tooltip-timing - When the name appears as a tooltip on hover or focus: `delay` (the default, after 700ms), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text
  * @attr {string} href - Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it
  * @attr {boolean} no-tab - Takes the control out of the tab order (tabindex="-1"), for an avatar that is a link or a button inside a roving container (a row of an nldd-list). Does nothing on a decorative avatar.
  * @attr {boolean} button - Makes the avatar a button; ignored when `href` is set
@@ -64,7 +64,7 @@ import '../icon/icon.js';
 
 export type AvatarType = 'person' | 'organization';
 
-export type AvatarColor = 'default' | 'inherit';
+export type AvatarColor = 'neutral' | 'inherit';
 
 /** Fraction of the shape width the initials may occupy before they are scaled to
  *  fit. Leaves margin inside the circle so wide glyphs stay clear of the edge
@@ -73,7 +73,7 @@ const INITIALS_FIT_RATIO = 0.75;
 
 /** Empty = scale to the container (like nldd-icon); the rest pin a fixed px size. */
 export type AvatarSize =
-	'' | 'full' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
+	'full' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
 @customElement('nldd-avatar')
 export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslations) {
@@ -82,11 +82,11 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	@property({ reflect: true, converter: reflectNonDefault<AvatarType>('person') })
 	type: AvatarType = 'person';
 
-	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('') })
-	size: AvatarSize = '';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarSize>('full') })
+	size: AvatarSize = 'full';
 
-	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('default') })
-	color: AvatarColor = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<AvatarColor>('neutral') })
+	color: AvatarColor = 'neutral';
 
 	@property({ type: Boolean, reflect: true, attribute: 'icon-aligned' })
 	iconAligned = false;
@@ -117,8 +117,8 @@ export class NLDDAvatar extends withTranslations(LitElement, nlddAvatarTranslati
 	/** Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.
 	 *  On by default: initials without a name are a riddle. An
 	 *  avatar that sits beside that name is `decorative` and shows none. */
-	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
-	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'delay' | 'instant' | 'never'>('delay') })
+	tooltipTiming: 'delay' | 'instant' | 'never' = 'delay';
 
 	/** Makes the avatar one link: the shape itself becomes the <a>, so the click
 	 *  area and the focus ring follow its shape (an overlay would be square). */

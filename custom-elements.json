@@ -1031,9 +1031,9 @@
               "kind": "field",
               "name": "tooltipTiming",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "description": "Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to\nsuppress the visual tooltip; aria-label still describes the button.",
               "attribute": "tooltip-timing",
               "reflects": true
@@ -1249,10 +1249,10 @@
             {
               "name": "tooltip-timing",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
-              "description": "Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).",
+              "default": "'delay'",
+              "description": "Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).",
               "fieldName": "tooltipTiming"
             },
             {
@@ -2970,7 +2970,7 @@
               "type": {
                 "text": "AvatarSize"
               },
-              "default": "''",
+              "default": "'full'",
               "attribute": "size",
               "reflects": true
             },
@@ -2980,7 +2980,7 @@
               "type": {
                 "text": "AvatarColor"
               },
-              "default": "'default'",
+              "default": "'neutral'",
               "attribute": "color",
               "reflects": true
             },
@@ -3063,9 +3063,9 @@
               "kind": "field",
               "name": "tooltipTiming",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: initials without a name are a riddle. An\navatar that sits beside that name is `decorative` and shows none.",
               "attribute": "tooltip-timing",
               "reflects": true
@@ -3177,18 +3177,18 @@
               "type": {
                 "text": "AvatarSize"
               },
-              "default": "''",
+              "default": "'full'",
               "fieldName": "size",
-              "description": "`full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along"
+              "description": "`full` (the default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). The initials and the icon scale along"
             },
             {
               "name": "color",
               "type": {
                 "text": "AvatarColor"
               },
-              "default": "'default'",
+              "default": "'neutral'",
               "fieldName": "color",
-              "description": "`default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default`"
+              "description": "`neutral` (the default, a neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance)"
             },
             {
               "name": "icon-aligned",
@@ -3265,10 +3265,10 @@
             {
               "name": "tooltip-timing",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
-              "description": "When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text",
+              "default": "'delay'",
+              "description": "When the name appears as a tooltip on hover or focus: `delay` (the default, after 700ms), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text",
               "fieldName": "tooltipTiming"
             },
             {
@@ -5383,7 +5383,7 @@
               "type": {
                 "text": "Timing"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "attribute": "timing",
               "reflects": true
             }
@@ -5421,9 +5421,9 @@
               "type": {
                 "text": "Timing"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "fieldName": "timing",
-              "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant."
+              "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'delay' (the default) — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant."
             }
           ],
           "superclass": {
@@ -33657,8 +33657,8 @@
               "type": {
                 "text": "ActivityIndicatorTiming"
               },
-              "default": "'default'",
-              "description": "'default' waits DELAY_MS before showing; 'instant' shows\nimmediately. The fade-in plays either way.",
+              "default": "'delay'",
+              "description": "'delay' waits DELAY_MS before showing; 'instant' shows\nimmediately. The fade-in plays either way.",
               "attribute": "timing",
               "reflects": true
             },
@@ -33727,8 +33727,8 @@
               "type": {
                 "text": "ActivityIndicatorTiming"
               },
-              "default": "'default'",
-              "description": "'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'.",
+              "default": "'delay'",
+              "description": "'delay' (the default) waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays).",
               "fieldName": "timing"
             },
             {

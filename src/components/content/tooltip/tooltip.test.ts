@@ -256,7 +256,7 @@ describe('nldd-tooltip – aria-describedby', () => {
 	it('verwijdert aria-describedby en de description span wanneer timing flipt naar never', async () => {
 		// Same intent as hiding the visual popover: when timing is 'never',
 		// screen readers shouldn't keep announcing the tooltip text either.
-		// Primary use-case is `.timing=${isShort ? 'default' : 'never'}` in
+		// Primary use-case is `.timing=${isShort ? 'delay' : 'never'}` in
 		// document-tab-bar where the full label is already inline.
 		el = await fixture<NLDDTooltip>('<nldd-tooltip text="Test"><button>T</button></nldd-tooltip>');
 		await waitForUpdate(el);
@@ -277,7 +277,7 @@ describe('nldd-tooltip – aria-describedby', () => {
 		const trigger = el.querySelector('button')!;
 		expect(trigger.hasAttribute('aria-describedby')).toBe(false);
 
-		el.timing = 'default';
+		el.timing = 'delay';
 		await waitForUpdate(el);
 		const id = trigger.getAttribute('aria-describedby');
 		expect(id).toBeTruthy();

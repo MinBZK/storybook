@@ -12,7 +12,7 @@ import '../../content/rich-text/rich-text.js';
  * activity indicator centreert. Standaard is dat een eenvoudige, icoon-grote
  * cirkel in `currentColor` (dus de cirkel erft de tekstkleur van de context).
  *
- * Standaard verschijnt de indicator pas na 1000ms (`timing="default"`) zodat
+ * Standaard verschijnt de indicator pas na 1000ms (`timing="delay"`) zodat
  * korte laad-acties niet onnodig flashen. `timing="instant"` toont hem direct
  * — de fade-in speelt nog steeds. Componenten zoals `nldd-button` gebruiken
  * `instant` voor hun loading-state.
@@ -41,7 +41,7 @@ export default {
 		size: '32',
 		text: '',
 		showText: false,
-		timing: 'default',
+		timing: 'delay',
 		noBackdrop: false,
 		complete: false,
 	},
@@ -65,7 +65,7 @@ export default {
 		},
 		timing: {
 			control: 'select',
-			options: ['default', 'instant'],
+			options: ['delay', 'instant'],
 			description: '`default` wacht 1000ms (anti-flash); `instant` toont direct (fade-in speelt nog).',
 			table: { defaultValue: { summary: 'default' } },
 		},
@@ -154,7 +154,7 @@ export const InheritsColor = {
 };
 
 export const AntiFlashDelay = {
-	name: 'Anti-flash delay (timing="default")',
+	name: 'Anti-flash delay (timing="delay")',
 	render: () => html`
 		<div style="height: 240px; display: flex;">
 			<nldd-activity-indicator show-text text="Laden"></nldd-activity-indicator>

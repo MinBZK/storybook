@@ -124,7 +124,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | `text` | `string` | Button text, used as aria-label and shown below the icon in lg size |
 | `icon` | `string` | Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set. |
 | `accessible-label` | `string` | Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless. |
-| `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
+| `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
 | `target` | `string` | Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2). |
 | `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
@@ -327,8 +327,8 @@ Shows one person or organization as a compact, round (person) or rounded (organi
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `type` | `string` | `person` (circle, person icon) or `organization` (rounded, building icon); default `person` |
-| `size` | `string` | `full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along |
-| `color` | `string` | `default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default` |
+| `size` | `string` | `full` (the default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). The initials and the icon scale along |
+| `color` | `string` | `neutral` (the default, a neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance) |
 | `icon-aligned` | `boolean` | Shrinks the visible shape to 5/6 of the host, centered, so the avatar aligns optically with an icon on the same grid (an icon glyph has built-in margin) |
 | `name` | `string` | Name of the person or organization; supplies the derived initials and the accessible label |
 | `initials` | `string` | Explicit initials, at most 3 characters (overrides what is derived from `name`; also for organization acronyms) |
@@ -337,7 +337,7 @@ Shows one person or organization as a compact, round (person) or rounded (organi
 | `icon` | `string` | Overrides the type-dependent fallback icon |
 | `accessible-label` | `string` | Name of the link or button; without it `name` is used |
 | `decorative` | `boolean` | Hides the avatar from assistive software (use when the name already stands beside it as text) |
-| `tooltip-timing` | `string` | When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text |
+| `tooltip-timing` | `string` | When the name appears as a tooltip on hover or focus: `delay` (the default, after 700ms), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text |
 | `href` | `string` | Makes the avatar a link to this URL; the shape itself becomes the link, so the hit area and the focus ring follow it |
 | `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for an avatar that is a link or a button inside a roving container (a row of an nldd-list). Does nothing on a decorative avatar. |
 | `button` | `boolean` | Makes the avatar a button; ignored when `href` is set |
@@ -610,7 +610,7 @@ A wrapper that shows a tooltip on hover or focus of its child element. It uses `
 | `text` | `string` | Tooltip text |
 | `open` | `boolean` | Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behavior. |
 | `placement` | `string` | Position: 'top' \| 'bottom' \| 'left' \| 'right' (default: 'bottom'; automatically 'top' on touch devices) |
-| `timing` | `string` | When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant. |
+| `timing` | `string` | When the tooltip appears on hover: 'instant' — right away, without a show delay. 'delay' (the default) — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant. |
 
 **Slots**
 
@@ -2516,7 +2516,7 @@ Layout placeholder that fills its parent and centers an indeterminate activity i
 | `size` | `string` | Circle diameter on the icon scale: 16,20,24,28,32,40,44,48,56,64,80,96 (default '32') |
 | `show-text` | `boolean` | Show the label under the indicator (default false; the label still feeds the accessible name) |
 | `text` | `string` | Label text. Falls back to the translated "Laden" when unset. |
-| `timing` | `'default'\|'instant'` | 'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'. |
+| `timing` | `'delay'\|'instant'` | 'delay' (the default) waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). |
 | `complete` | `boolean` | Mark the loader as finished while keeping the element mounted; clears aria-busy and hides the indicator. |
 | `no-backdrop` | `boolean` | Overlay mode dims and blurs the wrapped content with a frosted backdrop by default; set this to show only the indicator panel without dimming. No effect in standalone mode. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |

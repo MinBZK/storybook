@@ -22,8 +22,8 @@ describe('nldd-avatar', () => {
 		el = await fixture('<nldd-avatar name="Bart van de Biezen"></nldd-avatar>');
 		await waitForUpdate(el);
 		expect(el.type).toBe('person');
-		expect(el.color).toBe('default');
-		expect(el.size).toBe(''); // empty = scale to the container (like nldd-icon)
+		expect(el.color).toBe('neutral');
+		expect(el.size).toBe('full'); // full = scale to the container (like nldd-icon)
 	});
 
 	it('reflects color="inherit" and keeps default color unreflected', async () => {
@@ -31,7 +31,7 @@ describe('nldd-avatar', () => {
 		await waitForUpdate(el);
 		expect(el.color).toBe('inherit');
 		expect(el.getAttribute('color')).toBe('inherit');
-		el.color = 'default';
+		el.color = 'neutral';
 		await waitForUpdate(el);
 		expect(el.hasAttribute('color')).toBe(false);
 	});

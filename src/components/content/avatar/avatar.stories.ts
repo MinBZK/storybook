@@ -37,11 +37,11 @@ export default {
 		initials: '',
 		type: 'person',
 		size: '40',
-		color: 'default',
+		color: 'neutral',
 		iconAligned: false,
 		src: '',
 		icon: '',
-		tooltipTiming: 'default',
+		tooltipTiming: 'delay',
 		decorative: false,
 	},
 	argTypes: {
@@ -61,15 +61,15 @@ export default {
 		},
 		size: {
 			control: 'select',
-			options: ['', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'],
-			description: 'Vaste maat in px (spacer-uitgelijnd); leeg = schaal mee met de container',
-			table: { defaultValue: { summary: 'leeg (schaal mee)' } },
+			options: ['full', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'],
+			description: 'full schaalt mee met de container, of een vaste maat in px (spacer-uitgelijnd)',
+			table: { defaultValue: { summary: 'full' } },
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'inherit'],
-			description: 'default (neutrale vulling) of inherit (currentColor-vulling, contrasttekst)',
-			table: { defaultValue: { summary: 'default' } },
+			options: ['neutral', 'inherit'],
+			description: 'neutral (neutrale vulling) of inherit (currentColor-vulling, contrasttekst)',
+			table: { defaultValue: { summary: 'neutral' } },
 		},
 		iconAligned: {
 			name: 'icon-aligned',
@@ -89,10 +89,10 @@ export default {
 		tooltipTiming: {
 			name: 'tooltip-timing',
 			control: 'select',
-			options: ['default', 'instant', 'never'],
+			options: ['delay', 'instant', 'never'],
 			description: 'Wanneer de naam als tooltip verschijnt bij hover of focus',
 			table: {
-				defaultValue: { summary: 'default' },
+				defaultValue: { summary: 'delay' },
 			},
 		},
 		decorative: {

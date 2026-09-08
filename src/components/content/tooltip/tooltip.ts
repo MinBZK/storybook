@@ -8,7 +8,7 @@
  * @attr {string} text - Tooltip text
  * @attr {boolean} open - Forces the tooltip visible, whatever hover or focus does. Use it for programmatic feedback ("Copied", for instance). Reset it to false to restore the hover behavior.
  * @attr {string} placement - Position: 'top' | 'bottom' | 'left' | 'right' (default: 'bottom'; automatically 'top' on touch devices)
- * @attr {string} timing - When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant.
+ * @attr {string} timing - When the tooltip appears on hover: 'instant' — right away, without a show delay. 'delay' (the default) — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant.
  *
  * @slot - The element the tooltip is shown for
  *
@@ -46,7 +46,7 @@ import { tooltipTemplate } from './tooltip.template.js';
 import { isTouchMode } from '../../../utilities/input-modality.js';
 
 type Placement = 'top' | 'bottom' | 'left' | 'right';
-type Timing = 'instant' | 'default' | 'never';
+type Timing = 'instant' | 'delay' | 'never';
 
 let tooltipCounter = 0;
 const coarsePointerQuery = matchMedia('(pointer: coarse)');
@@ -73,8 +73,8 @@ export class NLDDTooltip extends LitElement {
 	@property({ reflect: true, converter: reflectNonDefault<Placement>('bottom') })
 	placement: Placement = 'bottom';
 
-	@property({ reflect: true, converter: reflectNonDefault<Timing>('default') })
-	timing: Timing = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<Timing>('delay') })
+	timing: Timing = 'delay';
 
 	private get _effectivePlacement(): Placement {
 		return this.placement;
@@ -177,7 +177,7 @@ export class NLDDTooltip extends LitElement {
 		// Suppress the description when timing is 'never' — same intent as
 		// hiding the visual popover. Without this, screen readers would still
 		// announce the redundant tooltip text (the primary use-case for
-		// `timing='never'` is `.timing=${isShort ? 'default' : 'never'}` in
+		// `timing='never'` is `.timing=${isShort ? 'delay' : 'never'}` in
 		// document-tab-bar, where the full label is already visible inline).
 		if (this.text && this.timing !== 'never') {
 			if (!this._descriptionEl) {
