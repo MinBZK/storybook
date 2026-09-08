@@ -1980,7 +1980,6 @@ An overlay component that slides in from the side or bottom of the screen. Based
 | --- | --- | --- |
 | `placement` | `string` | Sheet position: 'left' \| 'right' \| 'bottom' (default: 'right') |
 | `height` | `string` | Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+. |
-| `modeless` | `boolean` | Non-modal (no backdrop or focus lock); the sheet is modal by default |
 | `accessible-label` | `string` | Accessible name for the dialog, forwarded as aria-label (default: 'Venster') |
 | `width` | `string` | Custom width for side sheets (left/right) as a CSS length (e.g. '480px', '32rem'). Applied from the md breakpoint up; ignored on sm (bottom sheet) and for `placement="bottom"`. Clamped to `100vw - 2 * inset` so the sheet always fits. |
 

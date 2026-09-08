@@ -39,11 +39,13 @@ describe('nldd-sheet', () => {
 		expect(el.hasAttribute('placement')).toBe(false);
 	});
 
-	it('defaults to modal (modeless attribute absent)', async () => {
+	it('opens modal, with a backdrop and the page behind it inert', async () => {
 		el = await fixture('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
-		expect((el as NLDDSheet).modeless).toBe(false);
-		expect(el.hasAttribute('modeless')).toBe(false);
+		(el as NLDDSheet).show();
+		await waitForUpdate(el);
+		const dialog = el.shadowRoot!.querySelector('dialog')!;
+		expect(dialog.matches(':modal')).toBe(true);
 	});
 
 	it('reflects placement attribute', async () => {
@@ -141,12 +143,13 @@ describe('nldd-sheet – tonen en verbergen', () => {
 		expect(() => el.hide()).not.toThrow();
 	});
 
-	it('uses show() for modeless sheets', async () => {
-		el = await fixture<NLDDSheet>('<nldd-sheet modeless></nldd-sheet>');
+	it('uses showModal(), never show()', async () => {
+		el = await fixture<NLDDSheet>('<nldd-sheet></nldd-sheet>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog')!;
 		expect(dialog.open).toBe(true);
+		expect(dialog.matches(':modal')).toBe(true);
 	});
 });
 
@@ -508,19 +511,17 @@ describe('nldd-sheet meldt sluiten via elke route', () => {
 		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 	}
 
-	// Escape closes a non-modal dialog through the CloseWatcher, and @cancel plus
-	// preventDefault does not reliably stop that. hide() then never ran, so a
-	// modeless sheet closed without reporting it.
+	// hide() cannot be the only source of `close`: anything that closes the
+	// dialog directly skips it, and the sheet would go quiet.
 	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
 		el = await fixture<HTMLElement & { show(): void; hide(): void }>(
-			'<nldd-sheet modeless accessible-label="Test"></nldd-sheet>',
+			'<nldd-sheet accessible-label="Test"></nldd-sheet>',
 		);
 		await waitForUpdate(el);
 		let aantal = 0;
 		el.addEventListener('close', () => { aantal += 1; });
 		el.show();
 		await waitForUpdate(el);
-		// What the browser does on Escape for a non-modal dialog.
 		const dialog = dialogVan(el);
 		dialog.close();
 		dialog.dispatchEvent(new Event('close'));

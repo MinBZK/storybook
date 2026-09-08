@@ -27217,16 +27217,6 @@
             },
             {
               "kind": "field",
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "modeless",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "accessibleLabel",
               "type": {
                 "text": "string"
@@ -27293,15 +27283,6 @@
               "default": "''",
               "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+.",
               "fieldName": "height"
-            },
-            {
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "modeless",
-              "description": "Non-modal (no backdrop or focus lock); the sheet is modal by default"
             },
             {
               "name": "accessible-label",
