@@ -7,7 +7,7 @@ export default {
 	tags: ['autodocs'],
 	args: {
 		compact: false,
-		overflowText: 'Meer opties',
+		overflowText: '',
 		accessibleLabel: 'Navigatie',
 	},
 	argTypes: {

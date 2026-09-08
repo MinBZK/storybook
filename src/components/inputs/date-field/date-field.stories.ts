@@ -36,7 +36,7 @@ export default {
 		size: 'md',
 		width: '',
 		placeholder: '',
-		accessibleLabel: 'Datum',
+		accessibleLabel: '',
 		noPicker: false,
 		valid: false,
 		invalid: false,
