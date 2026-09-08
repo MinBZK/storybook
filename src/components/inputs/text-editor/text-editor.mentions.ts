@@ -7,9 +7,37 @@ import {
 	type CompletionResult,
 } from '@codemirror/autocomplete';
 import { EditorView } from '@codemirror/view';
-import type { Extension } from '@codemirror/state';
+import { syntaxTree } from '@codemirror/language';
+import type { EditorState, Extension } from '@codemirror/state';
 
-const MENTION_QUERY = /@[\w.-]*$/;
+/** The query being typed: an `@` at the start of the line or after whitespace,
+ *  followed by name characters, up to the caret. Anchored that way so an `@`
+ *  inside a word (an e-mail address, `piet@sam`) stays a plain character.
+ *  The name class is ASCII for now; widening it changes what a source receives
+ *  and is its own change. */
+const MENTION_QUERY = /(^|\s)@([\w.-]*)$/;
+
+/** Code is quoted verbatim, so an `@` in a fenced block, an indented block or a
+ *  backtick span is not a mention and must not open the list. */
+function inCode(state: EditorState, pos: number): boolean {
+	for (let n = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent!) {
+		if (n.name === 'FencedCode' || n.name === 'CodeBlock' || n.name === 'InlineCode') return true;
+	}
+	return false;
+}
+
+/** The mention query at `pos`, or null when the text before the caret is not
+ *  one. `from` is the `@`, `query` the typed name without it. Both the
+ *  completion source and the reopen-on-delete path go through this, so they
+ *  cannot disagree about what counts as a mention. */
+export function mentionQueryAt(state: EditorState, pos: number): { from: number; to: number; query: string } | null {
+	const line = state.doc.lineAt(pos);
+	const match = MENTION_QUERY.exec(state.sliceDoc(line.from, pos));
+	if (!match) return null;
+	const from = line.from + match.index + match[1].length;
+	if (inCode(state, from)) return null;
+	return { from, to: pos, query: match[2] };
+}
 
 /* @-mention typeahead. The editor is headless and does not know any users, so
  * the consumer supplies candidates through a source callback. Selecting one
@@ -75,11 +103,11 @@ function completionSource(
 	onInsert: (detail: MentionInsertedDetail) => void,
 ) {
 	return async (context: CompletionContext): Promise<CompletionResult | null> => {
-		const match = context.matchBefore(/@[\w.-]*/);
-		if (!match || (match.from === match.to && !context.explicit)) return null;
+		const match = mentionQueryAt(context.state, context.pos);
+		if (!match) return null;
 		const source = getSource();
 		if (!source) return null;
-		const candidates = await source(match.text.slice(1));
+		const candidates = await source(match.query);
 		if (!candidates?.length) return null;
 		return {
 			from: match.from,
@@ -177,9 +205,7 @@ const popupTheme = EditorView.theme({
 const reopenOnDelete = EditorView.updateListener.of((update) => {
 	if (!update.docChanged || completionStatus(update.state) !== null) return;
 	if (!update.transactions.some((tr) => tr.isUserEvent('delete'))) return;
-	const { head } = update.state.selection.main;
-	const before = update.state.sliceDoc(update.state.doc.lineAt(head).from, head);
-	if (MENTION_QUERY.test(before)) startCompletion(update.view);
+	if (mentionQueryAt(update.state, update.state.selection.main.head)) startCompletion(update.view);
 });
 
 export function mentions(
