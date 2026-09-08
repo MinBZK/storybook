@@ -36,7 +36,7 @@ export default {
 		size: 'md',
 		weight: 'regular',
 		lineHeight: 'snug',
-		color: 'default',
+		color: 'content',
 		horizontalAlignment: 'left',
 		text: 'Een korte regel tekst die laat zien hoe de maat, het gewicht en de regelhoogte samen uitpakken.',
 	},
@@ -62,10 +62,10 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical', 'inherit'],
+			options: ['content', 'secondary', 'accent', 'success', 'warning', 'critical', 'inherit'],
 			description:
-				'Tekstkleur. "default" en "secondary" volgen het contentkanaal van de omgeving (een lijstrij, een menu, een tabel); "inherit" neemt de kleur die hij erft, voor tekst op een gekleurd vlak.',
-			table: { defaultValue: { summary: 'default' } },
+				'Tekstkleur. "content" en "secondary" volgen het contentkanaal van de omgeving (een lijstrij, een menu, een tabel). "inherit" neemt de kleur die hij erft, voor tekst op een gekleurd vlak.',
+			table: { defaultValue: { summary: 'content' } },
 		},
 		horizontalAlignment: {
 			name: 'horizontal-alignment',
@@ -145,12 +145,12 @@ export const LineHeights = {
 };
 
 /**
- * De semantische kleuren. `default` en `secondary` volgen het contentkanaal van
+ * De semantische kleuren. `content` en `secondary` volgen het contentkanaal van
  * de omgeving, dus in een lijstrij kleuren ze mee als die rij oplicht.
  */
 export const Colors = {
 	render: () => html`
-		<nldd-text color="default">default</nldd-text>
+		<nldd-text color="content">content</nldd-text>
 		<nldd-text color="secondary">secondary</nldd-text>
 		<nldd-text color="accent">accent</nldd-text>
 		<nldd-text color="success">success</nldd-text>

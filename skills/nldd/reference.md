@@ -541,7 +541,7 @@ One run of body text at a size from the type scale. It is what you reach for whe
 | `size` | `string` | Text size on the body scale: 'xxs' \| 'xs' \| 'sm' \| 'md' \| 'lg' (default: 'md') |
 | `weight` | `string` | Font weight: 'regular' \| 'medium' \| 'bold' (default: 'regular'). With 'bold' a slotted `<strong>` no longer stands out: there is nothing bolder in the scale. |
 | `line-height` | `string` | Line height: 'flat' \| 'tight' \| 'snug' \| 'loose' (default: 'snug') |
-| `color` | `string` | Text color: 'default' \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' \| 'inherit' (default: 'default'). 'default' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface. |
+| `color` | `string` | Text color: 'content' (the default) \| 'secondary' \| 'accent' \| 'success' \| 'warning' \| 'critical' \| 'inherit'. 'content' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface. |
 | `horizontal-alignment` | `string` | Alignment of the text within the block: 'left' \| 'center' \| 'right' (default: 'left'). Aligns the words; `horizontal-alignment` on nldd-container moves the box. |
 
 **Slots**

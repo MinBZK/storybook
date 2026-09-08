@@ -27,7 +27,7 @@
  * @attr {string} size - Text size on the body scale: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' (default: 'md')
  * @attr {string} weight - Font weight: 'regular' | 'medium' | 'bold' (default: 'regular'). With 'bold' a slotted `<strong>` no longer stands out: there is nothing bolder in the scale.
  * @attr {string} line-height - Line height: 'flat' | 'tight' | 'snug' | 'loose' (default: 'snug')
- * @attr {string} color - Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'default' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface.
+ * @attr {string} color - Text color: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit'. 'content' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface.
  * @attr {string} horizontal-alignment - Alignment of the text within the block: 'left' | 'center' | 'right' (default: 'left'). Aligns the words; `horizontal-alignment` on nldd-container moves the box.
  *
  * @slot - The text. Inline elements work as they are: `<strong>` and `<b>` take the bold weight from the scale, `<a>`, `<em>` and components such as `nldd-tag` are left alone.
@@ -42,7 +42,7 @@ import { template } from './text.template.js';
 type Size = 'xxs' | 'xs' | 'sm' | 'md' | 'lg';
 type Weight = 'regular' | 'medium' | 'bold';
 type LineHeight = 'flat' | 'tight' | 'snug' | 'loose';
-type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit';
+type Color = 'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit';
 type HorizontalAlignment = 'left' | 'center' | 'right';
 
 @customElement('nldd-text')
@@ -62,8 +62,8 @@ export class NLDDText extends LitElement {
 	})
 	lineHeight: LineHeight = 'snug';
 
-	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
-	color: Color = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<Color>('content') })
+	color: Color = 'content';
 
 	@property({
 		reflect: true,

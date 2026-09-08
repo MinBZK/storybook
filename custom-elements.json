@@ -4941,7 +4941,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -4989,9 +4989,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'default' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface."
+              "description": "Text color: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit'. 'content' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface."
             },
             {
               "name": "horizontal-alignment",
