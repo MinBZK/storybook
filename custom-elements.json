@@ -3638,7 +3638,7 @@
               "type": {
                 "text": "IconSize"
               },
-              "default": "''",
+              "default": "'full'",
               "attribute": "size",
               "reflects": true
             },
@@ -3689,9 +3689,9 @@
               "type": {
                 "text": "IconSize"
               },
-              "description": "`full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.",
+              "description": "`full` (the default) fills the container. `inherit` sizes the icon to the surrounding text (1em) and drops it onto that text's own line, for an icon set in a line of running text. Or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96).",
               "name": "size",
-              "default": "''",
+              "default": "'full'",
               "fieldName": "size"
             },
             {

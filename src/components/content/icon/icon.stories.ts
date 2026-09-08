@@ -13,7 +13,8 @@ const aliasSet = new Set(Object.keys(aliases));
 const iconNames = ICONS.filter(name => !aliasSet.has(name));
 const allIconNames = ICONS;
 
-const SIZE_OPTIONS = ['(inherit)', '16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'];
+const FIXED_SIZES = ['16', '20', '24', '28', '32', '40', '44', '48', '56', '64', '80', '96'];
+const SIZE_OPTIONS = ['full', 'inherit', ...FIXED_SIZES];
 
 const FUNCTIONAL_COLORS = ['primary-content', 'secondary-content', 'accent', 'critical', 'warning', 'success'] as const;
 const RIJKSKLEUREN = [
@@ -51,9 +52,8 @@ export default {
 		size: {
 			control: 'select',
 			options: SIZE_OPTIONS,
-			mapping: { '(inherit)': '' },
-			description: 'Vaste maat (spacer-aligned). `(inherit)` = vult parent.',
-			table: { defaultValue: { summary: '(inherit)' } },
+			description: '`full` vult de container, `inherit` schaalt mee met de omringende tekst (1em), of een vaste spacer-uitgelijnde maat in px.',
+			table: { defaultValue: { summary: 'full' } },
 		},
 		color: {
 			control: 'select',
@@ -113,10 +113,50 @@ export const InheritFromParent = {
 	},
 };
 
+/**
+ * `size="inherit"` zet het icoon op `1em`, dus het schaalt mee met de tekst
+ * eromheen in plaats van met de container. Gebruik het voor een icoon dat in
+ * een regel lopende tekst staat: bij een vaste maat in px loopt het uit de pas
+ * zodra de tekst groter of kleiner wordt, en dat zie je pas bij de eerste
+ * lezer die inzoomt.
+ *
+ * Het icoon krijgt er een `vertical-align: -0.15em` bij. Zonder die correctie
+ * komt de onderrand van het vierkant op de basislijn te staan, terwijl de tekst
+ * zelf deels onder die lijn doorloopt, en dan rijdt het icoon zichtbaar omhoog.
+ *
+ * Hoe zwaar een icoon in de regel oogt hangt af van de tekening, niet van de
+ * maat. Het vak is altijd `1em`, maar een vinkje vult daarvan maar de helft in
+ * de hoogte en driekwart in de breedte, terwijl een slot of een klok het vak
+ * bijna volmaakt. Vandaar dat hieronder verschillende vormen naast elkaar
+ * staan: één icoon zegt weinig over hoe de rest zich houdt.
+ */
+export const MeeMetDeTekst = {
+	name: 'Mee met de tekst (size="inherit")',
+	render: () => {
+		const line = (font: string) => html`
+			<p style="font: ${font}; margin: 0;">
+				Deze aanvraag is <nldd-icon name="check-mark" size="inherit" color="success"></nldd-icon> goedgekeurd,
+				staat <nldd-icon name="lock-closed" size="inherit"></nldd-icon> vast sinds
+				<nldd-icon name="calendar-event" size="inherit"></nldd-icon> 12 maart, en loopt af over
+				<nldd-icon name="clock" size="inherit"></nldd-icon> 3 dagen.
+				<nldd-icon name="info-circle" size="inherit" color="accent"></nldd-icon> Verlengen kan tot die datum.
+			</p>
+		`;
+		return html`
+			<div style="display: flex; flex-direction: column; gap: 20px; max-width: 560px;">
+				${line('var(--primitives-font-body-sm-regular-tight)')}
+				${line('var(--primitives-font-body-md-regular-tight)')}
+				${line('var(--primitives-font-body-lg-regular-tight)')}
+			</div>
+		`;
+	},
+	parameters: { controls: { disable: true } },
+};
+
 export const Sizes = {
 	render: () => html`
 		<div style="display: flex; gap: 24px; align-items: end;">
-			${SIZE_OPTIONS.filter(s => s !== '(inherit)').map(size => html`
+			${FIXED_SIZES.map(size => html`
 				<div style="text-align: center;">
 					<nldd-icon name="heart" size=${size}></nldd-icon>
 					<div style="font: var(--primitives-font-body-sm-regular-tight); margin-top: 8px;">${size}px</div>
@@ -182,12 +222,16 @@ export const Box = {
 			<nldd-icon name="puzzle-piece" size="40" box custom-color="#a90061"></nldd-icon>
 			<nldd-icon name="tulip" size="40" box custom-color="#f5c400"></nldd-icon>
 		</div>
+		<nldd-spacer size="24"></nldd-spacer>
+		<div style="width: 120px; height: 200px; outline: 1px dashed #bbb;">
+			<nldd-icon name="heart" box color="accent"></nldd-icon>
+		</div>
 	`,
 	parameters: {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Met `box` staat het icoon op een gevuld vlak. De kleurvraag draait daarmee om: `color` en `custom-color` kleuren het vlak, en het glyph krijgt de kleur die daarop leesbaar is, wit of zwart, gekozen op luminantie. Dat paar is precies wat je zelf niet wilt kiezen. `size` meet dan het vlak: het glyph is vier vijfde daarvan, de hoekradius een vijfde. De laatste twee tonen dat de flip ook werkt bij een kleur die het systeem niet kent.',
+				story: 'Met `box` staat het icoon op een gevuld vlak. De kleurvraag draait daarmee om: `color` en `custom-color` kleuren het vlak, en het glyph krijgt de kleur die daarop leesbaar is, wit of zwart, gekozen op luminantie. Dat paar is precies wat je zelf niet wilt kiezen. `size` meet dan het vlak: het glyph is vier vijfde daarvan, de hoekradius een vijfde. De laatste twee tonen dat de flip ook werkt bij een kleur die het systeem niet kent. Onderaan een vlak zonder `size` in een container van 120×200: het volgt de breedte en blijft vierkant in plaats van uit te rekken naar de hoogte van de container. Net als een icoon zonder `box`, dat z\'n vorm ontleent aan de tekening erin.',
 			},
 		},
 	},

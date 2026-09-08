@@ -32,7 +32,15 @@ export const iconStyles = css`
 	/* # Size */
 
 	:host([size="full"]) { --_size: 100%; }
-	:host([size="inherit"]) { --_size: 1em; }
+	/* An inline-flex box sits with its bottom edge on the baseline, which rides
+	   high against text that hangs below it. The nudge drops it back onto the
+	   line. Below body sizes it is worth less than half a pixel; it earns its
+	   keep in a heading. */
+	:host([size="inherit"]) {
+		--_size: 1em;
+
+		vertical-align: -0.15em;
+	}
 
 	:host([size="16"]) { --_size: var(--primitives-space-16); }
 	:host([size="20"]) { --_size: var(--primitives-space-20); }
@@ -111,7 +119,10 @@ export const iconStyles = css`
 
 		border-radius: calc(var(--_size) / 5);
 		background-color: currentColor;
-		height: var(--_size);
+		/* Not height: the box is square, and at size="full" a height of 100%
+		   takes the parent's height, which stretches it in any parent that is
+		   not itself square. */
+		aspect-ratio: 1;
 		justify-content: center;
 	}
 

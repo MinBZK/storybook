@@ -13,7 +13,7 @@ export const ICONS: string[] = [
 	...Object.keys(aliases),
 ].sort();
 
-export type IconSize = '' | 'full' | 'inherit' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
+export type IconSize = 'full' | 'inherit' | '16' | '20' | '24' | '28' | '32' | '40' | '44' | '48' | '56' | '64' | '80' | '96';
 
 export type IconColor =
 	| ''
@@ -50,7 +50,7 @@ export type IconColor =
  * @element nldd-icon
  *
  * @attr {string} name - The name of the icon to display
- * @attr {string} size - `full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.
+ * @attr {string} size - `full` (the default) fills the container. `inherit` sizes the icon to the surrounding text (1em) and drops it onto that text's own line, for an icon set in a line of running text. Or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96).
  * @attr {string} color - Functional (`primary-content`, `secondary-content`, `accent`, `critical`, `warning`, `success`) or rijkskleur (`lintblauw`, `donkerblauw`, `hemelblauw`, `lichtblauw`, `paars`, `violet`, `robijnrood`, `roze`, `rood`, `oranje`, `donkergeel`, `geel`, `donkerbruin`, `bruin`, `donkergroen`, `groen`, `mosgroen`, `mintgroen`). Empty = inherit `color` from parent.
  * @attr {string} custom-color - A color of its own, as any CSS color value ('#a90061', 'oklch(0.6 0.2 20)', 'var(--brand-cable-blue)'). For a color the design system cannot know. It wins over `color`.
  * @attr {boolean} box - Draw the icon on a filled square. `color` and `custom-color` then paint the box and the glyph takes the contrasting color, and `size` measures the box: the glyph is four fifths of it, the corner radius a fifth.
@@ -70,8 +70,8 @@ export class NLDDIcon extends LitElement {
 	@property({ type: String })
 	name = 'circle-dashed';
 
-	@property({ reflect: true, converter: reflectNonDefault<IconSize>('') })
-	size: IconSize = '';
+	@property({ reflect: true, converter: reflectNonDefault<IconSize>('full') })
+	size: IconSize = 'full';
 
 	@property({ reflect: true, converter: reflectNonDefault<IconColor>('') })
 	color: IconColor = '';
