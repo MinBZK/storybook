@@ -40,11 +40,10 @@ export default {
 	argTypes: {
 		size: {
 			control: 'select',
-			options: ['(geen)', 'xs', 'sm', 'md', 'lg', 'inherit'],
-			mapping: { '(geen)': '' },
-			description: 'Tekstgrootte. Leeg of `inherit` = erven van omgeving (display: inline). Icons werken in beide modi.',
+			options: ['inherit', 'xs', 'sm', 'md', 'lg'],
+			description: '`inherit` volgt de tekst eromheen en zet de link inline, zodat hij meeloopt in een alinea. `xs` tot `lg` leggen een maat vast en schakelen naar inline-flex. Icons werken in beide modi.',
 			table: {
-				defaultValue: { summary: '(geen)' },
+				defaultValue: { summary: 'inherit' },
 			},
 		},
 		text: {
@@ -55,20 +54,18 @@ export default {
 			name: 'start-icon',
 			control: 'select',
 			options: ['(geen)', ...ICONS],
-			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: '(geen)' },
+				defaultValue: { summary: 'inherit' },
 			},
 		},
 		endIcon: {
 			name: 'end-icon',
 			control: 'select',
 			options: ['(geen)', ...ICONS],
-			mapping: { '(geen)': '' },
 			description: 'Icoon na de tekst',
 			table: {
-				defaultValue: { summary: '(geen)' },
+				defaultValue: { summary: 'inherit' },
 			},
 		},
 		href: {
@@ -78,7 +75,6 @@ export default {
 		target: {
 			control: 'select',
 			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
-			mapping: { '(geen)': '' },
 			description: 'Link target (stelt rel automatisch bij voor _blank)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},

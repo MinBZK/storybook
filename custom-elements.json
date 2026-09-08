@@ -31861,8 +31861,9 @@
               "kind": "field",
               "name": "size",
               "type": {
-                "text": "Size | undefined"
+                "text": "Size"
               },
+              "default": "'inherit'",
               "attribute": "size",
               "reflects": true
             },
@@ -31969,10 +31970,11 @@
             {
               "name": "size",
               "type": {
-                "text": "Size | undefined"
+                "text": "Size"
               },
+              "default": "'inherit'",
               "fieldName": "size",
-              "description": "Text size: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Empty = inherit."
+              "description": "Text size: 'inherit' (the default) follows the surrounding text and lays the link out inline, so it wraps in running prose. 'xs' | 'sm' | 'md' | 'lg' pin a size and switch to inline-flex, which baseline-aligns a start or end icon with an explicit gap."
             },
             {
               "name": "text",

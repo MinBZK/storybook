@@ -2296,7 +2296,7 @@ Hyperlink component with two modes: 1. **Standalone (sized)**: set `size="xs"|"s
 | `href` | `string` | Link target |
 | `target` | `string` | Link target (e.g. '_blank'); adjusts rel automatically. With '_blank' the link adds a visually hidden "Opent in nieuw tabblad" announcement for screen readers (WCAG 2.1 SC 3.2.2). |
 | `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' with target='_blank' |
-| `size` | `string` | Text size: 'xs' \| 'sm' \| 'md' \| 'lg' \| 'inherit'. Empty = inherit. |
+| `size` | `string` | Text size: 'inherit' (the default) follows the surrounding text and lays the link out inline, so it wraps in running prose. 'xs' \| 'sm' \| 'md' \| 'lg' pin a size and switch to inline-flex, which baseline-aligns a start or end icon with an explicit gap. |
 | `text` | `string` | Link text (alternative to the default slot) |
 | `start-icon` | `string` | Icon before the text |
 | `end-icon` | `string` | Icon after the text |
