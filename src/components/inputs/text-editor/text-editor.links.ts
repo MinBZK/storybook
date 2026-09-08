@@ -22,12 +22,16 @@ import '../../content/icon/icon.js';
 export type OpenInNewTabLabel = (url: string) => string;
 
 class LinkOpenWidget extends WidgetType {
-	constructor(readonly href: string, readonly label: OpenInNewTabLabel) {
+	/** `bare`: the link is a plain URL, which text typed at its end extends, so
+	 *  the caret has a place on the URL's side of the badge. A `[text](url)` link
+	 *  ends at its `)`; text typed there lands outside it, and the badge has one
+	 *  side only: after it. */
+	constructor(readonly href: string, readonly label: OpenInNewTabLabel, readonly bare: boolean) {
 		super();
 	}
 
 	eq(other: LinkOpenWidget): boolean {
-		return other.href === this.href;
+		return other.href === this.href && other.bare === this.bare;
 	}
 
 	toDOM(): HTMLElement {
@@ -60,7 +64,7 @@ class LinkOpenWidget extends WidgetType {
 		const badge = dom.getBoundingClientRect();
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
 		const cs = getComputedStyle(dom);
-		const x = side < 0 ? badge.left - parseFloat(cs.marginLeft) : badge.right + parseFloat(cs.marginRight);
+		const x = side < 0 && this.bare ? badge.left - parseFloat(cs.marginLeft) : badge.right + parseFloat(cs.marginRight);
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
@@ -168,8 +172,8 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 	// side -1 draws the badge before the caret, so the caret at the link end sits
 	// to the RIGHT of the badge — text typed there lands after it, not wedged
 	// between the link and the badge.
-	const badge = (to: number, href: string): void =>
-		builder.add(to, to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
+	const badge = (to: number, href: string, bare: boolean): void =>
+		builder.add(to, to, Decoration.widget({ widget: new LinkOpenWidget(href, label, bare), side: -1 }));
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
 			from,
@@ -177,7 +181,7 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 			enter: (node) => {
 				if (node.name === 'Link') {
 					const href = hrefOf(view.state, node.node, refs);
-					if (href) badge(node.to, href);
+					if (href) badge(node.to, href, false);
 					return;
 				}
 				// Bare/autolinked URL: a standalone URL node (GFM turns a plainly
@@ -185,7 +189,7 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 				// [text](url) link — that URL is already handled via its Link above.
 				if (node.name === 'URL' && !inLinkContext(node.node)) {
 					const href = bareHref(view.state, node.node);
-					if (href) badge(node.to, href);
+					if (href) badge(node.to, href, true);
 				}
 			},
 		});
@@ -210,4 +214,13 @@ export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decoration
 		},
 		{ decorations: (plugin) => plugin.decorations }
 	);
+}
+
+/** Whether a bare URL ends at `pos`: the one place where the caret has a stop on
+ *  either side of a badge, since text typed there extends the URL. */
+export function bareUrlEndsAt(state: EditorState, pos: number): boolean {
+	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, -1); n; n = n.parent) {
+		if (n.name === 'URL' && n.to === pos) return !inLinkContext(n);
+	}
+	return false;
 }
