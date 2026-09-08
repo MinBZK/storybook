@@ -51,27 +51,22 @@ export default {
 		height: {
 			control: 'text',
 			description: 'CSS height (standaard: content height)',
-			table: { defaultValue: { summary: '' } },
 		},
 		top: {
 			control: 'text',
 			description: 'CSS top positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		right: {
 			control: 'text',
 			description: 'CSS right positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		bottom: {
 			control: 'text',
 			description: 'CSS bottom positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		left: {
 			control: 'text',
 			description: 'CSS left positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',

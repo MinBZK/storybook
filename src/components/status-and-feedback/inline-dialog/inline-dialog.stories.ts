@@ -52,13 +52,11 @@ export default {
 		text: {
 			control: 'text',
 			description: 'Hoofdtekst',
-			table: { defaultValue: { summary: '' } },
 		},
 		supportingText: {
 			name: 'supporting-text',
 			control: 'text',
 			description: 'Ondersteunende tekst onder de heading',
-			table: { defaultValue: { summary: '' } },
 		},
 		icon: {
 			control: 'select',

@@ -69,17 +69,11 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
-			table: {
-				defaultValue: { summary: '' },
-			},
 		},
 		maxWidth: {
 			name: 'max-width',
 			control: 'text',
 			description: 'Maximale breedte (CSS-lengte, bijv. "320px"). Combineert met width="full": de knop volgt de container tot aan die grens. Tekst die niet past wordt afgekapt met een ellipsis.',
-			table: {
-				defaultValue: { summary: '' },
-			},
 		},
 		expandable: {
 			name: 'expandable',

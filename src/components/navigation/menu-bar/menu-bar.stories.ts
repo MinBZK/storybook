@@ -13,7 +13,7 @@ export default {
 	argTypes: {
 		compact: { control: 'boolean', description: 'Propageert compact naar slotted items', table: { defaultValue: { summary: false } } },
 		overflowText: { name: 'overflow-text', control: 'text', description: 'Tekst voor de overflow button', table: { defaultValue: { summary: 'Meer opties' } } },
-		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'aria-label voor de nav landmark', table: { defaultValue: { summary: '' } } },
+		accessibleLabel: { name: 'accessible-label', control: 'text', description: 'aria-label voor de nav landmark' },
 	},
 };
 

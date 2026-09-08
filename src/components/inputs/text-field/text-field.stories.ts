@@ -50,7 +50,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		name: {
 			control: 'text',
@@ -59,12 +58,10 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Input value',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder text',
-			table: { defaultValue: { summary: '' } },
 		},
 		type: {
 			control: 'select',
@@ -90,7 +87,6 @@ export default {
 		autocomplete: {
 			control: 'text',
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "name", "email", "off")',
-			table: { defaultValue: { summary: '' } },
 		},
 		noSpellcheck: {
 			name: 'no-spellcheck',

@@ -26,13 +26,11 @@ export default {
 		text: {
 			control: 'text',
 			description: 'Titel van de callout',
-			table: { defaultValue: { summary: '' } },
 		},
 		supportingText: {
 			name: 'supporting-text',
 			control: 'text',
 			description: 'Ondersteunende tekst onder de titel',
-			table: { defaultValue: { summary: '' } },
 		},
 		placement: {
 			control: 'select',

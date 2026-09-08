@@ -305,7 +305,9 @@ Zet het component ook in de tabellen in `form-field.test.ts`, die alle invoercom
 - **`args` staat altijd vóór `argTypes`** in de default export
 - **Args keys:** altijd camelCase (bijv. `startIcon`, `fullWidth`)
 - **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
-- **`table.defaultValue.summary:`** altijd invullen met de default waarde
+- **`table.defaultValue.summary:`** invullen zodra er een default is die iets zegt: `md`, `false`, `content`, of de vertaling waar het component op terugvalt (`Kruimelpad`, `Meer opties`, `Tabs`). Die laatste is de belangrijkste, want de kolom beantwoordt de vraag "wat krijg ik als ik dit niet zet". Bij een toegankelijke naam is het antwoord daarop geen detail.
+
+  **Is de default leeg, laat de regel dan weg.** Storybook toont dan een streepje, en dat is precies wat je bedoelt. Schrijf er geen `summary: ''`, want `""` en `-` zijn dan twee manieren om hetzelfde te zeggen. Bij een select met een `(geen)`-optie zet je `(geen)` in de kolom, zodat de kolom de optie noemt die je kiest om terug te gaan.
 - **`description:`** korte Nederlandse beschrijving
 - **Icon controls:** gebruik `control: 'select'` met `options: ['(geen)', ...ICONS]` plus `mapping: { '(geen)': '' }` — importeer `ICONS` uit `../../content/icon/icon.ts`. Nooit een text input voor iconen.
 - **Alias-naam heeft voorkeur:** kies bij het *gebruiken* van een icoon (`icon=`, `start-icon=`, in stories én consumers) de **alias-naam** boven de canonieke naam als er een alias bestaat — bijv. `harvest` i.p.v. `wheat`, `info` i.p.v. `info-circle`, `new-account` i.p.v. `person-circle-badge-plus`. Aliassen zijn betekenisvoller en stabieler; ze staan in `src/components/content/icon/icon-aliases.js`.

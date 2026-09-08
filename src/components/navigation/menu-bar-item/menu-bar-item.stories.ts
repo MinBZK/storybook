@@ -23,7 +23,7 @@ export default {
 		iconOnly: { name: 'icon-only', control: 'boolean', description: 'Verberg tekst visueel (altijd)', table: { defaultValue: { summary: false } } },
 		text: { control: 'text', description: 'Tekst van het item' },
 		icon: { control: 'select', options: ['(geen)', ...ICONS], mapping: { '(geen)': '' }, description: 'Icon naam (nldd-icon)', table: { defaultValue: { summary: '(geen)' } } },
-		href: { control: 'text', description: 'Optionele link URL', table: { defaultValue: { summary: '' } } },
+		href: { control: 'text', description: 'Optionele link URL' },
 		current: { control: 'boolean', description: 'Markeer als actief/huidig', table: { defaultValue: { summary: false } } },
 		contentPriority: {
 			name: 'content-priority',

@@ -132,7 +132,6 @@ export const Breedte = {
 		width: {
 			control: 'text',
 			description: 'Expliciete breedte (any CSS length, bv. "320px"). Leeg = mee met de inhoud.',
-			table: { defaultValue: { summary: '' } },
 		},
 	},
 };

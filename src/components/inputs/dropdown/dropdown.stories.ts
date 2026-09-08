@@ -29,7 +29,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		valid: {
 			control: 'boolean',

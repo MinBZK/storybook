@@ -28,7 +28,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		showSearchButton: {
 			name: 'show-search-button',
@@ -43,7 +42,6 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Huidige zoekwaarde',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',

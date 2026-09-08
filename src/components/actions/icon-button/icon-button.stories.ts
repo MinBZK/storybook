@@ -58,9 +58,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Width mode: "full" (stretches to container) or any CSS length (e.g. "240px")',
-			table: {
-				defaultValue: { summary: '' },
-			},
 		},
 		hideLgText: {
 			name: 'hide-lg-text',

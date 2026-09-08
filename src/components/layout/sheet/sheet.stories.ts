@@ -33,12 +33,10 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Breedte van side sheets (left/right) als CSS length, bv. `480px` of `32rem`. Genegeerd op sm en voor `placement="bottom"`. Geclamped op `100vw - 2 * inset`.',
-			table: { defaultValue: { summary: '' } },
 		},
 		height: {
 			control: 'text',
 			description: 'Hoogte van bottom sheets (en van elke sheet op sm). `full` (default), `fit-content`, of een CSS length/percentage zoals `50dvh`, `480px`, `50%`. Geclamped op `100dvh - top-inset`. Genegeerd voor side sheets op md+.',
-			table: { defaultValue: { summary: '' } },
 		},
 		modeless: {
 			control: 'boolean',

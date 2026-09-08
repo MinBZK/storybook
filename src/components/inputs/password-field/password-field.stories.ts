@@ -32,7 +32,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		name: {
 			control: 'text',
@@ -41,7 +40,6 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Input value',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',

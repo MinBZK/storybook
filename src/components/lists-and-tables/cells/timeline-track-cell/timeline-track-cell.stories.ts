@@ -63,13 +63,11 @@ export default {
 		text: {
 			control: 'text',
 			description: 'Cijfer of korte tekst in de stip',
-			table: { defaultValue: { summary: '' } },
 		},
 		icon: {
 			control: 'select',
 			options: ['', ...ICONS],
 			description: 'Icoon in de stip; wint van text',
-			table: { defaultValue: { summary: '' } },
 		},
 	},
 };

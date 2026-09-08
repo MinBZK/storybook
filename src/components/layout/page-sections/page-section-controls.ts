@@ -16,7 +16,6 @@ const paddingControl = (description: string) => ({
 	control: { type: 'select' as const },
 	options: PADDING_OPTIONS,
 	description,
-	table: { defaultValue: { summary: '' } },
 });
 
 /**
@@ -41,12 +40,10 @@ export const pageSectionArgTypes = {
 	width: {
 		control: 'text',
 		description: 'Body max-width: "full" verwijdert de constraint, of een CSS length (bv. "480px") overschrijft de default max-width',
-		table: { defaultValue: { summary: '' } },
 	},
 	height: {
 		control: 'text',
 		description: 'Minimale sectiehoogte (CSS length, bv. "400px", "100dvh") — net als width op de body-max-width, mapt height op min-height van de host',
-		table: { defaultValue: { summary: '' } },
 	},
 	'padding-block': paddingControl('Block (boven+onder) padding-override (token 0–96; "0" verwijdert de padding)'),
 	'padding-top': paddingControl('Override van alleen de bovenpadding'),
