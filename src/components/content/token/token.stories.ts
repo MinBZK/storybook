@@ -1,5 +1,5 @@
 import { action } from 'storybook/actions';
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './token.js';
 import '../../actions/menu/menu.js';
 
@@ -56,6 +56,7 @@ export default {
 	},
 	args: {
 		text: 'Token',
+		dismissText: '',
 		control: 'none',
 		disabled: false,
 	},
@@ -64,6 +65,7 @@ export default {
 const Template = (args: Record<string, any>) => html`
 	<nldd-token
 		text=${args.text}
+		dismiss-text=${args.dismissText || nothing}
 		control=${args.control}
 		?disabled=${args.disabled}
 		@dismiss=${action('dismiss')}
@@ -72,7 +74,6 @@ const Template = (args: Record<string, any>) => html`
 
 export const Standaard = {
 	render: Template,
-	args: {},
 };
 
 

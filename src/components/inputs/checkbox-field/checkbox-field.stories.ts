@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './checkbox-field.js';
 
 /**
@@ -60,6 +60,7 @@ export default {
 	},
 	args: {
 		label: 'Checkbox field',
+		name: '',
 		value: 'on',
 		checked: false,
 		indeterminate: false,
@@ -69,9 +70,10 @@ export default {
 	},
 };
 
-const Template = ({ label, value, checked, indeterminate, invalid, disabled, required }: Record<string, any>) => html`
+const Template = ({ label, name, value, checked, indeterminate, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-checkbox-field
 		label=${label}
+		name=${name || nothing}
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?invalid=${invalid}
