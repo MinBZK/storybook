@@ -54,18 +54,20 @@ export default {
 			name: 'start-icon',
 			control: 'select',
 			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon voor de tekst',
 			table: {
-				defaultValue: { summary: 'inherit' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		endIcon: {
 			name: 'end-icon',
 			control: 'select',
 			options: ['(geen)', ...ICONS],
+			mapping: { '(geen)': '' },
 			description: 'Icoon na de tekst',
 			table: {
-				defaultValue: { summary: 'inherit' },
+				defaultValue: { summary: '(geen)' },
 			},
 		},
 		href: {
@@ -118,10 +120,6 @@ const Template = ({ size, text, startIcon, endIcon, href, target, accessibleLabe
 
 export const Default = {
 	render: Template,
-	args: {
-		text: 'Bekijk meer',
-		href: '#',
-	},
 };
 
 export const Sizes = {
