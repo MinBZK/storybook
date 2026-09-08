@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './breadcrumbs.js';
 
 export default {
@@ -19,8 +19,8 @@ export default {
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
-			description: 'Override van het aria-label op de <nav> (anders i18n-default)',
-			table: { defaultValue: { summary: '(geen)' } },
+			description: 'Overschrijft het aria-label op de `<nav>`. Leeg laten geeft de vertaling, standaard "Kruimelpad".',
+			table: { defaultValue: { summary: 'Kruimelpad' } },
 		},
 	},
 };
@@ -28,7 +28,7 @@ export default {
 export const Standaard = {
 	render: (args: Record<string, any>) => html`
 		<nldd-breadcrumbs
-			accessible-label=${args.accessibleLabel || ''}
+			accessible-label=${args.accessibleLabel || nothing}
 		>
 			<nldd-breadcrumbs-item text="Home" href="/"></nldd-breadcrumbs-item>
 			<nldd-breadcrumbs-item text="Documentatie" href="/docs/"></nldd-breadcrumbs-item>
