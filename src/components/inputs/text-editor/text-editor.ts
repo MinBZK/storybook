@@ -18,7 +18,12 @@
  * setHeading/setList for picker-style "set" semantics), reads the active formats
  * with getState(), listens to the nldd-text-editor-state event to render toggle
  * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
- * bound out of the box. Commands keep focus on the editor. An @-mention typeahead
+ * bound out of the box. Commands keep focus on the editor. An inline toggle wraps
+ * the selected text (whitespace at its edges stays outside the markers), unwraps
+ * a run the caret is in, and with the caret at the very end of a run steps out
+ * of it. Bold that a typed space has broken (`**woord **`) keeps its styling
+ * while the caret is inside; the space moves outside the markers when the caret
+ * leaves. An @-mention typeahead
  * (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay
  * (annotations) marks ranges with a dashed underline, light tint and a count badge
  * without touching the underlying text.
@@ -67,6 +72,7 @@ import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
 import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
+import { repairHeldEmphasis } from './text-editor.emphasis.js';
 import { annotations as annotationExtension, setAnnotations, pasteAnnotations, currentAnnotations, type Annotation } from './text-editor.annotations.js';
 import { orderedListRenumber } from './text-editor.ordered-list.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
@@ -297,7 +303,10 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				focus: () => {
 					this._valueAtFocus = this.value;
 				},
-				blur: () => {
+				blur: (_event, view) => {
+					// An emphasis held together while it was being typed is closed
+					// properly first, so the committed value renders the way it looked.
+					repairHeldEmphasis(view);
 					if (this.value !== this._valueAtFocus) this._emitChange();
 				},
 				// Triple-click selects the whole paragraph (the doc line), like macOS.

@@ -6,6 +6,7 @@ import { Prec, StateField, type EditorState, type Extension, type Range } from '
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
 import { inLinkContext } from './text-editor.links.js';
+import { heldEmphasis, heldEmphasisField } from './text-editor.emphasis.js';
 import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
@@ -202,6 +203,14 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 			},
 		});
 	}
+	// An emphasis the parser has let go of while the caret is still between its
+	// markers keeps its styling, markers dimmed, until the hold ends (#213).
+	const held = view.state.field(heldEmphasisField, false);
+	if (held && !held.live) {
+		const len = held.marker.length;
+		ranges.push(classDeco(NODE_CLASS[held.name]).range(held.from, held.to));
+		ranges.push(dimDeco.range(held.from, held.from + len), dimDeco.range(held.to - len, held.to));
+	}
 	return Decoration.set(ranges, true);
 }
 
@@ -342,6 +351,7 @@ const mentionAtomicRanges = EditorView.atomicRanges.of(
 export const markdownEditing: Extension = [
 	markdown({ extensions: GFM }),
 	markDecorationPlugin,
+	heldEmphasis,
 	hangingIndentField,
 	// Prec.highest keeps the mention chip the innermost decoration, so it nests inside
 	// a heading/bold run and inherits its font (scaling with it) instead of sitting at

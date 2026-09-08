@@ -16770,7 +16770,7 @@
               }
             }
           ],
-          "description": "Wrap (or, if already wrapped, unwrap) each selection range with `marker`."
+          "description": "Wrap each selection range with `marker`, or unwrap it when it is already\nwrapped. A caret at the very end of the wrapped text steps out of the run\ninstead: bold, type, bold ends with the caret after the bold, ready for the\nnext word, not with the bold undone."
         },
         {
           "kind": "function",
@@ -17176,6 +17176,68 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.cursor.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "drawnAssoc",
+          "return": {
+            "type": {
+              "text": "-1 | 1"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            },
+            {
+              "name": "head",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "assoc",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and either the arrival direction or a backward delete says\n\"before\"."
+        },
+        {
+          "kind": "variable",
+          "name": "stableCursor",
+          "type": {
+            "text": "Extension"
+          },
+          "default": "[cursorLayer, theme]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "drawnAssoc",
+          "declaration": {
+            "name": "drawnAssoc",
+            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "stableCursor",
+          "declaration": {
+            "name": "stableCursor",
+            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/inputs/text-editor/text-editor.drag.ts",
       "declarations": [
         {
@@ -17207,6 +17269,131 @@
           "declaration": {
             "name": "dragToMove",
             "module": "src/components/inputs/text-editor/text-editor.drag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.emphasis.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "EMPHASIS_MARKERS",
+          "type": {
+            "text": "ReadonlyMap<string, string>"
+          },
+          "default": "new Map([ ['StrongEmphasis', '**'], ['Emphasis', '*'], ['Strikethrough', '~~'], ])",
+          "description": "The emphasis nodes that live by the flanking rules, with the marker the\neditor writes for them. Inline code is not among them: a code span keeps its\nwhitespace and never fails to close."
+        },
+        {
+          "kind": "variable",
+          "name": "holdEmphasis",
+          "description": "Starts a hold on markers just written around an empty selection: `****`\nparses as nothing, so there is no node to remember, but what is typed\nbetween them is meant to be bold."
+        },
+        {
+          "kind": "variable",
+          "name": "heldEmphasisField",
+          "description": "The emphasis the caret is in: the tree's own while it parses, and the held\none, mapped along through edits, once it does not. Null outside any."
+        },
+        {
+          "kind": "function",
+          "name": "repairChangesFor",
+          "return": {
+            "type": {
+              "text": "ChangeSpec[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "held",
+              "type": {
+                "text": "HeldEmphasis"
+              }
+            }
+          ],
+          "description": "The changes that move edge whitespace out of `held`, for a command that\nsteps out of the run itself. Empty when there is nothing to move."
+        },
+        {
+          "kind": "function",
+          "name": "repairHeldEmphasis",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            }
+          ],
+          "description": "Ends a hold at once, for a blur. The display must be right while the editor\nis unfocused, and the value it commits must be markdown that renders the way\nit looked."
+        },
+        {
+          "kind": "variable",
+          "name": "heldEmphasis",
+          "type": {
+            "text": "Extension"
+          },
+          "default": "[heldEmphasisField, repairOnRelease]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EMPHASIS_MARKERS",
+          "declaration": {
+            "name": "EMPHASIS_MARKERS",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "holdEmphasis",
+          "declaration": {
+            "name": "holdEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "heldEmphasisField",
+          "declaration": {
+            "name": "heldEmphasisField",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "repairChangesFor",
+          "declaration": {
+            "name": "repairChangesFor",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "repairHeldEmphasis",
+          "declaration": {
+            "name": "repairHeldEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "heldEmphasis",
+          "declaration": {
+            "name": "heldEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
           }
         }
       ]
@@ -17307,7 +17494,7 @@
           "type": {
             "text": "Extension"
           },
-          "default": "[ markdown({ extensions: GFM }), markDecorationPlugin, hangingIndentField, // Prec.highest keeps the mention chip the innermost decoration, so it nests inside // a heading/bold run and inherits its font (scaling with it) instead of sitting at // the base size as an outer sibling. Prec.highest(mentionChipField), mentionAtomicRanges, ]",
+          "default": "[ markdown({ extensions: GFM }), markDecorationPlugin, heldEmphasis, hangingIndentField, // Prec.highest keeps the mention chip the innermost decoration, so it nests inside // a heading/bold run and inherits its font (scaling with it) instead of sitting at // the base size as an outer sibling. Prec.highest(mentionChipField), mentionAtomicRanges, ]",
           "description": "Markdown language (with GFM) plus the hybrid inline-styling decorations."
         },
         {
@@ -17637,7 +17824,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {

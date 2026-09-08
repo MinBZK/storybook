@@ -2,6 +2,7 @@ import type { EditorView } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
+import { EMPHASIS_MARKERS, heldEmphasisField, holdEmphasis, repairChangesFor } from './text-editor.emphasis.js';
 
 /* Markdown editing operations for the headless command API. Each works on the
  * current selection (multi-range aware) and leaves focus on the editor, so a
@@ -67,34 +68,62 @@ function enclosingInline(view: EditorView, pos: number, nodeName: string): Synta
 	return left && right && left.from === right.from && left.to === right.to ? right : null;
 }
 
-/** Wrap (or, if already wrapped, unwrap) each selection range with `marker`. */
+/** Wrap each selection range with `marker`, or unwrap it when it is already
+ *  wrapped. A caret at the very end of the wrapped text steps out of the run
+ *  instead: bold, type, bold ends with the caret after the bold, ready for the
+ *  next word, not with the bold undone. */
 export function toggleInlineWrap(view: EditorView, marker: string, nodeName: string): void {
 	// CodeMirror's `readOnly` facet only gates its own built-in commands, not a raw
 	// `view.dispatch`, so every editing helper here must refuse a read-only view
 	// itself — otherwise the command API and the Mod-b/i/e/k keymap would mutate a
 	// read-only (or disabled) editor.
 	if (view.state.readOnly) return;
+	const { state } = view;
 	const len = marker.length;
-	view.dispatch(view.state.changeByRange((range) => {
-		const wrap = enclosing(view, range.from, nodeName);
+	const held = state.field(heldEmphasisField, false);
+	view.dispatch(state.changeByRange((range) => {
+		// A drag or a double-click takes the space after a word along, and
+		// `**woord **` is not bold: a closing run may not follow whitespace. So the
+		// markers go around the text and the whitespace stays where it was (#212).
+		const text = state.sliceDoc(range.from, range.to);
+		const lead = /^\s*/.exec(text)![0].length;
+		if (!range.empty && lead === text.length) return { range };
+		const from = range.from + lead;
+		const to = range.to - /\s*$/.exec(text)![0].length;
+		// The run the range is in: parsed, or held while a typed space has broken it.
+		const wrap = enclosing(view, from, nodeName)
+			?? (held && held.name === nodeName && from >= held.from && to <= held.to ? held : null);
 		if (wrap) {
+			const content = state.sliceDoc(wrap.from + len, wrap.to - len);
+			if (range.empty && from === wrap.to - len && content.trim()) {
+				// Step out. Whitespace typed at the end goes outside the markers first,
+				// so the caret lands after it, and after any space already there: where
+				// the next word starts.
+				const run = { from: wrap.from, to: wrap.to, name: nodeName, marker: state.sliceDoc(wrap.from, wrap.from + len), live: false };
+				const changes = EMPHASIS_MARKERS.has(nodeName) ? repairChangesFor(state, run) : [];
+				let pos = wrap.to;
+				while (/[ \t]/.test(state.sliceDoc(pos, pos + 1))) pos++;
+				return { changes, range: EditorSelection.cursor(pos) };
+			}
+			const changes = state.changes([
+				{ from: wrap.from, to: wrap.from + len },
+				{ from: wrap.to - len, to: wrap.to },
+			]);
 			return {
-				changes: [
-					{ from: wrap.from, to: wrap.from + len },
-					{ from: wrap.to - len, to: wrap.to },
-				],
-				range: EditorSelection.range(
-					Math.max(wrap.from, range.from - len),
-					Math.max(wrap.from, range.to - len),
-				),
+				changes,
+				range: EditorSelection.range(changes.mapPos(range.anchor), changes.mapPos(range.head)),
 			};
 		}
 		return {
 			changes: [
-				{ from: range.from, insert: marker },
-				{ from: range.to, insert: marker },
+				{ from, insert: marker },
+				{ from: to, insert: marker },
 			],
-			range: EditorSelection.range(range.from + len, range.to + len),
+			range: EditorSelection.range(from + len, to + len),
+			// Empty markers parse as nothing, so the hold on them is started by hand.
+			effects: range.empty && range === state.selection.main && EMPHASIS_MARKERS.has(nodeName)
+				? holdEmphasis.of({ from, to: from + 2 * len, name: nodeName, marker })
+				: undefined,
 		};
 	}));
 	view.focus();
@@ -446,9 +475,11 @@ export function toggleCodeBlock(view: EditorView): void {
 export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const { state } = view;
 	const pos = state.selection.main.head;
+	const held = state.field(heldEmphasisField, false);
 	// Inline marks light up only when the caret is *within* them on both sides,
 	// so an edge caret (where typed text lands outside the format) stays inactive.
-	const has = (name: string) => enclosingInline(view, pos, name) !== null;
+	// A run held while a typed space has broken it counts as within too.
+	const has = (name: string) => enclosingInline(view, pos, name) !== null || held?.name === name;
 	const lineText = state.doc.lineAt(pos).text;
 	const lineStart = state.doc.lineAt(pos).from;
 	const headingMatch = lineText.match(/^(#{1,6})\s/);
