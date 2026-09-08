@@ -84,6 +84,7 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijke naam voor de tabel.',
+			table: { defaultValue: { summary: 'Tabel' } },
 		},
 	},
 };

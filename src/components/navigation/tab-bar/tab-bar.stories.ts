@@ -41,6 +41,7 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers',
+			table: { defaultValue: { summary: 'Tabs' } },
 		},
 	},
 	args: {

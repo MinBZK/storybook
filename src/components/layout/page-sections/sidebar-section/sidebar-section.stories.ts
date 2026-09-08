@@ -90,6 +90,7 @@ export default {
 			name: 'sidebar-label',
 			control: 'text',
 			description: 'Toegankelijke naam voor de zijbalk (de aside op lg en de sheet op sm/md). Default "Zijbalk".',
+			table: { defaultValue: { summary: 'Zijbalk' } },
 		},
 		stickyTop: {
 			name: 'sticky-top',

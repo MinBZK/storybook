@@ -77,6 +77,7 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers (aria-label van het venster)',
+			table: { defaultValue: { summary: 'Venster' } },
 		},
 		modeless: {
 			control: 'boolean',
