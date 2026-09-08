@@ -147,16 +147,29 @@ describe('nldd-text-editor caret side', () => {
 		expect(el.value).toBe('Zie https://example.comnu');
 	});
 
-	it('a [text](url) link has no inside: its badge sits after the ) and the caret goes past it', async () => {
+	it('the badge of a [text](url) link has the same two stops, between the ) and the badge and after it', async () => {
 		el = await make('Zie [voorbeeld](https://example.com) nu');
 		const to = el.value.indexOf(')') + 1;
 		const badge = el.shadowRoot!.querySelector('.cm-link-badge')!.getBoundingClientRect();
-		expect(el.view.coordsAtPos(to, -1)!.left).toBeGreaterThanOrEqual(badge.right);
-		expect(drawnAssoc(el.view, to, -1)).toBe(1);
+		expect(el.view.coordsAtPos(to, -1)!.left).toBeLessThanOrEqual(badge.left);
+		expect(el.view.coordsAtPos(to, 1)!.left).toBeGreaterThanOrEqual(badge.right);
 		el.view.dispatch({ selection: { anchor: to } });
+		expect(drawn(el.view)).toBe(1);
+		// One ArrowLeft: left of the badge, still after the ). The next: before the ).
+		key(el.view, 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(to);
+		expect(drawn(el.view)).toBe(-1);
 		key(el.view, 'ArrowLeft');
 		await waitForUpdate(el);
 		expect(el.view.state.selection.main.head).toBe(to - 1);
+		// Text typed left of the badge lands after the link, and so after the badge.
+		el.view.dispatch({ selection: { anchor: to } });
+		key(el.view, 'ArrowLeft');
+		type(el.view, 'x');
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie [voorbeeld](https://example.com)x nu');
+		expect(el.view.state.selection.main.head).toBe(to + 1);
 	});
 
 	it('measures the same place on both sides of an annotation end', async () => {

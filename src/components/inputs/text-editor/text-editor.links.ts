@@ -22,16 +22,12 @@ import '../../content/icon/icon.js';
 export type OpenInNewTabLabel = (url: string) => string;
 
 class LinkOpenWidget extends WidgetType {
-	/** `bare`: the link is a plain URL, which text typed at its end extends, so
-	 *  the caret has a place on the URL's side of the badge. A `[text](url)` link
-	 *  ends at its `)`; text typed there lands outside it, and the badge has one
-	 *  side only: after it. */
-	constructor(readonly href: string, readonly label: OpenInNewTabLabel, readonly bare: boolean) {
+	constructor(readonly href: string, readonly label: OpenInNewTabLabel) {
 		super();
 	}
 
 	eq(other: LinkOpenWidget): boolean {
-		return other.href === this.href && other.bare === this.bare;
+		return other.href === this.href;
 	}
 
 	toDOM(): HTMLElement {
@@ -55,16 +51,18 @@ class LinkOpenWidget extends WidgetType {
 	}
 
 	/** The caret at the link's end has two places to be, and `side` says which: on
-	 *  the link's side of the badge when it arrived from the left or is editing the
-	 *  link, after the badge when it arrived from the right and is about to type
-	 *  past it. Both at text height, not the badge's own box (taller, and it would
-	 *  flip with the arrival direction). Ignoring `side` drew both after the badge,
-	 *  so deleting the last character of a URL looked like editing outside it. */
+	 *  the link's side of the badge, or after the badge. Both at text height, not
+	 *  the badge's own box (taller, and it would flip with the arrival direction).
+	 *  The cursor layer treats the badge as a character with a stop on either
+	 *  side, whether the link is a bare URL (text typed on the link's side extends
+	 *  it) or a `[text](url)` link (text typed there lands after the link, and
+	 *  so after its badge). Ignoring `side` drew both after the badge, so deleting
+	 *  the last character of a URL looked like editing outside it. */
 	coordsAt(dom: HTMLElement, _pos: number, side: number): { left: number; right: number; top: number; bottom: number } | null {
 		const badge = dom.getBoundingClientRect();
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
 		const cs = getComputedStyle(dom);
-		const x = side < 0 && this.bare ? badge.left - parseFloat(cs.marginLeft) : badge.right + parseFloat(cs.marginRight);
+		const x = side < 0 ? badge.left - parseFloat(cs.marginLeft) : badge.right + parseFloat(cs.marginRight);
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
@@ -172,8 +170,8 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 	// side -1 draws the badge before the caret, so the caret at the link end sits
 	// to the RIGHT of the badge — text typed there lands after it, not wedged
 	// between the link and the badge.
-	const badge = (to: number, href: string, bare: boolean): void =>
-		builder.add(to, to, Decoration.widget({ widget: new LinkOpenWidget(href, label, bare), side: -1 }));
+	const badge = (to: number, href: string): void =>
+		builder.add(to, to, Decoration.widget({ widget: new LinkOpenWidget(href, label), side: -1 }));
 	for (const { from, to } of view.visibleRanges) {
 		tree.iterate({
 			from,
@@ -181,7 +179,7 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 			enter: (node) => {
 				if (node.name === 'Link') {
 					const href = hrefOf(view.state, node.node, refs);
-					if (href) badge(node.to, href, false);
+					if (href) badge(node.to, href);
 					return;
 				}
 				// Bare/autolinked URL: a standalone URL node (GFM turns a plainly
@@ -189,7 +187,7 @@ function buildBadges(view: EditorView, label: OpenInNewTabLabel): DecorationSet 
 				// [text](url) link — that URL is already handled via its Link above.
 				if (node.name === 'URL' && !inLinkContext(node.node)) {
 					const href = bareHref(view.state, node.node);
-					if (href) badge(node.to, href, true);
+					if (href) badge(node.to, href);
 				}
 			},
 		});
@@ -216,11 +214,14 @@ export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decoration
 	);
 }
 
-/** Whether a bare URL ends at `pos`: the one place where the caret has a stop on
- *  either side of a badge, since text typed there extends the URL. */
-export function bareUrlEndsAt(state: EditorState, pos: number): boolean {
+/** Whether a link with a badge ends at `pos`: a `[text](url)` link or a bare
+ *  URL, with a destination the badge accepts. The same tests as `buildBadges`,
+ *  so a mention (a link too, but without a badge) is not one. */
+export function linkEndsAt(state: EditorState, pos: number): boolean {
 	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, -1); n; n = n.parent) {
-		if (n.name === 'URL' && n.to === pos) return !inLinkContext(n);
+		if (n.to !== pos) continue;
+		if (n.name === 'Link') return hrefOf(state, n, referenceDefs(state)) !== null;
+		if (n.name === 'URL' && !inLinkContext(n)) return bareHref(state, n) !== null;
 	}
 	return false;
 }

@@ -1,6 +1,6 @@
 import { Annotation, EditorSelection, Prec, type Extension } from '@codemirror/state';
 import { EditorView, RectangleMarker, getDrawSelectionConfig, keymap, layer, type Command } from '@codemirror/view';
-import { bareUrlEndsAt } from './text-editor.links.js';
+import { linkEndsAt } from './text-editor.links.js';
 
 /* The caret, drawn on a side that does not depend on how it got there.
  *
@@ -65,12 +65,12 @@ export function drawnAssoc(view: EditorView, head: number, assoc: number): -1 | 
 /** Puts the caret on `side` of the link badge it stands at, without moving it in
  *  the document. Nothing to do (so the key falls through to its usual command)
  *  when there is no badge with two sides here, or the caret is on that side
- *  already. Only the badge of a bare URL qualifies: a mention token or an
- *  annotation badge keeps its own Backspace and arrow behavior. */
+ *  already. Only a link badge qualifies: a mention token or an annotation
+ *  badge keeps its own Backspace and arrow behavior. */
 function stepOver(side: -1 | 1): Command {
 	return (view) => {
 		const { main } = view.state.selection;
-		if (!main.empty || !bareUrlEndsAt(view.state, main.head) || !sidesApart(view, main.head)) return false;
+		if (!main.empty || !linkEndsAt(view.state, main.head) || !sidesApart(view, main.head)) return false;
 		if (drawnAssoc(view, main.head, main.assoc) === side) return false;
 		view.dispatch({ selection: EditorSelection.cursor(main.head, side), annotations: caretSide.of(side), userEvent: 'select' });
 		return true;
