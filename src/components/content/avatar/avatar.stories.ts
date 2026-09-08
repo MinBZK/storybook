@@ -43,6 +43,10 @@ export default {
 		icon: '',
 		tooltipTiming: 'delay',
 		decorative: false,
+		href: '',
+		button: false,
+		target: '',
+		accessibleLabel: '',
 	},
 	argTypes: {
 		name: {
@@ -100,6 +104,27 @@ export default {
 			description: 'Verbergt de avatar voor hulpsoftware',
 			table: { defaultValue: { summary: 'false' } },
 		},
+		href: {
+			control: 'text',
+			description: 'Maakt de avatar een link naar deze URL; de vorm zelf wordt de link, dus het klikgebied en de focusring volgen hem',
+		},
+		button: {
+			control: 'boolean',
+			description: 'Maakt de avatar een knop; genegeerd zodra href is gezet',
+			table: { defaultValue: { summary: 'false' } },
+		},
+		target: {
+			control: 'select',
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
+			mapping: { '(geen)': '' },
+			description: 'Link target (alleen gebruikt als href is gezet)',
+			table: { defaultValue: { summary: '(geen)' } },
+		},
+		accessibleLabel: {
+			name: 'accessible-label',
+			control: 'text',
+			description: 'Naam van de link of knop; zonder deze wordt name gebruikt',
+		},
 	},
 };
 
@@ -115,6 +140,10 @@ const Template = (args: Record<string, any>) => html`
 		icon=${args.icon || nothing}
 		tooltip-timing=${args.tooltipTiming || nothing}
 		?decorative=${args.decorative}
+		href=${args.href || nothing}
+		?button=${args.button}
+		target=${args.target || nothing}
+		accessible-label=${args.accessibleLabel || nothing}
 	></nldd-avatar>
 `;
 
