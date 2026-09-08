@@ -64,18 +64,16 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Breedte: leeg past bij een datum plus iconen, "full" vult de container, of een eigen CSS-lengte. "fit-content" laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholdertekst. Zet hier geen formaat in; gebruik de supporting-label van nldd-form-field.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label. Wordt automatisch gezet door nldd-form-field.',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { defaultValue: { summary: 'Datum' } },
 		},
 		noPicker: {
 			name: 'no-picker',
@@ -106,22 +104,18 @@ export default {
 		name: {
 			control: 'text',
 			description: 'Naam voor formulierverzending',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		value: {
 			control: 'text',
 			description: 'De datum als ISO (jjjj-mm-dd)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		min: {
 			control: 'text',
 			description: 'Vroegst toegestane datum als ISO (jjjj-mm-dd)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		max: {
 			control: 'text',
 			description: 'Laatst toegestane datum als ISO (jjjj-mm-dd)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		required: {
 			control: 'boolean',
@@ -131,7 +125,6 @@ export default {
 		autocomplete: {
 			control: 'text',
 			description: 'Autocomplete-hint, bijvoorbeeld bday',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 };

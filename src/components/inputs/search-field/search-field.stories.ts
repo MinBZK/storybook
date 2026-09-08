@@ -77,17 +77,16 @@ export default {
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		pattern: {
 			control: 'text',
 			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 
 	},

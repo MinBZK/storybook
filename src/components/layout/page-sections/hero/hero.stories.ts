@@ -76,30 +76,25 @@ export default {
 			name: 'media-src',
 			control: 'text',
 			description: 'Bron van het mediavlak (alternatief voor de media-slot)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		mediaSrcset: {
 			name: 'media-srcset',
 			control: 'text',
 			description: 'Responsive source set voor media-src',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		mediaSizes: {
 			name: 'media-sizes',
 			control: 'text',
 			description: 'Source sizes-hint voor media-src',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		mediaAlt: {
 			name: 'media-alt',
 			control: 'text',
 			description: 'Alt-tekst voor media-src; leeg = decoratief',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		height: {
 			control: 'text',
 			description: 'Minimale hoogte van de sectie, elke CSS-lengte (bijv. 600px of 100dvh); de hero groeit verder met de content',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 };

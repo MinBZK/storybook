@@ -71,7 +71,6 @@ export default {
 			name: 'custom-color',
 			control: 'color',
 			description: 'Een eigen kleur, als CSS-kleurwaarde. Voor een kleur die het design system niet kan kennen. Wint van `color`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 	args: {

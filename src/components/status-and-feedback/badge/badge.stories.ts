@@ -75,7 +75,6 @@ export default {
 			name: 'custom-color',
 			control: 'text',
 			description: 'Een eigen kleur, als CSS-waarde. Wint van `color`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		pulse: {
 			control: 'boolean',
