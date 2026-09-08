@@ -225,3 +225,12 @@ export function linkEndsAt(state: EditorState, pos: number): boolean {
 	}
 	return false;
 }
+
+/** Whether a bare URL with a badge ends at `pos`: the link that text typed at
+ *  its end extends, unlike a `[text](url)` link, which ends at its `)`. */
+export function bareUrlEndsAt(state: EditorState, pos: number): boolean {
+	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, -1); n; n = n.parent) {
+		if (n.name === 'URL' && n.to === pos) return !inLinkContext(n) && bareHref(state, n) !== null;
+	}
+	return false;
+}

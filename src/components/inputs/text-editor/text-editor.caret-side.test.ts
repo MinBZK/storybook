@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import type { EditorView } from '@codemirror/view';
+import { EditorView } from '@codemirror/view';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './text-editor.js';
 import { drawnAssoc } from './text-editor.cursor.js';
@@ -145,6 +145,47 @@ describe('nldd-text-editor caret side', () => {
 		key(el.view, 'Delete');
 		await waitForUpdate(el);
 		expect(el.value).toBe('Zie https://example.comnu');
+	});
+
+	it('a click lands on the side of the badge it was on', async () => {
+		el = await make(URL_DOC);
+		const badge = el.shadowRoot!.querySelector('.cm-link-badge')!.getBoundingClientRect();
+		const y = badge.top + badge.height / 2;
+		// detail: 1 makes it a single click; CodeMirror reads the click count from it.
+		const click = (x: number): void => {
+			el.view.contentDOM.dispatchEvent(new MouseEvent('mousedown', { clientX: x, clientY: y, bubbles: true, cancelable: true, button: 0, detail: 1 }));
+			document.dispatchEvent(new MouseEvent('mouseup', { clientX: x, clientY: y, bubbles: true, button: 0, detail: 1 }));
+		};
+		// CodeMirror reads the side of a click from the line, not from the pointer,
+		// and put a click right of the badge on its left.
+		click(badge.right + 2);
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(URL_END);
+		expect(drawn(el.view)).toBe(1);
+		click(badge.left - 1);
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(URL_END);
+		expect(drawn(el.view)).toBe(-1);
+	});
+
+	it('text typed right of the badge lands right of it, behind the space the URL needs', async () => {
+		el = await make(URL_DOC);
+		el.view.dispatch({ selection: { anchor: URL_END } });
+		expect(drawn(el.view)).toBe(1);
+		// What a keystroke hands the input handlers; the default insert is not used.
+		const typed = (text: string): boolean =>
+			el.view.state.facet(EditorView.inputHandler).some((handle) => handle(el.view, URL_END, URL_END, text, () => el.view.state.update()));
+		expect(typed('x')).toBe(true);
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie https://example.com x nu');
+		expect(el.view.state.selection.main.head).toBe(URL_END + 2);
+		// Punctuation that ends a URL by itself needs no space: the usual insert runs.
+		el.view.dispatch({ changes: { from: URL_END, to: URL_END + 2 }, selection: { anchor: URL_END } });
+		expect(typed('.')).toBe(false);
+		// Nor does text typed on the URL's side: that extends the URL.
+		key(el.view, 'ArrowLeft');
+		expect(drawn(el.view)).toBe(-1);
+		expect(typed('x')).toBe(false);
 	});
 
 	it('the badge of a [text](url) link has the same two stops, between the ) and the badge and after it', async () => {

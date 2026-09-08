@@ -1,6 +1,6 @@
 import { Annotation, EditorSelection, Prec, type Extension } from '@codemirror/state';
 import { EditorView, RectangleMarker, getDrawSelectionConfig, keymap, layer, type Command } from '@codemirror/view';
-import { linkEndsAt } from './text-editor.links.js';
+import { bareUrlEndsAt, linkEndsAt } from './text-editor.links.js';
 
 /* The caret, drawn on a side that does not depend on how it got there.
  *
@@ -16,51 +16,87 @@ import { linkEndsAt } from './text-editor.links.js';
  * At a widget (a link badge) or a line wrap the two sides are genuinely
  * different places and the direction must decide. So the rule is not "always
  * one side" but "one side, unless the sides are far enough apart to mean
- * something". And a widget on one document position is made to feel like a
- * character of its own: the arrow keys step from one side of it to the other,
- * Backspace and Delete step over it rather than eating past it, and typing
- * keeps the caret on the side the text went. */
+ * something". And a link badge, a widget on one document position, is made to
+ * feel like a character of its own that cannot be edited: a click lands on the
+ * side you clicked, the arrow keys step from one side of it to the other,
+ * Backspace and Delete step over it rather than eating past it, and text goes
+ * to the side of the badge it was typed on. */
 
 /** Below this the two edges of one position are the same place drawn twice, and
  *  only glyph overhang and pixel rounding tell them apart. A widget is a full
  *  icon wide and a line wrap is a line away, so neither comes near it. */
 const GLYPH_NOISE_PX = 2;
 
-/** The side to draw the caret on when the selection does not say (assoc 0),
- *  taken from what the last transaction did. Typing and a backward delete leave
- *  the caret at the end of what was just edited, so on the side that text is:
- *  the left. Typing the last letter of a URL must leave the caret against the
- *  URL, not past the open-link badge. A forward delete leaves it where the
- *  removed text began: the right. Kept here rather than on the selection, since
- *  an edit's transaction carries no direction. */
-const sideHint = new WeakMap<EditorView, -1 | 1>();
+/** The side the main caret is drawn on at `head`, when that is not for the
+ *  selection's own assoc to say. Set by a step-over (its assoc does not survive
+ *  the transaction: a later filter rebuilds the selection without it), by a
+ *  click (CodeMirror reads the side of a click from the line, not from the
+ *  pointer, and would land left of a badge you clicked right of), and by an
+ *  edit: typing and a backward delete leave the caret at the end of what was
+ *  just edited, so on the side that text is, the left; a forward delete leaves
+ *  it where the removed text began, the right. */
+const sideHint = new WeakMap<EditorView, { head: number; side: -1 | 1 | 'pointer' }>();
 
-/** The side a step-over asks for. Carried as an annotation, since the assoc
- *  on the dispatched cursor does not survive the transaction: a later filter
- *  rebuilds the selection without it. */
+/** The side a step-over asks for, carried as an annotation. */
 const caretSide = Annotation.define<-1 | 1>();
 
-function edges(view: EditorView, head: number): { before: { left: number; top: number }; after: { left: number; top: number } } | null {
+/** Where the pointer last went down or dragged, to read the side of a click. */
+const lastPointer = new WeakMap<EditorView, { x: number; y: number }>();
+
+interface Edges {
+	before: { left: number; top: number };
+	after: { left: number; top: number };
+}
+
+function edges(view: EditorView, head: number): Edges | null {
 	const before = view.coordsAtPos(head, -1);
 	const after = view.coordsAtPos(head, 1);
 	return before && after ? { before, after } : null;
+}
+
+function onOneLine(e: Edges): boolean {
+	return Math.abs(e.before.top - e.after.top) < 1;
 }
 
 /** Whether `head` has a place on either side of a widget: the two sides are on
  *  one line and clearly apart. A line wrap puts them on different lines. */
 export function sidesApart(view: EditorView, head: number): boolean {
 	const e = edges(view, head);
-	return e !== null && Math.abs(e.before.top - e.after.top) < 1 && Math.abs(e.before.left - e.after.left) > GLYPH_NOISE_PX;
+	return e !== null && onOneLine(e) && Math.abs(e.before.left - e.after.left) > GLYPH_NOISE_PX;
 }
 
 /** The side the caret is drawn on at `head`: 1 unless the two sides are
- *  genuinely apart and the arrival direction, or the last edit, says "before". */
+ *  genuinely apart and a hint, or else the arrival direction, says "before". */
 export function drawnAssoc(view: EditorView, head: number, assoc: number): -1 | 1 {
 	const e = edges(view, head);
-	if (e && Math.abs(e.before.top - e.after.top) < 1 && Math.abs(e.before.left - e.after.left) <= GLYPH_NOISE_PX) return 1;
+	if (e && onOneLine(e) && Math.abs(e.before.left - e.after.left) <= GLYPH_NOISE_PX) return 1;
+	const hint = sideHint.get(view);
+	if (hint && hint.head === head) {
+		if (hint.side !== 'pointer') return hint.side;
+		// The side of a click: the one the pointer was nearer to. Measured here,
+		// at drawing time, since the layout may not be read during an update.
+		const p = lastPointer.get(view);
+		if (p && e) return Math.abs(p.x - e.before.left) <= Math.abs(p.x - e.after.left) ? -1 : 1;
+	}
 	if (assoc) return assoc < 0 ? -1 : 1;
-	return sideHint.get(view) ?? 1;
+	return 1;
 }
+
+const pointerTracker = EditorView.domEventHandlers({
+	mousedown(event, view) {
+		lastPointer.set(view, { x: event.clientX, y: event.clientY });
+		return false;
+	},
+	mousemove(event, view) {
+		if (event.buttons) lastPointer.set(view, { x: event.clientX, y: event.clientY });
+		return false;
+	},
+	touchstart(event, view) {
+		const touch = event.touches[0];
+		if (touch) lastPointer.set(view, { x: touch.clientX, y: touch.clientY });
+		return false;
+	},
+});
 
 /** Puts the caret on `side` of the link badge it stands at, without moving it in
  *  the document. Nothing to do (so the key falls through to its usual command)
@@ -84,6 +120,28 @@ const stepOverKeymap = Prec.high(keymap.of([
 	{ key: 'Delete', run: stepOver(1) },
 ]));
 
+/** Characters that end a bare URL by themselves (GFM: whitespace, `<`, and the
+ *  punctuation it leaves off the end), so text starting with one lands after
+ *  the badge on its own. Anything else would join the URL. */
+const ENDS_URL = /^[\s<?!.,:*_~)]/;
+
+/** Text typed right of the badge of a bare URL lands right of the badge. There
+ *  is no boundary in markdown to put it behind: `www.apple.comx` is one URL. A
+ *  space is that boundary, so the editor writes it before the text. */
+const typePastBadge = EditorView.inputHandler.of((view, from, to, text) => {
+	if (from !== to || !text || view.composing || ENDS_URL.test(text)) return false;
+	const { main } = view.state.selection;
+	if (!main.empty || main.head !== from || !bareUrlEndsAt(view.state, from) || !sidesApart(view, from)) return false;
+	if (drawnAssoc(view, from, main.assoc) !== 1) return false;
+	view.dispatch({
+		changes: { from, insert: ` ${text}` },
+		selection: { anchor: from + 1 + text.length },
+		userEvent: 'input.type',
+		scrollIntoView: true,
+	});
+	return true;
+});
+
 const cursorLayer = layer({
 	above: true,
 	class: 'cm-nldd-cursorLayer',
@@ -102,16 +160,20 @@ const cursorLayer = layer({
 	},
 	update(update, dom) {
 		if (update.docChanged || update.selectionSet) {
-			let hint: -1 | 1 | null = null;
+			const { view } = update;
+			const head = update.state.selection.main.head;
+			const kept = sideHint.get(view);
+			let hint: { head: number; side: -1 | 1 | 'pointer' } | null = kept ? { ...kept, head: update.changes.mapPos(kept.head) } : null;
 			for (const tr of update.transactions) {
 				const asked = tr.annotation(caretSide);
-				if (asked) hint = asked;
-				else if (tr.isUserEvent('input') || tr.isUserEvent('delete.backward')) hint = -1;
-				else if (tr.isUserEvent('delete.forward')) hint = 1;
+				if (asked) hint = { head, side: asked };
+				else if (tr.isUserEvent('select.pointer')) hint = { head, side: 'pointer' };
+				else if (tr.isUserEvent('input') || tr.isUserEvent('delete.backward')) hint = { head, side: -1 };
+				else if (tr.isUserEvent('delete.forward')) hint = { head, side: 1 };
 				else if (tr.selection) hint = null;
 			}
-			if (hint) sideHint.set(update.view, hint);
-			else sideHint.delete(update.view);
+			if (hint) sideHint.set(view, hint);
+			else sideHint.delete(view);
 		}
 		// Restart the blink on a selection change, the way CodeMirror's own layer
 		// does, by flipping between its two identical keyframe sets.
@@ -136,4 +198,4 @@ const theme = EditorView.theme({
 	'&.cm-focused > .cm-scroller > .cm-nldd-cursorLayer .cm-cursor': { display: 'block' },
 });
 
-export const stableCursor: Extension = [cursorLayer, stepOverKeymap, theme];
+export const stableCursor: Extension = [cursorLayer, pointerTracker, stepOverKeymap, typePastBadge, theme];
