@@ -16740,7 +16740,7 @@
           "type": {
             "text": "TextEditorActiveFormats"
           },
-          "default": "{ bold: false, italic: false, inlineCode: false, codeBlock: false, strikethrough: false, link: false, bulletList: false, orderedList: false, quote: false, heading: 0, }"
+          "default": "{ bold: false, italic: false, inlineCode: false, codeBlock: false, strikethrough: false, link: false, bulletList: false, orderedList: false, taskList: false, quote: false, heading: 0, }"
         },
         {
           "kind": "function",
@@ -16836,6 +16836,24 @@
               }
             }
           ]
+        },
+        {
+          "kind": "function",
+          "name": "toggleTaskList",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            }
+          ],
+          "description": "Turn the selected lines into GFM task items (`- [ ] `), or back into plain\nbullets when they all are tasks already. A bullet or numbered item keeps its\nindent and becomes a task; toggling off leaves a bullet rather than bare text,\nso the list survives and only the box goes. Checking a box is not this\ncommand's job."
         },
         {
           "kind": "function",
@@ -17063,6 +17081,14 @@
           "name": "toggleBulletList",
           "declaration": {
             "name": "toggleBulletList",
+            "module": "src/components/inputs/text-editor/text-editor.commands.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "toggleTaskList",
+          "declaration": {
+            "name": "toggleTaskList",
             "module": "src/components/inputs/text-editor/text-editor.commands.ts"
           }
         },
@@ -17397,6 +17423,30 @@
       "path": "src/components/inputs/text-editor/text-editor.mentions.ts",
       "declarations": [
         {
+          "kind": "function",
+          "name": "mentionQueryAt",
+          "return": {
+            "type": {
+              "text": "{ from: number; to: number; query: string } | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "The mention query at `pos`, or null when the text before the caret is not\none. `from` is the `@`, `query` the typed name without it. Both the\ncompletion source and the reopen-on-delete path go through this, so they\ncannot disagree about what counts as a mention."
+        },
+        {
           "kind": "variable",
           "name": "MENTION_HREF_PREFIX",
           "type": {
@@ -17484,6 +17534,14 @@
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "mentionQueryAt",
+          "declaration": {
+            "name": "mentionQueryAt",
+            "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
+          }
+        },
         {
           "kind": "js",
           "name": "MENTION_HREF_PREFIX",
@@ -17579,7 +17637,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -17848,6 +17906,16 @@
             },
             {
               "kind": "method",
+              "name": "toggleTaskList",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Turn the selected lines into GFM task items (`- [ ] `), or back into\nbullets when they all are tasks. Checking a box is not a command."
+            },
+            {
+              "kind": "method",
               "name": "setList",
               "return": {
                 "type": {
@@ -18000,7 +18068,7 @@
                   }
                 }
               ],
-              "description": "Escape hatch: run a command by name (bold, italic, inlineCode,\nstrikethrough, bulletList, quote, heading [payload: level], link\n[payload: href], copy, cut, paste)."
+              "description": "Escape hatch: run a command by name (bold, italic, inlineCode,\nstrikethrough, bulletList, taskList, quote, heading [payload: level], link\n[payload: href], copy, cut, paste)."
             },
             {
               "kind": "method",

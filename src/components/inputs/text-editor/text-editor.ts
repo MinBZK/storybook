@@ -13,7 +13,8 @@
  *
  * Headless: there is no built-in toolbar. A consumer drives formatting via the
  * command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/
- * toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and
+ * toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand
+ * to toggle, and
  * setHeading/setList for picker-style "set" semantics), reads the active formats
  * with getState(), listens to the nldd-text-editor-state event to render toggle
  * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
@@ -79,6 +80,7 @@ import {
 	toggleHeading as cmToggleHeading,
 	setHeading as cmSetHeading,
 	toggleBulletList as cmToggleBulletList,
+	toggleTaskList as cmToggleTaskList,
 	setList as cmSetList,
 	toggleQuote as cmToggleQuote,
 	toggleLink as cmToggleLink,
@@ -269,6 +271,12 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				// selects the whole token, the second removes it.
 				{ key: 'Backspace', run: (view) => this._selectMentionBeforeDelete(view, -1) },
 				{ key: 'Delete', run: (view) => this._selectMentionBeforeDelete(view, 1) },
+				// Cmd/Ctrl+] and +[ nest and un-nest list items. defaultKeymap binds them
+				// to indentMore/indentLess, whose four-space indent turns plain text into
+				// an indented code block. Consumed here in every case: off a list item
+				// they do nothing, which beats a code block nobody asked for.
+				{ key: 'Mod-]', run: (view) => { cmIndentListItems(view); return true; } },
+				{ key: 'Mod-[', run: (view) => { cmOutdentListItems(view); return true; } },
 				...defaultKeymap,
 				...historyKeymap,
 			]),
@@ -458,6 +466,12 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		if (this.view) cmToggleBulletList(this.view);
 	}
 
+	/** Turn the selected lines into GFM task items (`- [ ] `), or back into
+	 *  bullets when they all are tasks. Checking a box is not a command. */
+	toggleTaskList(): void {
+		if (this.view) cmToggleTaskList(this.view);
+	}
+
 	/** Set the list type, replacing any existing list ('none' strips it) — for an
 	 *  exclusive list picker. */
 	setList(type: 'none' | 'bullet' | 'ordered'): void {
@@ -597,7 +611,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	}
 
 	/** Escape hatch: run a command by name (bold, italic, inlineCode,
-	 *  strikethrough, bulletList, quote, heading [payload: level], link
+	 *  strikethrough, bulletList, taskList, quote, heading [payload: level], link
 	 *  [payload: href], copy, cut, paste). */
 	runCommand(name: string, payload?: unknown): void {
 		switch (name) {
@@ -606,6 +620,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 			case 'inlineCode': this.toggleInlineCode(); break;
 			case 'strikethrough': this.toggleStrikethrough(); break;
 			case 'bulletList': this.toggleBulletList(); break;
+			case 'taskList': this.toggleTaskList(); break;
 			case 'quote': this.toggleQuote(); break;
 			case 'heading': this.toggleHeading((typeof payload === 'number' ? payload : 1) as HeadingLevel); break;
 			case 'link': this.toggleLink(typeof payload === 'string' ? payload : ''); break;

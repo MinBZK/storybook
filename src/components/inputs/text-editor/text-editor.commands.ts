@@ -18,6 +18,8 @@ export interface TextEditorActiveFormats {
 	link: boolean;
 	bulletList: boolean;
 	orderedList: boolean;
+	/** A GFM task item (`- [ ]` / `- [x]`); also reports as bulletList. */
+	taskList: boolean;
 	quote: boolean;
 	heading: HeadingLevel;
 }
@@ -43,6 +45,7 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 	link: false,
 	bulletList: false,
 	orderedList: false,
+	taskList: false,
 	quote: false,
 	heading: 0,
 };
@@ -114,20 +117,43 @@ function minimalLineChange(
 	return { from: line.from + p, to: line.from + old.length - s, insert: next.slice(p, next.length - s) };
 }
 
-function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
-	if (view.state.readOnly) return; // guards toggleHeading/setHeading/toggleBulletList/toggleQuote
+/** Dispatch line-level changes with the selection carried along. A caret that
+ *  sits exactly where a marker is inserted (column 0 of an empty line, say) is
+ *  mapped to *after* the insertion, so what is typed next lands in the item and
+ *  not in front of its marker. Plain mapping would leave it before. */
+function dispatchLineChanges(view: EditorView, changes: { from: number; to?: number; insert?: string }[]): void {
+	if (changes.length) {
+		const { state } = view;
+		const set = state.changes(changes);
+		const sel = state.selection.main;
+		view.dispatch({ changes: set, selection: { anchor: set.mapPos(sel.anchor, 1), head: set.mapPos(sel.head, 1) } });
+	}
+	view.focus();
+}
+
+/** The selected line range, and whether it is a single blank line. The line
+ *  commands skip blank lines because they separate items, but when the blank
+ *  line is the only one selected (an empty document, a fresh paragraph) it is
+ *  the whole target and must take the marker. */
+function selectedLines(view: EditorView): { first: number; last: number; loneBlank: boolean } {
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from).number;
 	const last = state.doc.lineAt(to).number;
+	return { first, last, loneBlank: first === last && state.doc.line(first).text.trim() === '' };
+}
+
+function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
+	if (view.state.readOnly) return; // guards toggleHeading/setHeading/toggleBulletList/toggleQuote
+	const { state } = view;
+	const { first, last } = selectedLines(view);
 	const changes: { from: number; to: number; insert: string }[] = [];
 	for (let i = first; i <= last; i++) {
 		const line = state.doc.line(i);
 		const change = minimalLineChange(line, transform(line.text));
 		if (change) changes.push(change);
 	}
-	if (changes.length) view.dispatch({ changes });
-	view.focus();
+	dispatchLineChanges(view, changes);
 }
 
 function everySelectedLine(view: EditorView, predicate: (text: string) => boolean): boolean {
@@ -167,15 +193,34 @@ export function toggleBulletList(view: EditorView): void {
 	// "+ item" line would report active yet the toggle couldn't strip it (it'd add
 	// another "- " instead), so state and toggle would disagree.
 	const re = /^(\s*)[-*+]\s+/;
-	const allBulleted = everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
+	const { loneBlank } = selectedLines(view);
+	const allBulleted = !loneBlank && everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
 	mapSelectedLines(view, (t) => {
-		if (t.trim() === '') return t;
+		if (t.trim() === '' && !loneBlank) return t;
 		if (allBulleted) return t.replace(re, '$1');
 		return re.test(t) ? t : t.replace(/^(\s*)/, '$1- ');
 	});
 }
 
-const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])\s+/;
+const TASK_RE = /^(\s*)[-*+]\s+\[[ xX]\]\s+/;
+
+/** Turn the selected lines into GFM task items (`- [ ] `), or back into plain
+ *  bullets when they all are tasks already. A bullet or numbered item keeps its
+ *  indent and becomes a task; toggling off leaves a bullet rather than bare text,
+ *  so the list survives and only the box goes. Checking a box is not this
+ *  command's job. */
+export function toggleTaskList(view: EditorView): void {
+	const { loneBlank } = selectedLines(view);
+	const allTasks = !loneBlank && everySelectedLine(view, (t) => TASK_RE.test(t) || t.trim() === '');
+	mapSelectedLines(view, (t) => {
+		if (t.trim() === '' && !loneBlank) return t;
+		if (allTasks) return t.replace(TASK_RE, '$1- ');
+		if (TASK_RE.test(t)) return t;
+		return t.replace(LIST_STRIP_RE, '$1').replace(/^(\s*)/, '$1- [ ] ');
+	});
+}
+
+const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])(?:\s+|$)/;
 
 /** Set the selected lines to a list of `type`, replacing any existing list
  *  marker; `'none'` strips it. Ordered items are numbered within the selection.
@@ -183,9 +228,7 @@ const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])\s+/;
 export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): void {
 	if (view.state.readOnly) return;
 	const { state } = view;
-	const { from, to } = state.selection.main;
-	const first = state.doc.lineAt(from).number;
-	const last = state.doc.lineAt(to).number;
+	const { first, last, loneBlank } = selectedLines(view);
 	const changes: { from: number; to: number; insert: string }[] = [];
 	let number = 0;
 	for (let i = first; i <= last; i++) {
@@ -194,8 +237,12 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		// indentation (4+ spaces would even parse as a code block); the list types
 		// keep it ($1) so nesting survives a switch between bullet and ordered.
 		const stripped = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
+		// A blank line between items separates them and takes no marker. A line
+		// that carried a marker stays an item across the switch, even with no text
+		// behind it yet, and a lone blank line is the whole target.
+		const wasItem = stripped !== line.text;
 		let next = stripped;
-		if (type !== 'none' && stripped.trim() !== '') {
+		if (type !== 'none' && (stripped.trim() !== '' || wasItem || loneBlank)) {
 			number += 1;
 			const marker = type === 'bullet' ? '- ' : `${number}. `;
 			next = stripped.replace(/^(\s*)/, `$1${marker}`);
@@ -204,8 +251,7 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		const change = minimalLineChange(line, next);
 		if (change) changes.push(change);
 	}
-	if (changes.length) view.dispatch({ changes });
-	view.focus();
+	dispatchLineChanges(view, changes);
 }
 
 /** Nest the selected list item(s) under the nearest preceding item at the same
@@ -421,6 +467,7 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		// can spill into the next line and flip-flop the toolbar state.)
 		bulletList: !codeBlock && /^\s*[-*+]\s/.test(lineText),
 		orderedList: !codeBlock && /^\s*\d+[.)]\s/.test(lineText),
+		taskList: !codeBlock && TASK_RE.test(lineText),
 		// Quote from the Blockquote node at the line's *start* — that catches lazy
 		// continuation lines (part of the quote but with no '>') too, while resolving
 		// at line.from (not the caret) keeps it stable at the line end.
