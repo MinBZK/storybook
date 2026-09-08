@@ -243,13 +243,17 @@ export const TitleWithAction = {
 				>
 					<nldd-icon-button
 						slot="action"
-						id="title-action-btn"
 						size="xs"
 						icon="chevron-down"
 						text="Documentacties"
 						tooltip-timing="never"
-						popovertarget="title-action-menu"
-					></nldd-icon-button>
+					>
+						<nldd-menu slot="popup">
+							<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
+						</nldd-menu>
+					</nldd-icon-button>
 				</nldd-toolbar-title>
 				<nldd-toolbar-item slot="end" label="Opslaan">
 					<nldd-button variant="primary" text="Opslaan"></nldd-button>
@@ -268,13 +272,17 @@ export const TitleWithAction = {
 				>
 					<nldd-icon-button
 						slot="action"
-						id="title-action-btn-2"
 						size="xs"
 						icon="chevron-down"
 						text="Documentacties"
 						tooltip-timing="never"
-						popovertarget="title-action-menu-2"
-					></nldd-icon-button>
+					>
+						<nldd-menu slot="popup">
+							<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
+						</nldd-menu>
+					</nldd-icon-button>
 				</nldd-toolbar-title>
 				<nldd-toolbar-item slot="end" label="Opslaan">
 					<nldd-button variant="primary" text="Opslaan"></nldd-button>
@@ -282,16 +290,6 @@ export const TitleWithAction = {
 				</nldd-toolbar-item>
 			</nldd-toolbar>
 		</div>
-		<nldd-menu id="title-action-menu" anchor="title-action-btn">
-			<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
-			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
-		</nldd-menu>
-		<nldd-menu id="title-action-menu-2" anchor="title-action-btn-2">
-			<nldd-menu-item text="Naam wijzigen" icon="edit"></nldd-menu-item>
-			<nldd-menu-divider></nldd-menu-divider>
-			<nldd-menu-item text="Verwijderen" icon="delete" destructive></nldd-menu-item>
-		</nldd-menu>
 	`,
 };
 

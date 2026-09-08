@@ -323,19 +323,20 @@ function toolbarEditor(editor: unknown) {
 					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
-					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
-					<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
-						<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
-						<nldd-menu-divider></nldd-menu-divider>
-						<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
-						<nldd-menu-divider></nldd-menu-divider>
-						<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
-					</nldd-menu>
+					<nldd-button data-group="heading" expandable text="Paragraaf">
+						<nldd-menu id="heading-menu" slot="popup" @select=${onHeadingSelect}>
+							<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-button>
 					<nldd-menu-group slot="overflow" text="Tekststijl">
 						<nldd-menu-item type="radio" value="heading:0" text="Paragraaf"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="heading:1" text="Heading 1"></nldd-menu-item>
