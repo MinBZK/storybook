@@ -71,6 +71,7 @@ import { annotations as annotationExtension, setAnnotations, pasteAnnotations, c
 import { orderedListRenumber } from './text-editor.ordered-list.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
 import { linkOpenBadge } from './text-editor.links.js';
+import { stableCursor } from './text-editor.cursor.js';
 import {
 	toggleInlineWrap,
 	indentListItems as cmIndentListItems,
@@ -256,6 +257,10 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 			Prec.highest(linkOpenBadge((url) => this._t('components.text-editor.open-in-new-tab-label', { url }))),
 			this._historyCompartment.of(history()),
 			drawSelection(),
+			// Draws the caret in drawSelection's place, on a side that does not depend on
+			// the direction it arrived from unless that direction means something (a
+			// widget, a line wrap). See text-editor.cursor.ts.
+			stableCursor,
 			dropCursor(),
 			dragToMove,
 			// Prec.highest so this beats the markdown language's deleteMarkupBackward,

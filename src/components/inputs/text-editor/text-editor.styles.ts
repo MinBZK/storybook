@@ -153,6 +153,9 @@ export const textEditorStyles = css`
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
 		border-left-width: var(--__caret-width);
+		/* CodeMirror centers its own 1.2px caret with a -0.6px margin. Ours is wider,
+		   so recenter it on the insertion point from its own width. */
+		margin-left: calc(var(--__caret-width) / -2);
 		/* A thin surface-colored halo, like the drop cursor, so the caret stays legible
 		   even over a tinted token (annotation, inline code) where the accent alone can
 		   blend in. Blinks with the caret (opacity covers the shadow too). */

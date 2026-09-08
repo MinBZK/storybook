@@ -160,13 +160,20 @@ class AnnotationBadge extends WidgetType {
 		const cs = getComputedStyle(dom);
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
 		// Inside edge: the text's end (before the badge's left margin). Outside edge:
-		// just past the badge (its right edge + margin). The badge is a single inline
-		// box on the annotation's last line, so this stays correct for multi-line
-		// annotations — where the tint's bounding box would be the union of every
-		// line and push the caret to the far right edge.
+		// the tint's own right edge on its last line, which is where the text after
+		// the annotation starts. The badge's right edge plus its margin stops short
+		// of that by the tint's inline padding, and CodeMirror measures the position
+		// after the sentinel from the text on the other side, so the caret there
+		// jumped by that padding depending on the direction it arrived from. The
+		// badge sits on the annotation's last line, so the last client rect is the
+		// right one for a multi-line annotation; the bounding box would be the union
+		// of every line and push the caret to the far right edge.
+		const tint = dom.closest('.cm-annotation');
+		const rects = tint ? tint.getClientRects() : null;
+		const lastLine = rects && rects.length ? rects[rects.length - 1] : null;
 		const x = pos <= 0
 			? badge.left - parseFloat(cs.marginLeft)
-			: badge.right + parseFloat(cs.marginRight);
+			: (lastLine ? lastLine.right : badge.right + parseFloat(cs.marginRight));
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
