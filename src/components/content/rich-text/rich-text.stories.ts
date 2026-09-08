@@ -9,10 +9,9 @@ export default {
 	argTypes: {
 		color: {
 			control: 'select',
-			options: ['(auto)', 'inherit'],
-			mapping: { '(auto)': '' },
-			description: 'inherit laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken)',
-			table: { defaultValue: { summary: '(auto)' } },
+			options: ['content', 'inherit'],
+			description: '`content` neemt de eigen tekstkleuren van het systeem, elk element z\'n eigen. `inherit` laat alle tekst de kleur van de ondergrond volgen (voor gekleurde vlakken).',
+			table: { defaultValue: { summary: 'content' } },
 		},
 		spacing: {
 			control: 'select',
@@ -31,7 +30,7 @@ export default {
 			table: { defaultValue: { summary: false } },
 		},
 	},
-	args: { color: '', spacing: 'snug', centered: false, hyphens: false },
+	args: { color: 'content', spacing: 'snug', centered: false, hyphens: false },
 };
 
 export const Default = {

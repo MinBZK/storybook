@@ -4645,9 +4645,9 @@
               "kind": "field",
               "name": "color",
               "type": {
-                "text": "'' | 'inherit'"
+                "text": "'content' | 'inherit'"
               },
-              "default": "''",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -4692,11 +4692,11 @@
             {
               "name": "color",
               "type": {
-                "text": "'' | 'inherit'"
+                "text": "'content' | 'inherit'"
               },
-              "default": "''",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces. Empty = the default content colors."
+              "description": "'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the color of the surface instead (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces."
             },
             {
               "name": "translations",
@@ -5061,7 +5061,7 @@
               "type": {
                 "text": "TitleColor"
               },
-              "default": "''",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             }
@@ -5081,9 +5081,9 @@
               "type": {
                 "text": "TitleColor"
               },
-              "default": "''",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity. Empty = the default content colors."
+              "description": "'content' (the default) takes the system's own content colors. 'inherit' lets the title follow the text color of the surface instead (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity."
             }
           ],
           "superclass": {

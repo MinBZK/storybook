@@ -25,11 +25,12 @@
  *   `overflow-wrap: break-word` safety net on p/li is always on, independent of
  *   this attribute, so long URLs and compounds break neatly instead of
  *   overflowing even without a dictionary.
- * @attr {string} color - 'inherit' lets all text follow the color of the
- *   surface (for colored areas such as the filled categories). Links stay
- *   underlined as an affordance; secondary text (figcaption) gets the same
- *   color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr
- *   keep their own surfaces. Empty = the default content colors.
+ * @attr {string} color - 'content' (the default) takes the system's own content
+ *   colors, each element its own. 'inherit' lets all text follow the color of
+ *   the surface instead (for colored areas such as the filled categories).
+ *   Links stay underlined as an affordance; secondary text (figcaption) gets
+ *   the same color at a lowered opacity. Known v1 gaps: inline code, mark,
+ *   tables and hr keep their own surfaces.
  * @attr {object} translations - Override translation keys; unset keys fall back to Dutch
  */
 import { LitElement } from 'lit';
@@ -53,8 +54,8 @@ export class NLDDRichText extends LitElement {
 	@property({ type: Boolean, reflect: true })
 	hyphens = false;
 
-	@property({ reflect: true, converter: reflectNonDefault<'' | 'inherit'>('') })
-	color: '' | 'inherit' = '';
+	@property({ reflect: true, converter: reflectNonDefault<'content' | 'inherit'>('content') })
+	color: 'content' | 'inherit' = 'content';
 
 	@property({ type: Object })
 	translations: Partial<NLDDRichTextTranslations> = {};

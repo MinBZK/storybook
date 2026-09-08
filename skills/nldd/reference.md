@@ -505,7 +505,7 @@ A container for rich text content that automatically applies responsive typograp
 | `spacing` | `string` | Spacing between elements: 'flat' \| 'tight' \| 'snug' (default) \| 'loose' |
 | `centered` | `boolean` | Centers the main column inside the container; without it, content is left-aligned |
 | `hyphens` | `boolean` | Opt-in automatic hyphenation for running text (p, li, dd). Needs a correct `lang` on the page (`lang="nl"` on `<html>`, for instance): without language information the browser does not hyphenate. An `overflow-wrap: break-word` safety net on p/li is always on, independent of this attribute, so long URLs and compounds break neatly instead of overflowing even without a dictionary. |
-| `color` | `string` | 'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces. Empty = the default content colors. |
+| `color` | `string` | 'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the color of the surface instead (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces. |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 ### `<nldd-tag>`
@@ -559,7 +559,7 @@ A title bar with an optional overline, title, and subtitle on the left, and a sl
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `size` | `number` | Visual size of the title: 1–6 (default: 3) |
-| `color` | `string` | 'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity. Empty = the default content colors. |
+| `color` | `string` | 'content' (the default) takes the system's own content colors. 'inherit' lets the title follow the text color of the surface instead (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity. |
 
 **Slots**
 
