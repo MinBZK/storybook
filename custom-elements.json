@@ -34340,6 +34340,16 @@
               "default": "null",
               "attribute": "heading-level",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "attribute": "horizontal-alignment",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -34405,6 +34415,15 @@
               "default": "null",
               "fieldName": "headingLevel",
               "description": "Renders text as h1–h6; absent renders a p"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "fieldName": "horizontalAlignment",
+              "description": "Overrides the alignment of text, icon and actions. Unset (the default) derives it: content in the default slot means a task, which aligns left; a bare message stays centered. Left alignment also lays the actions out in a row instead of stacked full-width."
             }
           ],
           "superclass": {
@@ -34720,6 +34739,16 @@
             },
             {
               "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "attribute": "horizontal-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "accessibleLabel",
               "type": {
                 "text": "string"
@@ -34793,6 +34822,15 @@
               "default": "''",
               "fieldName": "supportingText",
               "description": "Forwarded to nldd-inline-dialog; supporting text"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "fieldName": "horizontalAlignment",
+              "description": "Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered."
             },
             {
               "name": "accessible-label",

@@ -149,4 +149,82 @@ describe('nldd-inline-dialog', () => {
 			.getPropertyValue('--semantics-content-critical-color').trim();
 		expect(iconColor).toBe(expected);
 	});
+
+	describe('horizontal alignment', () => {
+		const body = (host: HTMLElement) => host.shadowRoot!.querySelector('.inline-dialog__body')!;
+		// The property, not the attribute: nldd-button-group drops `orientation`
+		// from the DOM when it equals its own default.
+		const orientation = (host: HTMLElement) =>
+			(host.shadowRoot!.querySelector('nldd-button-group') as unknown as { orientation: string }).orientation;
+
+		it('centers a bare message', async () => {
+			el = await fixture('<nldd-inline-dialog text="Geen resultaten"></nldd-inline-dialog>');
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+		});
+
+		it('centers a message with actions but no slotted content', async () => {
+			el = await fixture(`
+				<nldd-inline-dialog text="Geen resultaten">
+					<nldd-button slot="actions" text="Wissen"></nldd-button>
+				</nldd-inline-dialog>
+			`);
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+			expect(orientation(el)).toBe('vertical');
+		});
+
+		it('aligns left as soon as the default slot holds content', async () => {
+			el = await fixture(`
+				<nldd-inline-dialog text="Map hernoemen">
+					<nldd-text-field label="Naam"></nldd-text-field>
+				</nldd-inline-dialog>
+			`);
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+		});
+
+		it('treats plain text in the default slot as content', async () => {
+			el = await fixture('<nldd-inline-dialog text="Let op">Een losse notitie.</nldd-inline-dialog>');
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+		});
+
+		it('lays the actions out in a row when aligned left', async () => {
+			el = await fixture(`
+				<nldd-inline-dialog text="Map hernoemen">
+					<nldd-text-field label="Naam"></nldd-text-field>
+					<nldd-button slot="actions" text="Opslaan"></nldd-button>
+				</nldd-inline-dialog>
+			`);
+			await waitForUpdate(el);
+			expect(orientation(el)).toBe('horizontal');
+		});
+
+		it('horizontal-alignment="center" keeps slotted content centered', async () => {
+			el = await fixture(`
+				<nldd-inline-dialog text="Map hernoemen" horizontal-alignment="center">
+					<nldd-text-field label="Naam"></nldd-text-field>
+				</nldd-inline-dialog>
+			`);
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+		});
+
+		it('horizontal-alignment="left" aligns a bare message left', async () => {
+			el = await fixture('<nldd-inline-dialog text="Geen resultaten" horizontal-alignment="left"></nldd-inline-dialog>');
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+		});
+
+		it('follows the slot when content arrives after first render', async () => {
+			el = await fixture('<nldd-inline-dialog text="Map hernoemen"></nldd-inline-dialog>');
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+
+			el.appendChild(document.createElement('nldd-text-field'));
+			await waitForUpdate(el);
+			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+		});
+	});
 });

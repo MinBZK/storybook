@@ -140,6 +140,32 @@ describe('nldd-modal-dialog', () => {
 		expect(inner?.getAttribute('icon')).toBe('check-mark-circle');
 	});
 
+	it('forwards horizontal-alignment to nldd-inline-dialog', async () => {
+		el = await fixture('<nldd-modal-dialog horizontal-alignment="left"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(inner?.getAttribute('horizontal-alignment')).toBe('left');
+	});
+
+	it('leaves horizontal-alignment off the inner dialog when unset, so it derives its own', async () => {
+		el = await fixture('<nldd-modal-dialog text="Weet u het zeker?"></nldd-modal-dialog>');
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-inline-dialog');
+		expect(inner?.hasAttribute('horizontal-alignment')).toBe(false);
+	});
+
+	it('a modal with slotted content aligns left without being told to', async () => {
+		el = await fixture(`
+			<nldd-modal-dialog text="Map hernoemen">
+				<nldd-text-field label="Naam"></nldd-text-field>
+			</nldd-modal-dialog>
+		`);
+		await waitForUpdate(el);
+		const inner = el.shadowRoot!.querySelector('nldd-inline-dialog')!;
+		await waitForUpdate(inner as HTMLElement);
+		expect(inner.shadowRoot!.querySelector('.inline-dialog__body')!.classList.contains('inline-dialog__body--left')).toBe(true);
+	});
+
 	it('sets aria-label from accessible-label', async () => {
 		el = await fixture('<nldd-modal-dialog accessible-label="Bevestig actie" text="Weet u het zeker?"></nldd-modal-dialog>');
 		await waitForUpdate(el);

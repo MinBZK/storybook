@@ -72,12 +72,23 @@ export const inlineDialogStyles = css`
 		align-items: center;
 	}
 
+	.inline-dialog__body--left {
+		align-items: stretch;
+	}
+
 	.inline-dialog__main {
 		display: flex;
 		width: 100%;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--primitives-space-2);
+	}
+
+	/* stretch, not flex-start: the text blocks need the full width for
+	   text-align to have anything to align against. The icon keeps its own
+	   width, which stretch does not override. */
+	.inline-dialog__body--left .inline-dialog__main {
+		align-items: stretch;
 	}
 
 	.inline-dialog__icon {
@@ -111,8 +122,21 @@ export const inlineDialogStyles = css`
 		text-wrap: pretty;
 	}
 
+	.inline-dialog__body--left .inline-dialog__text,
+	.inline-dialog__body--left .inline-dialog__supporting-text {
+		text-align: left;
+	}
+
 	.inline-dialog__content {
+		display: flex;
 		width: 100%;
+		flex-direction: column;
+		align-items: center;
+		padding-top: var(--primitives-space-16);
+	}
+
+	.inline-dialog__body--left .inline-dialog__content {
+		align-items: stretch;
 	}
 
 	.inline-dialog__content[hidden] {

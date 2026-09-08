@@ -2,8 +2,13 @@ import { html, nothing } from 'lit';
 import type { NLDDInlineDialog } from './inline-dialog.js';
 
 export function inlineDialogTemplate(component: NLDDInlineDialog) {
+	const alignment = component._resolvedHorizontalAlignment;
+	const bodyClass = ['inline-dialog__body',
+		alignment === 'left' ? 'inline-dialog__body--left' : '',
+	].filter(Boolean).join(' ');
+
 	return html`
-		<div class="inline-dialog__body">
+		<div class=${bodyClass}>
 			<div class="inline-dialog__main">
 				${component.variant === 'loading' ? html`
 					<div class="inline-dialog__icon">
@@ -38,7 +43,7 @@ export function inlineDialogTemplate(component: NLDDInlineDialog) {
 			<div class="inline-dialog__footer"
 				?hidden=${!component._hasActions}
 			>
-				<nldd-button-group orientation="vertical">
+				<nldd-button-group orientation=${alignment === 'left' ? 'horizontal' : 'vertical'}>
 					<slot name="actions"></slot>
 				</nldd-button-group>
 			</div>

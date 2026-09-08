@@ -10,6 +10,7 @@
  * @attr {string} icon - Forwarded to nldd-inline-dialog; absent when not set
  * @attr {string} text - Forwarded to nldd-inline-dialog; main text
  * @attr {string} supporting-text - Forwarded to nldd-inline-dialog; supporting text
+ * @attr {'left'|'center'} horizontal-alignment - Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered.
  * @attr {string} accessible-label - Accessible name for the dialog (aria-label); falls back to text
  *
  * @slot - Optional custom content, forwarded to nldd-inline-dialog
@@ -34,7 +35,7 @@ import { modalDialogTemplate } from './modal-dialog.template.js';
 import { isPointerMode } from '../../../utilities/input-modality.js';
 import { focusAutofocusTarget } from '../../../utilities/autofocus.js';
 import { openWhenRendered } from '../../../utilities/open-when-rendered.js';
-import type { InlineDialogVariant } from '../inline-dialog/inline-dialog.js';
+import type { InlineDialogVariant, InlineDialogHorizontalAlignment } from '../inline-dialog/inline-dialog.js';
 import '../inline-dialog/inline-dialog.js';
 
 @customElement('nldd-modal-dialog')
@@ -52,6 +53,9 @@ export class NLDDModalDialog extends LitElement {
 
 	@property({ reflect: true, attribute: 'supporting-text', converter: reflectNonDefault<string>('') })
 	supportingText = '';
+
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<InlineDialogHorizontalAlignment | ''>('') })
+	horizontalAlignment: InlineDialogHorizontalAlignment | '' = '';
 
 	/** Accessible name for the dialog — forwarded as aria-label. Falls back to text. */
 	@property({ type: String, attribute: 'accessible-label' })

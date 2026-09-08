@@ -1,6 +1,8 @@
 import { html, nothing } from 'lit';
 import './modal-dialog.js';
 import '../../actions/button/button.js';
+import '../../inputs/text-field/text-field.js';
+import '../../forms/form-field/form-field.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**
@@ -165,6 +167,48 @@ export const Alert = {
 			slot="actions"
 			variant="primary"
 			text="Doorgaan"
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+		<nldd-button
+			slot="actions"
+			variant="neutral-tinted"
+			text="Annuleer"
+			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
+		></nldd-button>
+	</nldd-modal-dialog>
+`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * De uitlijning erft de modal van `nldd-inline-dialog`, die hij intern rendert.
+ * Zet je een formulier in de slot, dan lijnen kop, tekst en knoppen links uit en
+ * komen de knoppen naast elkaar. Zonder slot blijft een korte bevestiging
+ * gecentreerd, zoals in de stories hierboven.
+ *
+ * Wil je daarvan afwijken, dan geeft `horizontal-alignment` op de modal door aan
+ * de inline dialog erbinnen.
+ */
+export const MetFormulier = {
+	name: 'Met formulier (links uitgelijnd)',
+	render: () => html`
+	<nldd-button
+		variant="primary"
+		text="Open modal dialog"
+		@click=${openNext}
+	></nldd-button>
+	<nldd-modal-dialog
+		icon="write"
+		text="Map hernoemen"
+		supporting-text="De nieuwe naam is meteen zichtbaar voor iedereen met toegang."
+	>
+		<nldd-form-field label="Naam">
+				<nldd-text-field value="Beleidsstukken 2026"></nldd-text-field>
+			</nldd-form-field>
+		<nldd-button
+			slot="actions"
+			variant="primary"
+			text="Opslaan"
 			@click=${(e: any) => e.target.closest('nldd-modal-dialog').hide()}
 		></nldd-button>
 		<nldd-button

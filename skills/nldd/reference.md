@@ -2592,6 +2592,7 @@ An inline status component for empty state, confirmations and feedback. Fills th
 | `text` | `string` | Main text (heading or paragraph, depending on heading-level) |
 | `supporting-text` | `string` | Supporting text below the heading |
 | `heading-level` | `1\|2\|3\|4\|5\|6` | Renders text as h1–h6; absent renders a p |
+| `horizontal-alignment` | `'left'\|'center'` | Overrides the alignment of text, icon and actions. Unset (the default) derives it: content in the default slot means a task, which aligns left; a bare message stays centered. Left alignment also lays the actions out in a row instead of stacked full-width. |
 
 **Slots**
 
@@ -2640,6 +2641,7 @@ A modal window with overlay backdrop, based on the native <dialog> element. Inte
 | `icon` | `string` | Forwarded to nldd-inline-dialog; absent when not set |
 | `text` | `string` | Forwarded to nldd-inline-dialog; main text |
 | `supporting-text` | `string` | Forwarded to nldd-inline-dialog; supporting text |
+| `horizontal-alignment` | `'left'\|'center'` | Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered. |
 | `accessible-label` | `string` | Accessible name for the dialog (aria-label); falls back to text |
 
 **Slots**

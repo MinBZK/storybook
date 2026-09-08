@@ -1,7 +1,11 @@
 import { html, nothing } from 'lit';
 import './inline-dialog.js';
 import '../../actions/button/button.js';
+import '../../inputs/text-field/text-field.js';
+import '../../forms/form-field/form-field.js';
+import '../progress-circle/progress-circle.js';
 import '../../layout/box/box.js';
+import '../../layout/container/container.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 /**
@@ -71,6 +75,14 @@ export default {
 			description: 'Overschrijft de standaard icoonkleur (en die van een variant).',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
+		horizontalAlignment: {
+			name: 'horizontal-alignment',
+			control: 'select',
+			options: ['(auto)', 'left', 'center'],
+			mapping: { '(auto)': '' },
+			description: 'Overschrijft de uitlijning. Bij "(auto)" bepaalt het component het zelf: inhoud in de default slot lijnt links uit, een kale melding blijft gecentreerd.',
+			table: { defaultValue: { summary: '(auto)' } },
+		},
 	},
 	args: {
 		variant: '',
@@ -79,6 +91,7 @@ export default {
 		supportingText: 'Ondersteunende tekst voor aanvullende context.',
 		icon: '',
 		iconColor: '',
+		horizontalAlignment: '',
 	},
 };
 
@@ -90,6 +103,7 @@ export const Standaard = (args: Record<string, any>) => html`
 		supporting-text=${args.supportingText}
 		icon=${args.icon || nothing}
 		icon-color=${args.iconColor || nothing}
+		horizontal-alignment=${args.horizontalAlignment || nothing}
 	>
 		<nldd-button slot="actions" variant="primary" text="Bevestig"></nldd-button>
 		<nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
@@ -211,15 +225,88 @@ export const Groot = {
 
 export const LegeToestand = {
 	render: () => html`
-	<nldd-box style="height: 400px; display: flex; align-items: center; justify-content: center;">
-		<nldd-inline-dialog
-			icon="inbox"
-			text="Geen resultaten"
-			supporting-text="Er zijn geen items gevonden die overeenkomen met uw zoekopdracht."
+	<nldd-box style="height: 400px;">
+		<nldd-container
+			padding="16"
+			horizontal-alignment="center"
+			vertical-alignment="center"
+			style="height: 100%;"
 		>
-			<nldd-button slot="actions" variant="neutral-tinted" text="Zoekopdracht wissen"></nldd-button>
-		</nldd-inline-dialog>
+			<nldd-inline-dialog
+				icon="inbox"
+				text="Geen resultaten"
+				supporting-text="Er zijn geen items gevonden die overeenkomen met uw zoekopdracht."
+			>
+				<nldd-button slot="actions" variant="neutral-tinted" text="Zoekopdracht wissen"></nldd-button>
+			</nldd-inline-dialog>
+		</nldd-container>
 	</nldd-box>
 `,
 	parameters: { controls: { disable: true } },
+};
+
+/**
+ * Zet je iets in de default slot, dan is de dialog geen melding meer maar een
+ * taak. Tekst, icoon en knoppen lijnen dan links uit, en de knoppen komen naast
+ * elkaar in plaats van gestapeld over de volle breedte. Je hoeft daar niets
+ * voor te zetten: het component leidt het af uit de slot.
+ *
+ * De reden is de leesrichting. Een formulierveld begint links, en een kop die
+ * daarboven gecentreerd staat legt een tweede as over dezelfde kolom.
+ */
+export const MetFormulier = {
+	name: 'Met formulier (links uitgelijnd)',
+	render: () => html`
+		<nldd-inline-dialog
+			icon="write"
+			text="Map hernoemen"
+			supporting-text="De nieuwe naam is meteen zichtbaar voor iedereen met toegang."
+		>
+			<nldd-form-field label="Naam">
+				<nldd-text-field value="Beleidsstukken 2026"></nldd-text-field>
+			</nldd-form-field>
+			<nldd-button slot="actions" variant="primary" text="Opslaan"></nldd-button>
+			<nldd-button slot="actions" variant="neutral-tinted" text="Annuleer"></nldd-button>
+		</nldd-inline-dialog>
+	`,
+	parameters: { controls: { disable: true } },
+};
+
+/**
+ * De afgeleide regel dekt niet alles. Met `horizontal-alignment` overschrijf je
+ * hem in beide richtingen: links voor een lange melding zonder slot, of
+ * gecentreerd voor slot-inhoud die zelf al een gecentreerde figuur is,
+ * bijvoorbeeld een illustratie.
+ */
+export const UitlijningOverschrijven = {
+	name: 'Uitlijning overschrijven',
+	render: () => html`
+		<div style="display: flex; flex-direction: column; gap: 32px;">
+			<nldd-inline-dialog
+				horizontal-alignment="left"
+				icon="alert"
+				text="Deze aanvraag verloopt over 3 dagen"
+				supporting-text="Na 12 maart vervalt de aanvraag en moet je opnieuw beginnen. Je ingevulde gegevens blijven tot die tijd bewaard."
+			>
+				<nldd-button slot="actions" variant="primary" text="Aanvraag afronden"></nldd-button>
+			</nldd-inline-dialog>
+
+			<nldd-inline-dialog
+				horizontal-alignment="center"
+				text="Bijna klaar"
+				supporting-text="Nog één stap te gaan."
+			>
+				<nldd-progress-circle value="80" max="100" size="64" value-display="inline"></nldd-progress-circle>
+				<nldd-button slot="actions" variant="primary" text="Afronden"></nldd-button>
+			</nldd-inline-dialog>
+		</div>
+	`,
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Boven: `left` op een melding zonder slot, want de tekst is te lang om gecentreerd prettig te lezen. Onder: `center` op slot-inhoud die zelf al symmetrisch is.',
+			},
+		},
+	},
 };

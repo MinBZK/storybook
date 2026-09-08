@@ -13,6 +13,7 @@
  * @attr {string} text - Main text (heading or paragraph, depending on heading-level)
  * @attr {string} supporting-text - Supporting text below the heading
  * @attr {1|2|3|4|5|6} heading-level - Renders text as h1–h6; absent renders a p
+ * @attr {'left'|'center'} horizontal-alignment - Overrides the alignment of text, icon and actions. Unset (the default) derives it: content in the default slot means a task, which aligns left; a bare message stays centered. Left alignment also lays the actions out in a row instead of stacked full-width.
  *
  * @slot - Optional custom content between text and actions
  * @slot actions - nldd-button elements, wrapped in nldd-button-group (max 3)
@@ -29,6 +30,7 @@ import '../activity-indicator/activity-indicator.js';
 export type InlineDialogVariant = 'alert' | 'success' | 'loading';
 export type InlineDialogSize = 'md' | 'lg';
 export type InlineDialogIconColor = 'secondary' | 'accent' | 'critical' | 'warning' | 'success';
+export type InlineDialogHorizontalAlignment = 'left' | 'center';
 
 @customElement('nldd-inline-dialog')
 export class NLDDInlineDialog extends LitElement {
@@ -55,6 +57,9 @@ export class NLDDInlineDialog extends LitElement {
 	@property({ type: Number, reflect: true, attribute: 'heading-level' })
 	headingLevel: 1 | 2 | 3 | 4 | 5 | 6 | null = null;
 
+	@property({ reflect: true, attribute: 'horizontal-alignment', converter: reflectNonDefault<InlineDialogHorizontalAlignment | ''>('') })
+	horizontalAlignment: InlineDialogHorizontalAlignment | '' = '';
+
 	@state()
 	_hasContent = false;
 
@@ -66,6 +71,15 @@ export class NLDDInlineDialog extends LitElement {
 		if (this.variant === 'success') return 'success';
 		if (this.icon) return this.icon;
 		return '';
+	}
+
+	/** Anything in the default slot is a task (a form, a list) rather than a
+	 *  message, and a task reads left-aligned. Derived rather than defaulted so
+	 *  the empty state — the other half of this component — stays centered
+	 *  without every consumer setting an attribute. */
+	get _resolvedHorizontalAlignment(): InlineDialogHorizontalAlignment {
+		if (this.horizontalAlignment) return this.horizontalAlignment;
+		return this._hasContent ? 'left' : 'center';
 	}
 
 	override firstUpdated() {
