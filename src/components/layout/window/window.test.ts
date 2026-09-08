@@ -34,16 +34,17 @@ describe('nldd-window', () => {
 		expect(dialog.open).toBe(true);
 	});
 
-	it('opent niet-modaal met show() als modeless is ingesteld', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+	it('opent modaal, met een backdrop en de pagina erachter inert', async () => {
+		el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 		expect(dialog.open).toBe(true);
+		expect(dialog.matches(':modal')).toBe(true);
 	});
 
 	it('sluit met hide()', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		el.hide();
@@ -52,7 +53,7 @@ describe('nldd-window', () => {
 	});
 
 	it('stuurt open event bij show()', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('open', () => { fired = true; });
@@ -61,7 +62,7 @@ describe('nldd-window', () => {
 	});
 
 	it('stuurt close event bij hide()', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		let fired = false;
@@ -78,7 +79,7 @@ describe('nldd-window', () => {
 	});
 
 	it('sluit bij cancel event (Escape)', async () => {
-		el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+		el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 		await waitForUpdate(el);
 		el.show();
 		const dialog = el.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
@@ -247,7 +248,7 @@ describe('nldd-window', () => {
 		}
 
 		it('centered=true: dialog krijgt translate(-50%, -50%) op beide assen', async () => {
-			el = await fixture<NLDDWindow>('<nldd-window modeless centered></nldd-window>');
+			el = await fixture<NLDDWindow>('<nldd-window centered></nldd-window>');
 			await waitForUpdate(el);
 			el.show();
 			await waitForUpdate(el);
@@ -260,7 +261,7 @@ describe('nldd-window', () => {
 		});
 
 		it('centered + bottom="0": horizontaal centered, verticaal bottom-aligned', async () => {
-			el = await fixture<NLDDWindow>('<nldd-window modeless centered bottom="0"></nldd-window>');
+			el = await fixture<NLDDWindow>('<nldd-window centered bottom="0"></nldd-window>');
 			await waitForUpdate(el);
 			el.show();
 			await waitForUpdate(el);
@@ -273,7 +274,7 @@ describe('nldd-window', () => {
 		});
 
 		it('zonder centered en zonder edge-attrs: geen inline override', async () => {
-			el = await fixture<NLDDWindow>('<nldd-window modeless></nldd-window>');
+			el = await fixture<NLDDWindow>('<nldd-window></nldd-window>');
 			await waitForUpdate(el);
 			el.show();
 			await waitForUpdate(el);
@@ -340,12 +341,11 @@ describe('nldd-window meldt sluiten via elke route', () => {
 		return host.shadowRoot!.querySelector('dialog') as HTMLDialogElement;
 	}
 
-	// Escape closes a modeless dialog through the CloseWatcher, going around
-	// hide(), and @cancel plus preventDefault does not reliably stop that. close
-	// only came out of hide(), so a modeless window closed without reporting it.
+	// hide() cannot be the only source of `close`: anything that closes the
+	// dialog directly skips it, and the window would go quiet.
 	it('stuurt close wanneer de dialog buiten hide() om sluit', async () => {
 		el = await fixture<NLDDWindow & { show(): void; hide(): void }>(
-			'<nldd-window modeless accessible-label="Test"></nldd-window>',
+			'<nldd-window accessible-label="Test"></nldd-window>',
 		);
 		await waitForUpdate(el);
 		let aantal = 0;

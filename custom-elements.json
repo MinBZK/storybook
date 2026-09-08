@@ -28160,19 +28160,9 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.",
+          "description": "A floating window based on the native <dialog> element, positionable through CSS values. Always modal. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.",
           "name": "NLDDWindow",
           "members": [
-            {
-              "kind": "field",
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "modeless",
-              "reflects": true
-            },
             {
               "kind": "field",
               "name": "noLightDismiss",
@@ -28306,15 +28296,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "modeless",
-              "description": "Modeless (no backdrop or focus trap); the window is modal by default"
-            },
             {
               "name": "no-light-dismiss",
               "type": {

@@ -2167,13 +2167,12 @@ A section with 2/3 main content on the left and a 1/3 sidebar on the right. The 
 
 ### `<nldd-window>`
 
-A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.
+A floating window based on the native <dialog> element, positionable through CSS values. Always modal. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.
 
 **Attributes**
 
 | Attribute | Type | Description |
 | --- | --- | --- |
-| `modeless` | `boolean` | Modeless (no backdrop or focus trap); the window is modal by default |
 | `no-light-dismiss` | `boolean` | A click on the backdrop does not close the window. For windows where dismissing by accident costs work: a wizard, a form with filled-in fields. Escape and the dismiss button keep working. |
 | `accessible-label` | `string` | (required) Accessible name (aria-label). Falls back to the i18n default ('Venster') when unset. Always pass a unique, descriptive name per window. |
 | `translations` | `object` | Override translation keys; unset keys fall back to the Dutch default. |

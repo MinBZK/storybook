@@ -74,11 +74,6 @@ export default {
 			description: 'Toegankelijk label voor screen readers (aria-label van het venster)',
 			table: { defaultValue: { summary: 'Venster' } },
 		},
-		modeless: {
-			control: 'boolean',
-			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
-			table: { defaultValue: { summary: false } },
-		},
 		noLightDismiss: {
 			name: 'no-light-dismiss',
 			control: 'boolean',
@@ -95,7 +90,6 @@ export default {
 		bottom: '',
 		left: '',
 		accessibleLabel: 'Voorbeeldvenster',
-		modeless: false,
 		noLightDismiss: false,
 	},
 };
@@ -123,7 +117,6 @@ const Template = (args: Record<string, unknown>) => html`
 		bottom=${args.bottom || nothing}
 		left=${args.left || nothing}
 		accessible-label=${args.accessibleLabel || nothing}
-		?modeless=${args.modeless}
 		?no-light-dismiss=${args.noLightDismiss}
 	>
 		<nldd-page sticky-header>
@@ -141,32 +134,6 @@ export const Standaard = {
 	render: Template,
 };
 
-export const NietModaal = {
-	render: () => html`
-		<nldd-button text="Open niet-modaal venster" @click=${openNext}></nldd-button>
-		<nldd-window
-			modeless
-			accessible-label="Niet-modaal venster"
-		>
-			<nldd-page sticky-header>
-				<nldd-top-title-bar
-					slot="header"
-					text="Niet-modaal venster"
-					dismiss-text="Sluit"
-				></nldd-top-title-bar>
-				${pageContent}
-			</nldd-page>
-		</nldd-window>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Niet-modaal venster zonder backdrop en focusvergrendeling.',
-			},
-		},
-	},
-};
 
 export const Gepositioneerd = {
 	render: () => html`
