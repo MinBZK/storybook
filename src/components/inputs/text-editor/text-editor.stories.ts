@@ -572,6 +572,61 @@ export const Mentions = {
 	},
 };
 
+export const Typeaheads = {
+	render: () => {
+		const people = [
+			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid', avatar: {} },
+			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie', avatar: {} },
+			{ id: '3', label: 'Chen Wei', detail: 'Data', avatar: {} },
+			{ id: '4', label: 'Dienst Toeslagen', detail: 'Organisatie', avatar: { type: 'organization' as const } },
+		];
+		const channels = [
+			{ id: 'algemeen', label: 'algemeen', detail: 'Het hele team', icon: 'tag' },
+			{ id: 'zorgtoeslag', label: 'zorgtoeslag', detail: 'Het traject', icon: 'tag' },
+			{ id: 'vragen', label: 'vragen', detail: 'Hulp en vragen', icon: 'tag' },
+		];
+		const emoji = [
+			{ id: '😄', label: 'smile' },
+			{ id: '👍', label: 'thumbsup' },
+			{ id: '🎉', label: 'tada' },
+			{ id: '🤔', label: 'thinking' },
+		];
+		const filter = <T extends { label: string }>(items: T[]) => (query: string) =>
+			items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
+		const typeaheads = [
+			{ trigger: '#', source: filter(channels) },
+			{ trigger: ':', source: filter(emoji), insert: (candidate: { id: string }) => candidate.id },
+		];
+		const sample = 'Typ `@` voor een persoon, `#` voor een kanaal en `:` voor een emoji.';
+		const insertDate = (event: Event): void => {
+			const editor = (event.currentTarget as Element).parentElement?.querySelector('nldd-text-editor') as unknown as { insertAtCursor(text: string): void } | null;
+			editor?.insertAtCursor(new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }));
+		};
+		return html`
+			<div class="demo-editor">
+				<nldd-text-editor
+					rows="8"
+					accessible-label="Bericht"
+					.value=${sample}
+					.mentionSource=${filter(people)}
+					.typeaheads=${typeaheads}
+					@nldd-text-editor-mention=${(event: CustomEvent) => action('nldd-text-editor-mention')(event.detail)}
+					@nldd-text-editor-typeahead=${(event: CustomEvent) => action('nldd-text-editor-typeahead')(event.detail)}
+				></nldd-text-editor>
+				<nldd-button variant="secondary" text="Datum invoegen" @click=${insertDate}></nldd-button>
+			</div>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft (standaard de trigger, het label en een spatie; hier schrijft `:` de emoji zelf). Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` (persoon of organisatie, initialen of een afbeelding) of een `icon` meekrijgen. Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
+			},
+		},
+	},
+};
+
 export const Annotations = {
 	render: () => {
 		const sample =

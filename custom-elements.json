@@ -17180,6 +17180,30 @@
       "declarations": [
         {
           "kind": "function",
+          "name": "sidesApart",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            },
+            {
+              "name": "head",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Whether `head` has a place on either side of a widget: the two sides are on\none line and clearly apart. A line wrap puts them on different lines."
+        },
+        {
+          "kind": "function",
           "name": "drawnAssoc",
           "return": {
             "type": {
@@ -17206,7 +17230,7 @@
               }
             }
           ],
-          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and either the arrival direction or a backward delete says\n\"before\"."
+          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and the arrival direction, or the last edit, says \"before\"."
         },
         {
           "kind": "variable",
@@ -17214,10 +17238,18 @@
           "type": {
             "text": "Extension"
           },
-          "default": "[cursorLayer, theme]"
+          "default": "[cursorLayer, stepOverKeymap, theme]"
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "sidesApart",
+          "declaration": {
+            "name": "sidesApart",
+            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
+          }
+        },
         {
           "kind": "js",
           "name": "drawnAssoc",
@@ -17455,6 +17487,30 @@
             }
           ],
           "description": "Adds an \"open link\" badge after every real link in the viewport. `label` builds\nthe badge's accessible label from the destination, so the host can localize it."
+        },
+        {
+          "kind": "function",
+          "name": "bareUrlEndsAt",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Whether a bare URL ends at `pos`: the one place where the caret has a stop on\neither side of a badge, since text typed there extends the URL."
         }
       ],
       "exports": [
@@ -17479,6 +17535,14 @@
           "name": "linkOpenBadge",
           "declaration": {
             "name": "linkOpenBadge",
+            "module": "src/components/inputs/text-editor/text-editor.links.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "bareUrlEndsAt",
+          "declaration": {
+            "name": "bareUrlEndsAt",
             "module": "src/components/inputs/text-editor/text-editor.links.ts"
           }
         }
@@ -17611,10 +17675,10 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "mentionQueryAt",
+          "name": "typeaheadQueryAt",
           "return": {
             "type": {
-              "text": "{ from: number; to: number; query: string } | null"
+              "text": "{ from: number; to: number; query: string; trigger: string } | null"
             }
           },
           "parameters": [
@@ -17629,9 +17693,15 @@
               "type": {
                 "text": "number"
               }
+            },
+            {
+              "name": "triggers",
+              "type": {
+                "text": "readonly string[]"
+              }
             }
           ],
-          "description": "The mention query at `pos`, or null when the text before the caret is not\none. `from` is the `@`, `query` the typed name without it. Both the\ncompletion source and the reopen-on-delete path go through this, so they\ncannot disagree about what counts as a mention."
+          "description": "The typeahead query at `pos` for one of `triggers`, or null when the text\nbefore the caret is not one. `from` is the trigger, `query` the typed text\nwithout it. Both the completion source and the reopen-on-delete path go\nthrough this, so they cannot disagree about what counts as a query."
         },
         {
           "kind": "variable",
@@ -17654,11 +17724,29 @@
             {
               "name": "candidate",
               "type": {
-                "text": "MentionCandidate"
+                "text": "TypeaheadCandidate"
               }
             }
           ],
           "description": "The markdown-compatible token stored for a mention (degrades to a plain link).\nThe label's link-text delimiters are backslash-escaped and the id is\npercent-encoded, so a crafted candidate (e.g. a display name sourced from user\ndata) can't break out of `[label](user:id)` into arbitrary markdown — a stray\n`]` or `)` would otherwise start a second, attacker-shaped link. The render\nlayer reverses both via `unescapeMentionLabel` / `decodeMentionId`."
+        },
+        {
+          "kind": "function",
+          "name": "mentionInsert",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "candidate",
+              "type": {
+                "text": "TypeaheadCandidate"
+              }
+            }
+          ],
+          "description": "What the built-in mention writes: the token and a space to go on typing."
         },
         {
           "kind": "function",
@@ -17698,7 +17786,7 @@
         },
         {
           "kind": "function",
-          "name": "mentions",
+          "name": "typeaheads",
           "return": {
             "type": {
               "text": "Extension"
@@ -17706,26 +17794,27 @@
           },
           "parameters": [
             {
-              "name": "getSource",
+              "name": "getTypeaheads",
               "type": {
-                "text": "() => MentionSource | undefined"
+                "text": "() => readonly Typeahead[]"
               }
             },
             {
-              "name": "onInsert",
+              "name": "onChoose",
               "type": {
-                "text": "(detail: MentionInsertedDetail) => void"
+                "text": "(choice: TypeaheadChoice) => void"
               }
             }
-          ]
+          ],
+          "description": "The typeaheads. `getTypeaheads` is read on every keystroke, so the editor can\nhand over its current lists; choosing a candidate writes what the list's\n`insert` says and calls `onChoose`. Without lists it is inert."
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "mentionQueryAt",
+          "name": "typeaheadQueryAt",
           "declaration": {
-            "name": "mentionQueryAt",
+            "name": "typeaheadQueryAt",
             "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
           }
         },
@@ -17747,6 +17836,14 @@
         },
         {
           "kind": "js",
+          "name": "mentionInsert",
+          "declaration": {
+            "name": "mentionInsert",
+            "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
+          }
+        },
+        {
+          "kind": "js",
           "name": "unescapeMentionLabel",
           "declaration": {
             "name": "unescapeMentionLabel",
@@ -17763,9 +17860,9 @@
         },
         {
           "kind": "js",
-          "name": "mentions",
+          "name": "typeaheads",
           "declaration": {
-            "name": "mentions",
+            "name": "typeaheads",
             "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
           }
         }
@@ -17824,7 +17921,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. insertAtCursor(text) puts text at the caret. An @-mention typeahead (mentionSource) collapses to an atomic token, further typeahead lists on their own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -17969,6 +18066,15 @@
                 "text": "MentionSource | undefined"
               },
               "description": "Consumer-supplied"
+            },
+            {
+              "kind": "field",
+              "name": "typeaheads",
+              "type": {
+                "text": "Typeahead[]"
+              },
+              "default": "[]",
+              "description": "Your own typeahead lists next to the"
             },
             {
               "kind": "field",
@@ -18234,6 +18340,24 @@
             },
             {
               "kind": "method",
+              "name": "insertAtCursor",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Puts `text` at the caret, in place of the selection when there is one, and\nleaves the caret after it, with focus on the editor. Plain text: markdown\nin it stays as written and is styled like anything typed. Does nothing on\na read-only editor."
+            },
+            {
+              "kind": "method",
               "name": "runCommand",
               "return": {
                 "type": {
@@ -18491,7 +18615,11 @@
             },
             {
               "name": "nldd-text-editor-mention",
-              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)"
+              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to; clean offsets, like getSelection())"
+            },
+            {
+              "name": "nldd-text-editor-typeahead",
+              "description": "When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets)"
             },
             {
               "name": "nldd-text-editor-annotation-click",
@@ -18699,6 +18827,38 @@
           "name": "MentionInsertedDetail",
           "declaration": {
             "name": "MentionInsertedDetail",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Typeahead",
+          "declaration": {
+            "name": "Typeahead",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadCandidate",
+          "declaration": {
+            "name": "TypeaheadCandidate",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadSource",
+          "declaration": {
+            "name": "TypeaheadSource",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadChosenDetail",
+          "declaration": {
+            "name": "TypeaheadChosenDetail",
             "module": "./text-editor.mentions.js"
           }
         },

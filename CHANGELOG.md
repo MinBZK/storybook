@@ -15,10 +15,18 @@ here; consult the commit history if you need that level of detail.
 
 ### Added
 
+- **`typeaheads` on `nldd-text-editor`: your own lists next to the `@`-mention.** Each entry is a trigger character (`#`, `:`, `/`), a `source` that returns candidates for what was typed after it, and an optional `insert` that decides what a choice writes. Without one it writes the trigger, the label and a space; return the id for an emoji, or `@username ` for a system that wants a plain mention for its notifications. Lists on one trigger are merged, in order. A choice fires `nldd-text-editor-typeahead` with the trigger, the candidate and where the text sits. This is what a second trigger needed: an `autocompletion()` of your own collided with the editor's, and the workaround was a subclass reaching into the CodeMirror view. That view is not API, and with this it does not have to be. (#200, #204)
+
+- **`avatar` and `icon` on a typeahead candidate.** A person or organization shows as an `nldd-avatar` (an image, or initials from the label; `avatar: {}` is enough), a channel as an `nldd-icon`, in front of the label, so a list is scannable at a glance. The built-in mention takes them too. (#204)
+
+- **`insertAtCursor(text)` on `nldd-text-editor`.** Puts text at the caret, in place of a selection, and leaves the caret after it with focus kept. Setting `value` replaced the whole document and reset the caret, and `paste()` reads the clipboard, so there was no way to insert a piece of text from a button of your own. (#200)
+
 - **`toggleTaskList()` on `nldd-text-editor`, and `taskList` in its state.** The parser already read GFM task items; there was no command to make one. It turns the selected lines into `- [ ] ` items, keeping a bullet's or numbered item's indent, and back into bullets once they all are tasks, so only the box goes and the list stays. Checking a box is not a command. `runCommand('taskList')` reaches it too, and `getState().active.taskList` reports it for a toolbar.
 
 
 ### Changed
+
+- **`from` and `to` in `nldd-text-editor-mention` are clean offsets.** Like `getSelection()` and the annotations: the document carries sentinels for annotations that the value never shows, and the event counted them. Without annotations nothing changes.
 
 - **A toggle at the end of a run in `nldd-text-editor` steps out of it.** With the caret right before the closing markers, `toggleBold()` (and Cmd/Ctrl+B) stripped both markers, so bold, type, bold ended with the bold undone. It now puts the caret after the run, past a space that follows it, where the next word starts. A caret inside the word still unwraps the run, and so does a selection. Same for italic, strikethrough and inline code.
 

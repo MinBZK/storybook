@@ -23,8 +23,9 @@
  * a run the caret is in, and with the caret at the very end of a run steps out
  * of it. Bold that a typed space has broken (`**woord **`) keeps its styling
  * while the caret is inside; the space moves outside the markers when the caret
- * leaves. An @-mention typeahead
- * (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay
+ * leaves. insertAtCursor(text) puts text at the caret. An @-mention typeahead
+ * (mentionSource) collapses to an atomic token, further typeahead lists on their
+ * own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay
  * (annotations) marks ranges with a dashed underline, light tint and a count badge
  * without touching the underlying text.
  *
@@ -44,6 +45,7 @@
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
+ * @prop {Typeahead[]} typeaheads - Your own typeahead lists next to the @-mention (property only): each a trigger character (`#`, `:`, `/`), a `source` that returns candidates for the text typed after it, and an optional `insert` that decides what a choice writes (by default the trigger, the label and a space). Lists on one trigger are merged in order. A candidate can carry an `avatar` or an `icon` for its row.
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
@@ -52,7 +54,8 @@
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
  * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
- * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
+ * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to; clean offsets, like getSelection())
+ * @fires nldd-text-editor-typeahead - When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets)
  * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it
  */
 import { LitElement, type PropertyValues } from 'lit';
@@ -71,7 +74,15 @@ import { defaultKeymap, history, historyKeymap, undo as cmUndo, redo as cmRedo, 
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
-import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
+import {
+	typeaheads as typeaheadExtension,
+	mentionInsert,
+	mentionToken,
+	type MentionSource,
+	type MentionInsertedDetail,
+	type Typeahead,
+	type TypeaheadChoice,
+} from './text-editor.mentions.js';
 import { repairHeldEmphasis } from './text-editor.emphasis.js';
 import { annotations as annotationExtension, setAnnotations, pasteAnnotations, currentAnnotations, type Annotation } from './text-editor.annotations.js';
 import { orderedListRenumber } from './text-editor.ordered-list.js';
@@ -107,7 +118,15 @@ import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
 export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
-export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';
+export type {
+	MentionCandidate,
+	MentionSource,
+	MentionInsertedDetail,
+	Typeahead,
+	TypeaheadCandidate,
+	TypeaheadSource,
+	TypeaheadChosenDetail,
+} from './text-editor.mentions.js';
 export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
@@ -169,6 +188,21 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	 *  it, @-typeahead is inert. */
 	@property({ attribute: false })
 	mentionSource?: MentionSource;
+
+	/** Your own typeahead lists next to the @-mention, each on its own trigger
+	 *  character. Property only. Read on every keystroke, so a new array takes
+	 *  effect at once. */
+	@property({ attribute: false })
+	typeaheads: Typeahead[] = [];
+
+	/** The built-in mention as a typeahead: the `@` list fed by `mentionSource`,
+	 *  writing the token. One object, so a choice can be told apart from a
+	 *  consumer's own `@` list and fire the mention event. */
+	private readonly _mentionTypeahead: Typeahead = {
+		trigger: '@',
+		source: (query) => this.mentionSource?.(query) ?? [],
+		insert: mentionInsert,
+	};
 
 	/** Whether the annotation overlay is enabled. Off by default; set the
 	 *  `annotatable` attribute to turn it on (so the comment affordance and the
@@ -238,7 +272,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		return [
 			nlddCodeMirrorTheme,
 			markdownEditing,
-			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
+			typeaheadExtension(() => this._typeaheadLists(), (choice) => this._onTypeaheadChosen(choice)),
 			// Prec.low so this transaction filter runs *before* the annotation filter
 			// (filters run low-precedence first), letting the annotation map through the
 			// renumber changes too — otherwise a marker growing from 1 to 11 drifts a
@@ -604,6 +638,17 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		this.view?.focus();
 	}
 
+	/** Puts `text` at the caret, in place of the selection when there is one, and
+	 *  leaves the caret after it, with focus on the editor. Plain text: markdown
+	 *  in it stays as written and is styled like anything typed. Does nothing on
+	 *  a read-only editor. */
+	insertAtCursor(text: string): void {
+		if (!this.view || this.view.state.readOnly) return;
+		const clean = stripSentinels(text);
+		if (clean) this.view.dispatch({ ...this.view.state.replaceSelection(clean), userEvent: 'input' });
+		this.view.focus();
+	}
+
 	/** Insert `text` at the selection, re-attaching the cut annotations when it matches
 	 *  a cut made in this editor (a move, one-shot). Shared by the toolbar's paste()
 	 *  and the native Cmd/Ctrl+V handler. */
@@ -708,6 +753,29 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	private _emitState(): void {
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
 			detail: this.getState(),
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _typeaheadLists(): Typeahead[] {
+		return this.mentionSource ? [this._mentionTypeahead, ...this.typeaheads] : this.typeaheads;
+	}
+
+	/** A choice from any list. Offsets in the events are clean, like
+	 *  getSelection() and the annotations: the document carries sentinels the
+	 *  value never shows. */
+	private _onTypeaheadChosen(choice: TypeaheadChoice): void {
+		if (!this.view) return;
+		const doc = this.view.state.doc.toString();
+		const from = docToClean(doc, choice.from);
+		if (choice.typeahead === this._mentionTypeahead) {
+			const { id, label } = choice.candidate;
+			this._emitMention({ id, label, from, to: from + mentionToken(choice.candidate).length });
+			return;
+		}
+		this.dispatchEvent(new CustomEvent('nldd-text-editor-typeahead', {
+			detail: { trigger: choice.trigger, candidate: choice.candidate, from, to: docToClean(doc, choice.to) },
 			bubbles: true,
 			composed: true,
 		}));

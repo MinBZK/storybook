@@ -9,16 +9,38 @@ import {
 import { EditorView } from '@codemirror/view';
 import { syntaxTree } from '@codemirror/language';
 import type { EditorState, Extension } from '@codemirror/state';
+import '../../content/avatar/avatar.js';
+import '../../content/icon/icon.js';
 
-/** The query being typed: an `@` at the start of the line or after whitespace,
- *  followed by name characters, up to the caret. Anchored that way so an `@`
- *  inside a word (an e-mail address, `piet@sam`) stays a plain character.
- *  The name class is ASCII for now; widening it changes what a source receives
- *  and is its own change. */
-const MENTION_QUERY = /(^|\s)@([\w.-]*)$/;
+/* Typeaheads: a trigger character opens a list of candidates the consumer
+ * supplies, and choosing one writes something in place of the trigger and the
+ * query. The editor is headless and knows no users, channels or emoji; it owns
+ * the interaction (the popup, the keys, the accessibility) and the consumer
+ * owns the data and, if it wants, what gets inserted (#200, #204).
+ *
+ * The @-mention is the built-in one: it inserts a markdown-compatible token
+ * that degrades to a plain link outside the editor, and the token rendering
+ * lives in the markdown decoration layer. */
 
-/** Code is quoted verbatim, so an `@` in a fenced block, an indented block or a
- *  backtick span is not a mention and must not open the list. */
+/** The query being typed: a trigger at the start of the line or after
+ *  whitespace, followed by name characters, up to the caret. Anchored that way
+ *  so a trigger inside a word (an e-mail address, `piet@sam`) stays a plain
+ *  character. The name class is ASCII for now; widening it changes what a
+ *  source receives and is its own change. */
+const queryPatterns = new Map<string, RegExp>();
+function queryPattern(triggers: readonly string[]): RegExp | null {
+	const chars = Array.from(new Set(triggers.filter((t) => t.length === 1 && !/[\s\w]/.test(t)))).sort().join('');
+	if (!chars) return null;
+	let pattern = queryPatterns.get(chars);
+	if (!pattern) {
+		pattern = new RegExp(`(^|\\s)([${chars.replace(/[\\\]^-]/g, '\\$&')}])([\\w.-]*)$`);
+		queryPatterns.set(chars, pattern);
+	}
+	return pattern;
+}
+
+/** Code is quoted verbatim, so a trigger in a fenced block, an indented block
+ *  or a backtick span is not a typeahead and must not open the list. */
 function inCode(state: EditorState, pos: number): boolean {
 	for (let n = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent!) {
 		if (n.name === 'FencedCode' || n.name === 'CodeBlock' || n.name === 'InlineCode') return true;
@@ -26,38 +48,82 @@ function inCode(state: EditorState, pos: number): boolean {
 	return false;
 }
 
-/** The mention query at `pos`, or null when the text before the caret is not
- *  one. `from` is the `@`, `query` the typed name without it. Both the
- *  completion source and the reopen-on-delete path go through this, so they
- *  cannot disagree about what counts as a mention. */
-export function mentionQueryAt(state: EditorState, pos: number): { from: number; to: number; query: string } | null {
+/** The typeahead query at `pos` for one of `triggers`, or null when the text
+ *  before the caret is not one. `from` is the trigger, `query` the typed text
+ *  without it. Both the completion source and the reopen-on-delete path go
+ *  through this, so they cannot disagree about what counts as a query. */
+export function typeaheadQueryAt(
+	state: EditorState,
+	pos: number,
+	triggers: readonly string[],
+): { from: number; to: number; query: string; trigger: string } | null {
+	const pattern = queryPattern(triggers);
+	if (!pattern) return null;
 	const line = state.doc.lineAt(pos);
-	const match = MENTION_QUERY.exec(state.sliceDoc(line.from, pos));
+	const match = pattern.exec(state.sliceDoc(line.from, pos));
 	if (!match) return null;
 	const from = line.from + match.index + match[1].length;
 	if (inCode(state, from)) return null;
-	return { from, to: pos, query: match[2] };
+	return { from, to: pos, query: match[3], trigger: match[2] };
 }
 
-/* @-mention typeahead. The editor is headless and does not know any users, so
- * the consumer supplies candidates through a source callback. Selecting one
- * inserts a markdown-compatible token that degrades to a plain link outside the
- * editor; the token rendering lives in the markdown decoration layer. */
-
-export interface MentionCandidate {
-	/** Stable id stored in the token (`user:<id>`). */
+export interface TypeaheadCandidate {
+	/** Stable id: stored in the mention token, handed back when chosen. */
 	id: string;
-	/** Display name shown after the @ and in the suggestion list. */
+	/** Shown in the list after the trigger, and written after the `@` of a mention. */
 	label: string;
-	/** Optional secondary text shown on the right of the suggestion (role, e-mail). */
+	/** Secondary text on the right of the row (a role, an e-mail address, a channel's purpose). */
 	detail?: string;
+	/** A DS icon in front of the label (a channel, a category). */
+	icon?: string;
+	/** A person or organization in front of the label: an image, or initials
+	 *  from the label when there is none. `avatar: {}` is enough for initials. */
+	avatar?: { src?: string; type?: 'person' | 'organization' };
 }
 
-export type MentionSource = (query: string) => MentionCandidate[] | Promise<MentionCandidate[]>;
+/** The candidates for what was typed after the trigger. The source filters;
+ *  the editor shows what it gets, in that order. */
+export type TypeaheadSource = (query: string) => TypeaheadCandidate[] | Promise<TypeaheadCandidate[]>;
+
+export interface Typeahead {
+	/** One character that opens the list at a line start or after whitespace:
+	 *  `#`, `:`, `/`. Not a letter, digit or whitespace. */
+	trigger: string;
+	source: TypeaheadSource;
+	/** What choosing a candidate writes in place of the trigger and the query.
+	 *  Without it: the trigger, the label and a space, so `#kanaal ` stays what
+	 *  was typed. Return the id for an emoji, or `@username ` for a system that
+	 *  wants a plain mention. */
+	insert?: (candidate: TypeaheadCandidate) => string;
+}
+
+/** Kept under their old names for the built-in @-mention. */
+export type MentionCandidate = TypeaheadCandidate;
+export type MentionSource = TypeaheadSource;
 
 export interface MentionInsertedDetail {
 	id: string;
 	label: string;
+	from: number;
+	to: number;
+}
+
+/** What the `nldd-text-editor-typeahead` event carries: which list, which
+ *  candidate, and where the inserted text sits (clean offsets, like
+ *  `getSelection()`). */
+export interface TypeaheadChosenDetail {
+	trigger: string;
+	candidate: TypeaheadCandidate;
+	from: number;
+	to: number;
+}
+
+/** A choice as the extension reports it, in document offsets; the editor turns
+ *  it into its events. */
+export interface TypeaheadChoice {
+	typeahead: Typeahead;
+	trigger: string;
+	candidate: TypeaheadCandidate;
 	from: number;
 	to: number;
 }
@@ -71,7 +137,7 @@ export const MENTION_HREF_PREFIX = 'user:';
  *  data) can't break out of `[label](user:id)` into arbitrary markdown — a stray
  *  `]` or `)` would otherwise start a second, attacker-shaped link. The render
  *  layer reverses both via `unescapeMentionLabel` / `decodeMentionId`. */
-export function mentionToken(candidate: MentionCandidate): string {
+export function mentionToken(candidate: TypeaheadCandidate): string {
 	const label = candidate.label.replace(/[[\]\\]/g, (c) => '\\' + c);
 	// encodeURIComponent leaves ( ) < > ! * ' . - _ ~ intact, but ")" closes a
 	// markdown link destination — encode the parens and angle brackets on top of it
@@ -81,6 +147,11 @@ export function mentionToken(candidate: MentionCandidate): string {
 		(c) => '%' + c.charCodeAt(0).toString(16).toUpperCase(),
 	);
 	return `[@${label}](${MENTION_HREF_PREFIX}${id})`;
+}
+
+/** What the built-in mention writes: the token and a space to go on typing. */
+export function mentionInsert(candidate: TypeaheadCandidate): string {
+	return `${mentionToken(candidate)} `;
 }
 
 /** Reverse `mentionToken`'s label escaping for display. */
@@ -98,33 +169,77 @@ export function decodeMentionId(id: string): string {
 	}
 }
 
+function defaultInsert(trigger: string): (candidate: TypeaheadCandidate) => string {
+	return (candidate) => `${trigger}${candidate.label} `;
+}
+
+interface CandidateCompletion extends Completion {
+	candidate: TypeaheadCandidate;
+}
+
+/** The avatar or icon in front of a row, or nothing. A decorative avatar: the
+ *  label stands beside it as text. `icon-aligned` makes it sit on the icon's
+ *  optical grid, so a list that mixes people and channels lines up. */
+function renderLead(completion: Completion): Node | null {
+	const { candidate } = completion as CandidateCompletion;
+	if (candidate.avatar) {
+		const avatar = document.createElement('nldd-avatar');
+		avatar.setAttribute('name', candidate.label);
+		avatar.setAttribute('size', '24');
+		avatar.setAttribute('icon-aligned', '');
+		avatar.setAttribute('decorative', '');
+		if (candidate.avatar.src) avatar.setAttribute('src', candidate.avatar.src);
+		if (candidate.avatar.type) avatar.setAttribute('type', candidate.avatar.type);
+		return avatar;
+	}
+	if (candidate.icon) {
+		const icon = document.createElement('nldd-icon');
+		icon.setAttribute('name', candidate.icon);
+		icon.setAttribute('size', '24');
+		icon.setAttribute('aria-hidden', 'true');
+		return icon;
+	}
+	return null;
+}
+
 function completionSource(
-	getSource: () => MentionSource | undefined,
-	onInsert: (detail: MentionInsertedDetail) => void,
+	getTypeaheads: () => readonly Typeahead[],
+	onChoose: (choice: TypeaheadChoice) => void,
 ) {
 	return async (context: CompletionContext): Promise<CompletionResult | null> => {
-		const match = mentionQueryAt(context.state, context.pos);
+		const lists = getTypeaheads();
+		const match = typeaheadQueryAt(context.state, context.pos, lists.map((t) => t.trigger));
 		if (!match) return null;
-		const source = getSource();
-		if (!source) return null;
-		const candidates = await source(match.query);
-		if (!candidates?.length) return null;
+		// Every list on this trigger contributes, in the order they were given.
+		const onTrigger = lists.filter((t) => t.trigger === match.trigger);
+		const results = await Promise.all(onTrigger.map((t) => t.source(match.query)));
+		const options: CandidateCompletion[] = [];
+		results.forEach((candidates, index) => {
+			const typeahead = onTrigger[index];
+			const insert = typeahead.insert ?? defaultInsert(match.trigger);
+			for (const candidate of candidates ?? []) {
+				options.push({
+					label: `${match.trigger}${candidate.label}`,
+					detail: candidate.detail,
+					candidate,
+					apply: (view, _completion, from, to) => {
+						const text = insert(candidate);
+						view.dispatch({
+							changes: { from, to, insert: text },
+							selection: { anchor: from + text.length },
+							userEvent: 'input.complete',
+						});
+						onChoose({ typeahead, trigger: match.trigger, candidate, from, to: from + text.length });
+					},
+				});
+			}
+		});
+		if (!options.length) return null;
 		return {
 			from: match.from,
-			// The consumer's source already filtered against the query.
+			// The sources already filtered against the query.
 			filter: false,
-			options: candidates.map((candidate): Completion => ({
-				label: `@${candidate.label}`,
-				detail: candidate.detail,
-				apply: (view, _completion, from, to) => {
-					const token = mentionToken(candidate);
-					view.dispatch({
-						changes: { from, to, insert: `${token} ` },
-						selection: { anchor: from + token.length + 1 },
-					});
-					onInsert({ id: candidate.id, label: candidate.label, from, to: from + token.length });
-				},
-			})),
+			options,
 		};
 	};
 }
@@ -164,6 +279,9 @@ const popupTheme = EditorView.theme({
 		color: 'var(--semantics-content-color)',
 		cursor: 'default',
 	},
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li > nldd-avatar, .cm-tooltip.cm-tooltip-autocomplete > ul > li > nldd-icon': {
+		flex: 'none',
+	},
 	'.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
 		backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
 		color: 'var(--components-menu-item-is-highlighted-content-color)',
@@ -195,25 +313,30 @@ const popupTheme = EditorView.theme({
 });
 
 /**
- * @-mention typeahead. `getSource` is called with the text typed after `@` and
- * returns (a promise of) candidates; selecting one inserts the token and calls
- * `onInsert`. Without a source it is inert.
+ * The typeaheads. `getTypeaheads` is read on every keystroke, so the editor can
+ * hand over its current lists; choosing a candidate writes what the list's
+ * `insert` says and calls `onChoose`. Without lists it is inert.
  */
-// CodeMirror only opens completion while typing, not on deletion. When a
-// backspace brings the query back into a matching state ("@anb" → "@an"),
-// re-open the popup right away instead of waiting for the next character.
-const reopenOnDelete = EditorView.updateListener.of((update) => {
-	if (!update.docChanged || completionStatus(update.state) !== null) return;
-	if (!update.transactions.some((tr) => tr.isUserEvent('delete'))) return;
-	if (mentionQueryAt(update.state, update.state.selection.main.head)) startCompletion(update.view);
-});
-
-export function mentions(
-	getSource: () => MentionSource | undefined,
-	onInsert: (detail: MentionInsertedDetail) => void,
+export function typeaheads(
+	getTypeaheads: () => readonly Typeahead[],
+	onChoose: (choice: TypeaheadChoice) => void,
 ): Extension {
+	// CodeMirror only opens completion while typing, not on deletion. When a
+	// backspace brings the query back into a matching state ("@anb" → "@an"),
+	// re-open the popup right away instead of waiting for the next character.
+	const reopenOnDelete = EditorView.updateListener.of((update) => {
+		if (!update.docChanged || completionStatus(update.state) !== null) return;
+		if (!update.transactions.some((tr) => tr.isUserEvent('delete'))) return;
+		const triggers = getTypeaheads().map((t) => t.trigger);
+		if (typeaheadQueryAt(update.state, update.state.selection.main.head, triggers)) startCompletion(update.view);
+	});
 	return [
-		autocompletion({ override: [completionSource(getSource, onInsert)], icons: false }),
+		autocompletion({
+			override: [completionSource(getTypeaheads, onChoose)],
+			icons: false,
+			// Before the label (50): the avatar or icon of the row.
+			addToOptions: [{ position: 20, render: renderLead }],
+		}),
 		reopenOnDelete,
 		popupTheme,
 	];

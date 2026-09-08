@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { EditorState } from '@codemirror/state';
 import { ensureSyntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
-import { mentionQueryAt } from './text-editor.mentions.js';
+import { typeaheadQueryAt } from './text-editor.mentions.js';
 
 /** A parsed state with the caret where `|` sits in the fixture. */
 function at(fixture: string): { state: EditorState; pos: number } {
@@ -18,53 +18,76 @@ function at(fixture: string): { state: EditorState; pos: number } {
 describe('mention trigger', () => {
 	it('opent aan het begin van een regel', () => {
 		const { state, pos } = at('@sam|');
-		expect(mentionQueryAt(state, pos)).toEqual({ from: 0, to: 4, query: 'sam' });
+		expect(typeaheadQueryAt(state, pos, ['@'])).toEqual({ from: 0, to: 4, query: 'sam', trigger: '@' });
 	});
 
 	it('opent na een spatie', () => {
 		const { state, pos } = at('stuur naar @sam|');
-		expect(mentionQueryAt(state, pos)).toEqual({ from: 11, to: 15, query: 'sam' });
+		expect(typeaheadQueryAt(state, pos, ['@'])).toEqual({ from: 11, to: 15, query: 'sam', trigger: '@' });
 	});
 
 	it('opent aan het begin van een volgende regel', () => {
 		const { state, pos } = at('hallo\n@sam|');
-		expect(mentionQueryAt(state, pos)?.query).toBe('sam');
+		expect(typeaheadQueryAt(state, pos, ['@'])?.query).toBe('sam');
 	});
 
 	it('opent op een kale @, zodat de lijst verschijnt zodra je hem typt', () => {
 		const { state, pos } = at('stuur naar @|');
-		expect(mentionQueryAt(state, pos)).toEqual({ from: 11, to: 12, query: '' });
+		expect(typeaheadQueryAt(state, pos, ['@'])).toEqual({ from: 11, to: 12, query: '', trigger: '@' });
 	});
 
 	// #199: an @ inside a word is a character, not a trigger. An e-mail address
 	// is the case that bit: the list opened as soon as the domain matched a name.
 	it('opent niet middenin een woord', () => {
 		const { state, pos } = at('stuur naar piet@sam|');
-		expect(mentionQueryAt(state, pos)).toBeNull();
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
 	});
 
 	it('opent niet in een e-mailadres met een punt', () => {
 		const { state, pos } = at('mail piet@sam.nl|');
-		expect(mentionQueryAt(state, pos)).toBeNull();
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
 	});
 
 	it('opent niet in inline code', () => {
 		const { state, pos } = at('gebruik `@sam|` hier');
-		expect(mentionQueryAt(state, pos)).toBeNull();
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
 	});
 
 	it('opent niet in een fenced code block', () => {
 		const { state, pos } = at('```\n@sam|\n```');
-		expect(mentionQueryAt(state, pos)).toBeNull();
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
 	});
 
 	it('opent niet in een ingesprongen code block', () => {
 		const { state, pos } = at('tekst\n\n    @sam|');
-		expect(mentionQueryAt(state, pos)).toBeNull();
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
 	});
 
 	it('kijkt alleen naar de tekst vóór de caret', () => {
 		const { state, pos } = at('stuur naar @sa|m');
-		expect(mentionQueryAt(state, pos)).toEqual({ from: 11, to: 14, query: 'sa' });
+		expect(typeaheadQueryAt(state, pos, ['@'])).toEqual({ from: 11, to: 14, query: 'sa', trigger: '@' });
+	});
+});
+
+// #200: a consumer's own lists open on their own trigger, with the same rules.
+describe('other triggers', () => {
+	it('opent op een eigen trigger en zegt welke', () => {
+		const { state, pos } = at('kanaal #alg|');
+		expect(typeaheadQueryAt(state, pos, ['@', '#'])).toEqual({ from: 7, to: 11, query: 'alg', trigger: '#' });
+	});
+
+	it('negeert een teken dat geen trigger is', () => {
+		const { state, pos } = at('kanaal #alg|');
+		expect(typeaheadQueryAt(state, pos, ['@'])).toBeNull();
+	});
+
+	it('een letter, cijfer of spatie kan geen trigger zijn', () => {
+		const { state, pos } = at('tekst asam|');
+		expect(typeaheadQueryAt(state, pos, ['a', ' ', '1'])).toBeNull();
+	});
+
+	it('een trigger die in een tekenklasse iets betekent wordt letterlijk genomen', () => {
+		const { state, pos } = at('zie ]x| en ^y en -z');
+		expect(typeaheadQueryAt(state, pos, [']', '^', '-'])).toEqual({ from: 4, to: 6, query: 'x', trigger: ']' });
 	});
 });
