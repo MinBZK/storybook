@@ -21,11 +21,11 @@ here; consult the commit history if you need that level of detail.
 
 - **A dialog that holds something reads left.** Everything in this system aligns left except dialog text, which was always centered. That is right for an empty state, where an icon sits above a short line in a container with nothing else in it. It is wrong the moment the dialog holds a task: a field you slot in starts at the left edge while the heading above it sits on a second axis, and the two fight. So the alignment now follows the default slot, in `nldd-inline-dialog` and in the `nldd-modal-dialog` that renders one. Nothing to set: an empty slot is a message and stays centered, anything in the slot is a task and aligns left.
 
-- **An Erlenmeyer flask, in two weights.** `erlenmeyerkolf` draws the conical flask in outline, a rim at the top and a band of liquid filled in at the bottom. `erlenmeyerkolf-light` is the same flask with a thinner line, on the 32 view-box the other light weights use. The aliases are `lab` and `lab-light`, for what the flask stands for: a laboratory, an experiment, a test setup.
+- **An Erlenmeyer flask, in two weights.** `erlenmeyer-flask` draws the conical flask in outline, a rim at the top and a band of liquid filled in at the bottom. `erlenmeyer-flask-light` is the same flask with a thinner line, on the 32 view-box the other light weights use. The aliases are `lab` and `lab-light`, for what the flask stands for: a laboratory, an experiment, a test setup.
 
 ### Added
 
-- **Icons.** `erlenmeyerkolf` (alias `lab`) and `erlenmeyerkolf-light` (alias `lab-light`).
+- **Icons.** `erlenmeyer-flask` (alias `lab`) and `erlenmeyer-flask-light` (alias `lab-light`).
 
 - **`typeaheads` on `nldd-text-editor`: your own lists next to the `@`-mention.** Each entry is a trigger character (`#`, `:`, `/`), a `source` that returns candidates for what was typed after it, and an optional `insert` that decides what a choice writes. Without one it writes the trigger, the text and a space; return the id for an emoji, or `@username ` for a system that wants a plain mention for its notifications. Lists on one trigger are merged, in order. A choice fires `nldd-text-editor-typeahead` with the trigger, the candidate and where the text sits. This is what a second trigger needed: an `autocompletion()` of your own collided with the editor's, and the workaround was a subclass reaching into the CodeMirror view. That view is not API, and with this it does not have to be. (#200, #204)
 
