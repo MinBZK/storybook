@@ -585,17 +585,21 @@ export const Typeaheads = {
 			{ id: 'zorgtoeslag', label: 'zorgtoeslag', detail: 'Het traject', icon: 'tag' },
 			{ id: 'vragen', label: 'vragen', detail: 'Hulp en vragen', icon: 'tag' },
 		];
+		// The shortcode convention of Mattermost and Slack: `:smile:`, the closing
+		// colon in the label. Without an `insert` a choice writes `:smile: `, which
+		// those systems render themselves; this editor does not, so it writes the
+		// emoji itself.
 		const emoji = [
-			{ id: '😄', label: 'smile' },
-			{ id: '👍', label: 'thumbsup' },
-			{ id: '🎉', label: 'tada' },
-			{ id: '🤔', label: 'thinking' },
+			{ id: 'smile', label: 'smile:', symbol: '😄' },
+			{ id: 'thumbsup', label: 'thumbsup:', symbol: '👍' },
+			{ id: 'tada', label: 'tada:', symbol: '🎉' },
+			{ id: 'thinking', label: 'thinking:', symbol: '🤔' },
 		];
 		const filter = <T extends { label: string }>(items: T[]) => (query: string) =>
 			items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
 		const typeaheads = [
 			{ trigger: '#', source: filter(channels) },
-			{ trigger: ':', source: filter(emoji), insert: (candidate: { id: string }) => candidate.id },
+			{ trigger: ':', source: filter(emoji), insert: (candidate: { symbol?: string }) => `${candidate.symbol} ` },
 		];
 		const sample = 'Typ `@` voor een persoon, `#` voor een kanaal en `:` voor een emoji.';
 		const insertDate = (event: Event): void => {
@@ -621,7 +625,7 @@ export const Typeaheads = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft (standaard de trigger, het label en een spatie; hier schrijft `:` de emoji zelf). Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` (persoon of organisatie, initialen of een afbeelding) of een `icon` meekrijgen. Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
+				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft. Standaard is dat de trigger, het label en een spatie: met het label `smile:` dus `:smile: `, de shortcode die Mattermost en Slack zelf renderen. Deze editor doet dat niet, dus hier schrijft `:` de emoji zelf. Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` meekrijgen (persoon of organisatie, initialen of een afbeelding; de rij wordt dan tweeregelig met de detail als ondersteunende tekst), een `icon` (op de maat van een menu-item) of een `symbol` (een teken of emoji, de emoji zelf als beeld). Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
 			},
 		},
 	},

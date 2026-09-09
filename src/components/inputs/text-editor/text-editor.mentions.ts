@@ -76,8 +76,12 @@ export interface TypeaheadCandidate {
 	detail?: string;
 	/** A DS icon in front of the label (a channel, a category). */
 	icon?: string;
+	/** A character or emoji in front of the label, in the row's own font: the
+	 *  thing itself, for a list where that is its best picture. */
+	symbol?: string;
 	/** A person or organization in front of the label: an image, or initials
-	 *  from the label when there is none. `avatar: {}` is enough for initials. */
+	 *  from the label when there is none. `avatar: {}` is enough for initials.
+	 *  The row then takes two lines, with `detail` under the label. */
 	avatar?: { src?: string; type?: 'person' | 'organization' };
 }
 
@@ -177,16 +181,16 @@ interface CandidateCompletion extends Completion {
 	candidate: TypeaheadCandidate;
 }
 
-/** The avatar or icon in front of a row, or nothing. A decorative avatar: the
- *  label stands beside it as text. `icon-aligned` makes it sit on the icon's
- *  optical grid, so a list that mixes people and channels lines up. */
+/** The avatar, icon or symbol in front of a row, or nothing. A decorative
+ *  avatar: the label stands beside it as text. The icon is the size of a menu
+ *  item's, and the symbol takes the same box, so a list that mixes them lines
+ *  up. */
 function renderLead(completion: Completion): Node | null {
 	const { candidate } = completion as CandidateCompletion;
 	if (candidate.avatar) {
 		const avatar = document.createElement('nldd-avatar');
 		avatar.setAttribute('name', candidate.label);
-		avatar.setAttribute('size', '24');
-		avatar.setAttribute('icon-aligned', '');
+		avatar.setAttribute('size', '32');
 		avatar.setAttribute('decorative', '');
 		if (candidate.avatar.src) avatar.setAttribute('src', candidate.avatar.src);
 		if (candidate.avatar.type) avatar.setAttribute('type', candidate.avatar.type);
@@ -195,11 +199,24 @@ function renderLead(completion: Completion): Node | null {
 	if (candidate.icon) {
 		const icon = document.createElement('nldd-icon');
 		icon.setAttribute('name', candidate.icon);
-		icon.setAttribute('size', '24');
+		icon.setAttribute('size', '20');
 		icon.setAttribute('aria-hidden', 'true');
 		return icon;
 	}
+	if (candidate.symbol) {
+		const symbol = document.createElement('span');
+		symbol.className = 'cm-nldd-symbol';
+		symbol.textContent = candidate.symbol;
+		symbol.setAttribute('aria-hidden', 'true');
+		return symbol;
+	}
 	return null;
+}
+
+/** A row with an avatar takes two lines: the label above, the detail under it
+ *  as supporting text, like a title cell. */
+function rowClass(completion: Completion): string {
+	return (completion as CandidateCompletion).candidate.avatar ? 'cm-nldd-row-avatar' : '';
 }
 
 function completionSource(
@@ -279,8 +296,39 @@ const popupTheme = EditorView.theme({
 		color: 'var(--semantics-content-color)',
 		cursor: 'default',
 	},
-	'.cm-tooltip.cm-tooltip-autocomplete > ul > li > nldd-avatar, .cm-tooltip.cm-tooltip-autocomplete > ul > li > nldd-icon': {
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li > :is(nldd-avatar, nldd-icon, .cm-nldd-symbol)': {
 		flex: 'none',
+	},
+	// The symbol takes the icon's box, so a list that mixes them lines up.
+	'.cm-nldd-symbol': {
+		display: 'inline-flex',
+		justifyContent: 'center',
+		inlineSize: '20px',
+	},
+	// Two lines next to the avatar: the label, and the detail as supporting
+	// text under it. The avatar spans both and sits centered on them.
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li.cm-nldd-row-avatar': {
+		display: 'grid',
+		gridTemplateColumns: 'auto minmax(0, 1fr)',
+		alignContent: 'center',
+		// The row's gap is for the columns; the two lines sit right on each other.
+		rowGap: '0',
+		minHeight: 'var(--semantics-controls-md-min-size)',
+	},
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li.cm-nldd-row-avatar > nldd-avatar': {
+		gridRow: 'span 2',
+		alignSelf: 'center',
+	},
+	// Tight line heights on both lines, like a title cell: with the editor's own
+	// loose line height the row grows well past a list row.
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li.cm-nldd-row-avatar > .cm-completionLabel': {
+		gridColumn: '2',
+		font: 'var(--primitives-font-body-md-regular-tight)',
+	},
+	'.cm-tooltip.cm-tooltip-autocomplete > ul > li.cm-nldd-row-avatar > .cm-completionDetail': {
+		gridColumn: '2',
+		marginLeft: '0',
+		font: 'var(--primitives-font-body-sm-regular-tight)',
 	},
 	'.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
 		backgroundColor: 'var(--components-menu-item-is-highlighted-background-color)',
@@ -334,8 +382,9 @@ export function typeaheads(
 		autocompletion({
 			override: [completionSource(getTypeaheads, onChoose)],
 			icons: false,
-			// Before the label (50): the avatar or icon of the row.
+			// Before the label (50): the avatar, icon or symbol of the row.
 			addToOptions: [{ position: 20, render: renderLead }],
+			optionClass: rowClass,
 		}),
 		reopenOnDelete,
 		popupTheme,

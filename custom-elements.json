@@ -17180,30 +17180,6 @@
       "declarations": [
         {
           "kind": "function",
-          "name": "sidesApart",
-          "return": {
-            "type": {
-              "text": "boolean"
-            }
-          },
-          "parameters": [
-            {
-              "name": "view",
-              "type": {
-                "text": "EditorView"
-              }
-            },
-            {
-              "name": "head",
-              "type": {
-                "text": "number"
-              }
-            }
-          ],
-          "description": "Whether `head` has a place on either side of a widget: the two sides are on\none line and clearly apart. A line wrap puts them on different lines."
-        },
-        {
-          "kind": "function",
           "name": "drawnAssoc",
           "return": {
             "type": {
@@ -17230,7 +17206,7 @@
               }
             }
           ],
-          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and the arrival direction, or the last edit, says \"before\"."
+          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and a hint, or else the arrival direction, says \"before\"."
         },
         {
           "kind": "variable",
@@ -17238,18 +17214,10 @@
           "type": {
             "text": "Extension"
           },
-          "default": "[cursorLayer, stepOverKeymap, theme]"
+          "default": "[cursorLayer, pointerTracker, stepOverKeymap, typePastBadge, theme]"
         }
       ],
       "exports": [
-        {
-          "kind": "js",
-          "name": "sidesApart",
-          "declaration": {
-            "name": "sidesApart",
-            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
-          }
-        },
         {
           "kind": "js",
           "name": "drawnAssoc",
@@ -17490,6 +17458,30 @@
         },
         {
           "kind": "function",
+          "name": "linkEndsAt",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Whether a link with a badge ends at `pos`: a `[text](url)` link or a bare\nURL, with a destination the badge accepts. The same tests as `buildBadges`,\nso a mention (a link too, but without a badge) is not one."
+        },
+        {
+          "kind": "function",
           "name": "bareUrlEndsAt",
           "return": {
             "type": {
@@ -17510,7 +17502,7 @@
               }
             }
           ],
-          "description": "Whether a bare URL ends at `pos`: the one place where the caret has a stop on\neither side of a badge, since text typed there extends the URL."
+          "description": "Whether a bare URL with a badge ends at `pos`: the link that text typed at\nits end extends, unlike a `[text](url)` link, which ends at its `)`."
         }
       ],
       "exports": [
@@ -17535,6 +17527,14 @@
           "name": "linkOpenBadge",
           "declaration": {
             "name": "linkOpenBadge",
+            "module": "src/components/inputs/text-editor/text-editor.links.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "linkEndsAt",
+          "declaration": {
+            "name": "linkEndsAt",
             "module": "src/components/inputs/text-editor/text-editor.links.ts"
           }
         },

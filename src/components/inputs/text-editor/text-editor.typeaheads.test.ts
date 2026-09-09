@@ -28,7 +28,7 @@ const channels: TypeaheadCandidate[] = [
 	{ id: 'algemeen', label: 'algemeen', icon: 'tag' },
 	{ id: 'alles', label: 'alles', icon: 'tag' },
 ];
-const emoji: TypeaheadCandidate[] = [{ id: '😄', label: 'smile' }];
+const emoji: TypeaheadCandidate[] = [{ id: 'smile', label: 'smile:', symbol: '😄' }];
 
 function byLabel(items: TypeaheadCandidate[]): (query: string) => TypeaheadCandidate[] {
 	return (query) => items.filter((item) => item.label.toLowerCase().startsWith(query.toLowerCase()));
@@ -70,11 +70,14 @@ describe('nldd-text-editor typeaheads', () => {
 	afterEach(() => cleanup(el));
 
 	it('writes what insert returns, and reports the choice with clean offsets', async () => {
-		el = await make('hoi :sm', [{ trigger: ':', source: byLabel(emoji), insert: (c) => c.id }]);
+		el = await make('hoi :sm', [{ trigger: ':', source: byLabel(emoji), insert: (c) => c.symbol ?? '' }]);
 		let detail: unknown;
 		el.addEventListener('nldd-text-editor-typeahead', ((event: CustomEvent) => { detail = event.detail; }) as EventListener);
 		const rows = await openList(el);
-		expect(labels(rows)).toEqual([':smile']);
+		// The shortcode as Mattermost and Slack show it, the emoji itself in front.
+		expect(labels(rows)).toEqual([':smile:']);
+		expect(rows[0].querySelector('.cm-nldd-symbol')?.textContent).toBe('😄');
+		expect(rows[0].classList.contains('cm-nldd-row-avatar')).toBe(false);
 		acceptCompletion(el.view);
 		await waitForUpdate(el);
 		expect(el.value).toBe('hoi 😄');
@@ -88,20 +91,36 @@ describe('nldd-text-editor typeaheads', () => {
 		acceptCompletion(el.view);
 		await waitForUpdate(el);
 		expect(el.value).toBe('zie #algemeen ');
+		// With the closing colon in the label that is the shortcode those systems render.
+		el.view.dispatch({ changes: { from: 0, to: el.view.state.doc.length, insert: 'hoi :sm' }, selection: { anchor: 7 } });
+		el.typeaheads = [{ trigger: ':', source: byLabel(emoji) }];
+		await openList(el);
+		acceptCompletion(el.view);
+		await waitForUpdate(el);
+		expect(el.value).toBe('hoi :smile: ');
 	});
 
-	it('puts an avatar or an icon in front of a row', async () => {
+	it('puts an avatar or an icon in front of a row, the avatar on a row of two lines', async () => {
 		el = await make('#al', [{ trigger: '#', source: byLabel(channels) }], byLabel(people));
 		const channelRows = await openList(el);
 		const icon = channelRows[0].querySelector('nldd-icon');
 		expect(icon?.getAttribute('name')).toBe('tag');
-		expect(icon?.getAttribute('size')).toBe('24');
+		// The size of an nldd-menu item's icon.
+		expect(icon?.getAttribute('size')).toBe('20');
+		expect(channelRows[0].classList.contains('cm-nldd-row-avatar')).toBe(false);
 		el.view.dispatch({ changes: { from: 0, to: 3, insert: '@an' }, selection: { anchor: 3 } });
 		const personRows = await openList(el);
 		const avatars = personRows.map((row) => row.querySelector('nldd-avatar'));
 		expect(avatars[0]?.getAttribute('name')).toBe('Anouk');
+		expect(avatars[0]?.getAttribute('size')).toBe('32');
 		expect(avatars[0]?.hasAttribute('decorative')).toBe(true);
 		expect(avatars[1]?.getAttribute('type')).toBe('organization');
+		expect(personRows[0].classList.contains('cm-nldd-row-avatar')).toBe(true);
+		// The label and the detail stack: the detail sits under the label, not beside it.
+		const label = personRows[0].querySelector('.cm-completionLabel')!.getBoundingClientRect();
+		const detail = personRows[0].querySelector('.cm-completionDetail')!.getBoundingClientRect();
+		expect(detail.top).toBeGreaterThanOrEqual(label.bottom - 1);
+		expect(Math.abs(detail.left - label.left)).toBeLessThan(1);
 	});
 
 	it('merges lists on one trigger, in the order they were given', async () => {
