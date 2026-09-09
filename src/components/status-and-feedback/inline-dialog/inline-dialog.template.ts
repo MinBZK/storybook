@@ -3,12 +3,12 @@ import type { NLDDInlineDialog } from './inline-dialog.js';
 
 export function inlineDialogTemplate(component: NLDDInlineDialog) {
 	const alignment = component._resolvedHorizontalAlignment;
-	const bodyClass = ['inline-dialog__body',
-		alignment === 'left' ? 'inline-dialog__body--left' : '',
+	const blockClass = ['inline-dialog',
+		alignment === 'left' ? 'inline-dialog--left-aligned' : '',
 	].filter(Boolean).join(' ');
 
 	return html`
-		<div class=${bodyClass}>
+		<div class=${blockClass}>
 			<div class="inline-dialog__main">
 				${component.variant === 'loading' ? html`
 					<div class="inline-dialog__icon">

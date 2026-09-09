@@ -63,7 +63,7 @@ export const inlineDialogStyles = css`
 
 	/* # Elements */
 
-	.inline-dialog__body {
+	.inline-dialog {
 		box-sizing: border-box;
 		display: flex;
 		max-width: var(--primitives-area-480);
@@ -72,7 +72,7 @@ export const inlineDialogStyles = css`
 		align-items: center;
 	}
 
-	.inline-dialog__body--left {
+	.inline-dialog--left-aligned {
 		align-items: stretch;
 	}
 
@@ -84,7 +84,7 @@ export const inlineDialogStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	.inline-dialog__body--left .inline-dialog__main {
+	.inline-dialog--left-aligned .inline-dialog__main {
 		align-items: stretch;
 	}
 
@@ -119,8 +119,8 @@ export const inlineDialogStyles = css`
 		text-wrap: pretty;
 	}
 
-	.inline-dialog__body--left .inline-dialog__text,
-	.inline-dialog__body--left .inline-dialog__supporting-text {
+	.inline-dialog--left-aligned .inline-dialog__text,
+	.inline-dialog--left-aligned .inline-dialog__supporting-text {
 		text-align: left;
 	}
 
@@ -132,7 +132,7 @@ export const inlineDialogStyles = css`
 		padding-top: var(--primitives-space-16);
 	}
 
-	.inline-dialog__body--left .inline-dialog__content {
+	.inline-dialog--left-aligned .inline-dialog__content {
 		align-items: stretch;
 	}
 

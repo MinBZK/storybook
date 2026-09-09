@@ -163,7 +163,7 @@ describe('nldd-modal-dialog', () => {
 		await waitForUpdate(el);
 		const inner = el.shadowRoot!.querySelector('nldd-inline-dialog')!;
 		await waitForUpdate(inner as HTMLElement);
-		expect(inner.shadowRoot!.querySelector('.inline-dialog__body')!.classList.contains('inline-dialog__body--left')).toBe(true);
+		expect(inner.shadowRoot!.querySelector('.inline-dialog')!.classList.contains('inline-dialog--left-aligned')).toBe(true);
 	});
 
 	it('sets aria-label from accessible-label', async () => {

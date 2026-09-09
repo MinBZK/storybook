@@ -151,7 +151,7 @@ describe('nldd-inline-dialog', () => {
 	});
 
 	describe('horizontal alignment', () => {
-		const body = (host: HTMLElement) => host.shadowRoot!.querySelector('.inline-dialog__body')!;
+		const block = (host: HTMLElement) => host.shadowRoot!.querySelector('.inline-dialog')!;
 		// The property, not the attribute: nldd-button-group drops `orientation`
 		// from the DOM when it equals its own default.
 		const orientation = (host: HTMLElement) =>
@@ -160,7 +160,7 @@ describe('nldd-inline-dialog', () => {
 		it('centers a bare message', async () => {
 			el = await fixture('<nldd-inline-dialog text="Geen resultaten"></nldd-inline-dialog>');
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(false);
 		});
 
 		it('centers a message with actions but no slotted content', async () => {
@@ -170,7 +170,7 @@ describe('nldd-inline-dialog', () => {
 				</nldd-inline-dialog>
 			`);
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(false);
 			expect(orientation(el)).toBe('vertical');
 		});
 
@@ -181,13 +181,13 @@ describe('nldd-inline-dialog', () => {
 				</nldd-inline-dialog>
 			`);
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(true);
 		});
 
 		it('treats plain text in the default slot as content', async () => {
 			el = await fixture('<nldd-inline-dialog text="Let op">Een losse notitie.</nldd-inline-dialog>');
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(true);
 		});
 
 		it('lays the actions out in a row when aligned left', async () => {
@@ -208,23 +208,23 @@ describe('nldd-inline-dialog', () => {
 				</nldd-inline-dialog>
 			`);
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(false);
 		});
 
 		it('horizontal-alignment="left" aligns a bare message left', async () => {
 			el = await fixture('<nldd-inline-dialog text="Geen resultaten" horizontal-alignment="left"></nldd-inline-dialog>');
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(true);
 		});
 
 		it('follows the slot when content arrives after first render', async () => {
 			el = await fixture('<nldd-inline-dialog text="Map hernoemen"></nldd-inline-dialog>');
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(false);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(false);
 
 			el.appendChild(document.createElement('nldd-text-field'));
 			await waitForUpdate(el);
-			expect(body(el).classList.contains('inline-dialog__body--left')).toBe(true);
+			expect(block(el).classList.contains('inline-dialog--left-aligned')).toBe(true);
 		});
 	});
 });
