@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.87](https://github.com/MinBZK/storybook/compare/v0.8.86...v0.8.87) (2026-09-09)
+
 ### Highlights
 
 - **`nldd-text-editor` had a round of polish, and it shows in the small things.** Bold no longer flickers while you type it: a space before the closing markers used to drop the run to plain text on every word boundary, and now the styling holds until you leave, when the space moves outside the markers. Wrapping a selection leaves the space out too, and a toggle at the end of a run steps out of it instead of undoing it. The caret sits on one spot whichever way it arrived, is centered on the insertion point, and has room at the edges of a line. The open-link badge behaves like a character you cannot delete: the arrows step over it, Backspace and Delete stop at it, a click lands on the side you clicked, and text goes to the side it was typed on. The list commands take an empty line, keep an item you have not typed in yet, and put the caret after the marker, and `toggleTaskList()` makes a task list. An `@` inside a word, an e-mail address, is no longer a mention. And the typeahead grew into an API: `typeaheads` for lists of your own on any trigger, with `insert` deciding what a choice writes, avatars, icons and symbols on the rows, and `insertAtCursor()` for a button of your own. One rename to take along: a candidate says `text` and `supportingText` now.
