@@ -14,7 +14,7 @@
 // days old, which is what the label is for. A date rather than a rolling window
 // so the sets only move when someone recomputes them.
 //
-//   git log --since=2026-08-05T00:00 --reverse --find-renames --name-status --format= \
+//   git log --since=2026-08-20T00:00 --reverse --find-renames --name-status --format= \
 //     -- src/components/content/icon/icons
 //
 // Read those events oldest first and chain renames forward to today's filename.
@@ -28,7 +28,6 @@
 
 export const NEW_ICONS = new Set([
 	'boxes-3',
-	'brackets-ellipsis-badge-plus',
 	'check-mark-circle-light',
 	'circle',
 	'circle-circle',
@@ -37,16 +36,10 @@ export const NEW_ICONS = new Set([
 	'clipboard-bullet-list',
 	'clock-light',
 	'cpu',
+	'erlenmeyerkolf',
+	'erlenmeyerkolf-light',
 	'external-hard-drive',
 	'external-hard-drives',
-	'git-branch',
-	'git-commit',
-	'git-compare',
-	'git-fork',
-	'git-merge',
-	'git-pull-request',
-	'git-pull-request-closed',
-	'git-pull-request-draft',
 	'gpu',
 	'kanban-columns',
 	'kvm-switch',
@@ -59,13 +52,10 @@ export const NEW_ICONS = new Set([
 	'power-plug',
 	'printer',
 	'psu',
-	'puzzle-piece-badge-plus',
 	'rack-server',
 	'rack-servers',
 	'screwdriver-wrench',
-	'seal-star',
 	'shield-arrow-right-arrow-left',
-	'ship-wheel-badge-plus',
 	'slash-circle-light',
 	'snowflake',
 	'ssd-hard-drive',
@@ -76,22 +66,9 @@ export const NEW_ICONS = new Set([
 ]);
 
 export const UPDATED_ICONS = new Set([
-	'exclamation-2-circle',
-	'flag',
-	'media-pause',
-	'media-pause-filled',
-	'media-play',
-	'media-play-filled',
-	'media-play-pause',
-	'media-play-pause-filled',
-	'media-stop',
-	'media-stop-filled',
-	'point-bottom-left-to-point-top-right-s-curve-path',
-	'seal-check-mark',
 	'shield',
 	'shield-check-mark',
 	'shield-lock',
-	'trash',
 	'tray',
 	'viewfinder',
 ]);

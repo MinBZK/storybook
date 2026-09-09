@@ -201,6 +201,12 @@ export const aliases = {
 	'email': 'envelope',
 	'mail': 'envelope',
 
+	// erlenmeyerkolf
+	'lab': 'erlenmeyerkolf',
+
+	// erlenmeyerkolf-light
+	'lab-light': 'erlenmeyerkolf-light',
+
 	// exclamation-2-circle
 	'medium-priority': 'exclamation-2-circle',
 
