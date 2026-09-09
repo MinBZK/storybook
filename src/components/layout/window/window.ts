@@ -45,7 +45,6 @@ export type NLDDWindowScheme = 'inherit' | 'light' | 'dark';
 export class NLDDWindow extends LitElement {
 	static override styles = windowStyles;
 
-
 	@property({ type: Boolean, reflect: true, attribute: 'no-light-dismiss' })
 	noLightDismiss = false;
 
