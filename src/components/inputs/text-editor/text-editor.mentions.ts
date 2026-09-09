@@ -276,6 +276,10 @@ const popupTheme = EditorView.theme({
 		fontFamily: 'var(--primitives-font-family-body)',
 		// Match the editor body (and the inserted token), not a smaller popup size.
 		fontSize: 'var(--primitives-font-size-100)',
+		// The minimum of nldd-menu, so a short list of names is not a narrow strip
+		// that changes width as you type.
+		minWidth: 'var(--primitives-area-280)',
+		boxSizing: 'border-box',
 		maxHeight: '14em',
 		// A small inset around the items, like nldd-menu.
 		margin: '0',

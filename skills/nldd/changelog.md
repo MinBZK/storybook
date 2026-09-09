@@ -36,6 +36,8 @@ here; consult the commit history if you need that level of detail.
 
 ### Changed
 
+- **The typeahead list of `nldd-text-editor` is at least as wide as an `nldd-menu`, 280px.** It sized itself to its longest row, so a short list of names was a narrow strip that changed width as you typed.
+
 - **`from` and `to` in `nldd-text-editor-mention` are clean offsets.** Like `getSelection()` and the annotations: the document carries sentinels for annotations that the value never shows, and the event counted them. Without annotations nothing changes.
 
 - **A toggle at the end of a run in `nldd-text-editor` steps out of it.** With the caret right before the closing markers, `toggleBold()` (and Cmd/Ctrl+B) stripped both markers, so bold, type, bold ended with the bold undone. It now puts the caret after the run, past a space that follows it, where the next word starts. A caret inside the word still unwraps the run, and so does a selection. Same for italic, strikethrough and inline code.
