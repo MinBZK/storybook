@@ -78,12 +78,10 @@ export default {
 		value: {
 			control: 'text',
 			description: 'De inhoud van het veld',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder tekst',
-			table: { defaultValue: { summary: '' } },
 		},
 		rows: {
 			control: 'number',

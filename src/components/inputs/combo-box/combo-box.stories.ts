@@ -28,17 +28,14 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		text: {
 			control: 'text',
 			description: 'Tekst die in de input te zien is. Leeg laten en alleen `value` zetten triggert auto-derive vanuit het matching menu-item; expliciet zetten override de auto-derive.',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder tekst',
-			table: { defaultValue: { summary: '' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -73,22 +70,20 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Geselecteerde waarde (voor formulierverwerking). Wanneer een matching `<nldd-menu-item>` aanwezig is en `text` leeg is, vult de combo-box `text` automatisch met `item.text`.',
-			table: { defaultValue: { summary: '' } },
 		},
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		pattern: {
 			control: 'text',
 			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		required: {
 			control: 'boolean',

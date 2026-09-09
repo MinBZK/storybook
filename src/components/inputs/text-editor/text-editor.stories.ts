@@ -68,27 +68,18 @@ const onPaste = (event: Event) => editorOf(event.currentTarget as Element)?.past
 // Run one overflow-menu action against its editor. Mirrors the inline handlers
 // (onHeadingSelect/onListChange/…) so an overflowed control behaves the same.
 const runOverflowAction = (editor: any, action: string): void => {
-	if (action.startsWith('heading:')) {
-		const value = action.slice('heading:'.length);
+	const [name, value] = action.split(':');
+	if (name === 'heading') {
+		// A code block is its own block type, so step out of it before setting a
+		// text style. That is what makes "Paragraaf" double as the way out.
 		const inCodeBlock = editor.getState().active.codeBlock;
-		if (value === 'codeblock') { if (!inCodeBlock) editor.toggleCodeBlock(); return; }
-		if (inCodeBlock) editor.toggleCodeBlock();
-		editor.setHeading(Number(value));
+		if (value === 'codeblock') { if (!inCodeBlock) editor.runCommand('codeBlock'); return; }
+		if (inCodeBlock) editor.runCommand('codeBlock');
+		editor.runCommand('setHeading', Number(value));
 		return;
 	}
-	if (action.startsWith('list:')) {
-		const value = action.slice('list:'.length);
-		editor.setList(value === 'numbered' ? 'ordered' : value);
-		return;
-	}
-	switch (action) {
-		case 'copy': case 'cut': case 'paste':
-		case 'undo': case 'redo':
-		case 'indent': case 'outdent':
-			editor[action](); break;
-		case 'link': editor.toggleLink(); break;
-		default: editor.runCommand(action); // bold, italic, strikethrough, inlineCode, quote
-	}
+	if (name === 'list') { editor.runCommand('setList', value === 'numbered' ? 'ordered' : value); return; }
+	editor.runCommand(name);
 };
 
 // Overflow menu-items are cloned into a menu in document.body, so their @click
@@ -125,7 +116,8 @@ const onToolbarState = (event: CustomEvent) => {
 	reflectToggle('link', 'link');
 	reflectToggle('quote', 'quote');
 	const list: any = root.querySelector('[data-group="list"]');
-	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
+	// A task is a bullet too, so it has to be asked about first.
+	if (list) list.value = active.taskList ? 'task' : active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
 
 	// Formatting inside code is literal text, not markup: lock the inline formats in
 	// any code, and the block formats inside a code block — only the code-block toggle
@@ -203,7 +195,7 @@ const onToolbarState = (event: CustomEvent) => {
 		inlineCode: active.codeBlock,
 		link: inCode,
 		quote: active.codeBlock,
-		'list:none': active.codeBlock, 'list:bullet': active.codeBlock, 'list:numbered': active.codeBlock,
+		'list:none': active.codeBlock, 'list:bullet': active.codeBlock, 'list:numbered': active.codeBlock, 'list:task': active.codeBlock,
 		indent: !canIndent, outdent: !canOutdent,
 		copy: empty, cut: empty,
 		undo: !canUndo, redo: !canRedo,
@@ -224,7 +216,7 @@ const onToolbarState = (event: CustomEvent) => {
 		inlineCode: active.inlineCode,
 		link: active.link,
 		quote: active.quote,
-		'list:none': noList, 'list:bullet': active.bulletList, 'list:numbered': active.orderedList,
+		'list:none': noList, 'list:bullet': active.bulletList && !active.taskList, 'list:numbered': active.orderedList, 'list:task': active.taskList,
 		'heading:0': !active.codeBlock && active.heading === 0,
 		'heading:1': !active.codeBlock && active.heading === 1,
 		'heading:2': !active.codeBlock && active.heading === 2,
@@ -304,11 +296,13 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="none" text="Geen lijst" icon="minus"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="task" text="Taken" icon="check-list"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 					<nldd-menu-group slot="overflow" text="Lijst">
 						<nldd-menu-item type="radio" value="list:none" text="Geen lijst" icon="minus"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="list:bullet" text="Opsomming" icon="bullet-list"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="list:numbered" text="Genummerd" icon="numbered-list"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="list:task" text="Taken" icon="check-list"></nldd-menu-item>
 					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">
@@ -323,19 +317,20 @@ function toolbarEditor(editor: unknown) {
 					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Tekststijl">
-					<nldd-button id="heading-button" data-group="heading" expandable text="Paragraaf"></nldd-button>
-					<nldd-menu id="heading-menu" anchor="heading-button" @select=${onHeadingSelect}>
-						<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
-						<nldd-menu-divider></nldd-menu-divider>
-						<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
-						<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
-						<nldd-menu-divider></nldd-menu-divider>
-						<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
-					</nldd-menu>
+					<nldd-button data-group="heading" expandable text="Paragraaf">
+						<nldd-menu id="heading-menu" slot="popup" @select=${onHeadingSelect}>
+							<nldd-menu-item type="radio" value="0" text="Paragraaf" selected></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item type="radio" value="1" text="Heading 1"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="2" text="Heading 2"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="3" text="Heading 3"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="4" text="Heading 4"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="5" text="Heading 5"></nldd-menu-item>
+							<nldd-menu-item type="radio" value="6" text="Heading 6"></nldd-menu-item>
+							<nldd-menu-divider></nldd-menu-divider>
+							<nldd-menu-item type="radio" value="codeblock" text="Codeblok"></nldd-menu-item>
+						</nldd-menu>
+					</nldd-button>
 					<nldd-menu-group slot="overflow" text="Tekststijl">
 						<nldd-menu-item type="radio" value="heading:0" text="Paragraaf"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="heading:1" text="Heading 1"></nldd-menu-item>
@@ -413,12 +408,10 @@ export default {
 		value: {
 			control: 'text',
 			description: 'De inhoud (markdown)',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder tekst',
-			table: { defaultValue: { summary: '' } },
 		},
 		rows: {
 			control: 'number',
@@ -544,14 +537,14 @@ export const Placeholder = {
 export const Mentions = {
 	render: () => {
 		const users = [
-			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
-			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
-			{ id: '3', label: 'Chen Wei', detail: 'Data' },
-			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
-			{ id: '5', label: 'Emma Bakker', detail: 'Beleid' },
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid' },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie' },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data' },
+			{ id: '4', text: 'Dewi Pratama', supportingText: 'Juridisch' },
+			{ id: '5', text: 'Emma Bakker', supportingText: 'Beleid' },
 		];
 		const source = (query: string) =>
-			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+			users.filter((user) => user.text.toLowerCase().includes(query.toLowerCase()));
 		const sample = 'Bespreek dit met [@Anouk de Vries](user:1) en [@Bram Jansen](user:2).\n\nTyp `@` om iemand te noemen.';
 		return html`
 			<nldd-text-editor
@@ -568,6 +561,65 @@ export const Mentions = {
 		docs: {
 			description: {
 				story: 'Typ `@` voor een typeahead. De editor kent zelf geen gebruikers: de consumer levert kandidaten via de `mentionSource`-property (aangeroepen met de tekst na `@`). Een keuze voegt een markdown-token `[@Naam](user:id)` in (als token gerenderd, degradeert tot een gewone link) en vuurt `nldd-text-editor-mention` met id + range.',
+			},
+		},
+	},
+};
+
+export const Typeaheads = {
+	render: () => {
+		const people = [
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid', avatar: {} },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie', avatar: {} },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data', avatar: {} },
+			{ id: '4', text: 'Dienst Toeslagen', supportingText: 'Organisatie', avatar: { type: 'organization' as const } },
+		];
+		const channels = [
+			{ id: 'algemeen', text: 'algemeen', supportingText: 'Het hele team', icon: 'tag' },
+			{ id: 'zorgtoeslag', text: 'zorgtoeslag', supportingText: 'Het traject', icon: 'tag' },
+			{ id: 'vragen', text: 'vragen', supportingText: 'Hulp en vragen', icon: 'tag' },
+		];
+		// The shortcode convention of Mattermost and Slack: `:smile:`, the closing
+		// colon in the text. Without an `insert` a choice writes `:smile: `, which
+		// those systems render themselves; this editor does not, so it writes the
+		// emoji itself.
+		const emoji = [
+			{ id: 'smile', text: 'smile:', symbol: '😄' },
+			{ id: 'thumbsup', text: 'thumbsup:', symbol: '👍' },
+			{ id: 'tada', text: 'tada:', symbol: '🎉' },
+			{ id: 'thinking', text: 'thinking:', symbol: '🤔' },
+		];
+		const filter = <T extends { text: string }>(items: T[]) => (query: string) =>
+			items.filter((item) => item.text.toLowerCase().includes(query.toLowerCase()));
+		const typeaheads = [
+			{ trigger: '#', source: filter(channels) },
+			{ trigger: ':', source: filter(emoji), insert: (candidate: { symbol?: string }) => `${candidate.symbol} ` },
+		];
+		const sample = 'Typ `@` voor een persoon, `#` voor een kanaal en `:` voor een emoji.';
+		const insertDate = (event: Event): void => {
+			const editor = (event.currentTarget as Element).parentElement?.querySelector('nldd-text-editor') as unknown as { insertAtCursor(text: string): void } | null;
+			editor?.insertAtCursor(new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' }));
+		};
+		return html`
+			<div class="demo-editor">
+				<nldd-text-editor
+					rows="8"
+					accessible-label="Bericht"
+					.value=${sample}
+					.mentionSource=${filter(people)}
+					.typeaheads=${typeaheads}
+					@nldd-text-editor-mention=${(event: CustomEvent) => action('nldd-text-editor-mention')(event.detail)}
+					@nldd-text-editor-typeahead=${(event: CustomEvent) => action('nldd-text-editor-typeahead')(event.detail)}
+				></nldd-text-editor>
+				<nldd-button variant="secondary" text="Datum invoegen" @click=${insertDate}></nldd-button>
+			</div>
+		`;
+	},
+	parameters: {
+		controls: { disable: true },
+		docs: {
+			description: {
+				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft. Standaard is dat de trigger, de `text` en een spatie: met `text: "smile:"` dus `:smile: `, de shortcode die Mattermost en Slack zelf renderen. Deze editor doet dat niet, dus hier schrijft `:` de emoji zelf. Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` meekrijgen (persoon of organisatie, initialen of een afbeelding; de rij wordt dan tweeregelig met `supportingText` eronder), een `icon` (op de maat van een menu-item) of een `symbol` (een teken of emoji, de emoji zelf als beeld). Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
 			},
 		},
 	},
@@ -677,13 +729,13 @@ export const AnnotationAuthoring = {
 export const Mixed = {
 	render: () => {
 		const users = [
-			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
-			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
-			{ id: '3', label: 'Chen Wei', detail: 'Data' },
-			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid' },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie' },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data' },
+			{ id: '4', text: 'Dewi Pratama', supportingText: 'Juridisch' },
 		];
 		const source = (query: string) =>
-			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+			users.filter((user) => user.text.toLowerCase().includes(query.toLowerCase()));
 		const sample = [
 			'# Projectupdate toegankelijkheid',
 			'',

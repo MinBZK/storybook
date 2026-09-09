@@ -7,13 +7,16 @@ export const textEditorStyles = css`
 	/* # Host */
 
 	:host {
-		--__caret-width: var(--primitives-border-width-regular);
+		--_caret-width: var(--primitives-border-width-regular);
+		--_caret-ring-width: var(--primitives-border-width-thin);
 		--_corner-radius: 0;
 		--_background-color: transparent;
 		--_highlight-border-color: transparent;
 		--_highlight-border-shadow: none;
 		--_padding-block: 0px;
-		--_padding-inline: 0px;
+		/* Room for the caret's own ink at the first and last position of a line:
+		   its width plus its ring. Without it the edge carets are clipped. */
+		--_padding-inline: calc(var(--_caret-width) + var(--_caret-ring-width));
 		--_content-color: var(--semantics-content-color);
 		--_text-font: var(--primitives-font-body-md-regular-snug);
 		--_code-font: var(--primitives-font-monospace-md-regular-snug);
@@ -150,16 +153,14 @@ export const textEditorStyles = css`
 		   surfaces in light and dark (accent-600 fell just short on white), so the
 		   caret stays clearly visible without washing out. */
 		border-left-color: var(--primitives-color-accent-700);
-		border-left-width: var(--__caret-width);
-		/* A thin surface-colored halo, like the drop cursor, so the caret stays legible
+		border-left-width: var(--_caret-width);
+		/* CodeMirror centers its own 1.2px caret with a -0.6px margin. Ours is wider,
+		   so recenter it on the insertion point from its own width. */
+		margin-left: calc(var(--_caret-width) / -2);
+		/* A thin surface-colored ring, like the drop cursor, so the caret stays legible
 		   even over a tinted token (annotation, inline code) where the accent alone can
 		   blend in. Blinks with the caret (opacity covers the shadow too). */
-		box-shadow: 0 0 0 var(--primitives-border-width-thin) var(--semantics-surfaces-base-background-color);
-		/* CodeMirror draws the caret ~0.6px left of the text position. At a line start
-		   with no inline padding (the simple variant) that overhangs the scroller's
-		   overflow edge, so the left of the 2px gets clipped and the caret looks thinner
-		   there than mid-line. Nudge it right so the full width stays inside the content. */
-		transform: translateX(0.6px);
+		box-shadow: 0 0 0 var(--_caret-ring-width) var(--semantics-surfaces-base-background-color);
 	}
 
 	:host .cm-scroller {

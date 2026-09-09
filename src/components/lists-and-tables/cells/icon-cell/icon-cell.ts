@@ -8,7 +8,7 @@
  * @element nldd-icon-cell
  * @attr {string} vertical-alignment - Vertical alignment: 'top' | 'center' | 'bottom' (default: 'center')
  * @attr {string} size - Size: '16' | '20' | '24' | '32' (default: '24')
- * @attr {'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'} color - Color variant of the icon (default: 'default')
+ * @attr {'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'} color - Color variant of the icon (default: 'content')
  * @attr {string} icon - Icon name (renders `<nldd-icon>`). Takes precedence over the default slot.
  *
  * @slot - Fallback for custom icon content when `icon` is not set.
@@ -23,7 +23,7 @@ import '../../../content/icon/icon.js';
 
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 type Size = '16' | '20' | '24' | '32';
-type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
+type Color = 'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
 
 @customElement('nldd-icon-cell')
 export class NLDDIconCell extends VisibilityMixin(LitElement, 'cells-container') {
@@ -35,8 +35,8 @@ export class NLDDIconCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ type: String, reflect: true })
 	size: Size = '24';
 
-	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
-	color: Color = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<Color>('content') })
+	color: Color = 'content';
 
 	@property({ type: String, reflect: true })
 	icon = '';

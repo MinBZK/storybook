@@ -39,15 +39,15 @@ export default {
 		},
 		timing: {
 			control: 'select',
-			options: ['instant', 'default', 'never'],
-			description: 'Wanneer de tooltip verschijnt op hover. `instant`: direct zonder show-delay. `default`: na de standaard show-delay (700ms). `never`: tooltip wordt nooit getoond, aria-describedby wordt onderdrukt.',
-			table: { defaultValue: { summary: 'default' } },
+			options: ['instant', 'delay', 'never'],
+			description: 'Wanneer de tooltip verschijnt op hover. `instant`: direct zonder show-delay. `delay`: na de standaard show-delay (700ms). `never`: tooltip wordt nooit getoond, aria-describedby wordt onderdrukt.',
+			table: { defaultValue: { summary: 'delay' } },
 		},
 	},
 	args: {
 		text: 'Dit is een tooltip',
 		placement: 'bottom',
-		timing: 'default',
+		timing: 'delay',
 	},
 };
 

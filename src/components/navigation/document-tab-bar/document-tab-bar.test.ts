@@ -131,7 +131,7 @@ describe('nldd-document-tab-bar-item – short mode', () => {
 		await waitForUpdate(item);
 		expect((item as unknown as { _isShort: boolean })._isShort).toBe(true);
 		const tooltip = item.shadowRoot!.querySelector('nldd-tooltip')!;
-		expect(tooltip.getAttribute('timing')).toBe('default');
+		expect((tooltip as unknown as { timing: string }).timing).toBe('delay');
 
 		// Above threshold → tooltip suppressed (full text already inline).
 		setItemWidth(item, 150);

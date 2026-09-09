@@ -46,7 +46,6 @@ export default {
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder in de invoer.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		type: {
 			control: 'select',
@@ -57,13 +56,11 @@ export default {
 		autocomplete: {
 			control: 'text',
 			description: 'Autocomplete-hint doorgegeven aan de invoer.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label, doorgegeven als aria-label aan de invoer.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		allowCustom: {
 			name: 'allow-custom',

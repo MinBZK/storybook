@@ -4,7 +4,6 @@ import {
 	stripSentinels,
 	sentinelPositions,
 	reconcileSentinels,
-	buildDesiredDoc,
 	canPlaceSentinel,
 } from './text-editor.annotation-sentinels.js';
 
@@ -77,8 +76,10 @@ describe('annotation sentinels — pure core', () => {
 		expect(cleanToDoc(sents, 0)).toBe(0);
 	});
 
-	it('buildDesiredDoc honours multiplicity', () => {
-		expect(buildDesiredDoc('abc', [{ pos: 1, kind: 'end' }, { pos: 1, kind: 'start' }])).toBe(`a${S}${S}bc`);
+	// With no groups there is nothing to place, so the clean text is never built;
+	// every sentinel in the document is a stray.
+	it('removes a stray sentinel when there is nothing to place', () => {
+		expect(reconcileSentinels(`a${S}bc`, [])).toEqual([{ from: 1, to: 2 }]);
 	});
 
 	describe('placement guard', () => {

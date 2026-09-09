@@ -305,11 +305,13 @@ Zet het component ook in de tabellen in `form-field.test.ts`, die alle invoercom
 - **`args` staat altijd vóór `argTypes`** in de default export
 - **Args keys:** altijd camelCase (bijv. `startIcon`, `fullWidth`)
 - **`name:`** het HTML attribuut in kebab-case (bijv. `name: 'start-icon'`, `name: 'full-width'`)
-- **`table.defaultValue.summary:`** altijd invullen met de default waarde
+- **`table.defaultValue.summary:`** invullen zodra er een default is die iets zegt: `md`, `false`, `content`, of de vertaling waar het component op terugvalt (`Kruimelpad`, `Meer opties`, `Tabs`). Die laatste is de belangrijkste, want de kolom beantwoordt de vraag "wat krijg ik als ik dit niet zet". Bij een toegankelijke naam is het antwoord daarop geen detail.
+
+  **Is de default leeg, laat de regel dan weg.** Storybook toont dan een streepje, en dat is precies wat je bedoelt. Schrijf er geen `summary: ''`, want `""` en `-` zijn dan twee manieren om hetzelfde te zeggen. Bij een select met een `(geen)`-optie zet je `(geen)` in de kolom, zodat de kolom de optie noemt die je kiest om terug te gaan.
 - **`description:`** korte Nederlandse beschrijving
 - **Icon controls:** gebruik `control: 'select'` met `options: ['(geen)', ...ICONS]` plus `mapping: { '(geen)': '' }` — importeer `ICONS` uit `../../content/icon/icon.ts`. Nooit een text input voor iconen.
 - **Alias-naam heeft voorkeur:** kies bij het *gebruiken* van een icoon (`icon=`, `start-icon=`, in stories én consumers) de **alias-naam** boven de canonieke naam als er een alias bestaat — bijv. `harvest` i.p.v. `wheat`, `info` i.p.v. `info-circle`, `new-account` i.p.v. `person-circle-badge-plus`. Aliassen zijn betekenisvoller en stabieler; ze staan in `src/components/content/icon/icon-aliases.js`.
-- **Optionele select-controls:** Storybook toont anders een leeg item of letterlijk "undefined" in de dropdown. Gebruik `'(geen)'` als label en `mapping` om dat naar de echte waarde te vertalen. Plaats `'(geen)'` als eerste element in `options`. In `args` staat de **actual value** (`''` of `undefined`) — Storybook reverse-lookt via `mapping` welke label de huidige waarde representeert en toont die als geselecteerd in de UI. De render-functie ontvangt eveneens de actual value. Let op: bij opties met numerieke waarden (`1, 2, ...`) plaatst JS de integer-index keys altijd eerst in `Object.keys`, waardoor `'(geen)'` visueel onderaan de dropdown belandt; de selected-state werkt wel correct, dus accepteer dat als trade-off.
+- **Optionele select-controls:** Storybook toont anders een leeg item of letterlijk "undefined" in de dropdown. Gebruik een label tussen haakjes (zie de volgende bullet voor welk woord) en `mapping` om dat naar de echte waarde te vertalen. Plaats dat label als eerste element in `options`. In `args` staat de **actual value** (`''` of `undefined`) — Storybook reverse-lookt via `mapping` welke label de huidige waarde representeert en toont die als geselecteerd in de UI. De render-functie ontvangt eveneens de actual value. Let op: bij opties met numerieke waarden (`1, 2, ...`) plaatst JS de integer-index keys altijd eerst in `Object.keys`, waardoor `'(geen)'` visueel onderaan de dropdown belandt; de selected-state werkt wel correct, dus accepteer dat als trade-off.
   ```ts
   // String prop met '' als "geen waarde"
   args: { variant: '' },
@@ -333,6 +335,19 @@ Zet het component ook in de tabellen in `form-field.test.ts`, die alle invoercom
     },
   },
   ```
+- **Drie labels voor "niet gezet", en ze betekenen niet hetzelfde.** Kies op wat er gebeurt als de consument niets zet, niet op wat lekker leest:
+  1. **`(geen)`**: het ding is er dan niet. Geen icoon, geen variant, geen ondersteunende tekst. Verreweg het meest voorkomend.
+  2. **`(auto)`**: het component vult het zelf in. Z'n eigen kleur of gap, het icoon dat bij de variant hoort, een uitlijning die het afleidt uit de slot.
+  3. **`(inherit)`**: de omgeving bepaalt het. Alleen waar de waarde echt van buiten komt, zoals de grootte en kleur van `nldd-icon` die de `font-size` en `currentColor` eromheen volgen.
+
+  Kijk naar wat het component doet, niet naar hoe het attribuut heet. `gap` is in twee componenten hetzelfde woord met een ander label:
+
+  - **`nldd-container`** staat op `(geen)`. Leeg laten geeft daar echt `--_gap: 0`, dus het valt samen met de `0` die als optie in dezelfde dropdown staat.
+  - **`nldd-collection`** staat op `(auto)`. Leeg laten geeft daar 16px op sm en 24px daarboven, en dat is iets heel anders dan een gap van 0.
+
+  Verzin geen vierde woord: `(default)`, `(standaard)` en `(afgeleid)` hebben allemaal bestaan en zijn allemaal teruggebracht naar deze drie.
+
+  **Staat het woord al als echte waarde in dezelfde dropdown, dan is het label bezet.** Dat is de `0` bij `nldd-container` hierboven, en het gebeurt ook zonder dat de woorden gelijk zijn: `(auto)` naast een echte `inherit` leest als twee manieren om te zeggen "haal het ergens anders vandaan", ook al betekenen ze iets anders. Kies dan geen ander label maar geef de default een naam, dan staan er twee echte waardes en heb je er helemaal geen nodig. Zo werd `color` op `nldd-title` en `nldd-rich-text` `content` naast `inherit`.
 - **Volgorde consistent**: `args`, `argTypes`, template-destructuring en HTML-attributen in de template gebruiken dezelfde volgorde, volgens de canon hieronder.
 - **Twee dingen laten een control naar het eind van de tabel springen.** De docs-tabel volgt de volgorde van `argTypes`, en Storybook bouwt een key opnieuw op (en zet hem dus achteraan) zodra je hem naderhand aanraakt:
   1. Een key die je in `Default.args` opnieuw zet. Zet een default die je in `Default` wilt tonen daarom in de bovenste `args`, en laat `Default` alleen `render` houden.

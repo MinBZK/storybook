@@ -13,12 +13,20 @@
  *
  * Headless: there is no built-in toolbar. A consumer drives formatting via the
  * command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/
- * toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and
+ * toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand
+ * to toggle, and
  * setHeading/setList for picker-style "set" semantics), reads the active formats
  * with getState(), listens to the nldd-text-editor-state event to render toggle
  * states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are
- * bound out of the box. Commands keep focus on the editor. An @-mention typeahead
- * (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay
+ * bound out of the box. Commands keep focus on the editor. An inline toggle wraps
+ * the selected text (whitespace at its edges stays outside the markers), unwraps
+ * a run the caret is in, and with the caret at the very end of a run steps out
+ * of it. Bold that a typed space has broken (`**woord **`) keeps its styling
+ * while the caret is inside; the space moves outside the markers when the caret
+ * leaves. insertAtCursor(text) puts text at the caret and replaceRange(from, to,
+ * text) writes at the same clean offsets getSelection() reads. An @-mention typeahead
+ * (mentionSource) collapses to an atomic token, further typeahead lists on their
+ * own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay
  * (annotations) marks ranges with a dashed underline, light tint and a count badge
  * without touching the underlying text.
  *
@@ -38,6 +46,7 @@
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
+ * @prop {Typeahead[]} typeaheads - Your own typeahead lists next to the @-mention (property only): each a trigger character (`#`, `:`, `/`), a `source` that returns candidates for the text typed after it, and an optional `insert` that decides what a choice writes (by default the trigger, the text and a space). Lists on one trigger are merged in order. A candidate is `{ id, text, supportingText? }` and can carry an `avatar` (its row then takes two lines, the supporting text under the text), an `icon` or a `symbol` for its row.
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
@@ -46,7 +55,8 @@
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
  * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
- * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)
+ * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, text, from, to; clean offsets, like getSelection())
+ * @fires nldd-text-editor-typeahead - When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets)
  * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it
  */
 import { LitElement, type PropertyValues } from 'lit';
@@ -65,11 +75,21 @@ import { defaultKeymap, history, historyKeymap, undo as cmUndo, redo as cmRedo, 
 import { NLDDCodeMirrorElement } from '../../../utilities/codemirror/codemirror-element.js';
 import { nlddCodeMirrorTheme } from '../../../utilities/codemirror/theme.js';
 import { markdownEditing, mentionRangeAt, mentionRangeEndingAt, mentionRangeStartingAt } from './text-editor.markdown.js';
-import { mentions, type MentionSource, type MentionInsertedDetail } from './text-editor.mentions.js';
+import {
+	typeaheads as typeaheadExtension,
+	mentionInsert,
+	mentionToken,
+	type MentionSource,
+	type MentionInsertedDetail,
+	type Typeahead,
+	type TypeaheadChoice,
+} from './text-editor.mentions.js';
+import { repairHeldEmphasis } from './text-editor.emphasis.js';
 import { annotations as annotationExtension, setAnnotations, pasteAnnotations, currentAnnotations, type Annotation } from './text-editor.annotations.js';
 import { orderedListRenumber } from './text-editor.ordered-list.js';
 import { dragToMove, dragMovePlugin } from './text-editor.drag.js';
 import { linkOpenBadge } from './text-editor.links.js';
+import { stableCursor } from './text-editor.cursor.js';
 import {
 	toggleInlineWrap,
 	indentListItems as cmIndentListItems,
@@ -79,6 +99,7 @@ import {
 	toggleHeading as cmToggleHeading,
 	setHeading as cmSetHeading,
 	toggleBulletList as cmToggleBulletList,
+	toggleTaskList as cmToggleTaskList,
 	setList as cmSetList,
 	toggleQuote as cmToggleQuote,
 	toggleLink as cmToggleLink,
@@ -87,18 +108,28 @@ import {
 	readActiveFormats,
 	EMPTY_FORMATS,
 	type HeadingLevel,
+	type ListType,
 	type TextEditorState,
+	type TextEditorActiveFormats,
 } from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
-import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
+import { stripSentinels, docToClean, cleanToDoc, sentinelPositions } from './text-editor.annotation-sentinels.js';
 import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './text-editor.i18n.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
-export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
-export type { MentionCandidate, MentionSource, MentionInsertedDetail } from './text-editor.mentions.js';
+export type { HeadingLevel, ListType, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
+export type {
+	MentionCandidate,
+	MentionSource,
+	MentionInsertedDetail,
+	Typeahead,
+	TypeaheadCandidate,
+	TypeaheadSource,
+	TypeaheadChosenDetail,
+} from './text-editor.mentions.js';
 export type { Annotation } from './text-editor.annotations.js';
 
 @customElement('nldd-text-editor')
@@ -160,6 +191,21 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	 *  it, @-typeahead is inert. */
 	@property({ attribute: false })
 	mentionSource?: MentionSource;
+
+	/** Your own typeahead lists next to the @-mention, each on its own trigger
+	 *  character. Property only. Read on every keystroke, so a new array takes
+	 *  effect at once. */
+	@property({ attribute: false })
+	typeaheads: Typeahead[] = [];
+
+	/** The built-in mention as a typeahead: the `@` list fed by `mentionSource`,
+	 *  writing the token. One object, so a choice can be told apart from a
+	 *  consumer's own `@` list and fire the mention event. */
+	private readonly _mentionTypeahead: Typeahead = {
+		trigger: '@',
+		source: (query) => this.mentionSource?.(query) ?? [],
+		insert: mentionInsert,
+	};
 
 	/** Whether the annotation overlay is enabled. Off by default; set the
 	 *  `annotatable` attribute to turn it on (so the comment affordance and the
@@ -229,7 +275,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		return [
 			nlddCodeMirrorTheme,
 			markdownEditing,
-			mentions(() => this.mentionSource, (detail) => this._emitMention(detail)),
+			typeaheadExtension(() => this._typeaheadLists(), (choice) => this._onTypeaheadChosen(choice)),
 			// Prec.low so this transaction filter runs *before* the annotation filter
 			// (filters run low-precedence first), letting the annotation map through the
 			// renumber changes too — otherwise a marker growing from 1 to 11 drifts a
@@ -254,6 +300,10 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 			Prec.highest(linkOpenBadge((url) => this._t('components.text-editor.open-in-new-tab-label', { url }))),
 			this._historyCompartment.of(history()),
 			drawSelection(),
+			// Draws the caret in drawSelection's place, on a side that does not depend on
+			// the direction it arrived from unless that direction means something (a
+			// widget, a line wrap). See text-editor.cursor.ts.
+			stableCursor,
 			dropCursor(),
 			dragToMove,
 			// Prec.highest so this beats the markdown language's deleteMarkupBackward,
@@ -269,6 +319,12 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				// selects the whole token, the second removes it.
 				{ key: 'Backspace', run: (view) => this._selectMentionBeforeDelete(view, -1) },
 				{ key: 'Delete', run: (view) => this._selectMentionBeforeDelete(view, 1) },
+				// Cmd/Ctrl+] and +[ nest and un-nest list items. defaultKeymap binds them
+				// to indentMore/indentLess, whose four-space indent turns plain text into
+				// an indented code block. Consumed here in every case: off a list item
+				// they do nothing, which beats a code block nobody asked for.
+				{ key: 'Mod-]', run: (view) => { cmIndentListItems(view); return true; } },
+				{ key: 'Mod-[', run: (view) => { cmOutdentListItems(view); return true; } },
 				...defaultKeymap,
 				...historyKeymap,
 			]),
@@ -284,7 +340,10 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				focus: () => {
 					this._valueAtFocus = this.value;
 				},
-				blur: () => {
+				blur: (_event, view) => {
+					// An emphasis held together while it was being typed is closed
+					// properly first, so the committed value renders the way it looked.
+					repairHeldEmphasis(view);
 					if (this.value !== this._valueAtFocus) this._emitChange();
 				},
 				// Triple-click selects the whole paragraph (the doc line), like macOS.
@@ -343,7 +402,9 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	override firstUpdated(): void {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
-		this.mountEditor(this.value);
+		// The sentinels are the overlay's own; a value that carries one (an editor
+		// whose text was round-tripped through another) hands it back stripped.
+		this.mountEditor(stripSentinels(this.value));
 		this.onEditorMounted();
 	}
 
@@ -378,7 +439,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				// Only push an external value change into the document; a value that just
 				// mirrors the current (sentinel-stripped) doc must not trigger a rewrite,
 				// which would strip the sentinels the filter then re-adds (caret churn).
-				if (stripSentinels(this.doc) !== this.value) this.setDoc(this.value);
+				if (stripSentinels(this.doc) !== this.value) this.setDoc(stripSentinels(this.value));
 				this.commitFormValue();
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
@@ -458,9 +519,16 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		if (this.view) cmToggleBulletList(this.view);
 	}
 
+	/** Turn the selected lines into GFM task items (`- [ ] `), or back into
+	 *  bullets when they all are tasks. Checking a box is not a command. */
+	toggleTaskList(): void {
+		if (this.view) cmToggleTaskList(this.view);
+	}
+
 	/** Set the list type, replacing any existing list ('none' strips it) — for an
-	 *  exclusive list picker. */
-	setList(type: 'none' | 'bullet' | 'ordered'): void {
+	 *  exclusive list picker. A task keeps its checkbox only within its own type:
+	 *  switching to bullet or ordered takes the box along with the marker. */
+	setList(type: ListType): void {
 		if (this.view) cmSetList(this.view, type);
 	}
 
@@ -576,6 +644,40 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		this.view?.focus();
 	}
 
+	/** Puts `text` at the caret, in place of the selection when there is one, and
+	 *  leaves the caret after it, with focus on the editor. Plain text: markdown
+	 *  in it stays as written and is styled like anything typed. Does nothing on
+	 *  a read-only editor. */
+	insertAtCursor(text: string): void {
+		if (!this.view || this.view.state.readOnly) return;
+		const clean = stripSentinels(text);
+		if (clean) this.view.dispatch({ ...this.view.state.replaceSelection(clean), userEvent: 'input' });
+		this.view.focus();
+	}
+
+	/** Replaces the text between two offsets with `text`, and leaves the caret
+	 *  after it. The offsets are CLEAN, the same coordinates `getSelection()` and
+	 *  the annotations speak, so a consumer can act on what it read there. Both
+	 *  are clamped into the text, and `to` below `from` counts as an insert at
+	 *  `from`. Does nothing on a read-only editor. */
+	replaceRange(from: number, to: number, text: string): void {
+		if (!this.view || this.view.state.readOnly) return;
+		const doc = this.view.state.doc.toString();
+		const sentinels = sentinelPositions(doc);
+		const cleanLength = doc.length - sentinels.length;
+		const start = Math.max(0, Math.min(from, cleanLength));
+		const end = Math.max(start, Math.min(to, cleanLength));
+		const insert = stripSentinels(text);
+		const docFrom = cleanToDoc(sentinels, start);
+		const docTo = cleanToDoc(sentinels, end);
+		this.view.dispatch({
+			changes: { from: docFrom, to: docTo, insert },
+			selection: { anchor: docFrom + insert.length },
+			userEvent: 'input',
+		});
+		this.view.focus();
+	}
+
 	/** Insert `text` at the selection, re-attaching the cut annotations when it matches
 	 *  a cut made in this editor (a move, one-shot). Shared by the toolbar's paste()
 	 *  and the native Cmd/Ctrl+V handler. */
@@ -590,28 +692,49 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		const sameText = (a: string, b: string): boolean => a.replace(/\r\n/g, '\n') === b.replace(/\r\n/g, '\n');
 		const carry = !!(buffer && sameText(buffer.text, text) && buffer.anns.length > 0);
 		const at = docToClean(this.view.state.doc.toString(), this.view.state.selection.main.from);
-		const spec = this.view.state.replaceSelection(text);
+		// input.paste, like CodeMirror's own paste: history groups it as one step and
+		// a transaction filter can tell a paste from typing.
+		const spec = { ...this.view.state.replaceSelection(text), userEvent: 'input.paste' };
 		this.view.dispatch(carry ? { ...spec, effects: pasteAnnotations.of({ at, anns: buffer!.anns }) } : spec);
 		// One-shot: a second paste of the same cut would duplicate the ids, so drop it.
 		if (carry) this._cutBuffer = null;
 	}
 
-	/** Escape hatch: run a command by name (bold, italic, inlineCode,
-	 *  strikethrough, bulletList, quote, heading [payload: level], link
-	 *  [payload: href], copy, cut, paste). */
+	/** Escape hatch: run a command by name, so a toolbar can carry the name in its
+	 *  markup instead of a method reference. Every method above is reachable.
+	 *
+	 *  Toggles (no payload): `bold`, `italic`, `inlineCode`, `strikethrough`,
+	 *  `bulletList`, `taskList`, `quote`, `codeBlock`, `heading` (payload: the
+	 *  level, default 1), `link` (payload: the href).
+	 *  Setters: `setHeading` (payload: the level, 0 for a paragraph), `setList`
+	 *  (payload: 'none' | 'bullet' | 'ordered' | 'task').
+	 *  The rest: `indent`, `outdent`, `undo`, `redo`, `copy`, `cut`, `paste`.
+	 *
+	 *  An unknown name warns rather than doing nothing quietly: a typo in a
+	 *  toolbar is otherwise invisible. */
 	runCommand(name: string, payload?: unknown): void {
+		const level = (fallback: HeadingLevel): HeadingLevel => (typeof payload === 'number' ? payload : fallback) as HeadingLevel;
 		switch (name) {
 			case 'bold': this.toggleBold(); break;
 			case 'italic': this.toggleItalic(); break;
 			case 'inlineCode': this.toggleInlineCode(); break;
 			case 'strikethrough': this.toggleStrikethrough(); break;
 			case 'bulletList': this.toggleBulletList(); break;
+			case 'taskList': this.toggleTaskList(); break;
 			case 'quote': this.toggleQuote(); break;
-			case 'heading': this.toggleHeading((typeof payload === 'number' ? payload : 1) as HeadingLevel); break;
+			case 'codeBlock': this.toggleCodeBlock(); break;
+			case 'heading': this.toggleHeading(level(1)); break;
+			case 'setHeading': this.setHeading(level(0)); break;
+			case 'setList': this.setList(typeof payload === 'string' ? payload as ListType : 'none'); break;
 			case 'link': this.toggleLink(typeof payload === 'string' ? payload : ''); break;
+			case 'indent': this.indent(); break;
+			case 'outdent': this.outdent(); break;
+			case 'undo': this.undo(); break;
+			case 'redo': this.redo(); break;
 			case 'copy': void this.copy(); break;
 			case 'cut': void this.cut(); break;
 			case 'paste': void this.paste(); break;
+			default: console.warn(`<nldd-text-editor>: runCommand('${name}') is not a command.`);
 		}
 	}
 
@@ -676,9 +799,50 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		}));
 	}
 
+	/** The last state handed out, to keep from repeating it. The event drives a
+	 *  toolbar's toggles, and moving the caret within one paragraph leaves every
+	 *  one of them where it was: a consumer would re-render its whole bar on every
+	 *  arrow key for nothing. */
+	private _lastState: TextEditorState | null = null;
+
 	private _emitState(): void {
+		const state = this.getState();
+		const last = this._lastState;
+		if (
+			last
+			&& last.empty === state.empty
+			&& last.canIndent === state.canIndent
+			&& last.canOutdent === state.canOutdent
+			&& last.canUndo === state.canUndo
+			&& last.canRedo === state.canRedo
+			&& (Object.keys(state.active) as (keyof TextEditorActiveFormats)[]).every((key) => last.active[key] === state.active[key])
+		) return;
+		this._lastState = state;
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
-			detail: this.getState(),
+			detail: state,
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _typeaheadLists(): Typeahead[] {
+		return this.mentionSource ? [this._mentionTypeahead, ...this.typeaheads] : this.typeaheads;
+	}
+
+	/** A choice from any list. Offsets in the events are clean, like
+	 *  getSelection() and the annotations: the document carries sentinels the
+	 *  value never shows. */
+	private _onTypeaheadChosen(choice: TypeaheadChoice): void {
+		if (!this.view) return;
+		const doc = this.view.state.doc.toString();
+		const from = docToClean(doc, choice.from);
+		if (choice.typeahead === this._mentionTypeahead) {
+			const { id, text } = choice.candidate;
+			this._emitMention({ id, text, from, to: from + mentionToken(choice.candidate).length });
+			return;
+		}
+		this.dispatchEvent(new CustomEvent('nldd-text-editor-typeahead', {
+			detail: { trigger: choice.trigger, candidate: choice.candidate, from, to: docToClean(doc, choice.to) },
 			bubbles: true,
 			composed: true,
 		}));

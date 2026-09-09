@@ -93,12 +93,10 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholdertekst',
-			table: { defaultValue: { summary: '' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -123,22 +121,20 @@ export default {
 		name: {
 			control: 'text',
 			description: 'Name voor form submission',
-			table: { defaultValue: { summary: '' } },
 		},
 		value: {
 			control: 'text',
 			description: 'Veldwaarde',
-			table: { defaultValue: { summary: '' } },
 		},
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		required: {
 			control: 'boolean',
@@ -163,7 +159,6 @@ export default {
 		autocomplete: {
 			control: 'text',
 			description: 'Browser autofill hint (HTML autocomplete attribute, bv. "off")',
-			table: { defaultValue: { summary: '' } },
 		},
 		noSpellcheck: {
 			name: 'no-spellcheck',

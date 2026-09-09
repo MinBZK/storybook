@@ -22,7 +22,7 @@ describe('nldd-activity-indicator', () => {
 		expect((el as unknown as NLDDActivityIndicator).text).toBe('');
 	});
 
-	it('hides the indicator initially so brief loads do not flash (timing="default")', async () => {
+	it('hides the indicator initially so brief loads do not flash (timing="delay")', async () => {
 		el = await fixture('<nldd-activity-indicator></nldd-activity-indicator>');
 		await waitForUpdate(el);
 		expect(el.hasAttribute('loading')).toBe(false);
@@ -57,7 +57,7 @@ describe('nldd-activity-indicator', () => {
 		expect(el.shadowRoot!.querySelector('.activity-indicator__circle')).not.toBeNull();
 	});
 
-	it('shows the indicator after the 1000ms delay elapses (timing="default")', async () => {
+	it('shows the indicator after the 1000ms delay elapses (timing="delay")', async () => {
 		// Timer-dependent tests use vi.useFakeTimers + direct updateComplete
 		// instead of waitForUpdate, whose internal setTimeout(0) never fires
 		// under fake timers.

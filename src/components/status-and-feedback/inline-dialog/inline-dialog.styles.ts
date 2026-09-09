@@ -63,7 +63,7 @@ export const inlineDialogStyles = css`
 
 	/* # Elements */
 
-	.inline-dialog__body {
+	.inline-dialog {
 		box-sizing: border-box;
 		display: flex;
 		max-width: var(--primitives-area-480);
@@ -72,12 +72,20 @@ export const inlineDialogStyles = css`
 		align-items: center;
 	}
 
+	.inline-dialog--left-aligned {
+		align-items: stretch;
+	}
+
 	.inline-dialog__main {
 		display: flex;
 		width: 100%;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--primitives-space-2);
+	}
+
+	.inline-dialog--left-aligned .inline-dialog__main {
+		align-items: stretch;
 	}
 
 	.inline-dialog__icon {
@@ -111,8 +119,21 @@ export const inlineDialogStyles = css`
 		text-wrap: pretty;
 	}
 
+	.inline-dialog--left-aligned .inline-dialog__text,
+	.inline-dialog--left-aligned .inline-dialog__supporting-text {
+		text-align: left;
+	}
+
 	.inline-dialog__content {
+		display: flex;
 		width: 100%;
+		flex-direction: column;
+		align-items: center;
+		padding-top: var(--primitives-space-16);
+	}
+
+	.inline-dialog--left-aligned .inline-dialog__content {
+		align-items: stretch;
 	}
 
 	.inline-dialog__content[hidden] {

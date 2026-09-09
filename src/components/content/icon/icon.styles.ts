@@ -32,7 +32,13 @@ export const iconStyles = css`
 	/* # Size */
 
 	:host([size="full"]) { --_size: 100%; }
-	:host([size="inherit"]) { --_size: 1em; }
+	/* An inline-flex box sits with its bottom edge on the baseline; the nudge
+	   drops it back onto the line, with the text that hangs below it. */
+	:host([size="inherit"]) {
+		--_size: 1em;
+
+		vertical-align: -0.15em;
+	}
 
 	:host([size="16"]) { --_size: var(--primitives-space-16); }
 	:host([size="20"]) { --_size: var(--primitives-space-20); }
@@ -111,7 +117,7 @@ export const iconStyles = css`
 
 		border-radius: calc(var(--_size) / 5);
 		background-color: currentColor;
-		height: var(--_size);
+		aspect-ratio: 1;
 		justify-content: center;
 	}
 

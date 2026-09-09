@@ -17,6 +17,7 @@ export function modalDialogTemplate(component: NLDDModalDialog) {
 				icon=${component.icon || nothing}
 				text=${component.text || nothing}
 				supporting-text=${component.supportingText || nothing}
+				horizontal-alignment=${component.horizontalAlignment || nothing}
 				heading-level="2"
 			>
 				<slot></slot>

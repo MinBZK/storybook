@@ -137,10 +137,6 @@ export const sheetStyles = css`
 		background: var(--semantics-overlays-backdrop-color);
 	}
 
-	:host([modeless]) .sheet::backdrop {
-		background: transparent;
-	}
-
 	:host([placement="left"]) .sheet {
 		@media (min-width: ${mdMin}) {
 			inset: var(--semantics-overlays-inset) auto var(--semantics-overlays-inset) var(--semantics-overlays-inset);

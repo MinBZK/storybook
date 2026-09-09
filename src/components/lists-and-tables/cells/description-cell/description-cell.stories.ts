@@ -38,13 +38,11 @@ export default {
 			name: 'hide-below',
 			control: 'text',
 			description: 'Verberg wanneer cells-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
-			table: { defaultValue: { summary: '' } },
 		},
 		hideAbove: {
 			name: 'hide-above',
 			control: 'text',
 			description: 'Verberg wanneer cells-container breder is dan deze CSS-lengte (bv. "1200px")',
-			table: { defaultValue: { summary: '' } },
 		},
 	},
 };

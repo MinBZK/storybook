@@ -10,6 +10,7 @@ import { RangeSetBuilder, type EditorState } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import { enclosingNode } from './text-editor.syntax.js';
 import { textCaretBox } from './text-editor.caret.js';
 import '../../content/icon/icon.js';
 
@@ -50,12 +51,19 @@ class LinkOpenWidget extends WidgetType {
 		return true; // let the anchor handle its own click
 	}
 
-	/** Keep the caret at the badge's right edge text-height, not the badge's own box
-	 *  height (which is taller and would flip with the cursor's arrival direction). */
-	coordsAt(dom: HTMLElement): { left: number; right: number; top: number; bottom: number } | null {
+	/** The caret at the link's end has two places to be, and `side` says which: on
+	 *  the link's side of the badge, or after the badge. Both at text height, not
+	 *  the badge's own box (taller, and it would flip with the arrival direction).
+	 *  The cursor layer treats the badge as a character with a stop on either
+	 *  side, whether the link is a bare URL (text typed on the link's side extends
+	 *  it) or a `[text](url)` link (text typed there lands after the link, and
+	 *  so after its badge). Ignoring `side` drew both after the badge, so deleting
+	 *  the last character of a URL looked like editing outside it. */
+	coordsAt(dom: HTMLElement, _pos: number, side: number): { left: number; right: number; top: number; bottom: number } | null {
 		const badge = dom.getBoundingClientRect();
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
-		const x = badge.right + parseFloat(getComputedStyle(dom).marginRight);
+		const cs = getComputedStyle(dom);
+		const x = side < 0 ? badge.left - parseFloat(cs.marginLeft) : badge.right + parseFloat(cs.marginRight);
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
@@ -205,4 +213,27 @@ export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decoration
 		},
 		{ decorations: (plugin) => plugin.decorations }
 	);
+}
+
+/** Whether a link with a badge ends at `pos`: a `[text](url)` link or a bare
+ *  URL, with a destination the badge accepts. The same tests as `buildBadges`,
+ *  so a mention (a link too, but without a badge) is not one. */
+export function linkEndsAt(state: EditorState, pos: number): boolean {
+	let refs: Map<string, string> | null = null;
+	return enclosingNode(state, pos, -1, (node) => {
+		if (node.to !== pos) return false;
+		if (node.name === 'Link') return hrefOf(state, node, (refs ??= referenceDefs(state))) !== null;
+		return node.name === 'URL' && !inLinkContext(node) && bareHref(state, node) !== null;
+	}) !== null;
+}
+
+/** Whether a bare URL with a badge ends at `pos`: the link that text typed at
+ *  its end extends, unlike a `[text](url)` link, which ends at its `)`. */
+export function bareUrlEndsAt(state: EditorState, pos: number): boolean {
+	return enclosingNode(
+		state,
+		pos,
+		-1,
+		(node) => node.name === 'URL' && node.to === pos && !inLinkContext(node) && bareHref(state, node) !== null,
+	) !== null;
 }

@@ -55,7 +55,6 @@ export default {
 		accept: {
 			control: 'text',
 			description: 'Toegestane bestandstypen, doorgegeven aan de input (bijv. ".pdf,image/*")',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		multiple: {
 			control: 'boolean',
@@ -66,7 +65,6 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijke naam; wordt door nldd-form-field automatisch gezet',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -86,7 +84,6 @@ export default {
 		name: {
 			control: 'text',
 			description: 'Naam waaronder het bestand wordt ingediend',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		required: {
 			control: 'boolean',

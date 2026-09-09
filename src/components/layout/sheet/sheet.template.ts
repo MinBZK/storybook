@@ -1,12 +1,12 @@
 /* eslint-disable lit-a11y/click-events-have-key-events -- native dialog handles keyboard via @cancel */
-import { html, nothing } from 'lit';
+import { html } from 'lit';
 import type { NLDDSheet } from './sheet.js';
 
 export function sheetTemplate(component: NLDDSheet) {
 	return html`
 		<dialog class="sheet"
 			aria-label=${component.accessibleLabel}
-			aria-modal=${component.modeless ? nothing : 'true'}
+			aria-modal="true"
 			@pointerdown=${component._handleDialogPointerDown}
 			@click=${component._handleDialogClick}
 			@cancel=${component._handleCancel}

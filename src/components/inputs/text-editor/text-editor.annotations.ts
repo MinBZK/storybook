@@ -160,13 +160,20 @@ class AnnotationBadge extends WidgetType {
 		const cs = getComputedStyle(dom);
 		const box = textCaretBox(dom) ?? { top: badge.top, bottom: badge.bottom };
 		// Inside edge: the text's end (before the badge's left margin). Outside edge:
-		// just past the badge (its right edge + margin). The badge is a single inline
-		// box on the annotation's last line, so this stays correct for multi-line
-		// annotations — where the tint's bounding box would be the union of every
-		// line and push the caret to the far right edge.
+		// the tint's own right edge on its last line, which is where the text after
+		// the annotation starts. The badge's right edge plus its margin stops short
+		// of that by the tint's inline padding, and CodeMirror measures the position
+		// after the sentinel from the text on the other side, so the caret there
+		// jumped by that padding depending on the direction it arrived from. The
+		// badge sits on the annotation's last line, so the last client rect is the
+		// right one for a multi-line annotation; the bounding box would be the union
+		// of every line and push the caret to the far right edge.
+		const tint = dom.closest('.cm-annotation');
+		const rects = tint ? tint.getClientRects() : null;
+		const lastLine = rects && rects.length ? rects[rects.length - 1] : null;
 		const x = pos <= 0
 			? badge.left - parseFloat(cs.marginLeft)
-			: badge.right + parseFloat(cs.marginRight);
+			: (lastLine ? lastLine.right : badge.right + parseFloat(cs.marginRight));
 		return { left: x, right: x, top: box.top, bottom: box.bottom };
 	}
 }
@@ -231,7 +238,14 @@ function resolveGroup(group: Group, doc: string, sents: number[]) {
 	return { docFrom, textTo, startSent, endSent };
 }
 
+const NOTHING: Built = { deco: Decoration.none, atomic: Decoration.none };
+
 function buildAll(state: EditorState, label: AnnotationCountLabel): Built {
+	// Without annotations there is nothing to draw, and the document is not worth
+	// walking: reading it out, stripping it and scanning it for sentinels are three
+	// passes over the whole text, and they would run on every keystroke and every
+	// cursor move of an editor that never turned the overlay on.
+	if (!state.field(annotationField).length) return NOTHING;
 	const doc = state.doc.toString();
 	const sel = state.selection.main;
 	const sents = sentinelPositions(doc);
@@ -295,6 +309,9 @@ function makeAnnotationRender(label: AnnotationCountLabel): StateField<Built> {
 	return StateField.define<Built>({
 		create: (state) => buildAll(state, label),
 		update: (value, tr) => {
+			// Nothing drawn and nothing to draw: skip the rebuild entirely, so an
+			// editor without annotations pays nothing per keystroke.
+			if (value === NOTHING && !tr.state.field(annotationField).length) return value;
 			if (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) || tr.effects.some((e) => e.is(setAnnotations))) {
 				return buildAll(tr.state, label);
 			}
@@ -310,6 +327,13 @@ function makeAnnotationRender(label: AnnotationCountLabel): StateField<Built> {
 const annotationSentinelFilter = EditorState.transactionFilter.of((tr) => {
 	const set = tr.effects.find((e) => e.is(setAnnotations));
 	if (!tr.docChanged && !set) return tr;
+	// No annotations before this transaction and none arriving (as a fresh set, or
+	// riding along with a paste): there are no sentinels to maintain, so the
+	// document is left alone. Without this an editor that never turned the overlay
+	// on still read the whole text out four times per keystroke and appended a
+	// transaction to store an empty anchor list.
+	const arriving = set || tr.effects.some((e) => e.is(pasteAnnotations) || e.is(annotationMove));
+	if (!arriving && !(tr.startState.field(annotationField, false) ?? []).length) return tr;
 	const postUserDoc = tr.newDoc.toString(); // after the user's changes, before sentinels
 	const cleanLen = stripSentinels(postUserDoc).length;
 	let anns: CleanAnn[];

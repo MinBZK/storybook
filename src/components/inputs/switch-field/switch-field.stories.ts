@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import './switch-field.js';
 
 /**
@@ -55,6 +55,7 @@ export default {
 	},
 	args: {
 		label: 'Switch field',
+		name: '',
 		value: 'on',
 		checked: false,
 		invalid: false,
@@ -63,9 +64,10 @@ export default {
 	},
 };
 
-const Template = ({ label, value, checked, invalid, disabled, required }: Record<string, any>) => html`
+const Template = ({ label, name, value, checked, invalid, disabled, required }: Record<string, any>) => html`
 	<nldd-switch-field
 		label=${label}
+		name=${name || nothing}
 		?checked=${checked}
 		?invalid=${invalid}
 		?required=${required}

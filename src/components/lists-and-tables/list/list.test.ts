@@ -428,6 +428,34 @@ describe('nldd-list', () => {
 		expect(warnings.some(warning => /slot="empty"/.test(warning))).toBe(false);
 	});
 
+	// The warning asks about the state the list is actually in. Rows that are all
+	// hidden are the no-results state, and a slot that covers it has answered.
+	it('no-results: stays quiet when only that slot is filled', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list><nldd-inline-dialog slot="no-results" text="Niets gevonden"></nldd-inline-dialog><nldd-list-item hidden>A</nldd-list-item></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /blank area/.test(warning))).toBe(false);
+	});
+
+	it('no-results: asks for that slot, not the empty one', async () => {
+		const warnings: string[] = [];
+		const original = console.warn;
+		console.warn = (...args: unknown[]) => { warnings.push(String(args[0])); };
+		try {
+			el = await fixture('<nldd-list><nldd-list-item hidden>A</nldd-list-item></nldd-list>');
+			await waitForUpdate(el);
+		} finally {
+			console.warn = original;
+		}
+		expect(warnings.some(warning => /slot="no-results"/.test(warning))).toBe(true);
+	});
+
 	it('empty default: slotted content replaces the default dialog', async () => {
 		el = await fixture(`
 			<nldd-list>

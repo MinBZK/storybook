@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { EditorView } from '@codemirror/view';
+import { StateEffect } from '@codemirror/state';
+import { EditorView, type ViewUpdate } from '@codemirror/view';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import './text-editor.js';
 import { ANNOTATION_SENTINEL as S, stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
@@ -32,6 +33,36 @@ function annotatedText(el: El): string {
 describe('nldd-text-editor annotation caret', () => {
 	let el: El;
 	afterEach(() => cleanup(el));
+
+	/** Types one character and counts the effects the editor adds to it. The
+	 *  sentinel filter re-anchors every annotation on every edit, which is what
+	 *  those effects are. */
+	async function effectsPerKeystroke(el2: El): Promise<number> {
+		let effects = 0;
+		el2.view.dispatch({
+			effects: StateEffect.appendConfig.of(EditorView.updateListener.of((u: ViewUpdate) => {
+				for (const tr of u.transactions) effects += tr.effects.length;
+			})),
+		});
+		effects = 0;
+		const at = el2.view.state.doc.length;
+		el2.view.dispatch({ changes: { from: at, insert: 'x' }, selection: { anchor: at + 1 }, userEvent: 'input.type' });
+		await waitForUpdate(el2);
+		return effects;
+	}
+
+	// Re-anchoring reads the whole document out, strips it and scans it for
+	// sentinels. With nothing to anchor that is work with no result, so the filter
+	// leaves the transaction alone.
+	it('does no anchoring work per keystroke while there is nothing to anchor', async () => {
+		el = await make('abc def ghi', []);
+		expect(await effectsPerKeystroke(el)).toBe(0);
+	});
+
+	it('re-anchors on every keystroke once there is an annotation', async () => {
+		el = await make('abc def ghi', [{ id: 'a1', start: 4, end: 7, quote: 'def' }]);
+		expect(await effectsPerKeystroke(el)).toBeGreaterThan(0);
+	});
 
 	it('keeps sentinels in the document but out of the value', async () => {
 		el = await make('abc def ghi', [{ id: 'a1', start: 4, end: 7, quote: 'def' }]);

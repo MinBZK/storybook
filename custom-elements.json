@@ -1031,9 +1031,9 @@
               "kind": "field",
               "name": "tooltipTiming",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "description": "Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to\nsuppress the visual tooltip; aria-label still describes the button.",
               "attribute": "tooltip-timing",
               "reflects": true
@@ -1249,10 +1249,10 @@
             {
               "name": "tooltip-timing",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
-              "description": "Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).",
+              "default": "'delay'",
+              "description": "Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).",
               "fieldName": "tooltipTiming"
             },
             {
@@ -2970,7 +2970,7 @@
               "type": {
                 "text": "AvatarSize"
               },
-              "default": "''",
+              "default": "'full'",
               "attribute": "size",
               "reflects": true
             },
@@ -2980,7 +2980,7 @@
               "type": {
                 "text": "AvatarColor"
               },
-              "default": "'default'",
+              "default": "'neutral'",
               "attribute": "color",
               "reflects": true
             },
@@ -3063,9 +3063,9 @@
               "kind": "field",
               "name": "tooltipTiming",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "description": "Forwarded to the inner nldd-tooltip's `timing`, like nldd-icon-button.\nOn by default: initials without a name are a riddle. An\navatar that sits beside that name is `decorative` and shows none.",
               "attribute": "tooltip-timing",
               "reflects": true
@@ -3177,18 +3177,18 @@
               "type": {
                 "text": "AvatarSize"
               },
-              "default": "''",
+              "default": "'full'",
               "fieldName": "size",
-              "description": "`full` (default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`. The initials and the icon scale along"
+              "description": "`full` (the default) scales with the container, like nldd-icon; or a fixed size in px (spacer-aligned: 16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). The initials and the icon scale along"
             },
             {
               "name": "color",
               "type": {
                 "text": "AvatarColor"
               },
-              "default": "'default'",
+              "default": "'neutral'",
               "fieldName": "color",
-              "description": "`default` (neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance); default `default`"
+              "description": "`neutral` (the default, a neutral fill) or `inherit` (fill in the content color: the `--context-content-color` channel, or `currentColor` when that is unset; text in the contrast color, so the avatar can replace an icon in a button for instance)"
             },
             {
               "name": "icon-aligned",
@@ -3265,10 +3265,10 @@
             {
               "name": "tooltip-timing",
               "type": {
-                "text": "'default' | 'instant' | 'never'"
+                "text": "'delay' | 'instant' | 'never'"
               },
-              "default": "'default'",
-              "description": "When the name appears as a tooltip on hover or focus: `default` (after 700ms; the default), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text",
+              "default": "'delay'",
+              "description": "When the name appears as a tooltip on hover or focus: `delay` (the default, after 700ms), `instant`, or `never`. An avatar shows no text, so without a tooltip the name is readable by assistive software only. A `decorative` avatar shows none regardless: there the name already stands beside it as text",
               "fieldName": "tooltipTiming"
             },
             {
@@ -3638,7 +3638,7 @@
               "type": {
                 "text": "IconSize"
               },
-              "default": "''",
+              "default": "'full'",
               "attribute": "size",
               "reflects": true
             },
@@ -3689,9 +3689,9 @@
               "type": {
                 "text": "IconSize"
               },
-              "description": "`full` (default) fills the container; `inherit` follows the surrounding text (1em); or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96). Empty behaves as `full`.",
+              "description": "`full` (the default) fills the container. `inherit` sizes the icon to the surrounding text (1em) and drops it onto that text's own line, for an icon set in a line of running text. Or a fixed spacer-aligned size in px (16, 20, 24, 28, 32, 40, 44, 48, 56, 64, 80, 96).",
               "name": "size",
-              "default": "''",
+              "default": "'full'",
               "fieldName": "size"
             },
             {
@@ -4645,9 +4645,9 @@
               "kind": "field",
               "name": "color",
               "type": {
-                "text": "'' | 'inherit'"
+                "text": "'content' | 'inherit'"
               },
-              "default": "''",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -4692,11 +4692,11 @@
             {
               "name": "color",
               "type": {
-                "text": "'' | 'inherit'"
+                "text": "'content' | 'inherit'"
               },
-              "default": "''",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "'inherit' lets all text follow the color of the surface (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces. Empty = the default content colors."
+              "description": "'content' (the default) takes the system's own content colors, each element its own. 'inherit' lets all text follow the color of the surface instead (for colored areas such as the filled categories). Links stay underlined as an affordance; secondary text (figcaption) gets the same color at a lowered opacity. Known v1 gaps: inline code, mark, tables and hr keep their own surfaces."
             },
             {
               "name": "translations",
@@ -4941,7 +4941,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -4989,9 +4989,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit' (default: 'default'). 'default' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface."
+              "description": "Text color: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' | 'inherit'. 'content' and 'secondary' follow the surrounding content channel; 'inherit' takes the color it inherits, for text on a painted surface."
             },
             {
               "name": "horizontal-alignment",
@@ -5061,7 +5061,7 @@
               "type": {
                 "text": "TitleColor"
               },
-              "default": "''",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             }
@@ -5081,9 +5081,9 @@
               "type": {
                 "text": "TitleColor"
               },
-              "default": "''",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "'inherit' lets the title follow the text color of the surface (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity. Empty = the default content colors."
+              "description": "'content' (the default) takes the system's own content colors. 'inherit' lets the title follow the text color of the surface instead (for colored areas such as the filled categories); overline and subtitle get the same color at a lowered opacity."
             }
           ],
           "superclass": {
@@ -5383,7 +5383,7 @@
               "type": {
                 "text": "Timing"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "attribute": "timing",
               "reflects": true
             }
@@ -5421,9 +5421,9 @@
               "type": {
                 "text": "Timing"
               },
-              "default": "'default'",
+              "default": "'delay'",
               "fieldName": "timing",
-              "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'default' — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant."
+              "description": "When the tooltip appears on hover: 'instant' — right away, without a show delay. 'delay' (the default) — after the standard show delay (700ms). 'never' — the tooltip is never shown; hover and focus events are ignored, aria-describedby is suppressed, and a tooltip that is already visible disappears. The hide delay and the touch suppression stay in force under every value. A focus trigger is always instant."
             }
           ],
           "superclass": {
@@ -16422,30 +16422,6 @@
         },
         {
           "kind": "function",
-          "name": "buildDesiredDoc",
-          "return": {
-            "type": {
-              "text": "string"
-            }
-          },
-          "parameters": [
-            {
-              "name": "cleanText",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "desired",
-              "type": {
-                "text": "DesiredSentinel[]"
-              }
-            }
-          ],
-          "description": "Build the desired doc text: `cleanText` with a sentinel inserted at each desired\nposition (multiplicity honoured for touching groups)."
-        },
-        {
-          "kind": "function",
           "name": "reconcileSentinels",
           "return": {
             "type": {
@@ -16473,7 +16449,7 @@
               }
             }
           ],
-          "description": "Minimal changes (in current-doc coords) to turn `doc` into a document that holds\nexactly the sentinels the groups want — touching only sentinel characters, never\nthe real text. `doc` and the target share the same clean text, so a two-pointer\nwalk yields sentinel-only inserts/deletes."
+          "description": "Minimal changes (in current-doc coords) to turn `doc` into a document that holds\nexactly the sentinels the groups want — touching only sentinel characters, never\nthe real text. One walk over `doc`, comparing the sentinel run at each clean\nposition with the number wanted there. Building the target document first would\ncost a second copy of the text on every edit."
         },
         {
           "kind": "function",
@@ -16568,14 +16544,6 @@
           "name": "desiredSentinels",
           "declaration": {
             "name": "desiredSentinels",
-            "module": "src/components/inputs/text-editor/text-editor.annotation-sentinels.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "buildDesiredDoc",
-          "declaration": {
-            "name": "buildDesiredDoc",
             "module": "src/components/inputs/text-editor/text-editor.annotation-sentinels.ts"
           }
         },
@@ -16740,7 +16708,7 @@
           "type": {
             "text": "TextEditorActiveFormats"
           },
-          "default": "{ bold: false, italic: false, inlineCode: false, codeBlock: false, strikethrough: false, link: false, bulletList: false, orderedList: false, quote: false, heading: 0, }"
+          "default": "{ bold: false, italic: false, inlineCode: false, codeBlock: false, strikethrough: false, link: false, bulletList: false, orderedList: false, taskList: false, quote: false, heading: 0, }"
         },
         {
           "kind": "function",
@@ -16770,7 +16738,7 @@
               }
             }
           ],
-          "description": "Wrap (or, if already wrapped, unwrap) each selection range with `marker`."
+          "description": "Wrap each selection range with `marker`, or unwrap it when it is already\nwrapped. A caret at the very end of the wrapped text steps out of the run\ninstead: bold, type, bold ends with the caret after the bold, ready for the\nnext word, not with the bold undone."
         },
         {
           "kind": "function",
@@ -16839,6 +16807,24 @@
         },
         {
           "kind": "function",
+          "name": "toggleTaskList",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            }
+          ],
+          "description": "Turn the selected lines into GFM task items (`- [ ] `), or back into plain\nbullets when they all are tasks already. A bullet or numbered item keeps its\nindent and becomes a task; toggling off leaves a bullet rather than bare text,\nso the list survives and only the box goes. Checking a box is not this\ncommand's job."
+        },
+        {
+          "kind": "function",
           "name": "setList",
           "return": {
             "type": {
@@ -16855,7 +16841,7 @@
             {
               "name": "type",
               "type": {
-                "text": "'none' | 'bullet' | 'ordered'"
+                "text": "ListType"
               }
             }
           ],
@@ -17068,6 +17054,14 @@
         },
         {
           "kind": "js",
+          "name": "toggleTaskList",
+          "declaration": {
+            "name": "toggleTaskList",
+            "module": "src/components/inputs/text-editor/text-editor.commands.ts"
+          }
+        },
+        {
+          "kind": "js",
           "name": "setList",
           "declaration": {
             "name": "setList",
@@ -17150,6 +17144,68 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.cursor.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "drawnAssoc",
+          "return": {
+            "type": {
+              "text": "-1 | 1"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            },
+            {
+              "name": "head",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "assoc",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "The side the caret is drawn on at `head`: 1 unless the two sides are\ngenuinely apart and a hint, or else the arrival direction, says \"before\"."
+        },
+        {
+          "kind": "variable",
+          "name": "stableCursor",
+          "type": {
+            "text": "Extension"
+          },
+          "default": "[cursorLayer, pointerTracker, stepOverKeymap, typePastBadge, theme]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "drawnAssoc",
+          "declaration": {
+            "name": "drawnAssoc",
+            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "stableCursor",
+          "declaration": {
+            "name": "stableCursor",
+            "module": "src/components/inputs/text-editor/text-editor.cursor.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/inputs/text-editor/text-editor.drag.ts",
       "declarations": [
         {
@@ -17181,6 +17237,131 @@
           "declaration": {
             "name": "dragToMove",
             "module": "src/components/inputs/text-editor/text-editor.drag.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.emphasis.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "EMPHASIS_MARKERS",
+          "type": {
+            "text": "ReadonlyMap<string, string>"
+          },
+          "default": "new Map([ ['StrongEmphasis', '**'], ['Emphasis', '*'], ['Strikethrough', '~~'], ])",
+          "description": "The emphasis nodes that live by the flanking rules, with the marker the\neditor writes for them. Inline code is not among them: a code span keeps its\nwhitespace and never fails to close."
+        },
+        {
+          "kind": "variable",
+          "name": "holdEmphasis",
+          "description": "Starts a hold on markers just written around an empty selection: `****`\nparses as nothing, so there is no node to remember, but what is typed\nbetween them is meant to be bold."
+        },
+        {
+          "kind": "variable",
+          "name": "heldEmphasisField",
+          "description": "The emphasis the caret is in: the tree's own while it parses, and the held\none, mapped along through edits, once it does not. Null outside any."
+        },
+        {
+          "kind": "function",
+          "name": "repairChangesFor",
+          "return": {
+            "type": {
+              "text": "ChangeSpec[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "held",
+              "type": {
+                "text": "HeldEmphasis"
+              }
+            }
+          ],
+          "description": "The changes that move edge whitespace out of `held`, for a command that\nsteps out of the run itself. Empty when there is nothing to move."
+        },
+        {
+          "kind": "function",
+          "name": "repairHeldEmphasis",
+          "return": {
+            "type": {
+              "text": "void"
+            }
+          },
+          "parameters": [
+            {
+              "name": "view",
+              "type": {
+                "text": "EditorView"
+              }
+            }
+          ],
+          "description": "Ends a hold at once, for a blur. The display must be right while the editor\nis unfocused, and the value it commits must be markdown that renders the way\nit looked."
+        },
+        {
+          "kind": "variable",
+          "name": "heldEmphasis",
+          "type": {
+            "text": "Extension"
+          },
+          "default": "[heldEmphasisField, repairOnRelease]"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EMPHASIS_MARKERS",
+          "declaration": {
+            "name": "EMPHASIS_MARKERS",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "holdEmphasis",
+          "declaration": {
+            "name": "holdEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "heldEmphasisField",
+          "declaration": {
+            "name": "heldEmphasisField",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "repairChangesFor",
+          "declaration": {
+            "name": "repairChangesFor",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "repairHeldEmphasis",
+          "declaration": {
+            "name": "repairHeldEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "heldEmphasis",
+          "declaration": {
+            "name": "heldEmphasis",
+            "module": "src/components/inputs/text-editor/text-editor.emphasis.ts"
           }
         }
       ]
@@ -17242,6 +17423,54 @@
             }
           ],
           "description": "Adds an \"open link\" badge after every real link in the viewport. `label` builds\nthe badge's accessible label from the destination, so the host can localize it."
+        },
+        {
+          "kind": "function",
+          "name": "linkEndsAt",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Whether a link with a badge ends at `pos`: a `[text](url)` link or a bare\nURL, with a destination the badge accepts. The same tests as `buildBadges`,\nso a mention (a link too, but without a badge) is not one."
+        },
+        {
+          "kind": "function",
+          "name": "bareUrlEndsAt",
+          "return": {
+            "type": {
+              "text": "boolean"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "description": "Whether a bare URL with a badge ends at `pos`: the link that text typed at\nits end extends, unlike a `[text](url)` link, which ends at its `)`."
         }
       ],
       "exports": [
@@ -17268,6 +17497,22 @@
             "name": "linkOpenBadge",
             "module": "src/components/inputs/text-editor/text-editor.links.ts"
           }
+        },
+        {
+          "kind": "js",
+          "name": "linkEndsAt",
+          "declaration": {
+            "name": "linkEndsAt",
+            "module": "src/components/inputs/text-editor/text-editor.links.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "bareUrlEndsAt",
+          "declaration": {
+            "name": "bareUrlEndsAt",
+            "module": "src/components/inputs/text-editor/text-editor.links.ts"
+          }
         }
       ]
     },
@@ -17281,7 +17526,7 @@
           "type": {
             "text": "Extension"
           },
-          "default": "[ markdown({ extensions: GFM }), markDecorationPlugin, hangingIndentField, // Prec.highest keeps the mention chip the innermost decoration, so it nests inside // a heading/bold run and inherits its font (scaling with it) instead of sitting at // the base size as an outer sibling. Prec.highest(mentionChipField), mentionAtomicRanges, ]",
+          "default": "[ markdown({ extensions: GFM }), markDecorationPlugin, heldEmphasis, hangingIndentField, // Prec.highest keeps the mention chip the innermost decoration, so it nests inside // a heading/bold run and inherits its font (scaling with it) instead of sitting at // the base size as an outer sibling. Prec.highest(mentionChipField), mentionAtomicRanges, ]",
           "description": "Markdown language (with GFM) plus the hybrid inline-styling decorations."
         },
         {
@@ -17397,6 +17642,36 @@
       "path": "src/components/inputs/text-editor/text-editor.mentions.ts",
       "declarations": [
         {
+          "kind": "function",
+          "name": "typeaheadQueryAt",
+          "return": {
+            "type": {
+              "text": "{ from: number; to: number; query: string; trigger: string } | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "triggers",
+              "type": {
+                "text": "readonly string[]"
+              }
+            }
+          ],
+          "description": "The typeahead query at `pos` for one of `triggers`, or null when the text\nbefore the caret is not one. `from` is the trigger, `query` the typed text\nwithout it. Both the completion source and the reopen-on-delete path go\nthrough this, so they cannot disagree about what counts as a query."
+        },
+        {
           "kind": "variable",
           "name": "MENTION_HREF_PREFIX",
           "type": {
@@ -17417,11 +17692,29 @@
             {
               "name": "candidate",
               "type": {
-                "text": "MentionCandidate"
+                "text": "TypeaheadCandidate"
               }
             }
           ],
           "description": "The markdown-compatible token stored for a mention (degrades to a plain link).\nThe label's link-text delimiters are backslash-escaped and the id is\npercent-encoded, so a crafted candidate (e.g. a display name sourced from user\ndata) can't break out of `[label](user:id)` into arbitrary markdown — a stray\n`]` or `)` would otherwise start a second, attacker-shaped link. The render\nlayer reverses both via `unescapeMentionLabel` / `decodeMentionId`."
+        },
+        {
+          "kind": "function",
+          "name": "mentionInsert",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "candidate",
+              "type": {
+                "text": "TypeaheadCandidate"
+              }
+            }
+          ],
+          "description": "What the built-in mention writes: the token and a space to go on typing."
         },
         {
           "kind": "function",
@@ -17461,7 +17754,7 @@
         },
         {
           "kind": "function",
-          "name": "mentions",
+          "name": "typeaheads",
           "return": {
             "type": {
               "text": "Extension"
@@ -17469,21 +17762,30 @@
           },
           "parameters": [
             {
-              "name": "getSource",
+              "name": "getTypeaheads",
               "type": {
-                "text": "() => MentionSource | undefined"
+                "text": "() => readonly Typeahead[]"
               }
             },
             {
-              "name": "onInsert",
+              "name": "onChoose",
               "type": {
-                "text": "(detail: MentionInsertedDetail) => void"
+                "text": "(choice: TypeaheadChoice) => void"
               }
             }
-          ]
+          ],
+          "description": "The typeaheads. `getTypeaheads` is read on every keystroke, so the editor can\nhand over its current lists; choosing a candidate writes what the list's\n`insert` says and calls `onChoose`. Without lists it is inert."
         }
       ],
       "exports": [
+        {
+          "kind": "js",
+          "name": "typeaheadQueryAt",
+          "declaration": {
+            "name": "typeaheadQueryAt",
+            "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
+          }
+        },
         {
           "kind": "js",
           "name": "MENTION_HREF_PREFIX",
@@ -17497,6 +17799,14 @@
           "name": "mentionToken",
           "declaration": {
             "name": "mentionToken",
+            "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "mentionInsert",
+          "declaration": {
+            "name": "mentionInsert",
             "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
           }
         },
@@ -17518,9 +17828,9 @@
         },
         {
           "kind": "js",
-          "name": "mentions",
+          "name": "typeaheads",
           "declaration": {
-            "name": "mentions",
+            "name": "typeaheads",
             "module": "src/components/inputs/text-editor/text-editor.mentions.ts"
           }
         }
@@ -17550,8 +17860,7 @@
         },
         {
           "kind": "variable",
-          "name": "orderedListRenumber",
-          "description": "Renumbers ordered lists in the same transaction as the edit that disturbed them,\nso it's one atomic (single-undo) step and the caret/selection maps through it."
+          "name": "orderedListRenumber"
         }
       ],
       "exports": [
@@ -17575,11 +17884,107 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.syntax.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "enclosingNode",
+          "return": {
+            "type": {
+              "text": "SyntaxNode | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "side",
+              "type": {
+                "text": "-1 | 0 | 1"
+              }
+            },
+            {
+              "name": "match",
+              "type": {
+                "text": "(node: SyntaxNode) => boolean"
+              }
+            }
+          ],
+          "description": "The innermost node at `pos` that `match` accepts, looking outward from there.\n`side` decides which node a position between two of them belongs to: -1 the\none that ends there, 1 the one that starts there. Null when none matches."
+        },
+        {
+          "kind": "function",
+          "name": "enclosingNamed",
+          "return": {
+            "type": {
+              "text": "SyntaxNode | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "side",
+              "type": {
+                "text": "-1 | 0 | 1"
+              }
+            },
+            {
+              "name": "names",
+              "type": {
+                "text": "string | ReadonlySet<string>"
+              }
+            }
+          ],
+          "description": "`enclosingNode` for the common case: a node that goes by one of these names."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "enclosingNode",
+          "declaration": {
+            "name": "enclosingNode",
+            "module": "src/components/inputs/text-editor/text-editor.syntax.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "enclosingNamed",
+          "declaration": {
+            "name": "enclosingNamed",
+            "module": "src/components/inputs/text-editor/text-editor.syntax.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/inputs/text-editor/text-editor.ts",
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An @-mention typeahead (mentionSource) collapses to an atomic token, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. insertAtCursor(text) puts text at the caret and replaceRange(from, to, text) writes at the same clean offsets getSelection() reads. An @-mention typeahead (mentionSource) collapses to an atomic token, further typeahead lists on their own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -17727,6 +18132,15 @@
             },
             {
               "kind": "field",
+              "name": "typeaheads",
+              "type": {
+                "text": "Typeahead[]"
+              },
+              "default": "[]",
+              "description": "Your own typeahead lists next to the"
+            },
+            {
+              "kind": "field",
               "name": "annotatable",
               "type": {
                 "text": "boolean"
@@ -17848,6 +18262,16 @@
             },
             {
               "kind": "method",
+              "name": "toggleTaskList",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Turn the selected lines into GFM task items (`- [ ] `), or back into\nbullets when they all are tasks. Checking a box is not a command."
+            },
+            {
+              "kind": "method",
               "name": "setList",
               "return": {
                 "type": {
@@ -17858,11 +18282,11 @@
                 {
                   "name": "type",
                   "type": {
-                    "text": "'none' | 'bullet' | 'ordered'"
+                    "text": "ListType"
                   }
                 }
               ],
-              "description": "Set the list type, replacing any existing list ('none' strips it) — for an\nexclusive list picker."
+              "description": "Set the list type, replacing any existing list ('none' strips it) — for an\nexclusive list picker. A task keeps its checkbox only within its own type:\nswitching to bullet or ordered takes the box along with the marker."
             },
             {
               "kind": "method",
@@ -17979,6 +18403,54 @@
             },
             {
               "kind": "method",
+              "name": "insertAtCursor",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Puts `text` at the caret, in place of the selection when there is one, and\nleaves the caret after it, with focus on the editor. Plain text: markdown\nin it stays as written and is styled like anything typed. Does nothing on\na read-only editor."
+            },
+            {
+              "kind": "method",
+              "name": "replaceRange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "from",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "to",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "text",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Replaces the text between two offsets with `text`, and leaves the caret\nafter it. The offsets are CLEAN, the same coordinates `getSelection()` and\nthe annotations speak, so a consumer can act on what it read there. Both\nare clamped into the text, and `to` below `from` counts as an insert at\n`from`. Does nothing on a read-only editor."
+            },
+            {
+              "kind": "method",
               "name": "runCommand",
               "return": {
                 "type": {
@@ -18000,7 +18472,7 @@
                   }
                 }
               ],
-              "description": "Escape hatch: run a command by name (bold, italic, inlineCode,\nstrikethrough, bulletList, quote, heading [payload: level], link\n[payload: href], copy, cut, paste)."
+              "description": "Escape hatch: run a command by name, so a toolbar can carry the name in its\nmarkup instead of a method reference. Every method above is reachable.\n\nToggles (no payload): `bold`, `italic`, `inlineCode`, `strikethrough`,\n`bulletList`, `taskList`, `quote`, `codeBlock`, `heading` (payload: the\nlevel, default 1), `link` (payload: the href).\nSetters: `setHeading` (payload: the level, 0 for a paragraph), `setList`\n(payload: 'none' | 'bullet' | 'ordered' | 'task').\nThe rest: `indent`, `outdent`, `undo`, `redo`, `copy`, `cut`, `paste`.\n\nAn unknown name warns rather than doing nothing quietly: a typo in a\ntoolbar is otherwise invisible."
             },
             {
               "kind": "method",
@@ -18236,7 +18708,11 @@
             },
             {
               "name": "nldd-text-editor-mention",
-              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to)"
+              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, text, from, to; clean offsets, like getSelection())"
+            },
+            {
+              "name": "nldd-text-editor-typeahead",
+              "description": "When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets)"
             },
             {
               "name": "nldd-text-editor-annotation-click",
@@ -18409,6 +18885,14 @@
         },
         {
           "kind": "js",
+          "name": "ListType",
+          "declaration": {
+            "name": "ListType",
+            "module": "./text-editor.commands.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "TextEditorState",
           "declaration": {
             "name": "TextEditorState",
@@ -18444,6 +18928,38 @@
           "name": "MentionInsertedDetail",
           "declaration": {
             "name": "MentionInsertedDetail",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "Typeahead",
+          "declaration": {
+            "name": "Typeahead",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadCandidate",
+          "declaration": {
+            "name": "TypeaheadCandidate",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadSource",
+          "declaration": {
+            "name": "TypeaheadSource",
+            "module": "./text-editor.mentions.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "TypeaheadChosenDetail",
+          "declaration": {
+            "name": "TypeaheadChosenDetail",
             "module": "./text-editor.mentions.js"
           }
         },
@@ -25155,7 +25671,7 @@
           "type": {
             "text": "object"
           },
-          "default": "{ background: { control: { type: 'select' }, options: ['inherit', 'base', 'tinted'], description: 'Oppervlak: \"inherit\" (transparant) toont het oppervlak van de ouder; \"base\"/\"tinted\" tekenen een oppervlak en cascaden het naar afstammelingen', table: { defaultValue: { summary: 'inherit' } }, }, scheme: { control: { type: 'select' }, options: ['inherit', 'light', 'dark', 'inverted'], description: 'Kleurschema: \"inherit\" erft; \"inverted\" is het tegenovergestelde van het omliggende paginaschema', table: { defaultValue: { summary: 'inherit' } }, }, width: { control: 'text', description: 'Body max-width: \"full\" verwijdert de constraint, of een CSS length (bv. \"480px\") overschrijft de default max-width', table: { defaultValue: { summary: '' } }, }, height: { control: 'text', description: 'Minimale sectiehoogte (CSS length, bv. \"400px\", \"100dvh\") — net als width op de body-max-width, mapt height op min-height van de host', table: { defaultValue: { summary: '' } }, }, 'padding-block': paddingControl('Block (boven+onder) padding-override (token 0–96; \"0\" verwijdert de padding)'), 'padding-top': paddingControl('Override van alleen de bovenpadding'), 'padding-bottom': paddingControl('Override van alleen de onderpadding'), 'sm-padding-block': paddingControl('Block-padding op sm (≤640px)'), 'sm-padding-top': paddingControl('Bovenpadding op sm (≤640px)'), 'sm-padding-bottom': paddingControl('Onderpadding op sm (≤640px)'), 'md-padding-block': paddingControl('Block-padding op md (641–1007px)'), 'md-padding-top': paddingControl('Bovenpadding op md (641–1007px)'), 'md-padding-bottom': paddingControl('Onderpadding op md (641–1007px)'), 'lg-padding-block': paddingControl('Block-padding op lg (≥1008px)'), 'lg-padding-top': paddingControl('Bovenpadding op lg (≥1008px)'), 'lg-padding-bottom': paddingControl('Onderpadding op lg (≥1008px)'), }",
+          "default": "{ background: { control: { type: 'select' }, options: ['inherit', 'base', 'tinted'], description: 'Oppervlak: \"inherit\" (transparant) toont het oppervlak van de ouder; \"base\"/\"tinted\" tekenen een oppervlak en cascaden het naar afstammelingen', table: { defaultValue: { summary: 'inherit' } }, }, scheme: { control: { type: 'select' }, options: ['inherit', 'light', 'dark', 'inverted'], description: 'Kleurschema: \"inherit\" erft; \"inverted\" is het tegenovergestelde van het omliggende paginaschema', table: { defaultValue: { summary: 'inherit' } }, }, width: { control: 'text', description: 'Body max-width: \"full\" verwijdert de constraint, of een CSS length (bv. \"480px\") overschrijft de default max-width', }, height: { control: 'text', description: 'Minimale sectiehoogte (CSS length, bv. \"400px\", \"100dvh\") — net als width op de body-max-width, mapt height op min-height van de host', }, 'padding-block': paddingControl('Block (boven+onder) padding-override (token 0–96; \"0\" verwijdert de padding)'), 'padding-top': paddingControl('Override van alleen de bovenpadding'), 'padding-bottom': paddingControl('Override van alleen de onderpadding'), 'sm-padding-block': paddingControl('Block-padding op sm (≤640px)'), 'sm-padding-top': paddingControl('Bovenpadding op sm (≤640px)'), 'sm-padding-bottom': paddingControl('Onderpadding op sm (≤640px)'), 'md-padding-block': paddingControl('Block-padding op md (641–1007px)'), 'md-padding-top': paddingControl('Bovenpadding op md (641–1007px)'), 'md-padding-bottom': paddingControl('Onderpadding op md (641–1007px)'), 'lg-padding-block': paddingControl('Block-padding op lg (≥1008px)'), 'lg-padding-top': paddingControl('Bovenpadding op lg (≥1008px)'), 'lg-padding-bottom': paddingControl('Onderpadding op lg (≥1008px)'), }",
           "description": "Shared Storybook controls for the PageSectionMixin surface API\n(background, scheme, width, height and the 12 block-padding overrides).\nSpread into a section story's `argTypes` / `args`, and bind onto the host\nelement in `render` with the `pageSectionAttrs` directive."
         },
         {
@@ -27217,16 +27733,6 @@
             },
             {
               "kind": "field",
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "modeless",
-              "reflects": true
-            },
-            {
-              "kind": "field",
               "name": "accessibleLabel",
               "type": {
                 "text": "string"
@@ -27293,15 +27799,6 @@
               "default": "''",
               "description": "Custom height for bottom sheets (and for any sheet on sm viewports, where all placements collapse to bottom). Accepts: `'full'` (default — viewport minus top-inset, identical to omitting the attribute), `'fit-content'` (collapse to content size), or any CSS length/percentage (e.g. `'50dvh'`, `'480px'`, `'50%'`). Always clamped to `100dvh - top-inset` so the sheet can't extend past the dismiss-tap area. No effect on side sheets at md+.",
               "fieldName": "height"
-            },
-            {
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "modeless",
-              "description": "Non-modal (no backdrop or focus lock); the sheet is modal by default"
             },
             {
               "name": "accessible-label",
@@ -28179,19 +28676,9 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A floating window based on the native <dialog> element. Can be shown modal or modeless. Positionable through CSS values. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.",
+          "description": "A floating window based on the native <dialog> element, positionable through CSS values. Always modal. No header of its own: consumers use nldd-page with a sticky header inside for a title bar.",
           "name": "NLDDWindow",
           "members": [
-            {
-              "kind": "field",
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "modeless",
-              "reflects": true
-            },
             {
               "kind": "field",
               "name": "noLightDismiss",
@@ -28325,15 +28812,6 @@
             }
           ],
           "attributes": [
-            {
-              "name": "modeless",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "fieldName": "modeless",
-              "description": "Modeless (no backdrop or focus trap); the window is modal by default"
-            },
             {
               "name": "no-light-dismiss",
               "type": {
@@ -28973,7 +29451,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -29038,9 +29516,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Color variant of the icon (default: 'default')"
+              "description": "Color variant of the icon (default: 'content')"
             },
             {
               "name": "icon",
@@ -29250,7 +29728,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -29402,9 +29880,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state."
+              "description": "Text color variant: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'. All variants other than those two apply to all three text fields so the cell reads as a coherent state."
             },
             {
               "name": "width",
@@ -29859,7 +30337,7 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "attribute": "color",
               "reflects": true
             },
@@ -30021,9 +30499,9 @@
               "type": {
                 "text": "Color"
               },
-              "default": "'default'",
+              "default": "'content'",
               "fieldName": "color",
-              "description": "Text color variant (default: 'default'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state."
+              "description": "Text color variant (default: 'content'). `secondary` demotes the title to match the muted overline/supporting-text. `accent`, `success`, `warning` and `critical` tint all three regions so the cell reads as a coherent state."
             },
             {
               "name": "width",
@@ -31861,8 +32339,9 @@
               "kind": "field",
               "name": "size",
               "type": {
-                "text": "Size | undefined"
+                "text": "Size"
               },
+              "default": "'inherit'",
               "attribute": "size",
               "reflects": true
             },
@@ -31969,10 +32448,11 @@
             {
               "name": "size",
               "type": {
-                "text": "Size | undefined"
+                "text": "Size"
               },
+              "default": "'inherit'",
               "fieldName": "size",
-              "description": "Text size: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Empty = inherit."
+              "description": "Text size: 'inherit' (the default) follows the surrounding text and lays the link out inline, so it wraps in running prose. 'xs' | 'sm' | 'md' | 'lg' pin a size and switch to inline-flex, which baseline-aligns a start or end icon with an explicit gap."
             },
             {
               "name": "text",
@@ -33657,8 +34137,8 @@
               "type": {
                 "text": "ActivityIndicatorTiming"
               },
-              "default": "'default'",
-              "description": "'default' waits DELAY_MS before showing; 'instant' shows\nimmediately. The fade-in plays either way.",
+              "default": "'delay'",
+              "description": "'delay' waits DELAY_MS before showing; 'instant' shows\nimmediately. The fade-in plays either way.",
               "attribute": "timing",
               "reflects": true
             },
@@ -33727,8 +34207,8 @@
               "type": {
                 "text": "ActivityIndicatorTiming"
               },
-              "default": "'default'",
-              "description": "'default' waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays). Default 'default'.",
+              "default": "'delay'",
+              "description": "'delay' (the default) waits 1000ms before showing (anti-flash); 'instant' shows immediately (the fade-in still plays).",
               "fieldName": "timing"
             },
             {
@@ -34340,6 +34820,16 @@
               "default": "null",
               "attribute": "heading-level",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "attribute": "horizontal-alignment",
+              "reflects": true
             }
           ],
           "attributes": [
@@ -34405,6 +34895,15 @@
               "default": "null",
               "fieldName": "headingLevel",
               "description": "Renders text as h1–h6; absent renders a p"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "fieldName": "horizontalAlignment",
+              "description": "Overrides the alignment of text, icon and actions. Unset (the default) derives it: content in the default slot means a task, which aligns left; a bare message stays centered. Left alignment also lays the actions out in a row instead of stacked full-width."
             }
           ],
           "superclass": {
@@ -34720,6 +35219,16 @@
             },
             {
               "kind": "field",
+              "name": "horizontalAlignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "attribute": "horizontal-alignment",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "accessibleLabel",
               "type": {
                 "text": "string"
@@ -34793,6 +35302,15 @@
               "default": "''",
               "fieldName": "supportingText",
               "description": "Forwarded to nldd-inline-dialog; supporting text"
+            },
+            {
+              "name": "horizontal-alignment",
+              "type": {
+                "text": "InlineDialogHorizontalAlignment | ''"
+              },
+              "default": "''",
+              "fieldName": "horizontalAlignment",
+              "description": "Forwarded to nldd-inline-dialog. Unset derives it there: slotted content aligns left, a bare message stays centered."
             },
             {
               "name": "accessible-label",

@@ -32,7 +32,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optional fixed width (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		name: {
 			control: 'text',
@@ -41,7 +40,6 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Input value',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
@@ -112,17 +110,16 @@ export default {
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		pattern: {
 			control: 'text',
 			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		required: {
 			control: 'boolean',

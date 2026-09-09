@@ -54,7 +54,7 @@ describe('nldd-icon', () => {
 	it('defaults size and color to empty (inherit)', async () => {
 		el = await fixture<NLDDIcon>('<nldd-icon></nldd-icon>');
 		await waitForUpdate(el);
-		expect(el.size).toBe('');
+		expect(el.size).toBe('full');
 		expect(el.color).toBe('');
 	});
 
@@ -98,9 +98,12 @@ describe('nldd-icon – relative sizes', () => {
 		expect(Math.round(icon.getBoundingClientRect().width)).toBe(40);
 	});
 
-	it('size="inherit" follows the surrounding text', async () => {
+	it('size="inherit" follows the surrounding text, and sits on its line', async () => {
 		const icon = await mount('size="inherit"');
 		expect(Math.round(icon.getBoundingClientRect().width)).toBe(12);
+		// Without the nudge the box's bottom edge lands on the baseline, which
+		// rides high against text that hangs below it.
+		expect(getComputedStyle(icon).verticalAlign).toBe('-1.8px');
 	});
 
 	it('a fixed size still wins over both', async () => {
@@ -120,6 +123,13 @@ describe('nldd-icon – relative sizes', () => {
 		expect(Math.round(icon.getBoundingClientRect().height)).toBe(40);
 		const glyph = icon.shadowRoot!.querySelector('svg') as SVGElement;
 		expect(Math.round(glyph.getBoundingClientRect().width)).toBe(32);
+	});
+
+	it('box: stays square in a container that is not', async () => {
+		const icon = await mount('box', 'div style="width: 200px; height: 120px"');
+		const rect = icon.getBoundingClientRect();
+		expect(Math.round(rect.width)).toBe(200);
+		expect(Math.round(rect.height)).toBe(200);
 	});
 
 	it('box: the corner radius is a fifth of the size', async () => {

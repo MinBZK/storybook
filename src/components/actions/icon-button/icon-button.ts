@@ -17,7 +17,7 @@
  * @attr {string} text - Button text, used as aria-label and shown below the icon in lg size
  * @attr {string} icon - Icon name for the nldd-icon element. Defaults to a placeholder icon when neither this attribute nor the icon slot is set.
  * @attr {string} accessible-label - Accessible label for screen readers. Overrides text as aria-label and title tooltip. Use when the visible text alone lacks context for screen readers (e.g. text "Toon", accessible-label "Toon wachtwoord"). The text is still shown visually in lg size regardless.
- * @attr {string} tooltip-timing - Forwarded to the inner nldd-tooltip's `timing`: 'default' (700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).
+ * @attr {string} tooltip-timing - Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button).
  * @attr {string} href - When set, renders an <a> element instead of <button>
  * @attr {string} target - Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2).
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'
@@ -169,8 +169,8 @@ export class NLDDIconButton extends withTranslations(LitElement, nlddIconButtonT
 
 	/** Forwarded to the inner nldd-tooltip's `timing`. Use `'never'` to
 	 * suppress the visual tooltip; aria-label still describes the button. */
-	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'default' | 'instant' | 'never'>('default') })
-	tooltipTiming: 'default' | 'instant' | 'never' = 'default';
+	@property({ reflect: true, attribute: 'tooltip-timing', converter: reflectNonDefault<'delay' | 'instant' | 'never'>('delay') })
+	tooltipTiming: 'delay' | 'instant' | 'never' = 'delay';
 
 	/** When set, renders an <a> element instead of <button>. */
 	@property({ type: String, reflect: true })

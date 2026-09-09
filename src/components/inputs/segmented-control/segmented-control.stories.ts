@@ -36,7 +36,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Width mode: "full" (stretches to container), "fit-content" (per-item content size), or any CSS length (e.g. "240px")',
-			table: { defaultValue: { summary: '' } },
 		},
 		value: {
 			control: 'text',

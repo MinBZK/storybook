@@ -43,13 +43,11 @@ export default {
 		text: {
 			control: 'text',
 			description: 'De melding',
-			table: { defaultValue: { summary: '' } },
 		},
 		supportingText: {
 			name: 'supporting-text',
 			control: 'text',
 			description: 'Tweede regel onder de melding',
-			table: { defaultValue: { summary: '' } },
 		},
 		duration: {
 			control: 'number',

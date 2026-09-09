@@ -67,38 +67,32 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Breedte: full (vult de container) of een CSS-lengte (bv. 560px); leeg is de intrinsieke zeven-cellen-breedte',
-			table: { defaultValue: { summary: '(intrinsiek)' } },
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijke naam van de kalender',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		value: {
 			control: 'text',
 			description: 'De gekozen datum als ISO (jjjj-mm-dd). Alleen zonder range.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		start: {
 			control: 'text',
 			description: 'Begin van de periode als ISO. Alleen met range.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		end: {
 			control: 'text',
 			description: 'Einde van de periode als ISO. Alleen met range.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		min: {
 			control: 'text',
 			description: 'Vroegste datum: ISO, of today met een verschuiving (today-18y)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		max: {
 			control: 'text',
 			description: 'Laatste datum: ISO, of today met een verschuiving (today+1y)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		invalid: {
 			control: 'boolean',

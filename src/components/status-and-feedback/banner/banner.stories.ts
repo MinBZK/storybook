@@ -47,10 +47,10 @@ export default {
 		},
 		icon: {
 			control: 'select',
-			options: ['(default)', ...ICONS],
-			mapping: { '(default)': '' },
+			options: ['(auto)', ...ICONS],
+			mapping: { '(auto)': '' },
 			description: 'Override van het standaard-icoon',
-			table: { defaultValue: { summary: '(default)' } },
+			table: { defaultValue: { summary: '(auto)' } },
 		},
 		text: {
 			control: 'text',

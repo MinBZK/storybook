@@ -32,22 +32,18 @@ export default {
 		width: {
 			control: 'text',
 			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is de intrinsieke breedte van twee kolommen.",
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		value: {
 			control: 'text',
 			description: 'De gekozen tijd als HH:mm (24-uurs)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		min: {
 			control: 'text',
 			description: 'Vroegst toegestane tijd; tevens de basis waarvandaan step telt',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		max: {
 			control: 'text',
 			description: 'Laatst toegestane tijd',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		step: {
 			control: 'number',
@@ -58,7 +54,7 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijke naam van de picker',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { defaultValue: { summary: 'Tijd kiezen' } },
 		},
 		invalid: {
 			control: 'boolean',

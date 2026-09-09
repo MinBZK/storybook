@@ -33,17 +33,10 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Breedte van side sheets (left/right) als CSS length, bv. `480px` of `32rem`. Genegeerd op sm en voor `placement="bottom"`. Geclamped op `100vw - 2 * inset`.',
-			table: { defaultValue: { summary: '' } },
 		},
 		height: {
 			control: 'text',
 			description: 'Hoogte van bottom sheets (en van elke sheet op sm). `full` (default), `fit-content`, of een CSS length/percentage zoals `50dvh`, `480px`, `50%`. Geclamped op `100dvh - top-inset`. Genegeerd voor side sheets op md+.',
-			table: { defaultValue: { summary: '' } },
-		},
-		modeless: {
-			control: 'boolean',
-			description: 'Niet-modaal (geen backdrop of focusvergrendeling); standaard is de sheet modaal',
-			table: { defaultValue: { summary: false } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
@@ -51,7 +44,7 @@ export default {
 			description: 'Toegankelijk label voor screen readers (aria-label van de dialog)',
 		},
 	},
-	args: { placement: 'right', width: '', height: '', modeless: false, accessibleLabel: '' },
+	args: { placement: 'right', width: '', height: '', accessibleLabel: '' },
 };
 
 const openNext = (e: Record<string, any>) => e.currentTarget.nextElementSibling.show();
@@ -75,7 +68,6 @@ const Template = (args: Record<string, any>) => html`
 		placement=${args.placement}
 		width=${args.width || ''}
 		height=${args.height || ''}
-		?modeless=${args.modeless}
 		accessible-label=${args.accessibleLabel || ''}
 	>
 		<nldd-page sticky-header>
@@ -91,24 +83,24 @@ const Template = (args: Record<string, any>) => html`
 
 export const Standaard = {
 	render: Template,
-	args: { placement: 'right', modeless: false },
+	args: { placement: 'right' },
 };
 
 export const Rechts = {
 	render: Template,
-	args: { placement: 'right', modeless: false },
+	args: { placement: 'right' },
 	parameters: { controls: { disable: true } },
 };
 
 export const Links = {
 	render: Template,
-	args: { placement: 'left', modeless: false },
+	args: { placement: 'left' },
 	parameters: { controls: { disable: true } },
 };
 
 export const Onder = {
 	render: Template,
-	args: { placement: 'bottom', modeless: false },
+	args: { placement: 'bottom' },
 	parameters: { controls: { disable: true } },
 };
 
@@ -133,29 +125,6 @@ export const MetTerugknop = {
 	},
 };
 
-export const NietModaal = {
-	render: () => html`
-		<nldd-button text="Open niet-modale sheet" @click=${openNext}></nldd-button>
-		<nldd-sheet placement="right" modeless>
-			<nldd-page sticky-header>
-				<nldd-top-title-bar
-					slot="header"
-					text="Niet-modale sheet"
-					dismiss-text="Sluit"
-				></nldd-top-title-bar>
-				${pageContent}
-			</nldd-page>
-		</nldd-sheet>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Niet-modale sheet zonder backdrop en focusvergrendeling. Bekijk deze story in het canvas voor het juiste resultaat — in de docs-weergave kan de positie afwijken door de containerstructuur van Storybook.',
-			},
-		},
-	},
-};
 
 export const MetStickyFooter = {
 	render: () => html`

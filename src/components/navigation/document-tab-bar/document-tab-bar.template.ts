@@ -110,7 +110,7 @@ export function documentTabBarItemTemplate(component: NLDDDocumentTabBarItem): T
 			>${tabContent}</button>`;
 
 	return html`
-		<nldd-tooltip text=${tooltipText} timing=${component._isShort ? 'default' : 'never'}>
+		<nldd-tooltip text=${tooltipText} timing=${component._isShort ? 'delay' : 'never'}>
 			<div class="document-tab-bar__item">
 				${tab}
 				<button class="document-tab-bar__item-dismiss-button"

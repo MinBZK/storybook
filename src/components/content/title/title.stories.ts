@@ -40,15 +40,14 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['(default)', 'inherit'],
-			mapping: { '(default)': '' },
-			description: 'inherit laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken)',
-			table: { defaultValue: { summary: '(default)' } },
+			options: ['content', 'inherit'],
+			description: '`content` neemt de eigen tekstkleuren van het systeem. `inherit` laat de titel de tekstkleur van de ondergrond volgen (voor gekleurde vlakken).',
+			table: { defaultValue: { summary: 'content' } },
 		},
 	},
 	args: {
 		size: 3,
-		color: '',
+		color: 'content',
 	},
 };
 

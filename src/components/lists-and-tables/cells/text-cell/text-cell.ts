@@ -21,7 +21,7 @@
  *
  * @element nldd-text-cell
  * @attr {string} size - Cell size: 'sm' | 'md' (default: 'md')
- * @attr {string} color - Text color variant: 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical' (default: 'default'). All non-default/-secondary variants apply to all three text fields so the cell reads as a coherent state.
+ * @attr {string} color - Text color variant: 'content' (the default) | 'secondary' | 'accent' | 'success' | 'warning' | 'critical'. All variants other than those two apply to all three text fields so the cell reads as a coherent state.
  * @attr {string} width - 'full' | 'fit-content' | CSS length (e.g. '200px', '20rem'). Default: 'full'
  * @attr {string} min-width - Minimum width as CSS length (e.g. '80px', '5rem')
  * @attr {string} max-width - Maximum width as CSS length (e.g. '200px', '20rem')
@@ -61,7 +61,7 @@ import { VisibilityMixin } from '../../../../utilities/visibility-mixin.js';
 import type { QueryMarkMode } from '../../../../utilities/render-marked.js';
 
 type Size = 'sm' | 'md';
-type Color = 'default' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
+type Color = 'content' | 'secondary' | 'accent' | 'success' | 'warning' | 'critical';
 type HorizontalAlignment = 'left' | 'center' | 'right';
 type VerticalAlignment = 'top' | 'center' | 'bottom';
 
@@ -72,8 +72,8 @@ export class NLDDTextCell extends VisibilityMixin(LitElement, 'cells-container')
 	@property({ reflect: true, converter: reflectNonDefault<Size>('md') })
 	size: Size = 'md';
 
-	@property({ reflect: true, converter: reflectNonDefault<Color>('default') })
-	color: Color = 'default';
+	@property({ reflect: true, converter: reflectNonDefault<Color>('content') })
+	color: Color = 'content';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('full') })
 	width: string = 'full';

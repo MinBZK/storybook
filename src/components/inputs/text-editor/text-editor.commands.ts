@@ -1,7 +1,8 @@
 import type { EditorView } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
-import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
+import { EMPHASIS_MARKERS, heldEmphasisField, holdEmphasis, repairChangesFor } from './text-editor.emphasis.js';
+import { enclosingNamed } from './text-editor.syntax.js';
 
 /* Markdown editing operations for the headless command API. Each works on the
  * current selection (multi-range aware) and leaves focus on the editor, so a
@@ -18,6 +19,8 @@ export interface TextEditorActiveFormats {
 	link: boolean;
 	bulletList: boolean;
 	orderedList: boolean;
+	/** A GFM task item (`- [ ]` / `- [x]`); also reports as bulletList. */
+	taskList: boolean;
 	quote: boolean;
 	heading: HeadingLevel;
 }
@@ -43,15 +46,13 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 	link: false,
 	bulletList: false,
 	orderedList: false,
+	taskList: false,
 	quote: false,
 	heading: 0,
 };
 
 function enclosing(view: EditorView, pos: number, nodeName: string, side: -1 | 0 | 1 = 1): SyntaxNode | null {
-	for (let n: SyntaxNode | null = syntaxTree(view.state).resolveInner(pos, side); n; n = n.parent) {
-		if (n.name === nodeName) return n;
-	}
-	return null;
+	return enclosingNamed(view.state, pos, side, nodeName);
 }
 
 /** An inline format is "active" for the caret only when the node encloses it on
@@ -64,34 +65,62 @@ function enclosingInline(view: EditorView, pos: number, nodeName: string): Synta
 	return left && right && left.from === right.from && left.to === right.to ? right : null;
 }
 
-/** Wrap (or, if already wrapped, unwrap) each selection range with `marker`. */
+/** Wrap each selection range with `marker`, or unwrap it when it is already
+ *  wrapped. A caret at the very end of the wrapped text steps out of the run
+ *  instead: bold, type, bold ends with the caret after the bold, ready for the
+ *  next word, not with the bold undone. */
 export function toggleInlineWrap(view: EditorView, marker: string, nodeName: string): void {
 	// CodeMirror's `readOnly` facet only gates its own built-in commands, not a raw
 	// `view.dispatch`, so every editing helper here must refuse a read-only view
 	// itself — otherwise the command API and the Mod-b/i/e/k keymap would mutate a
 	// read-only (or disabled) editor.
 	if (view.state.readOnly) return;
+	const { state } = view;
 	const len = marker.length;
-	view.dispatch(view.state.changeByRange((range) => {
-		const wrap = enclosing(view, range.from, nodeName);
+	const held = state.field(heldEmphasisField, false);
+	view.dispatch(state.changeByRange((range) => {
+		// A drag or a double-click takes the space after a word along, and
+		// `**woord **` is not bold: a closing run may not follow whitespace. So the
+		// markers go around the text and the whitespace stays where it was (#212).
+		const text = state.sliceDoc(range.from, range.to);
+		const lead = /^\s*/.exec(text)![0].length;
+		if (!range.empty && lead === text.length) return { range };
+		const from = range.from + lead;
+		const to = range.to - /\s*$/.exec(text)![0].length;
+		// The run the range is in: parsed, or held while a typed space has broken it.
+		const wrap = enclosing(view, from, nodeName)
+			?? (held && held.name === nodeName && from >= held.from && to <= held.to ? held : null);
 		if (wrap) {
+			const content = state.sliceDoc(wrap.from + len, wrap.to - len);
+			if (range.empty && from === wrap.to - len && content.trim()) {
+				// Step out. Whitespace typed at the end goes outside the markers first,
+				// so the caret lands after it, and after any space already there: where
+				// the next word starts.
+				const run = { from: wrap.from, to: wrap.to, name: nodeName, marker: state.sliceDoc(wrap.from, wrap.from + len), live: false };
+				const changes = EMPHASIS_MARKERS.has(nodeName) ? repairChangesFor(state, run) : [];
+				let pos = wrap.to;
+				while (/[ \t]/.test(state.sliceDoc(pos, pos + 1))) pos++;
+				return { changes, range: EditorSelection.cursor(pos) };
+			}
+			const changes = state.changes([
+				{ from: wrap.from, to: wrap.from + len },
+				{ from: wrap.to - len, to: wrap.to },
+			]);
 			return {
-				changes: [
-					{ from: wrap.from, to: wrap.from + len },
-					{ from: wrap.to - len, to: wrap.to },
-				],
-				range: EditorSelection.range(
-					Math.max(wrap.from, range.from - len),
-					Math.max(wrap.from, range.to - len),
-				),
+				changes,
+				range: EditorSelection.range(changes.mapPos(range.anchor), changes.mapPos(range.head)),
 			};
 		}
 		return {
 			changes: [
-				{ from: range.from, insert: marker },
-				{ from: range.to, insert: marker },
+				{ from, insert: marker },
+				{ from: to, insert: marker },
 			],
-			range: EditorSelection.range(range.from + len, range.to + len),
+			range: EditorSelection.range(from + len, to + len),
+			// Empty markers parse as nothing, so the hold on them is started by hand.
+			effects: range.empty && range === state.selection.main && EMPHASIS_MARKERS.has(nodeName)
+				? holdEmphasis.of({ from, to: from + 2 * len, name: nodeName, marker })
+				: undefined,
 		};
 	}));
 	view.focus();
@@ -114,20 +143,43 @@ function minimalLineChange(
 	return { from: line.from + p, to: line.from + old.length - s, insert: next.slice(p, next.length - s) };
 }
 
-function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
-	if (view.state.readOnly) return; // guards toggleHeading/setHeading/toggleBulletList/toggleQuote
+/** Dispatch line-level changes with the selection carried along. A caret that
+ *  sits exactly where a marker is inserted (column 0 of an empty line, say) is
+ *  mapped to *after* the insertion, so what is typed next lands in the item and
+ *  not in front of its marker. Plain mapping would leave it before. */
+function dispatchLineChanges(view: EditorView, changes: { from: number; to?: number; insert?: string }[]): void {
+	if (changes.length) {
+		const { state } = view;
+		const set = state.changes(changes);
+		const sel = state.selection.main;
+		view.dispatch({ changes: set, selection: { anchor: set.mapPos(sel.anchor, 1), head: set.mapPos(sel.head, 1) } });
+	}
+	view.focus();
+}
+
+/** The selected line range, and whether it is a single blank line. The line
+ *  commands skip blank lines because they separate items, but when the blank
+ *  line is the only one selected (an empty document, a fresh paragraph) it is
+ *  the whole target and must take the marker. */
+function selectedLines(view: EditorView): { first: number; last: number; loneBlank: boolean } {
 	const { state } = view;
 	const { from, to } = state.selection.main;
 	const first = state.doc.lineAt(from).number;
 	const last = state.doc.lineAt(to).number;
+	return { first, last, loneBlank: first === last && state.doc.line(first).text.trim() === '' };
+}
+
+function mapSelectedLines(view: EditorView, transform: (text: string) => string): void {
+	if (view.state.readOnly) return; // guards toggleHeading/setHeading/toggleBulletList/toggleQuote
+	const { state } = view;
+	const { first, last } = selectedLines(view);
 	const changes: { from: number; to: number; insert: string }[] = [];
 	for (let i = first; i <= last; i++) {
 		const line = state.doc.line(i);
 		const change = minimalLineChange(line, transform(line.text));
 		if (change) changes.push(change);
 	}
-	if (changes.length) view.dispatch({ changes });
-	view.focus();
+	dispatchLineChanges(view, changes);
 }
 
 function everySelectedLine(view: EditorView, predicate: (text: string) => boolean): boolean {
@@ -167,25 +219,47 @@ export function toggleBulletList(view: EditorView): void {
 	// "+ item" line would report active yet the toggle couldn't strip it (it'd add
 	// another "- " instead), so state and toggle would disagree.
 	const re = /^(\s*)[-*+]\s+/;
-	const allBulleted = everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
+	const { loneBlank } = selectedLines(view);
+	const allBulleted = !loneBlank && everySelectedLine(view, (t) => re.test(t) || t.trim() === '');
 	mapSelectedLines(view, (t) => {
-		if (t.trim() === '') return t;
+		if (t.trim() === '' && !loneBlank) return t;
 		if (allBulleted) return t.replace(re, '$1');
 		return re.test(t) ? t : t.replace(/^(\s*)/, '$1- ');
 	});
 }
 
-const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])\s+/;
+const TASK_RE = /^(\s*)[-*+]\s+\[[ xX]\]\s+/;
+
+/** Turn the selected lines into GFM task items (`- [ ] `), or back into plain
+ *  bullets when they all are tasks already. A bullet or numbered item keeps its
+ *  indent and becomes a task; toggling off leaves a bullet rather than bare text,
+ *  so the list survives and only the box goes. Checking a box is not this
+ *  command's job. */
+export function toggleTaskList(view: EditorView): void {
+	const { loneBlank } = selectedLines(view);
+	const allTasks = !loneBlank && everySelectedLine(view, (t) => TASK_RE.test(t) || t.trim() === '');
+	mapSelectedLines(view, (t) => {
+		if (t.trim() === '' && !loneBlank) return t;
+		if (allTasks) return t.replace(TASK_RE, '$1- ');
+		if (TASK_RE.test(t)) return t;
+		return t.replace(LIST_STRIP_RE, '$1').replace(/^(\s*)/, '$1- [ ] ');
+	});
+}
+
+const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])(?:\s+|$)/;
+// The checkbox of a task item, once its bullet has been stripped. It belongs to
+// the marker, so switching a task list to another type takes it along.
+const TASK_BOX_RE = /^(\s*)\[[ xX]\]\s+/;
+
+export type ListType = 'none' | 'bullet' | 'ordered' | 'task';
 
 /** Set the selected lines to a list of `type`, replacing any existing list
  *  marker; `'none'` strips it. Ordered items are numbered within the selection.
  *  Unlike the toggles, this cleanly switches between list types (for a picker). */
-export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): void {
+export function setList(view: EditorView, type: ListType): void {
 	if (view.state.readOnly) return;
 	const { state } = view;
-	const { from, to } = state.selection.main;
-	const first = state.doc.lineAt(from).number;
-	const last = state.doc.lineAt(to).number;
+	const { first, last, loneBlank } = selectedLines(view);
 	const changes: { from: number; to: number; insert: string }[] = [];
 	let number = 0;
 	for (let i = first; i <= last; i++) {
@@ -193,19 +267,24 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		// 'none' clears the leading indent too — bare text can't carry list
 		// indentation (4+ spaces would even parse as a code block); the list types
 		// keep it ($1) so nesting survives a switch between bullet and ordered.
-		const stripped = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
+		const withoutMarker = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
+		// A blank line between items separates them and takes no marker. A line
+		// that carried a marker stays an item across the switch, even with no text
+		// behind it yet, and a lone blank line is the whole target.
+		const wasItem = withoutMarker !== line.text;
+		// Only on a line that was an item: elsewhere a leading "[x] " is text.
+		const stripped = wasItem ? withoutMarker.replace(TASK_BOX_RE, type === 'none' ? '' : '$1') : withoutMarker;
 		let next = stripped;
-		if (type !== 'none' && stripped.trim() !== '') {
+		if (type !== 'none' && (stripped.trim() !== '' || wasItem || loneBlank)) {
 			number += 1;
-			const marker = type === 'bullet' ? '- ' : `${number}. `;
+			const marker = type === 'bullet' ? '- ' : type === 'task' ? '- [ ] ' : `${number}. `;
 			next = stripped.replace(/^(\s*)/, `$1${marker}`);
 		}
 		// Only rewrite the marker, not the whole line — keeps annotations alive.
 		const change = minimalLineChange(line, next);
 		if (change) changes.push(change);
 	}
-	if (changes.length) view.dispatch({ changes });
-	view.focus();
+	dispatchLineChanges(view, changes);
 }
 
 /** Nest the selected list item(s) under the nearest preceding item at the same
@@ -400,9 +479,11 @@ export function toggleCodeBlock(view: EditorView): void {
 export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 	const { state } = view;
 	const pos = state.selection.main.head;
+	const held = state.field(heldEmphasisField, false);
 	// Inline marks light up only when the caret is *within* them on both sides,
 	// so an edge caret (where typed text lands outside the format) stays inactive.
-	const has = (name: string) => enclosingInline(view, pos, name) !== null;
+	// A run held while a typed space has broken it counts as within too.
+	const has = (name: string) => enclosingInline(view, pos, name) !== null || held?.name === name;
 	const lineText = state.doc.lineAt(pos).text;
 	const lineStart = state.doc.lineAt(pos).from;
 	const headingMatch = lineText.match(/^(#{1,6})\s/);
@@ -421,6 +502,7 @@ export function readActiveFormats(view: EditorView): TextEditorActiveFormats {
 		// can spill into the next line and flip-flop the toolbar state.)
 		bulletList: !codeBlock && /^\s*[-*+]\s/.test(lineText),
 		orderedList: !codeBlock && /^\s*\d+[.)]\s/.test(lineText),
+		taskList: !codeBlock && TASK_RE.test(lineText),
 		// Quote from the Blockquote node at the line's *start* — that catches lazy
 		// continuation lines (part of the quote but with no '>') too, while resolving
 		// at line.from (not the caret) keeps it stable at the line end.

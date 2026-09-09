@@ -16,6 +16,16 @@ describe('nldd-link', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
+	it('defaults size to inherit, and leaves the attribute off', async () => {
+		el = await fixture('<nldd-link href="#" text="Go home"></nldd-link>');
+		await waitForUpdate(el);
+		expect((el as NLDDLink).size).toBe('inherit');
+		expect(el.hasAttribute('size')).toBe(false);
+		// The bare host and an explicit size="inherit" share every rule, so both
+		// stay inline and wrap in running text.
+		expect(getComputedStyle(el).display).toBe('inline');
+	});
+
 	it('renders text from text attribute', async () => {
 		el = await fixture('<nldd-link href="#" text="Go home"></nldd-link>');
 		await waitForUpdate(el);

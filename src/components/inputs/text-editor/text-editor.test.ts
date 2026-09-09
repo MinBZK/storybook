@@ -211,13 +211,34 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
-	it('emits nldd-text-editor-state on selection change', async () => {
-		const el2 = await withValue('# Kop');
+	it('emits nldd-text-editor-state when the selection lands on other formatting', async () => {
+		// The caret starts in the paragraph, so moving into the heading changes the
+		// state a toolbar shows.
+		const el2 = await withValue('gewoon\n\n# Kop');
 		let detail: { active: { heading: number } } | undefined;
 		el2.addEventListener('nldd-text-editor-state', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		(el2 as unknown as { view: { dispatch(spec: unknown): void } }).view.dispatch({ selection: { anchor: 3 } });
+		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
+		view.dispatch({ selection: { anchor: 11 } });
 		await waitForUpdate(el2);
 		expect(detail?.active.heading).toBe(1);
+		view.dispatch({ selection: { anchor: 2 } });
+		await waitForUpdate(el2);
+		expect(detail?.active.heading).toBe(0);
+		cleanup(el2);
+	});
+
+	it('stays quiet while the state is the same', async () => {
+		const el2 = await withValue('een gewone zin');
+		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
+		view.dispatch({ selection: { anchor: 2 } });
+		await waitForUpdate(el2);
+		let events = 0;
+		el2.addEventListener('nldd-text-editor-state', () => { events++; });
+		// Moving within one paragraph leaves every toolbar toggle where it was.
+		view.dispatch({ selection: { anchor: 5 } });
+		view.dispatch({ selection: { anchor: 9 } });
+		await waitForUpdate(el2);
+		expect(events).toBe(0);
 		cleanup(el2);
 	});
 
@@ -644,7 +665,7 @@ describe('nldd-text-editor', () => {
 	});
 
 	it('mentionToken bouwt een markdown-link met user-id', () => {
-		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
+		expect(mentionToken({ id: '42', text: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
 
 	it('verwijdert een mention in twee stappen (backspace selecteert, dan verwijdert)', async () => {
@@ -898,7 +919,7 @@ describe('isSafeHref (open-link badge XSS guard)', () => {
 
 describe('mention token escaping', () => {
 	it('round-trips a plain candidate unchanged', () => {
-		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
+		expect(mentionToken({ id: '42', text: 'Anouk' })).toBe('[@Anouk](user:42)');
 		expect(unescapeMentionLabel('Anouk')).toBe('Anouk');
 		expect(decodeMentionId('42')).toBe('42');
 	});
@@ -906,7 +927,7 @@ describe('mention token escaping', () => {
 	it('neutralises a crafted label and id, and decodes them back losslessly', () => {
 		const label = 'X]  hack](y';
 		const id = 'a) b(c';
-		const token = mentionToken({ id, label });
+		const token = mentionToken({ id, text: label });
 		// One mention boundary and one trailing ) — the payload cannot inject a second link.
 		expect(token.startsWith('[@')).toBe(true);
 		expect(token.endsWith(')')).toBe(true);

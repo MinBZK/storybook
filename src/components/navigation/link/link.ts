@@ -20,7 +20,7 @@
  * @attr {string} href - Link target
  * @attr {string} target - Link target (e.g. '_blank'); adjusts rel automatically. With '_blank' the link adds a visually hidden "Opent in nieuw tabblad" announcement for screen readers (WCAG 2.1 SC 3.2.2).
  * @attr {string} rel - Link rel attribute; defaults to 'noopener noreferrer' with target='_blank'
- * @attr {string} size - Text size: 'xs' | 'sm' | 'md' | 'lg' | 'inherit'. Empty = inherit.
+ * @attr {string} size - Text size: 'inherit' (the default) follows the surrounding text and lays the link out inline, so it wraps in running prose. 'xs' | 'sm' | 'md' | 'lg' pin a size and switch to inline-flex, which baseline-aligns a start or end icon with an explicit gap.
  * @attr {string} text - Link text (alternative to the default slot)
  * @attr {string} start-icon - Icon before the text
  * @attr {string} end-icon - Icon after the text
@@ -58,8 +58,8 @@ export class NLDDLink extends withTranslations(LitElement, nlddLinkTranslations)
 	@property({ type: String })
 	rel: string | undefined = undefined;
 
-	@property({ type: String, reflect: true })
-	size?: Size;
+	@property({ reflect: true, converter: reflectNonDefault<Size>('inherit') })
+	size: Size = 'inherit';
 
 	@property({ reflect: true, converter: reflectNonDefault<string>('') })
 	text = '';

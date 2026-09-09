@@ -40,27 +40,22 @@ export default {
 		width: {
 			control: 'text',
 			description: "Breedte: 'full' of een eigen CSS-lengte. Leeg is precies breed genoeg voor een tijd. 'fit-content' laat de ruimte voor het validatie-icoon weg en groeit weer zodra het veld valid of invalid wordt.",
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		value: {
 			control: 'text',
 			description: 'De tijd als HH:mm (24-uurs)',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholdertekst',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		min: {
 			control: 'text',
 			description: 'Vroegst toegestane tijd; tevens de basis waarvandaan step telt',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		max: {
 			control: 'text',
 			description: 'Laatst toegestane tijd',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 		step: {
 			control: 'number',
@@ -77,7 +72,7 @@ export default {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor de interne input',
-			table: { defaultValue: { summary: '(geen)' } },
+			table: { defaultValue: { summary: 'Tijd' } },
 		},
 		valid: {
 			control: 'boolean',
@@ -107,7 +102,6 @@ export default {
 		name: {
 			control: 'text',
 			description: 'Naam voor formulierverzending',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 	},
 };

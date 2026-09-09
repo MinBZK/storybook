@@ -60,30 +60,27 @@ export default {
 		columns: {
 			control: 'text',
 			description: 'CSS grid track list die de kolommen één keer definieert.',
-			table: { defaultValue: { summary: '' } },
 		},
 		smColumns: {
 			name: 'sm-columns',
 			control: 'text',
 			description: 'Track list als de tabel sm-breed is (≤640px); valt terug op columns.',
-			table: { defaultValue: { summary: '' } },
 		},
 		mdColumns: {
 			name: 'md-columns',
 			control: 'text',
 			description: 'Track list als de tabel md-breed is (641–1007px); valt terug op columns.',
-			table: { defaultValue: { summary: '' } },
 		},
 		lgColumns: {
 			name: 'lg-columns',
 			control: 'text',
 			description: 'Track list als de tabel lg-breed is (≥1008px); valt terug op columns.',
-			table: { defaultValue: { summary: '' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijke naam voor de tabel.',
+			table: { defaultValue: { summary: 'Tabel' } },
 		},
 	},
 };

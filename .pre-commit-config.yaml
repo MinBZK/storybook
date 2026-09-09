@@ -22,16 +22,16 @@ repos:
 
   # ESLint for JavaScript
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.17.0
+    rev: v10.9.1
     hooks:
       - id: eslint
         files: \.(js|mjs)$
         exclude: ^(dist/|node_modules/|storybook-static/|\.storybook/)
         args: ['--fix']
         additional_dependencies:
-          - eslint@9.17.0
-          - '@eslint/js@9.17.0'
-          - globals@15.14.0
+          - eslint@10.9.1
+          - '@eslint/js@10.0.1'
+          - globals@17.11.0
 
   # Commitlint for conventional commits
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook

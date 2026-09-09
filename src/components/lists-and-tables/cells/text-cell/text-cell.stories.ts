@@ -15,9 +15,9 @@ export default {
 		},
 		color: {
 			control: 'select',
-			options: ['default', 'secondary', 'accent', 'success', 'warning', 'critical'],
+			options: ['content', 'secondary', 'accent', 'success', 'warning', 'critical'],
 			description: 'Kleurvariant. `accent`, `success`, `warning` en `critical` gelden voor alle drie tekstvelden zodat de cel als één samenhangende status leest.',
-			table: { defaultValue: { summary: 'default' } },
+			table: { defaultValue: { summary: 'content' } },
 		},
 		width: {
 			control: 'text',
@@ -70,13 +70,11 @@ export default {
 			name: 'hide-below',
 			control: 'text',
 			description: 'Verberg wanneer cells-container smaller is dan deze CSS-lengte (bv. "320px", "20rem")',
-			table: { defaultValue: { summary: '' } },
 		},
 		hideAbove: {
 			name: 'hide-above',
 			control: 'text',
 			description: 'Verberg wanneer cells-container breder is dan deze CSS-lengte (bv. "1200px")',
-			table: { defaultValue: { summary: '' } },
 		},
 	},
 };
@@ -84,7 +82,7 @@ export default {
 export const Default = {
 	args: {
 		size: 'md',
-		color: 'default',
+		color: 'content',
 		width: '',
 		minWidth: '',
 		maxWidth: '',

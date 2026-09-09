@@ -51,37 +51,28 @@ export default {
 		height: {
 			control: 'text',
 			description: 'CSS height (standaard: content height)',
-			table: { defaultValue: { summary: '' } },
 		},
 		top: {
 			control: 'text',
 			description: 'CSS top positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		right: {
 			control: 'text',
 			description: 'CSS right positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		bottom: {
 			control: 'text',
 			description: 'CSS bottom positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		left: {
 			control: 'text',
 			description: 'CSS left positie',
-			table: { defaultValue: { summary: '' } },
 		},
 		accessibleLabel: {
 			name: 'accessible-label',
 			control: 'text',
 			description: 'Toegankelijk label voor screen readers (aria-label van het venster)',
-		},
-		modeless: {
-			control: 'boolean',
-			description: 'Niet-modaal (geen backdrop of focusvergrendeling)',
-			table: { defaultValue: { summary: false } },
+			table: { defaultValue: { summary: 'Venster' } },
 		},
 		noLightDismiss: {
 			name: 'no-light-dismiss',
@@ -99,7 +90,6 @@ export default {
 		bottom: '',
 		left: '',
 		accessibleLabel: 'Voorbeeldvenster',
-		modeless: false,
 		noLightDismiss: false,
 	},
 };
@@ -127,7 +117,6 @@ const Template = (args: Record<string, unknown>) => html`
 		bottom=${args.bottom || nothing}
 		left=${args.left || nothing}
 		accessible-label=${args.accessibleLabel || nothing}
-		?modeless=${args.modeless}
 		?no-light-dismiss=${args.noLightDismiss}
 	>
 		<nldd-page sticky-header>
@@ -145,32 +134,6 @@ export const Standaard = {
 	render: Template,
 };
 
-export const NietModaal = {
-	render: () => html`
-		<nldd-button text="Open niet-modaal venster" @click=${openNext}></nldd-button>
-		<nldd-window
-			modeless
-			accessible-label="Niet-modaal venster"
-		>
-			<nldd-page sticky-header>
-				<nldd-top-title-bar
-					slot="header"
-					text="Niet-modaal venster"
-					dismiss-text="Sluit"
-				></nldd-top-title-bar>
-				${pageContent}
-			</nldd-page>
-		</nldd-window>
-	`,
-	parameters: {
-		controls: { disable: true },
-		docs: {
-			description: {
-				story: 'Niet-modaal venster zonder backdrop en focusvergrendeling.',
-			},
-		},
-	},
-};
 
 export const Gepositioneerd = {
 	render: () => html`

@@ -28,7 +28,6 @@ export default {
 		width: {
 			control: 'text',
 			description: 'Optionele vaste breedte (any CSS length, bv. "240px"). Leeg = stretch.',
-			table: { defaultValue: { summary: '' } },
 		},
 		showSearchButton: {
 			name: 'show-search-button',
@@ -43,7 +42,6 @@ export default {
 		value: {
 			control: 'text',
 			description: 'Huidige zoekwaarde',
-			table: { defaultValue: { summary: '' } },
 		},
 		placeholder: {
 			control: 'text',
@@ -79,17 +77,16 @@ export default {
 		minlength: {
 			control: 'number',
 			description: 'Minimaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		maxlength: {
 			control: 'number',
 			description: 'Maximaal aantal tekens.',
-			table: { type: { summary: 'number' }, defaultValue: { summary: '(geen)' } },
+			table: { type: { summary: 'number' } },
 		},
 		pattern: {
 			control: 'text',
 			description: 'Reguliere expressie waar de waarde aan moet voldoen, als het native `pattern`.',
-			table: { defaultValue: { summary: '(geen)' } },
 		},
 
 	},

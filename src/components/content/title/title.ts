@@ -7,10 +7,10 @@
  * @element nldd-title
  *
  * @attr {number} size - Visual size of the title: 1–6 (default: 3)
- * @attr {string} color - 'inherit' lets the title follow the text color of the
- *   surface (for colored areas such as the filled categories); overline and
- *   subtitle get the same color at a lowered opacity. Empty = the default
- *   content colors.
+ * @attr {string} color - 'content' (the default) takes the system's own content
+ *   colors. 'inherit' lets the title follow the text color of the surface
+ *   instead (for colored areas such as the filled categories); overline and
+ *   subtitle get the same color at a lowered opacity.
  *
  * @slot overline - Optional overline above the title
  * @slot - Title text (use h1–h6 for semantics)
@@ -24,7 +24,7 @@ import { titleStyles } from './title.styles.js';
 import { titleTemplate } from './title.template.js';
 
 type Size = 1 | 2 | 3 | 4 | 5 | 6;
-type TitleColor = '' | 'inherit';
+type TitleColor = 'content' | 'inherit';
 
 @customElement('nldd-title')
 export class NLDDTitle extends LitElement {
@@ -33,8 +33,8 @@ export class NLDDTitle extends LitElement {
 	@property({ type: Number, reflect: true })
 	size: Size = 3;
 
-	@property({ reflect: true, converter: reflectNonDefault<TitleColor>('') })
-	color: TitleColor = '';
+	@property({ reflect: true, converter: reflectNonDefault<TitleColor>('content') })
+	color: TitleColor = 'content';
 
 	override render() {
 		return titleTemplate();

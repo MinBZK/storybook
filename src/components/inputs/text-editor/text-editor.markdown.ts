@@ -6,6 +6,8 @@ import { Prec, StateField, type EditorState, type Extension, type Range } from '
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
 import { inLinkContext } from './text-editor.links.js';
+import { heldEmphasis, heldEmphasisField } from './text-editor.emphasis.js';
+import { enclosingNamed, enclosingNode } from './text-editor.syntax.js';
 import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
@@ -202,6 +204,14 @@ function buildMarkDecorations(view: EditorView): DecorationSet {
 			},
 		});
 	}
+	// An emphasis the parser has let go of while the caret is still between its
+	// markers keeps its styling, markers dimmed, until the hold ends (#213).
+	const held = view.state.field(heldEmphasisField, false);
+	if (held && !held.live) {
+		const len = held.marker.length;
+		ranges.push(classDeco(NODE_CLASS[held.name]).range(held.from, held.to));
+		ranges.push(dimDeco.range(held.from, held.from + len), dimDeco.range(held.to - len, held.to));
+	}
 	return Decoration.set(ranges, true);
 }
 
@@ -242,25 +252,28 @@ function hangingLineDeco(length: number): Decoration {
 
 /** Whether `pos` sits inside a fenced or indented code block — where a leading
  *  `-`/`1.`/`>` is literal code, not a list or quote marker. */
+const CODE_BLOCK_NODES = new Set(['FencedCode', 'CodeBlock']);
+
 function inCodeBlock(state: EditorState, pos: number): boolean {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent) {
-		if (n.name === 'FencedCode' || n.name === 'CodeBlock') return true;
-	}
-	return false;
+	return enclosingNamed(state, pos, 1, CODE_BLOCK_NODES) !== null;
 }
 
 function buildHangingIndent(state: EditorState): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
-	for (let i = 1; i <= state.doc.lines; i++) {
-		const line = state.doc.line(i);
-		const match = line.text.match(HANGING_RE);
+	// One walk with a running offset. Asking the document for line N is a lookup
+	// through its tree, and doing that per line turned a scan into a search.
+	let from = 0;
+	for (const iter = state.doc.iterLines(); !iter.next().done; ) {
+		const text = iter.value;
+		const match = HANGING_RE.exec(text);
 		// Code-block lines are literal text: a leading marker isn't a list/quote, so it
 		// gets no hanging indent.
-		if (match && match[1].length && !inCodeBlock(state, line.from)) {
+		if (match && match[1].length && !inCodeBlock(state, from)) {
 			const length = match[1].length;
-			ranges.push(hangingLineDeco(length).range(line.from));
-			ranges.push(prefixMonoDeco.range(line.from, line.from + length));
+			ranges.push(hangingLineDeco(length).range(from));
+			ranges.push(prefixMonoDeco.range(from, from + length));
 		}
+		from += text.length + 1; // the line and its break
 	}
 	return Decoration.set(ranges, true);
 }
@@ -324,11 +337,34 @@ function buildMentionChips(state: EditorState): DecorationSet {
 	return Decoration.set(ranges, true);
 }
 
+/** Whether moving the selection from `before` to `after` changes which mention a
+ *  selection covers. Only then is the chip set worth rebuilding: walking the
+ *  whole syntax tree on every arrow key, to find that nothing looks different,
+ *  is the expensive way to do nothing. */
+function coverageChanged(chips: DecorationSet, before: { from: number; to: number }, after: { from: number; to: number }): boolean {
+	let changed = false;
+	chips.between(0, 1e9, (from, to) => {
+		const covers = (sel: { from: number; to: number }): boolean => sel.from !== sel.to && sel.from <= from && sel.to >= to;
+		if (covers(before) !== covers(after)) {
+			changed = true;
+			return false;
+		}
+		return undefined;
+	});
+	return changed;
+}
+
 const mentionChipField = StateField.define<DecorationSet>({
 	create: (state) => buildMentionChips(state),
 	// Rebuild on doc changes and on selection changes (the latter drives the
 	// selected/darker state of a covered mention).
-	update: (value, tr) => (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) ? buildMentionChips(tr.state) : value),
+	update: (value, tr) => {
+		if (tr.docChanged) return buildMentionChips(tr.state);
+		if (tr.startState.selection.eq(tr.state.selection)) return value;
+		return coverageChanged(value, tr.startState.selection.main, tr.state.selection.main)
+			? buildMentionChips(tr.state)
+			: value;
+	},
 	provide: (field) => EditorView.decorations.from(field),
 });
 
@@ -342,6 +378,7 @@ const mentionAtomicRanges = EditorView.atomicRanges.of(
 export const markdownEditing: Extension = [
 	markdown({ extensions: GFM }),
 	markDecorationPlugin,
+	heldEmphasis,
 	hangingIndentField,
 	// Prec.highest keeps the mention chip the innermost decoration, so it nests inside
 	// a heading/bold run and inherits its font (scaling with it) instead of sitting at
@@ -352,15 +389,14 @@ export const markdownEditing: Extension = [
 
 // The mention Link node at `pos` (resolving toward `side`), or null.
 function mentionLinkAt(state: EditorState, pos: number, side: -1 | 1): SyntaxNode | null {
-	for (let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, side); node; node = node.parent) {
-		if (node.name !== 'Link') continue;
+	return enclosingNode(state, pos, side, (node) => {
+		if (node.name !== 'Link') return false;
 		let url: SyntaxNode | null = null;
 		for (let child = node.firstChild; child; child = child.nextSibling) {
 			if (child.name === 'URL') { url = child; break; }
 		}
-		if (url && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) return node;
-	}
-	return null;
+		return url !== null && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX);
+	});
 }
 
 /** The mention whose collapsed token contains `pos` (used to select it on click). */
