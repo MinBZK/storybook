@@ -238,7 +238,14 @@ function resolveGroup(group: Group, doc: string, sents: number[]) {
 	return { docFrom, textTo, startSent, endSent };
 }
 
+const NOTHING: Built = { deco: Decoration.none, atomic: Decoration.none };
+
 function buildAll(state: EditorState, label: AnnotationCountLabel): Built {
+	// Without annotations there is nothing to draw, and the document is not worth
+	// walking: reading it out, stripping it and scanning it for sentinels are three
+	// passes over the whole text, and they would run on every keystroke and every
+	// cursor move of an editor that never turned the overlay on.
+	if (!state.field(annotationField).length) return NOTHING;
 	const doc = state.doc.toString();
 	const sel = state.selection.main;
 	const sents = sentinelPositions(doc);
@@ -302,6 +309,9 @@ function makeAnnotationRender(label: AnnotationCountLabel): StateField<Built> {
 	return StateField.define<Built>({
 		create: (state) => buildAll(state, label),
 		update: (value, tr) => {
+			// Nothing drawn and nothing to draw: skip the rebuild entirely, so an
+			// editor without annotations pays nothing per keystroke.
+			if (value === NOTHING && !tr.state.field(annotationField).length) return value;
 			if (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) || tr.effects.some((e) => e.is(setAnnotations))) {
 				return buildAll(tr.state, label);
 			}
@@ -317,6 +327,13 @@ function makeAnnotationRender(label: AnnotationCountLabel): StateField<Built> {
 const annotationSentinelFilter = EditorState.transactionFilter.of((tr) => {
 	const set = tr.effects.find((e) => e.is(setAnnotations));
 	if (!tr.docChanged && !set) return tr;
+	// No annotations before this transaction and none arriving (as a fresh set, or
+	// riding along with a paste): there are no sentinels to maintain, so the
+	// document is left alone. Without this an editor that never turned the overlay
+	// on still read the whole text out four times per keystroke and appended a
+	// transaction to store an empty anchor list.
+	const arriving = set || tr.effects.some((e) => e.is(pasteAnnotations) || e.is(annotationMove));
+	if (!arriving && !(tr.startState.field(annotationField, false) ?? []).length) return tr;
 	const postUserDoc = tr.newDoc.toString(); // after the user's changes, before sentinels
 	const cleanLen = stripSentinels(postUserDoc).length;
 	let anns: CleanAnn[];

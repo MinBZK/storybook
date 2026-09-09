@@ -1,4 +1,4 @@
-import { EditorState } from '@codemirror/state';
+import { EditorState, type Transaction } from '@codemirror/state';
 
 /* Keeps an ordered list's numbers running in sequence. Markdown renders `1. 3. 5.`
  * as 1, 2, 3 regardless, but the *source* reads better when the digits actually
@@ -108,8 +108,27 @@ export function renumberOrderedLists(doc: string): RenumberChange[] {
 
 /** Renumbers ordered lists in the same transaction as the edit that disturbed them,
  *  so it's one atomic (single-undo) step and the caret/selection maps through it. */
+/** Whether this change can have disturbed any numbering. It can when it adds or
+ *  removes a line break, or when a line it touches is (or was) an ordered item.
+ *  Typing inside a paragraph cannot, and that is the common case: without this
+ *  test every keystroke read the whole document out and walked every line. */
+function mayRenumber(tr: Transaction): boolean {
+	let may = false;
+	tr.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
+		if (may) return;
+		const before = tr.startState.doc;
+		if (inserted.lines > 1 || before.lineAt(fromA).number !== before.lineAt(toA).number) {
+			may = true; // a line break came or went, so items may have moved between lists
+			return;
+		}
+		const ordered = (text: string): boolean => ORDERED_RE.test(text.slice(BQ_PREFIX_RE.exec(text)![0].length));
+		if (ordered(before.lineAt(fromA).text) || ordered(tr.newDoc.lineAt(fromB).text) || ordered(tr.newDoc.lineAt(toB).text)) may = true;
+	});
+	return may;
+}
+
 export const orderedListRenumber = EditorState.transactionFilter.of((tr) => {
-	if (!tr.docChanged) return tr;
+	if (!tr.docChanged || !mayRenumber(tr as Transaction)) return tr;
 	const changes = renumberOrderedLists(tr.newDoc.toString());
 	if (changes.length === 0) return tr;
 	return [tr, { changes, sequential: true }];

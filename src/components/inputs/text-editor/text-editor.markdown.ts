@@ -260,16 +260,20 @@ function inCodeBlock(state: EditorState, pos: number): boolean {
 
 function buildHangingIndent(state: EditorState): DecorationSet {
 	const ranges: Range<Decoration>[] = [];
-	for (let i = 1; i <= state.doc.lines; i++) {
-		const line = state.doc.line(i);
-		const match = line.text.match(HANGING_RE);
+	// One walk with a running offset. Asking the document for line N is a lookup
+	// through its tree, and doing that per line turned a scan into a search.
+	let from = 0;
+	for (const iter = state.doc.iterLines(); !iter.next().done; ) {
+		const text = iter.value;
+		const match = HANGING_RE.exec(text);
 		// Code-block lines are literal text: a leading marker isn't a list/quote, so it
 		// gets no hanging indent.
-		if (match && match[1].length && !inCodeBlock(state, line.from)) {
+		if (match && match[1].length && !inCodeBlock(state, from)) {
 			const length = match[1].length;
-			ranges.push(hangingLineDeco(length).range(line.from));
-			ranges.push(prefixMonoDeco.range(line.from, line.from + length));
+			ranges.push(hangingLineDeco(length).range(from));
+			ranges.push(prefixMonoDeco.range(from, from + length));
 		}
+		from += text.length + 1; // the line and its break
 	}
 	return Decoration.set(ranges, true);
 }
@@ -333,11 +337,34 @@ function buildMentionChips(state: EditorState): DecorationSet {
 	return Decoration.set(ranges, true);
 }
 
+/** Whether moving the selection from `before` to `after` changes which mention a
+ *  selection covers. Only then is the chip set worth rebuilding: walking the
+ *  whole syntax tree on every arrow key, to find that nothing looks different,
+ *  is the expensive way to do nothing. */
+function coverageChanged(chips: DecorationSet, before: { from: number; to: number }, after: { from: number; to: number }): boolean {
+	let changed = false;
+	chips.between(0, 1e9, (from, to) => {
+		const covers = (sel: { from: number; to: number }): boolean => sel.from !== sel.to && sel.from <= from && sel.to >= to;
+		if (covers(before) !== covers(after)) {
+			changed = true;
+			return false;
+		}
+		return undefined;
+	});
+	return changed;
+}
+
 const mentionChipField = StateField.define<DecorationSet>({
 	create: (state) => buildMentionChips(state),
 	// Rebuild on doc changes and on selection changes (the latter drives the
 	// selected/darker state of a covered mention).
-	update: (value, tr) => (tr.docChanged || !tr.startState.selection.eq(tr.state.selection) ? buildMentionChips(tr.state) : value),
+	update: (value, tr) => {
+		if (tr.docChanged) return buildMentionChips(tr.state);
+		if (tr.startState.selection.eq(tr.state.selection)) return value;
+		return coverageChanged(value, tr.startState.selection.main, tr.state.selection.main)
+			? buildMentionChips(tr.state)
+			: value;
+	},
 	provide: (field) => EditorView.decorations.from(field),
 });
 

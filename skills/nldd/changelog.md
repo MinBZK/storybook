@@ -38,6 +38,10 @@ here; consult the commit history if you need that level of detail.
 
 ### Changed
 
+- **`nldd-text-editor` does a lot less work per keystroke.** Every typed character used to read the whole document out and walk it about ten times: the annotation overlay maintained its sentinels (four passes, even in an editor that never turned annotations on and had none), the ordered lists were renumbered from top to bottom, and the mention chips were rebuilt from the whole syntax tree, that last one on every arrow key too. Now the annotation work is skipped while there is nothing to anchor, the renumbering runs only when an edit can have disturbed a number (a line break came or went, or a numbered line was touched), and the mention chips are rebuilt when the selection actually covers a different mention. The sentinel bookkeeping no longer rebuilds a copy of the document to compare against, and the hanging indent walks the lines once instead of looking up each one. Nothing changes in what you see; a long document just keeps up with your typing.
+
+- **`nldd-text-editor-state` only fires when the state changed.** It fired on every cursor move, so a toolbar re-rendered its toggles on every arrow key while none of them changed. It now carries the same `TextEditorState` as before, only when one of its values differs from the last one handed out.
+
 - **The typeahead list of `nldd-text-editor` is at least as wide as an `nldd-menu`, 280px.** It sized itself to its longest row, so a short list of names was a narrow strip that changed width as you typed.
 
 - **`from` and `to` in `nldd-text-editor-mention` are clean offsets.** Like `getSelection()` and the annotations: the document carries sentinels for annotations that the value never shows, and the event counted them. Without annotations nothing changes.

@@ -108,6 +108,7 @@ import {
 	EMPTY_FORMATS,
 	type HeadingLevel,
 	type TextEditorState,
+	type TextEditorActiveFormats,
 } from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
@@ -399,7 +400,9 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	override firstUpdated(): void {
 		this._initialValue = this.value;
 		this.style.setProperty('--_rows', String(this.rows));
-		this.mountEditor(this.value);
+		// The sentinels are the overlay's own; a value that carries one (an editor
+		// whose text was round-tripped through another) hands it back stripped.
+		this.mountEditor(stripSentinels(this.value));
 		this.onEditorMounted();
 	}
 
@@ -434,7 +437,7 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 				// Only push an external value change into the document; a value that just
 				// mirrors the current (sentinel-stripped) doc must not trigger a rewrite,
 				// which would strip the sentinels the filter then re-adds (caret churn).
-				if (stripSentinels(this.doc) !== this.value) this.setDoc(this.value);
+				if (stripSentinels(this.doc) !== this.value) this.setDoc(stripSentinels(this.value));
 				this.commitFormValue();
 			}
 			if (changed.has('disabled') || changed.has('readonly')) {
@@ -663,7 +666,9 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		const sameText = (a: string, b: string): boolean => a.replace(/\r\n/g, '\n') === b.replace(/\r\n/g, '\n');
 		const carry = !!(buffer && sameText(buffer.text, text) && buffer.anns.length > 0);
 		const at = docToClean(this.view.state.doc.toString(), this.view.state.selection.main.from);
-		const spec = this.view.state.replaceSelection(text);
+		// input.paste, like CodeMirror's own paste: history groups it as one step and
+		// a transaction filter can tell a paste from typing.
+		const spec = { ...this.view.state.replaceSelection(text), userEvent: 'input.paste' };
 		this.view.dispatch(carry ? { ...spec, effects: pasteAnnotations.of({ at, anns: buffer!.anns }) } : spec);
 		// One-shot: a second paste of the same cut would duplicate the ids, so drop it.
 		if (carry) this._cutBuffer = null;
@@ -750,9 +755,27 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		}));
 	}
 
+	/** The last state handed out, to keep from repeating it. The event drives a
+	 *  toolbar's toggles, and moving the caret within one paragraph leaves every
+	 *  one of them where it was: a consumer would re-render its whole bar on every
+	 *  arrow key for nothing. */
+	private _lastState: TextEditorState | null = null;
+
 	private _emitState(): void {
+		const state = this.getState();
+		const last = this._lastState;
+		if (
+			last
+			&& last.empty === state.empty
+			&& last.canIndent === state.canIndent
+			&& last.canOutdent === state.canOutdent
+			&& last.canUndo === state.canUndo
+			&& last.canRedo === state.canRedo
+			&& (Object.keys(state.active) as (keyof TextEditorActiveFormats)[]).every((key) => last.active[key] === state.active[key])
+		) return;
+		this._lastState = state;
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-state', {
-			detail: this.getState(),
+			detail: state,
 			bubbles: true,
 			composed: true,
 		}));

@@ -211,13 +211,34 @@ describe('nldd-text-editor', () => {
 		cleanup(el2);
 	});
 
-	it('emits nldd-text-editor-state on selection change', async () => {
-		const el2 = await withValue('# Kop');
+	it('emits nldd-text-editor-state when the selection lands on other formatting', async () => {
+		// The caret starts in the paragraph, so moving into the heading changes the
+		// state a toolbar shows.
+		const el2 = await withValue('gewoon\n\n# Kop');
 		let detail: { active: { heading: number } } | undefined;
 		el2.addEventListener('nldd-text-editor-state', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		(el2 as unknown as { view: { dispatch(spec: unknown): void } }).view.dispatch({ selection: { anchor: 3 } });
+		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
+		view.dispatch({ selection: { anchor: 11 } });
 		await waitForUpdate(el2);
 		expect(detail?.active.heading).toBe(1);
+		view.dispatch({ selection: { anchor: 2 } });
+		await waitForUpdate(el2);
+		expect(detail?.active.heading).toBe(0);
+		cleanup(el2);
+	});
+
+	it('stays quiet while the state is the same', async () => {
+		const el2 = await withValue('een gewone zin');
+		const view = (el2 as unknown as { view: { dispatch(spec: unknown): void } }).view;
+		view.dispatch({ selection: { anchor: 2 } });
+		await waitForUpdate(el2);
+		let events = 0;
+		el2.addEventListener('nldd-text-editor-state', () => { events++; });
+		// Moving within one paragraph leaves every toolbar toggle where it was.
+		view.dispatch({ selection: { anchor: 5 } });
+		view.dispatch({ selection: { anchor: 9 } });
+		await waitForUpdate(el2);
+		expect(events).toBe(0);
 		cleanup(el2);
 	});
 

@@ -84,18 +84,11 @@ export function desiredSentinels(groups: CleanGroup[], cleanText: string, canPla
 	return out;
 }
 
-/** Build the desired doc text: `cleanText` with a sentinel inserted at each desired
- *  position (multiplicity honoured for touching groups). */
-export function buildDesiredDoc(cleanText: string, desired: DesiredSentinel[]): string {
+/** How many sentinels each clean position wants (touching groups want two). */
+function desiredCounts(desired: DesiredSentinel[]): Map<number, number> {
 	const counts = new Map<number, number>();
 	for (const d of desired) counts.set(d.pos, (counts.get(d.pos) ?? 0) + 1);
-	let out = '';
-	for (let i = 0; i <= cleanText.length; i++) {
-		const n = counts.get(i) ?? 0;
-		if (n) out += ANNOTATION_SENTINEL.repeat(n);
-		if (i < cleanText.length) out += cleanText[i];
-	}
-	return out;
+	return counts;
 }
 
 /** A CodeMirror change spec (subset). */
@@ -107,33 +100,28 @@ export interface SentinelChange {
 
 /** Minimal changes (in current-doc coords) to turn `doc` into a document that holds
  *  exactly the sentinels the groups want — touching only sentinel characters, never
- *  the real text. `doc` and the target share the same clean text, so a two-pointer
- *  walk yields sentinel-only inserts/deletes. */
+ *  the real text. One walk over `doc`, comparing the sentinel run at each clean
+ *  position with the number wanted there. Building the target document first would
+ *  cost a second copy of the text on every edit. */
 export function reconcileSentinels(doc: string, groups: CleanGroup[], canPlace: CanPlace = canPlaceSentinel): SentinelChange[] {
-	const cleanText = stripSentinels(doc);
-	const desired = buildDesiredDoc(cleanText, desiredSentinels(groups, cleanText, canPlace));
+	// The clean text is only needed to judge placement, so with nothing to place
+	// (every sentinel in the document is a stray) it is not worth building.
+	const cleanText = groups.length ? stripSentinels(doc) : '';
+	const want = desiredCounts(desiredSentinels(groups, cleanText, canPlace));
 	const changes: SentinelChange[] = [];
-	let i = 0; // over doc
-	let j = 0; // over desired
-	while (i < doc.length || j < desired.length) {
-		const dc = i < doc.length ? doc[i] : '';
-		const ec = j < desired.length ? desired[j] : '';
-		if (dc === ec) {
-			i++;
-			j++;
-		} else if (dc === ANNOTATION_SENTINEL) {
-			changes.push({ from: i, to: i + 1 }); // stray sentinel -> delete
-			i++;
-		} else if (ec === ANNOTATION_SENTINEL) {
-			changes.push({ from: i, to: i, insert: ANNOTATION_SENTINEL }); // missing -> insert
-			j++;
-		} else {
-			// Non-sentinel mismatch should be impossible (clean text is identical).
-			i++;
-			j++;
-		}
+	let pos = 0; // over doc
+	let clean = 0; // over the clean text
+	for (;;) {
+		let have = 0;
+		while (pos + have < doc.length && doc[pos + have] === ANNOTATION_SENTINEL) have++;
+		const need = want.get(clean) ?? 0;
+		if (have > need) changes.push({ from: pos + need, to: pos + have });
+		else if (need > have) changes.push({ from: pos + have, to: pos + have, insert: ANNOTATION_SENTINEL.repeat(need - have) });
+		pos += have;
+		if (pos >= doc.length) return changes;
+		pos++; // the text character this position holds
+		clean++;
 	}
-	return changes;
 }
 
 const LINE_START_MARKER = /^(\s*)(#{1,6}\s|[-*+]\s|\d+[.)]\s|>|`{3,}|~{3,})/;
@@ -145,8 +133,9 @@ export function canPlaceSentinel(cleanText: string, pos: number, _kind: 'start' 
 	// Line start (or the whole leading marker) directly ahead -> a sentinel here
 	// pushes the marker off column 0 (or between marker and text) and kills the block.
 	const lineStart = cleanText.lastIndexOf('\n', pos - 1) + 1;
-	const rest = cleanText.slice(lineStart);
-	const marker = rest.match(LINE_START_MARKER);
+	const lineEnd = cleanText.indexOf('\n', pos) === -1 ? cleanText.length : cleanText.indexOf('\n', pos);
+	const lineText = cleanText.slice(lineStart, lineEnd);
+	const marker = lineText.match(LINE_START_MARKER);
 	if (marker) {
 		const markerEnd = lineStart + marker[0].length;
 		// Block only positions *within* the marker (before it, or between the marker
@@ -157,9 +146,7 @@ export function canPlaceSentinel(cleanText: string, pos: number, _kind: 'start' 
 		if (pos < markerEnd) return false;
 	}
 	// Inside a strikethrough run on this line: count unescaped `~~` before pos.
-	const lineText = cleanText.slice(lineStart, cleanText.indexOf('\n', pos) === -1 ? undefined : cleanText.indexOf('\n', pos));
-	const rel = pos - lineStart;
-	const before = lineText.slice(0, rel);
+	const before = lineText.slice(0, pos - lineStart);
 	const strikes = (before.match(/~~/g) ?? []).length;
 	if (strikes % 2 === 1) return false; // odd number of ~~ before -> inside a run
 	return true;
