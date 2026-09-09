@@ -213,6 +213,28 @@ describe('nldd-text-editor caret side', () => {
 		expect(el.view.state.selection.main.head).toBe(to + 1);
 	});
 
+	it('steps over the badge on a wrapped line with a period after it, as in the sample text', async () => {
+		el = await fixture<El>('<nldd-text-editor accessible-label="t" style="width: 360px"></nldd-text-editor>');
+		el.value = 'Een **vetgedrukte** en *cursieve* zin met `inline code` en een [link](https://www.rijksoverheid.nl).';
+		await el.updateComplete;
+		await waitForUpdate(el);
+		const to = el.value.indexOf(')') + 1;
+		// The line wraps before the link, so the badge sits on the second visual line.
+		expect(el.view.coordsAtPos(to, 1)!.top).toBeGreaterThan(el.view.coordsAtPos(0, 1)!.top + 10);
+		el.view.dispatch({ selection: { anchor: to + 1 } });
+		key(el.view, 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(to);
+		expect(drawn(el.view)).toBe(1);
+		key(el.view, 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(to);
+		expect(drawn(el.view)).toBe(-1);
+		key(el.view, 'ArrowLeft');
+		await waitForUpdate(el);
+		expect(el.view.state.selection.main.head).toBe(to - 1);
+	});
+
 	it('measures the same place on both sides of an annotation end', async () => {
 		el = await make('abc def ghi', [{ id: 'a1', start: 4, end: 7, quote: 'def' }]);
 		const doc = el.view.state.doc.toString();

@@ -54,15 +54,13 @@ function edges(view: EditorView, head: number): Edges | null {
 	return before && after ? { before, after } : null;
 }
 
-function onOneLine(e: Edges): boolean {
-	return Math.abs(e.before.top - e.after.top) < 1;
-}
+/** A line wrap puts the two sides a whole line apart. A few pixels is not that:
+ *  a syntax marker is set in monospace, whose glyph box sits a little higher or
+ *  lower than the body text's, and Safari rounds each edge to a whole pixel. */
+const WRAP_PX = 8;
 
-/** Whether `head` has a place on either side of a widget: the two sides are on
- *  one line and clearly apart. A line wrap puts them on different lines. */
-export function sidesApart(view: EditorView, head: number): boolean {
-	const e = edges(view, head);
-	return e !== null && onOneLine(e) && Math.abs(e.before.left - e.after.left) > GLYPH_NOISE_PX;
+function onOneLine(e: Edges): boolean {
+	return Math.abs(e.before.top - e.after.top) < WRAP_PX;
 }
 
 /** The side the caret is drawn on at `head`: 1 unless the two sides are
@@ -100,13 +98,15 @@ const pointerTracker = EditorView.domEventHandlers({
 
 /** Puts the caret on `side` of the link badge it stands at, without moving it in
  *  the document. Nothing to do (so the key falls through to its usual command)
- *  when there is no badge with two sides here, or the caret is on that side
- *  already. Only a link badge qualifies: a mention token or an annotation
- *  badge keeps its own Backspace and arrow behavior. */
+ *  when there is no badge here, or the caret is on that side already. Only a
+ *  link badge qualifies: a mention token or an annotation badge keeps its own
+ *  Backspace and arrow behavior. The badge's two sides are not asked to share a
+ *  line: the marker before it may measure a rounded pixel off in Safari, and a
+ *  wrap can fall between the two. */
 function stepOver(side: -1 | 1): Command {
 	return (view) => {
 		const { main } = view.state.selection;
-		if (!main.empty || !linkEndsAt(view.state, main.head) || !sidesApart(view, main.head)) return false;
+		if (!main.empty || !linkEndsAt(view.state, main.head) || !edges(view, main.head)) return false;
 		if (drawnAssoc(view, main.head, main.assoc) === side) return false;
 		view.dispatch({ selection: EditorSelection.cursor(main.head, side), annotations: caretSide.of(side), userEvent: 'select' });
 		return true;
@@ -131,7 +131,7 @@ const ENDS_URL = /^[\s<?!.,:*_~)]/;
 const typePastBadge = EditorView.inputHandler.of((view, from, to, text) => {
 	if (from !== to || !text || view.composing || ENDS_URL.test(text)) return false;
 	const { main } = view.state.selection;
-	if (!main.empty || main.head !== from || !bareUrlEndsAt(view.state, from) || !sidesApart(view, from)) return false;
+	if (!main.empty || main.head !== from || !bareUrlEndsAt(view.state, from) || !edges(view, from)) return false;
 	if (drawnAssoc(view, from, main.assoc) !== 1) return false;
 	view.dispatch({
 		changes: { from, insert: ` ${text}` },
