@@ -32,10 +32,8 @@ export const iconStyles = css`
 	/* # Size */
 
 	:host([size="full"]) { --_size: 100%; }
-	/* An inline-flex box sits with its bottom edge on the baseline, which rides
-	   high against text that hangs below it. The nudge drops it back onto the
-	   line. Below body sizes it is worth less than half a pixel; it earns its
-	   keep in a heading. */
+	/* An inline-flex box sits with its bottom edge on the baseline; the nudge
+	   drops it back onto the line, with the text that hangs below it. */
 	:host([size="inherit"]) {
 		--_size: 1em;
 
@@ -119,9 +117,6 @@ export const iconStyles = css`
 
 		border-radius: calc(var(--_size) / 5);
 		background-color: currentColor;
-		/* Not height: the box is square, and at size="full" a height of 100%
-		   takes the parent's height, which stretches it in any parent that is
-		   not itself square. */
 		aspect-ratio: 1;
 		justify-content: center;
 	}

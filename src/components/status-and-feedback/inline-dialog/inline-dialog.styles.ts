@@ -84,9 +84,6 @@ export const inlineDialogStyles = css`
 		gap: var(--primitives-space-2);
 	}
 
-	/* stretch, not flex-start: the text blocks need the full width for
-	   text-align to have anything to align against. The icon keeps its own
-	   width, which stretch does not override. */
 	.inline-dialog__body--left .inline-dialog__main {
 		align-items: stretch;
 	}
