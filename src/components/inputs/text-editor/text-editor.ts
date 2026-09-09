@@ -45,7 +45,7 @@
  * @attr {string} accessible-label - Accessible label forwarded to the editor. Set automatically by nldd-form-field.
  *
  * @prop {MentionSource} mentionSource - Consumer-supplied @-mention candidate source (property only). Without it, @-typeahead is inert.
- * @prop {Typeahead[]} typeaheads - Your own typeahead lists next to the @-mention (property only): each a trigger character (`#`, `:`, `/`), a `source` that returns candidates for the text typed after it, and an optional `insert` that decides what a choice writes (by default the trigger, the label and a space). Lists on one trigger are merged in order. A candidate can carry an `avatar` (its row then takes two lines, the detail under the label), an `icon` or a `symbol` for its row.
+ * @prop {Typeahead[]} typeaheads - Your own typeahead lists next to the @-mention (property only): each a trigger character (`#`, `:`, `/`), a `source` that returns candidates for the text typed after it, and an optional `insert` that decides what a choice writes (by default the trigger, the text and a space). Lists on one trigger are merged in order. A candidate is `{ id, text, supportingText? }` and can carry an `avatar` (its row then takes two lines, the supporting text under the text), an `icon` or a `symbol` for its row.
  * @attr {boolean} annotatable - Enable the annotation overlay (off by default). Annotations only render when this is set.
  * @prop {Annotation[]} annotations - Consumer-supplied annotation overlay (property only). Anchored by offset and mapped through edits; the text stays clean. Requires `annotatable`. Assign a NEW array to apply changes (Lit dirty-checks by identity, so in-place mutation like `.push()` won't re-render): `editor.annotations = [...editor.annotations, next]`.
  * @attr {object} translations - Override the editor's assistive-tech strings (the open-in-new-tab link badge and the annotation count badge). Unset keys fall back to Dutch.
@@ -54,7 +54,7 @@
  * @fires input - When the content changes (detail: { value })
  * @fires change - When the content is committed on blur (detail: { value })
  * @fires nldd-text-editor-state - When the selection or content changes (detail: TextEditorState), for toolbar toggle state
- * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to; clean offsets, like getSelection())
+ * @fires nldd-text-editor-mention - When an @-mention is inserted (detail: MentionInsertedDetail with id, text, from, to; clean offsets, like getSelection())
  * @fires nldd-text-editor-typeahead - When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets)
  * @fires nldd-text-editor-annotation-click - When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it
  */
@@ -770,8 +770,8 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		const doc = this.view.state.doc.toString();
 		const from = docToClean(doc, choice.from);
 		if (choice.typeahead === this._mentionTypeahead) {
-			const { id, label } = choice.candidate;
-			this._emitMention({ id, label, from, to: from + mentionToken(choice.candidate).length });
+			const { id, text } = choice.candidate;
+			this._emitMention({ id, text, from, to: from + mentionToken(choice.candidate).length });
 			return;
 		}
 		this.dispatchEvent(new CustomEvent('nldd-text-editor-typeahead', {

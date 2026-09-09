@@ -644,7 +644,7 @@ describe('nldd-text-editor', () => {
 	});
 
 	it('mentionToken bouwt een markdown-link met user-id', () => {
-		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
+		expect(mentionToken({ id: '42', text: 'Anouk' })).toBe('[@Anouk](user:42)');
 	});
 
 	it('verwijdert een mention in twee stappen (backspace selecteert, dan verwijdert)', async () => {
@@ -898,7 +898,7 @@ describe('isSafeHref (open-link badge XSS guard)', () => {
 
 describe('mention token escaping', () => {
 	it('round-trips a plain candidate unchanged', () => {
-		expect(mentionToken({ id: '42', label: 'Anouk' })).toBe('[@Anouk](user:42)');
+		expect(mentionToken({ id: '42', text: 'Anouk' })).toBe('[@Anouk](user:42)');
 		expect(unescapeMentionLabel('Anouk')).toBe('Anouk');
 		expect(decodeMentionId('42')).toBe('42');
 	});
@@ -906,7 +906,7 @@ describe('mention token escaping', () => {
 	it('neutralises a crafted label and id, and decodes them back losslessly', () => {
 		const label = 'X]  hack](y';
 		const id = 'a) b(c';
-		const token = mentionToken({ id, label });
+		const token = mentionToken({ id, text: label });
 		// One mention boundary and one trailing ) — the payload cannot inject a second link.
 		expect(token.startsWith('[@')).toBe(true);
 		expect(token.endsWith(')')).toBe(true);

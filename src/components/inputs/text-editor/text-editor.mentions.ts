@@ -70,18 +70,20 @@ export function typeaheadQueryAt(
 export interface TypeaheadCandidate {
 	/** Stable id: stored in the mention token, handed back when chosen. */
 	id: string;
-	/** Shown in the list after the trigger, and written after the `@` of a mention. */
-	label: string;
-	/** Secondary text on the right of the row (a role, an e-mail address, a channel's purpose). */
-	detail?: string;
-	/** A DS icon in front of the label (a channel, a category). */
+	/** Shown in the row after the trigger, and written after the `@` of a mention. */
+	text: string;
+	/** Secondary text (a role, an e-mail address, a channel's purpose): beside the
+	 *  text on a row of one line, under it on a row with an avatar. The word the
+	 *  button and the title cell use for the same thing. */
+	supportingText?: string;
+	/** The name of a DS icon, or one of its aliases, in front of the text (a channel, a category). */
 	icon?: string;
-	/** A character or emoji in front of the label, in the row's own font: the
+	/** A character or emoji in front of the text, in the row's own font: the
 	 *  thing itself, for a list where that is its best picture. */
 	symbol?: string;
-	/** A person or organization in front of the label: an image, or initials
-	 *  from the label when there is none. `avatar: {}` is enough for initials.
-	 *  The row then takes two lines, with `detail` under the label. */
+	/** A person or organization in front of the text: an image, or initials
+	 *  from the text when there is none. `avatar: {}` is enough for initials.
+	 *  The row then takes two lines, with the supporting text under the text. */
 	avatar?: { src?: string; type?: 'person' | 'organization' };
 }
 
@@ -95,9 +97,9 @@ export interface Typeahead {
 	trigger: string;
 	source: TypeaheadSource;
 	/** What choosing a candidate writes in place of the trigger and the query.
-	 *  Without it: the trigger, the label and a space, so `#kanaal ` stays what
-	 *  was typed. Return the id for an emoji, or `@username ` for a system that
-	 *  wants a plain mention. */
+	 *  Without it: the trigger, the text and a space, so `#kanaal ` stays what
+	 *  was typed. Return the symbol for an emoji, or `@username ` for a system
+	 *  that wants a plain mention. */
 	insert?: (candidate: TypeaheadCandidate) => string;
 }
 
@@ -107,7 +109,7 @@ export type MentionSource = TypeaheadSource;
 
 export interface MentionInsertedDetail {
 	id: string;
-	label: string;
+	text: string;
 	from: number;
 	to: number;
 }
@@ -142,7 +144,7 @@ export const MENTION_HREF_PREFIX = 'user:';
  *  `]` or `)` would otherwise start a second, attacker-shaped link. The render
  *  layer reverses both via `unescapeMentionLabel` / `decodeMentionId`. */
 export function mentionToken(candidate: TypeaheadCandidate): string {
-	const label = candidate.label.replace(/[[\]\\]/g, (c) => '\\' + c);
+	const label = candidate.text.replace(/[[\]\\]/g, (c) => '\\' + c);
 	// encodeURIComponent leaves ( ) < > ! * ' . - _ ~ intact, but ")" closes a
 	// markdown link destination — encode the parens and angle brackets on top of it
 	// (decodeURIComponent reverses all of it).
@@ -174,7 +176,7 @@ export function decodeMentionId(id: string): string {
 }
 
 function defaultInsert(trigger: string): (candidate: TypeaheadCandidate) => string {
-	return (candidate) => `${trigger}${candidate.label} `;
+	return (candidate) => `${trigger}${candidate.text} `;
 }
 
 interface CandidateCompletion extends Completion {
@@ -182,14 +184,14 @@ interface CandidateCompletion extends Completion {
 }
 
 /** The avatar, icon or symbol in front of a row, or nothing. A decorative
- *  avatar: the label stands beside it as text. The icon is the size of a menu
- *  item's, and the symbol takes the same box, so a list that mixes them lines
- *  up. */
+ *  avatar: the name stands beside it as the row's text. The icon is the size of
+ *  a menu item's, and the symbol takes the same box, so a list that mixes them
+ *  lines up. */
 function renderLead(completion: Completion): Node | null {
 	const { candidate } = completion as CandidateCompletion;
 	if (candidate.avatar) {
 		const avatar = document.createElement('nldd-avatar');
-		avatar.setAttribute('name', candidate.label);
+		avatar.setAttribute('name', candidate.text);
 		avatar.setAttribute('size', '32');
 		avatar.setAttribute('decorative', '');
 		if (candidate.avatar.src) avatar.setAttribute('src', candidate.avatar.src);
@@ -213,8 +215,8 @@ function renderLead(completion: Completion): Node | null {
 	return null;
 }
 
-/** A row with an avatar takes two lines: the label above, the detail under it
- *  as supporting text, like a title cell. */
+/** A row with an avatar takes two lines: the text above, the supporting text
+ *  under it, like a title cell. */
 function rowClass(completion: Completion): string {
 	return (completion as CandidateCompletion).candidate.avatar ? 'cm-nldd-row-avatar' : '';
 }
@@ -236,8 +238,8 @@ function completionSource(
 			const insert = typeahead.insert ?? defaultInsert(match.trigger);
 			for (const candidate of candidates ?? []) {
 				options.push({
-					label: `${match.trigger}${candidate.label}`,
-					detail: candidate.detail,
+					label: `${match.trigger}${candidate.text}`,
+					detail: candidate.supportingText,
 					candidate,
 					apply: (view, _completion, from, to) => {
 						const text = insert(candidate);
@@ -309,8 +311,8 @@ const popupTheme = EditorView.theme({
 		justifyContent: 'center',
 		inlineSize: '20px',
 	},
-	// Two lines next to the avatar: the label, and the detail as supporting
-	// text under it. The avatar spans both and sits centered on them.
+	// Two lines next to the avatar: the text, and the supporting text under it.
+	// The avatar spans both and sits centered on them.
 	'.cm-tooltip.cm-tooltip-autocomplete > ul > li.cm-nldd-row-avatar': {
 		display: 'grid',
 		gridTemplateColumns: 'auto minmax(0, 1fr)',
@@ -386,7 +388,7 @@ export function typeaheads(
 		autocompletion({
 			override: [completionSource(getTypeaheads, onChoose)],
 			icons: false,
-			// Before the label (50): the avatar, icon or symbol of the row.
+			// Before the row's text (50): its avatar, icon or symbol.
 			addToOptions: [{ position: 20, render: renderLead }],
 			optionClass: rowClass,
 		}),

@@ -21,17 +21,17 @@ type El = HTMLElement & {
 };
 
 const people: TypeaheadCandidate[] = [
-	{ id: '1', label: 'Anouk', detail: 'Beleid', avatar: {} },
-	{ id: '2', label: 'Antoine', detail: 'Data', avatar: { type: 'organization' } },
+	{ id: '1', text: 'Anouk', supportingText: 'Beleid', avatar: {} },
+	{ id: '2', text: 'Antoine', supportingText: 'Data', avatar: { type: 'organization' } },
 ];
 const channels: TypeaheadCandidate[] = [
-	{ id: 'algemeen', label: 'algemeen', icon: 'tag' },
-	{ id: 'alles', label: 'alles', icon: 'tag' },
+	{ id: 'algemeen', text: 'algemeen', icon: 'tag' },
+	{ id: 'alles', text: 'alles', icon: 'tag' },
 ];
-const emoji: TypeaheadCandidate[] = [{ id: 'smile', label: 'smile:', symbol: '😄' }];
+const emoji: TypeaheadCandidate[] = [{ id: 'smile', text: 'smile:', symbol: '😄' }];
 
 function byLabel(items: TypeaheadCandidate[]): (query: string) => TypeaheadCandidate[] {
-	return (query) => items.filter((item) => item.label.toLowerCase().startsWith(query.toLowerCase()));
+	return (query) => items.filter((item) => item.text.toLowerCase().startsWith(query.toLowerCase()));
 }
 
 async function make(value: string, typeaheads: Typeahead[], mentionSource?: MentionSource): Promise<El> {
@@ -85,13 +85,13 @@ describe('nldd-text-editor typeaheads', () => {
 		expect(detail).toEqual({ trigger: ':', candidate: emoji[0], from: 4, to: 6 });
 	});
 
-	it('writes the trigger, the label and a space when there is no insert', async () => {
+	it('writes the trigger, the text and a space when there is no insert', async () => {
 		el = await make('zie #alg', [{ trigger: '#', source: byLabel(channels) }]);
 		await openList(el);
 		acceptCompletion(el.view);
 		await waitForUpdate(el);
 		expect(el.value).toBe('zie #algemeen ');
-		// With the closing colon in the label that is the shortcode those systems render.
+		// With the closing colon in the text that is the shortcode those systems render.
 		el.view.dispatch({ changes: { from: 0, to: el.view.state.doc.length, insert: 'hoi :sm' }, selection: { anchor: 7 } });
 		el.typeaheads = [{ trigger: ':', source: byLabel(emoji) }];
 		await openList(el);
@@ -126,7 +126,7 @@ describe('nldd-text-editor typeaheads', () => {
 	it('merges lists on one trigger, in the order they were given', async () => {
 		el = await make('#al', [
 			{ trigger: '#', source: byLabel(channels) },
-			{ trigger: '#', source: () => [{ id: 'x', label: 'alarm' }] },
+			{ trigger: '#', source: () => [{ id: 'x', text: 'alarm' }] },
 		]);
 		const rows = await openList(el);
 		expect(labels(rows)).toEqual(['#algemeen', '#alles', '#alarm']);
@@ -143,12 +143,12 @@ describe('nldd-text-editor typeaheads', () => {
 		acceptCompletion(el.view);
 		await waitForUpdate(el);
 		expect(el.value).toBe('[@Antoine](user:2) ');
-		expect(detail).toEqual({ id: '2', label: 'Antoine', from: 0, to: '[@Antoine](user:2)'.length });
+		expect(detail).toEqual({ id: '2', text: 'Antoine', from: 0, to: '[@Antoine](user:2)'.length });
 		expect(other).toBe(false);
 	});
 
 	it('a plain @ list of your own writes what you say, next to the built-in one', async () => {
-		el = await make('@an', [{ trigger: '@', source: () => [{ id: 'anouk.dv', label: 'Anouk de Vries' }], insert: (c) => `@${c.id} ` }]);
+		el = await make('@an', [{ trigger: '@', source: () => [{ id: 'anouk.dv', text: 'Anouk de Vries' }], insert: (c) => `@${c.id} ` }]);
 		const rows = await openList(el);
 		expect(labels(rows)).toEqual(['@Anouk de Vries']);
 		acceptCompletion(el.view);

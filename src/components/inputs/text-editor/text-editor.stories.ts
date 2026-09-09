@@ -543,14 +543,14 @@ export const Placeholder = {
 export const Mentions = {
 	render: () => {
 		const users = [
-			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
-			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
-			{ id: '3', label: 'Chen Wei', detail: 'Data' },
-			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
-			{ id: '5', label: 'Emma Bakker', detail: 'Beleid' },
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid' },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie' },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data' },
+			{ id: '4', text: 'Dewi Pratama', supportingText: 'Juridisch' },
+			{ id: '5', text: 'Emma Bakker', supportingText: 'Beleid' },
 		];
 		const source = (query: string) =>
-			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+			users.filter((user) => user.text.toLowerCase().includes(query.toLowerCase()));
 		const sample = 'Bespreek dit met [@Anouk de Vries](user:1) en [@Bram Jansen](user:2).\n\nTyp `@` om iemand te noemen.';
 		return html`
 			<nldd-text-editor
@@ -575,28 +575,28 @@ export const Mentions = {
 export const Typeaheads = {
 	render: () => {
 		const people = [
-			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid', avatar: {} },
-			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie', avatar: {} },
-			{ id: '3', label: 'Chen Wei', detail: 'Data', avatar: {} },
-			{ id: '4', label: 'Dienst Toeslagen', detail: 'Organisatie', avatar: { type: 'organization' as const } },
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid', avatar: {} },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie', avatar: {} },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data', avatar: {} },
+			{ id: '4', text: 'Dienst Toeslagen', supportingText: 'Organisatie', avatar: { type: 'organization' as const } },
 		];
 		const channels = [
-			{ id: 'algemeen', label: 'algemeen', detail: 'Het hele team', icon: 'tag' },
-			{ id: 'zorgtoeslag', label: 'zorgtoeslag', detail: 'Het traject', icon: 'tag' },
-			{ id: 'vragen', label: 'vragen', detail: 'Hulp en vragen', icon: 'tag' },
+			{ id: 'algemeen', text: 'algemeen', supportingText: 'Het hele team', icon: 'tag' },
+			{ id: 'zorgtoeslag', text: 'zorgtoeslag', supportingText: 'Het traject', icon: 'tag' },
+			{ id: 'vragen', text: 'vragen', supportingText: 'Hulp en vragen', icon: 'tag' },
 		];
 		// The shortcode convention of Mattermost and Slack: `:smile:`, the closing
-		// colon in the label. Without an `insert` a choice writes `:smile: `, which
+		// colon in the text. Without an `insert` a choice writes `:smile: `, which
 		// those systems render themselves; this editor does not, so it writes the
 		// emoji itself.
 		const emoji = [
-			{ id: 'smile', label: 'smile:', symbol: '😄' },
-			{ id: 'thumbsup', label: 'thumbsup:', symbol: '👍' },
-			{ id: 'tada', label: 'tada:', symbol: '🎉' },
-			{ id: 'thinking', label: 'thinking:', symbol: '🤔' },
+			{ id: 'smile', text: 'smile:', symbol: '😄' },
+			{ id: 'thumbsup', text: 'thumbsup:', symbol: '👍' },
+			{ id: 'tada', text: 'tada:', symbol: '🎉' },
+			{ id: 'thinking', text: 'thinking:', symbol: '🤔' },
 		];
-		const filter = <T extends { label: string }>(items: T[]) => (query: string) =>
-			items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
+		const filter = <T extends { text: string }>(items: T[]) => (query: string) =>
+			items.filter((item) => item.text.toLowerCase().includes(query.toLowerCase()));
 		const typeaheads = [
 			{ trigger: '#', source: filter(channels) },
 			{ trigger: ':', source: filter(emoji), insert: (candidate: { symbol?: string }) => `${candidate.symbol} ` },
@@ -625,7 +625,7 @@ export const Typeaheads = {
 		controls: { disable: true },
 		docs: {
 			description: {
-				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft. Standaard is dat de trigger, het label en een spatie: met het label `smile:` dus `:smile: `, de shortcode die Mattermost en Slack zelf renderen. Deze editor doet dat niet, dus hier schrijft `:` de emoji zelf. Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` meekrijgen (persoon of organisatie, initialen of een afbeelding; de rij wordt dan tweeregelig met de detail als ondersteunende tekst), een `icon` (op de maat van een menu-item) of een `symbol` (een teken of emoji, de emoji zelf als beeld). Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
+				story: 'Naast de ingebouwde `@`-mention geef je eigen lijsten op via de `typeaheads`-property: een trigger-teken, een `source` met kandidaten voor wat er na de trigger is getypt, en optioneel een `insert` die bepaalt wat een keuze schrijft. Standaard is dat de trigger, de `text` en een spatie: met `text: "smile:"` dus `:smile: `, de shortcode die Mattermost en Slack zelf renderen. Deze editor doet dat niet, dus hier schrijft `:` de emoji zelf. Meerdere lijsten op één trigger worden samengevoegd. Een kandidaat kan een `avatar` meekrijgen (persoon of organisatie, initialen of een afbeelding; de rij wordt dan tweeregelig met `supportingText` eronder), een `icon` (op de maat van een menu-item) of een `symbol` (een teken of emoji, de emoji zelf als beeld). Een keuze uit een eigen lijst vuurt `nldd-text-editor-typeahead` met de trigger, de kandidaat en de positie. De knop laat `insertAtCursor(tekst)` zien: tekst op de caret, in plaats van een selectie.',
 			},
 		},
 	},
@@ -735,13 +735,13 @@ export const AnnotationAuthoring = {
 export const Mixed = {
 	render: () => {
 		const users = [
-			{ id: '1', label: 'Anouk de Vries', detail: 'Beleid' },
-			{ id: '2', label: 'Bram Jansen', detail: 'Communicatie' },
-			{ id: '3', label: 'Chen Wei', detail: 'Data' },
-			{ id: '4', label: 'Dewi Pratama', detail: 'Juridisch' },
+			{ id: '1', text: 'Anouk de Vries', supportingText: 'Beleid' },
+			{ id: '2', text: 'Bram Jansen', supportingText: 'Communicatie' },
+			{ id: '3', text: 'Chen Wei', supportingText: 'Data' },
+			{ id: '4', text: 'Dewi Pratama', supportingText: 'Juridisch' },
 		];
 		const source = (query: string) =>
-			users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()));
+			users.filter((user) => user.text.toLowerCase().includes(query.toLowerCase()));
 		const sample = [
 			'# Projectupdate toegankelijkheid',
 			'',

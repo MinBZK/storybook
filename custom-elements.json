@@ -18615,7 +18615,7 @@
             },
             {
               "name": "nldd-text-editor-mention",
-              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to; clean offsets, like getSelection())"
+              "description": "When an @-mention is inserted (detail: MentionInsertedDetail with id, text, from, to; clean offsets, like getSelection())"
             },
             {
               "name": "nldd-text-editor-typeahead",

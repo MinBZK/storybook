@@ -1354,7 +1354,7 @@ A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the 
 | `input` | When the content changes (detail: { value }) |
 | `change` | When the content is committed on blur (detail: { value }) |
 | `nldd-text-editor-state` | When the selection or content changes (detail: TextEditorState), for toolbar toggle state |
-| `nldd-text-editor-mention` | When an @-mention is inserted (detail: MentionInsertedDetail with id, label, from, to; clean offsets, like getSelection()) |
+| `nldd-text-editor-mention` | When an @-mention is inserted (detail: MentionInsertedDetail with id, text, from, to; clean offsets, like getSelection()) |
 | `nldd-text-editor-typeahead` | When a candidate from one of the `typeaheads` is chosen (detail: TypeaheadChosenDetail with trigger, candidate, from, to; clean offsets) |
 | `nldd-text-editor-annotation-click` | When an annotation's count badge is clicked (detail: { ids: string[], rect: DOMRect }); rect is the badge's viewport box so a consumer can anchor its own note UI to it |
 
