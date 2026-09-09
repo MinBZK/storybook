@@ -164,11 +164,20 @@ const cursorLayer = layer({
 			const head = update.state.selection.main.head;
 			const kept = sideHint.get(view);
 			let hint: { head: number; side: -1 | 1 | 'pointer' } | null = kept ? { ...kept, head: update.changes.mapPos(kept.head) } : null;
+			const oldHead = update.startState.selection.main.head;
 			for (const tr of update.transactions) {
 				const asked = tr.annotation(caretSide);
 				if (asked) hint = { head, side: asked };
 				else if (tr.isUserEvent('select.pointer')) hint = { head, side: 'pointer' };
-				else if (tr.isUserEvent('input') || tr.isUserEvent('delete.backward')) hint = { head, side: -1 };
+				else if (tr.isUserEvent('input') || tr.isUserEvent('delete.backward')) {
+					// Deleting the text between the caret and a badge brings the caret
+					// back to the badge from the right, so it stays on the right: the
+					// period after a link goes, the caret does not hop over the badge.
+					// Editing at the badge itself keeps the side it was on, which is the
+					// URL being typed.
+					const fromOutside = linkEndsAt(update.state, head) && !linkEndsAt(update.startState, oldHead);
+					hint = { head, side: fromOutside ? 1 : -1 };
+				}
 				else if (tr.isUserEvent('delete.forward')) hint = { head, side: 1 };
 				else if (tr.selection) hint = null;
 			}

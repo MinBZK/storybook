@@ -235,6 +235,40 @@ describe('nldd-text-editor caret side', () => {
 		expect(el.view.state.selection.main.head).toBe(to - 1);
 	});
 
+	it('deleting the character after a link leaves the caret right of the badge', async () => {
+		el = await make('Zie [voorbeeld](https://example.com) nu.');
+		const to = el.value.indexOf(')') + 1;
+		// The caret sits at the very end, after the period; Backspace takes the period
+		// and the caret comes back to the badge from the right, so it stays there.
+		el.view.dispatch({ selection: { anchor: el.value.length } });
+		for (let i = el.value.length; i > to; i--) key(el.view, 'Backspace');
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie [voorbeeld](https://example.com)');
+		expect(el.view.state.selection.main.head).toBe(to);
+		expect(drawn(el.view)).toBe(1);
+		// The next Backspace steps over the badge before touching the link.
+		key(el.view, 'Backspace');
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie [voorbeeld](https://example.com)');
+		expect(drawn(el.view)).toBe(-1);
+	});
+
+	it('the same at the end of a bare URL', async () => {
+		el = await make('Zie https://example.com.');
+		const to = el.value.indexOf('.com') + 4;
+		el.view.dispatch({ selection: { anchor: to + 1 } });
+		key(el.view, 'Backspace');
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie https://example.com');
+		expect(drawn(el.view)).toBe(1);
+		// Deleting a character of the URL itself keeps the caret against the URL.
+		key(el.view, 'Backspace');
+		key(el.view, 'Backspace');
+		await waitForUpdate(el);
+		expect(el.value).toBe('Zie https://example.co');
+		expect(drawn(el.view)).toBe(-1);
+	});
+
 	it('measures the same place on both sides of an annotation end', async () => {
 		el = await make('abc def ghi', [{ id: 'a1', start: 4, end: 7, quote: 'def' }]);
 		const doc = el.view.state.doc.toString();
