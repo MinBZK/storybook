@@ -1,7 +1,7 @@
 import { EditorSelection, EditorState, StateEffect, StateField, type ChangeSpec, type Extension, type TransactionSpec } from '@codemirror/state';
 import { EditorView, ViewPlugin, type ViewUpdate } from '@codemirror/view';
-import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
+import { enclosingNamed, enclosingNode } from './text-editor.syntax.js';
 
 /* Emphasis that holds while you type inside it.
  *
@@ -61,17 +61,11 @@ export const holdEmphasis = StateEffect.define<Omit<HeldEmphasis, 'live'>>({
 });
 
 function emphasisAround(state: EditorState, pos: number, side: -1 | 1): SyntaxNode | null {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, side); n; n = n.parent) {
-		if (EMPHASIS_MARKERS.has(n.name)) return n;
-	}
-	return null;
+	return enclosingNode(state, pos, side, (node) => EMPHASIS_MARKERS.has(node.name));
 }
 
 function inlineBlockAt(state: EditorState, pos: number): SyntaxNode | null {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent) {
-		if (INLINE_BLOCKS.has(n.name)) return n;
-	}
-	return null;
+	return enclosingNamed(state, pos, 1, INLINE_BLOCKS);
 }
 
 /** The innermost emphasis the main selection is inside of on both of its sides,

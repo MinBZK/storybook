@@ -10,6 +10,7 @@ import { RangeSetBuilder, type EditorState } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX } from './text-editor.mentions.js';
+import { enclosingNode } from './text-editor.syntax.js';
 import { textCaretBox } from './text-editor.caret.js';
 import '../../content/icon/icon.js';
 
@@ -218,19 +219,21 @@ export function linkOpenBadge(label: OpenInNewTabLabel): ViewPlugin<{ decoration
  *  URL, with a destination the badge accepts. The same tests as `buildBadges`,
  *  so a mention (a link too, but without a badge) is not one. */
 export function linkEndsAt(state: EditorState, pos: number): boolean {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, -1); n; n = n.parent) {
-		if (n.to !== pos) continue;
-		if (n.name === 'Link') return hrefOf(state, n, referenceDefs(state)) !== null;
-		if (n.name === 'URL' && !inLinkContext(n)) return bareHref(state, n) !== null;
-	}
-	return false;
+	let refs: Map<string, string> | null = null;
+	return enclosingNode(state, pos, -1, (node) => {
+		if (node.to !== pos) return false;
+		if (node.name === 'Link') return hrefOf(state, node, (refs ??= referenceDefs(state))) !== null;
+		return node.name === 'URL' && !inLinkContext(node) && bareHref(state, node) !== null;
+	}) !== null;
 }
 
 /** Whether a bare URL with a badge ends at `pos`: the link that text typed at
  *  its end extends, unlike a `[text](url)` link, which ends at its `)`. */
 export function bareUrlEndsAt(state: EditorState, pos: number): boolean {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, -1); n; n = n.parent) {
-		if (n.name === 'URL' && n.to === pos) return !inLinkContext(n) && bareHref(state, n) !== null;
-	}
-	return false;
+	return enclosingNode(
+		state,
+		pos,
+		-1,
+		(node) => node.name === 'URL' && node.to === pos && !inLinkContext(node) && bareHref(state, node) !== null,
+	) !== null;
 }

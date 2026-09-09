@@ -7,6 +7,7 @@ import type { SyntaxNode } from '@lezer/common';
 import { MENTION_HREF_PREFIX, unescapeMentionLabel, decodeMentionId } from './text-editor.mentions.js';
 import { inLinkContext } from './text-editor.links.js';
 import { heldEmphasis, heldEmphasisField } from './text-editor.emphasis.js';
+import { enclosingNamed, enclosingNode } from './text-editor.syntax.js';
 import '../../content/icon/icon.js';
 
 /* Hybrid markdown rendering: the document stays plain markdown text, but the
@@ -251,11 +252,10 @@ function hangingLineDeco(length: number): Decoration {
 
 /** Whether `pos` sits inside a fenced or indented code block — where a leading
  *  `-`/`1.`/`>` is literal code, not a list or quote marker. */
+const CODE_BLOCK_NODES = new Set(['FencedCode', 'CodeBlock']);
+
 function inCodeBlock(state: EditorState, pos: number): boolean {
-	for (let n: SyntaxNode | null = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent) {
-		if (n.name === 'FencedCode' || n.name === 'CodeBlock') return true;
-	}
-	return false;
+	return enclosingNamed(state, pos, 1, CODE_BLOCK_NODES) !== null;
 }
 
 function buildHangingIndent(state: EditorState): DecorationSet {
@@ -389,15 +389,14 @@ export const markdownEditing: Extension = [
 
 // The mention Link node at `pos` (resolving toward `side`), or null.
 function mentionLinkAt(state: EditorState, pos: number, side: -1 | 1): SyntaxNode | null {
-	for (let node: SyntaxNode | null = syntaxTree(state).resolveInner(pos, side); node; node = node.parent) {
-		if (node.name !== 'Link') continue;
+	return enclosingNode(state, pos, side, (node) => {
+		if (node.name !== 'Link') return false;
 		let url: SyntaxNode | null = null;
 		for (let child = node.firstChild; child; child = child.nextSibling) {
 			if (child.name === 'URL') { url = child; break; }
 		}
-		if (url && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX)) return node;
-	}
-	return null;
+		return url !== null && state.sliceDoc(url.from, url.to).startsWith(MENTION_HREF_PREFIX);
+	});
 }
 
 /** The mention whose collapsed token contains `pos` (used to select it on click). */

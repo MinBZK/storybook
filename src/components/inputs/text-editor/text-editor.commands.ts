@@ -1,8 +1,8 @@
 import type { EditorView } from '@codemirror/view';
 import { EditorSelection } from '@codemirror/state';
-import { syntaxTree } from '@codemirror/language';
 import type { SyntaxNode } from '@lezer/common';
 import { EMPHASIS_MARKERS, heldEmphasisField, holdEmphasis, repairChangesFor } from './text-editor.emphasis.js';
+import { enclosingNamed } from './text-editor.syntax.js';
 
 /* Markdown editing operations for the headless command API. Each works on the
  * current selection (multi-range aware) and leaves focus on the editor, so a
@@ -52,10 +52,7 @@ export const EMPTY_FORMATS: TextEditorActiveFormats = {
 };
 
 function enclosing(view: EditorView, pos: number, nodeName: string, side: -1 | 0 | 1 = 1): SyntaxNode | null {
-	for (let n: SyntaxNode | null = syntaxTree(view.state).resolveInner(pos, side); n; n = n.parent) {
-		if (n.name === nodeName) return n;
-	}
-	return null;
+	return enclosingNamed(view.state, pos, side, nodeName);
 }
 
 /** An inline format is "active" for the caret only when the node encloses it on

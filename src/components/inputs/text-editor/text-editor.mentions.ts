@@ -7,8 +7,8 @@ import {
 	type CompletionResult,
 } from '@codemirror/autocomplete';
 import { EditorView } from '@codemirror/view';
-import { syntaxTree } from '@codemirror/language';
 import type { EditorState, Extension } from '@codemirror/state';
+import { enclosingNamed } from './text-editor.syntax.js';
 import '../../content/avatar/avatar.js';
 import '../../content/icon/icon.js';
 
@@ -41,11 +41,10 @@ function queryPattern(triggers: readonly string[]): RegExp | null {
 
 /** Code is quoted verbatim, so a trigger in a fenced block, an indented block
  *  or a backtick span is not a typeahead and must not open the list. */
+const CODE_NODES = new Set(['FencedCode', 'CodeBlock', 'InlineCode']);
+
 function inCode(state: EditorState, pos: number): boolean {
-	for (let n = syntaxTree(state).resolveInner(pos, 1); n; n = n.parent!) {
-		if (n.name === 'FencedCode' || n.name === 'CodeBlock' || n.name === 'InlineCode') return true;
-	}
-	return false;
+	return enclosingNamed(state, pos, 1, CODE_NODES) !== null;
 }
 
 /** The typeahead query at `pos` for one of `triggers`, or null when the text
