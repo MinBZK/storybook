@@ -16422,30 +16422,6 @@
         },
         {
           "kind": "function",
-          "name": "buildDesiredDoc",
-          "return": {
-            "type": {
-              "text": "string"
-            }
-          },
-          "parameters": [
-            {
-              "name": "cleanText",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "name": "desired",
-              "type": {
-                "text": "DesiredSentinel[]"
-              }
-            }
-          ],
-          "description": "Build the desired doc text: `cleanText` with a sentinel inserted at each desired\nposition (multiplicity honoured for touching groups)."
-        },
-        {
-          "kind": "function",
           "name": "reconcileSentinels",
           "return": {
             "type": {
@@ -16473,7 +16449,7 @@
               }
             }
           ],
-          "description": "Minimal changes (in current-doc coords) to turn `doc` into a document that holds\nexactly the sentinels the groups want — touching only sentinel characters, never\nthe real text. `doc` and the target share the same clean text, so a two-pointer\nwalk yields sentinel-only inserts/deletes."
+          "description": "Minimal changes (in current-doc coords) to turn `doc` into a document that holds\nexactly the sentinels the groups want — touching only sentinel characters, never\nthe real text. One walk over `doc`, comparing the sentinel run at each clean\nposition with the number wanted there. Building the target document first would\ncost a second copy of the text on every edit."
         },
         {
           "kind": "function",
@@ -16568,14 +16544,6 @@
           "name": "desiredSentinels",
           "declaration": {
             "name": "desiredSentinels",
-            "module": "src/components/inputs/text-editor/text-editor.annotation-sentinels.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "buildDesiredDoc",
-          "declaration": {
-            "name": "buildDesiredDoc",
             "module": "src/components/inputs/text-editor/text-editor.annotation-sentinels.ts"
           }
         },
@@ -16873,7 +16841,7 @@
             {
               "name": "type",
               "type": {
-                "text": "'none' | 'bullet' | 'ordered'"
+                "text": "ListType"
               }
             }
           ],
@@ -17892,8 +17860,7 @@
         },
         {
           "kind": "variable",
-          "name": "orderedListRenumber",
-          "description": "Renumbers ordered lists in the same transaction as the edit that disturbed them,\nso it's one atomic (single-undo) step and the caret/selection maps through it."
+          "name": "orderedListRenumber"
         }
       ],
       "exports": [
@@ -17921,7 +17888,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. insertAtCursor(text) puts text at the caret. An @-mention typeahead (mentionSource) collapses to an atomic token, further typeahead lists on their own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
+          "description": "A hybrid markdown editor built on CodeMirror 6 (via NLDDCodeMirrorElement): the document stays plain markdown text, but formatting is shown inline (bold is bold, headings are larger, links are colored) while the syntax markers stay visible, only dimmed — the iA Writer / Kirby approach. No WYSIWYG tree, so the data stays portable. Default `variant=\"simple\"` is bare (no frame, no focus ring) for use inside a composition (e.g. a message field) that owns its chrome and focus; the caret is a prominent accent. `variant=\"input-field\"` adds a framed surface + focus Headless: there is no built-in toolbar. A consumer drives formatting via the command methods (toggleBold/toggleItalic/toggleInlineCode/toggleStrikethrough/ toggleHeading/toggleBulletList/toggleTaskList/toggleQuote/toggleLink/runCommand to toggle, and setHeading/setList for picker-style \"set\" semantics), reads the active formats with getState(), listens to the nldd-text-editor-state event to render toggle states, and forwards padding clicks with focusFromPoint(). Cmd/Ctrl+B/I/E/K are bound out of the box. Commands keep focus on the editor. An inline toggle wraps the selected text (whitespace at its edges stays outside the markers), unwraps a run the caret is in, and with the caret at the very end of a run steps out of it. Bold that a typed space has broken (`**woord **`) keeps its styling while the caret is inside; the space moves outside the markers when the caret leaves. insertAtCursor(text) puts text at the caret and replaceRange(from, to, text) writes at the same clean offsets getSelection() reads. An @-mention typeahead (mentionSource) collapses to an atomic token, further typeahead lists on their own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay (annotations) marks ranges with a dashed underline, light tint and a count badge without touching the underlying text.",
           "name": "NLDDTextEditor",
           "members": [
             {
@@ -18219,11 +18186,11 @@
                 {
                   "name": "type",
                   "type": {
-                    "text": "'none' | 'bullet' | 'ordered'"
+                    "text": "ListType"
                   }
                 }
               ],
-              "description": "Set the list type, replacing any existing list ('none' strips it) — for an\nexclusive list picker."
+              "description": "Set the list type, replacing any existing list ('none' strips it) — for an\nexclusive list picker. A task keeps its checkbox only within its own type:\nswitching to bullet or ordered takes the box along with the marker."
             },
             {
               "kind": "method",
@@ -18358,6 +18325,36 @@
             },
             {
               "kind": "method",
+              "name": "replaceRange",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "from",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "to",
+                  "type": {
+                    "text": "number"
+                  }
+                },
+                {
+                  "name": "text",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Replaces the text between two offsets with `text`, and leaves the caret\nafter it. The offsets are CLEAN, the same coordinates `getSelection()` and\nthe annotations speak, so a consumer can act on what it read there. Both\nare clamped into the text, and `to` below `from` counts as an insert at\n`from`. Does nothing on a read-only editor."
+            },
+            {
+              "kind": "method",
               "name": "runCommand",
               "return": {
                 "type": {
@@ -18379,7 +18376,7 @@
                   }
                 }
               ],
-              "description": "Escape hatch: run a command by name (bold, italic, inlineCode,\nstrikethrough, bulletList, taskList, quote, heading [payload: level], link\n[payload: href], copy, cut, paste)."
+              "description": "Escape hatch: run a command by name, so a toolbar can carry the name in its\nmarkup instead of a method reference. Every method above is reachable.\n\nToggles (no payload): `bold`, `italic`, `inlineCode`, `strikethrough`,\n`bulletList`, `taskList`, `quote`, `codeBlock`, `heading` (payload: the\nlevel, default 1), `link` (payload: the href).\nSetters: `setHeading` (payload: the level, 0 for a paragraph), `setList`\n(payload: 'none' | 'bullet' | 'ordered' | 'task').\nThe rest: `indent`, `outdent`, `undo`, `redo`, `copy`, `cut`, `paste`.\n\nAn unknown name warns rather than doing nothing quietly: a typo in a\ntoolbar is otherwise invisible."
             },
             {
               "kind": "method",
@@ -18787,6 +18784,14 @@
           "name": "HeadingLevel",
           "declaration": {
             "name": "HeadingLevel",
+            "module": "./text-editor.commands.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ListType",
+          "declaration": {
+            "name": "ListType",
             "module": "./text-editor.commands.js"
           }
         },

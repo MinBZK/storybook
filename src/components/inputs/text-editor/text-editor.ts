@@ -23,7 +23,8 @@
  * a run the caret is in, and with the caret at the very end of a run steps out
  * of it. Bold that a typed space has broken (`**woord **`) keeps its styling
  * while the caret is inside; the space moves outside the markers when the caret
- * leaves. insertAtCursor(text) puts text at the caret. An @-mention typeahead
+ * leaves. insertAtCursor(text) puts text at the caret and replaceRange(from, to,
+ * text) writes at the same clean offsets getSelection() reads. An @-mention typeahead
  * (mentionSource) collapses to an atomic token, further typeahead lists on their
  * own trigger (typeaheads) write what you tell them to, and a W3C-style annotation overlay
  * (annotations) marks ranges with a dashed underline, light tint and a count badge
@@ -107,18 +108,19 @@ import {
 	readActiveFormats,
 	EMPTY_FORMATS,
 	type HeadingLevel,
+	type ListType,
 	type TextEditorState,
 	type TextEditorActiveFormats,
 } from './text-editor.commands.js';
 import { textEditorStyles } from './text-editor.styles.js';
 import { textEditorTemplate } from './text-editor.template.js';
-import { stripSentinels, docToClean } from './text-editor.annotation-sentinels.js';
+import { stripSentinels, docToClean, cleanToDoc, sentinelPositions } from './text-editor.annotation-sentinels.js';
 import { nlddTextEditorTranslations, type NLDDTextEditorTranslations } from './text-editor.i18n.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ResizeMode = 'none' | 'vertical' | 'auto';
 export type TextEditorVariant = 'input-field' | 'simple';
-export type { HeadingLevel, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
+export type { HeadingLevel, ListType, TextEditorState, TextEditorActiveFormats } from './text-editor.commands.js';
 export type {
 	MentionCandidate,
 	MentionSource,
@@ -524,8 +526,9 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 	}
 
 	/** Set the list type, replacing any existing list ('none' strips it) — for an
-	 *  exclusive list picker. */
-	setList(type: 'none' | 'bullet' | 'ordered'): void {
+	 *  exclusive list picker. A task keeps its checkbox only within its own type:
+	 *  switching to bullet or ordered takes the box along with the marker. */
+	setList(type: ListType): void {
 		if (this.view) cmSetList(this.view, type);
 	}
 
@@ -652,6 +655,29 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		this.view.focus();
 	}
 
+	/** Replaces the text between two offsets with `text`, and leaves the caret
+	 *  after it. The offsets are CLEAN, the same coordinates `getSelection()` and
+	 *  the annotations speak, so a consumer can act on what it read there. Both
+	 *  are clamped into the text, and `to` below `from` counts as an insert at
+	 *  `from`. Does nothing on a read-only editor. */
+	replaceRange(from: number, to: number, text: string): void {
+		if (!this.view || this.view.state.readOnly) return;
+		const doc = this.view.state.doc.toString();
+		const sentinels = sentinelPositions(doc);
+		const cleanLength = doc.length - sentinels.length;
+		const start = Math.max(0, Math.min(from, cleanLength));
+		const end = Math.max(start, Math.min(to, cleanLength));
+		const insert = stripSentinels(text);
+		const docFrom = cleanToDoc(sentinels, start);
+		const docTo = cleanToDoc(sentinels, end);
+		this.view.dispatch({
+			changes: { from: docFrom, to: docTo, insert },
+			selection: { anchor: docFrom + insert.length },
+			userEvent: 'input',
+		});
+		this.view.focus();
+	}
+
 	/** Insert `text` at the selection, re-attaching the cut annotations when it matches
 	 *  a cut made in this editor (a move, one-shot). Shared by the toolbar's paste()
 	 *  and the native Cmd/Ctrl+V handler. */
@@ -674,10 +700,20 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 		if (carry) this._cutBuffer = null;
 	}
 
-	/** Escape hatch: run a command by name (bold, italic, inlineCode,
-	 *  strikethrough, bulletList, taskList, quote, heading [payload: level], link
-	 *  [payload: href], copy, cut, paste). */
+	/** Escape hatch: run a command by name, so a toolbar can carry the name in its
+	 *  markup instead of a method reference. Every method above is reachable.
+	 *
+	 *  Toggles (no payload): `bold`, `italic`, `inlineCode`, `strikethrough`,
+	 *  `bulletList`, `taskList`, `quote`, `codeBlock`, `heading` (payload: the
+	 *  level, default 1), `link` (payload: the href).
+	 *  Setters: `setHeading` (payload: the level, 0 for a paragraph), `setList`
+	 *  (payload: 'none' | 'bullet' | 'ordered' | 'task').
+	 *  The rest: `indent`, `outdent`, `undo`, `redo`, `copy`, `cut`, `paste`.
+	 *
+	 *  An unknown name warns rather than doing nothing quietly: a typo in a
+	 *  toolbar is otherwise invisible. */
 	runCommand(name: string, payload?: unknown): void {
+		const level = (fallback: HeadingLevel): HeadingLevel => (typeof payload === 'number' ? payload : fallback) as HeadingLevel;
 		switch (name) {
 			case 'bold': this.toggleBold(); break;
 			case 'italic': this.toggleItalic(); break;
@@ -686,11 +722,19 @@ export class NLDDTextEditor extends DescribedBy(FormAssociated(NLDDCodeMirrorEle
 			case 'bulletList': this.toggleBulletList(); break;
 			case 'taskList': this.toggleTaskList(); break;
 			case 'quote': this.toggleQuote(); break;
-			case 'heading': this.toggleHeading((typeof payload === 'number' ? payload : 1) as HeadingLevel); break;
+			case 'codeBlock': this.toggleCodeBlock(); break;
+			case 'heading': this.toggleHeading(level(1)); break;
+			case 'setHeading': this.setHeading(level(0)); break;
+			case 'setList': this.setList(typeof payload === 'string' ? payload as ListType : 'none'); break;
 			case 'link': this.toggleLink(typeof payload === 'string' ? payload : ''); break;
+			case 'indent': this.indent(); break;
+			case 'outdent': this.outdent(); break;
+			case 'undo': this.undo(); break;
+			case 'redo': this.redo(); break;
 			case 'copy': void this.copy(); break;
 			case 'cut': void this.cut(); break;
 			case 'paste': void this.paste(); break;
+			default: console.warn(`<nldd-text-editor>: runCommand('${name}') is not a command.`);
 		}
 	}
 

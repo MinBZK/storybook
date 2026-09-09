@@ -68,27 +68,18 @@ const onPaste = (event: Event) => editorOf(event.currentTarget as Element)?.past
 // Run one overflow-menu action against its editor. Mirrors the inline handlers
 // (onHeadingSelect/onListChange/…) so an overflowed control behaves the same.
 const runOverflowAction = (editor: any, action: string): void => {
-	if (action.startsWith('heading:')) {
-		const value = action.slice('heading:'.length);
+	const [name, value] = action.split(':');
+	if (name === 'heading') {
+		// A code block is its own block type, so step out of it before setting a
+		// text style. That is what makes "Paragraaf" double as the way out.
 		const inCodeBlock = editor.getState().active.codeBlock;
-		if (value === 'codeblock') { if (!inCodeBlock) editor.toggleCodeBlock(); return; }
-		if (inCodeBlock) editor.toggleCodeBlock();
-		editor.setHeading(Number(value));
+		if (value === 'codeblock') { if (!inCodeBlock) editor.runCommand('codeBlock'); return; }
+		if (inCodeBlock) editor.runCommand('codeBlock');
+		editor.runCommand('setHeading', Number(value));
 		return;
 	}
-	if (action.startsWith('list:')) {
-		const value = action.slice('list:'.length);
-		editor.setList(value === 'numbered' ? 'ordered' : value);
-		return;
-	}
-	switch (action) {
-		case 'copy': case 'cut': case 'paste':
-		case 'undo': case 'redo':
-		case 'indent': case 'outdent':
-			editor[action](); break;
-		case 'link': editor.toggleLink(); break;
-		default: editor.runCommand(action); // bold, italic, strikethrough, inlineCode, quote
-	}
+	if (name === 'list') { editor.runCommand('setList', value === 'numbered' ? 'ordered' : value); return; }
+	editor.runCommand(name);
 };
 
 // Overflow menu-items are cloned into a menu in document.body, so their @click
@@ -125,7 +116,8 @@ const onToolbarState = (event: CustomEvent) => {
 	reflectToggle('link', 'link');
 	reflectToggle('quote', 'quote');
 	const list: any = root.querySelector('[data-group="list"]');
-	if (list) list.value = active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
+	// A task is a bullet too, so it has to be asked about first.
+	if (list) list.value = active.taskList ? 'task' : active.orderedList ? 'numbered' : active.bulletList ? 'bullet' : 'none';
 
 	// Formatting inside code is literal text, not markup: lock the inline formats in
 	// any code, and the block formats inside a code block — only the code-block toggle
@@ -203,7 +195,7 @@ const onToolbarState = (event: CustomEvent) => {
 		inlineCode: active.codeBlock,
 		link: inCode,
 		quote: active.codeBlock,
-		'list:none': active.codeBlock, 'list:bullet': active.codeBlock, 'list:numbered': active.codeBlock,
+		'list:none': active.codeBlock, 'list:bullet': active.codeBlock, 'list:numbered': active.codeBlock, 'list:task': active.codeBlock,
 		indent: !canIndent, outdent: !canOutdent,
 		copy: empty, cut: empty,
 		undo: !canUndo, redo: !canRedo,
@@ -224,7 +216,7 @@ const onToolbarState = (event: CustomEvent) => {
 		inlineCode: active.inlineCode,
 		link: active.link,
 		quote: active.quote,
-		'list:none': noList, 'list:bullet': active.bulletList, 'list:numbered': active.orderedList,
+		'list:none': noList, 'list:bullet': active.bulletList && !active.taskList, 'list:numbered': active.orderedList, 'list:task': active.taskList,
 		'heading:0': !active.codeBlock && active.heading === 0,
 		'heading:1': !active.codeBlock && active.heading === 1,
 		'heading:2': !active.codeBlock && active.heading === 2,
@@ -304,11 +296,13 @@ function toolbarEditor(editor: unknown) {
 						<nldd-segmented-control-item value="none" text="Geen lijst" icon="minus"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="bullet" text="Opsomming" icon="bullet-list"></nldd-segmented-control-item>
 						<nldd-segmented-control-item value="numbered" text="Genummerd" icon="numbered-list"></nldd-segmented-control-item>
+						<nldd-segmented-control-item value="task" text="Taken" icon="check-list"></nldd-segmented-control-item>
 					</nldd-segmented-control>
 					<nldd-menu-group slot="overflow" text="Lijst">
 						<nldd-menu-item type="radio" value="list:none" text="Geen lijst" icon="minus"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="list:bullet" text="Opsomming" icon="bullet-list"></nldd-menu-item>
 						<nldd-menu-item type="radio" value="list:numbered" text="Genummerd" icon="numbered-list"></nldd-menu-item>
+						<nldd-menu-item type="radio" value="list:task" text="Taken" icon="check-list"></nldd-menu-item>
 					</nldd-menu-group>
 				</nldd-toolbar-item>
 				<nldd-toolbar-item slot="start" label="Inspringen">

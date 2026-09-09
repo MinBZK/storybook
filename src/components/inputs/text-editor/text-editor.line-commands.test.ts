@@ -10,7 +10,9 @@ type Api = HTMLElement & {
 		contentDOM: HTMLElement;
 		dispatch(spec: unknown): void;
 	};
-	setList(type: 'none' | 'bullet' | 'ordered'): void;
+	setList(type: 'none' | 'bullet' | 'ordered' | 'task'): void;
+	runCommand(name: string, payload?: unknown): void;
+	replaceRange(from: number, to: number, text: string): void;
 	toggleBulletList(): void;
 	toggleTaskList(): void;
 	getState(): { active: { taskList: boolean; bulletList: boolean } };
@@ -159,6 +161,105 @@ describe('nldd-text-editor line commands', () => {
 			await waitForUpdate(el);
 			expect(el.value).toBe('- [ ] ');
 			expect(el.view.state.selection.main.head).toBe(6);
+			cleanup(el);
+		});
+	});
+
+	// A picker sets a type; the checkbox belongs to the marker, so switching type
+	// takes it along instead of leaving "[ ]" behind as text.
+	describe('setList met taken', () => {
+		it('zet regels om naar taken', async () => {
+			const el = await withValue('Een\nTwee');
+			el.view.dispatch({ selection: { anchor: 0, head: el.value.length } });
+			el.setList('task');
+			await waitForUpdate(el);
+			expect(el.value).toBe('- [ ] Een\n- [ ] Twee');
+			cleanup(el);
+		});
+
+		it('wisselt van taken naar opsomming en nummering zonder het vakje te laten staan', async () => {
+			const el = await withValue('- [x] Een\n- [ ] Twee');
+			el.view.dispatch({ selection: { anchor: 0, head: el.value.length } });
+			el.setList('bullet');
+			await waitForUpdate(el);
+			expect(el.value).toBe('- Een\n- Twee');
+			el.setList('task');
+			await waitForUpdate(el);
+			el.setList('ordered');
+			await waitForUpdate(el);
+			expect(el.value).toBe('1. Een\n2. Twee');
+			cleanup(el);
+		});
+
+		it('haalt met none de marker en het vakje weg', async () => {
+			const el = await withValue('- [x] Een');
+			el.view.dispatch({ selection: { anchor: 0, head: el.value.length } });
+			el.setList('none');
+			await waitForUpdate(el);
+			expect(el.value).toBe('Een');
+			cleanup(el);
+		});
+
+		it('laat een gewone regel die met [x] begint met rust', async () => {
+			const el = await withValue('[x] geen taak');
+			el.view.dispatch({ selection: { anchor: 0, head: el.value.length } });
+			el.setList('bullet');
+			await waitForUpdate(el);
+			expect(el.value).toBe('- [x] geen taak');
+			cleanup(el);
+		});
+	});
+
+	describe('runCommand en replaceRange', () => {
+		it('bereikt de commandos die alleen als methode bestonden', async () => {
+			const el = await withValue('Tekst');
+			el.view.dispatch({ selection: { anchor: 0, head: 5 } });
+			el.runCommand('setHeading', 2);
+			await waitForUpdate(el);
+			expect(el.value).toBe('## Tekst');
+			el.runCommand('setList', 'task');
+			await waitForUpdate(el);
+			expect(el.value).toBe('- [ ] ## Tekst');
+			cleanup(el);
+		});
+
+		it('bereikt undo en redo', async () => {
+			const el = await withValue('Tekst');
+			el.view.dispatch({ selection: { anchor: 0, head: 5 } });
+			el.runCommand('bold');
+			await waitForUpdate(el);
+			expect(el.value).toBe('**Tekst**');
+			el.runCommand('undo');
+			await waitForUpdate(el);
+			expect(el.value).toBe('Tekst');
+			el.runCommand('redo');
+			await waitForUpdate(el);
+			expect(el.value).toBe('**Tekst**');
+			cleanup(el);
+		});
+
+		it('waarschuwt bij een naam die geen commando is', async () => {
+			const el = await withValue('Tekst');
+			const warnings: unknown[] = [];
+			const original = console.warn;
+			console.warn = (...args: unknown[]) => { warnings.push(args[0]); };
+			el.runCommand('bald');
+			console.warn = original;
+			expect(el.value).toBe('Tekst');
+			expect(String(warnings[0])).toContain("runCommand('bald')");
+			cleanup(el);
+		});
+
+		it('replaceRange werkt op clean offsets en zet de caret erachter', async () => {
+			const el = await withValue('een woord hier');
+			el.replaceRange(4, 9, 'zin');
+			await waitForUpdate(el);
+			expect(el.value).toBe('een zin hier');
+			expect(el.view.state.selection.main.head).toBe(7);
+			// Buiten de tekst wordt geklemd, en to voor from is een invoeging.
+			el.replaceRange(100, 200, '!');
+			await waitForUpdate(el);
+			expect(el.value).toBe('een zin hier!');
 			cleanup(el);
 		});
 	});

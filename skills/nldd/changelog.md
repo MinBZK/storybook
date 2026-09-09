@@ -31,6 +31,10 @@ here; consult the commit history if you need that level of detail.
 
 - **`avatar`, `icon` and `symbol` on a typeahead candidate.** A person or organization shows as an `nldd-avatar` (an image, or initials from the text; `avatar: {}` is enough), and its row takes two lines, its `supportingText` under the text. A channel shows as an `nldd-icon` at the size of a menu item's, an emoji as itself (`symbol`), in front of the label, so a list is scannable at a glance. The built-in mention takes them too. (#204)
 
+- **`replaceRange(from, to, text)` on `nldd-text-editor`.** Writes at the same clean offsets `getSelection()` and the annotations read, so a consumer can act on what it found there. Both offsets are clamped into the text.
+
+- **`setList('task')`, and a `runCommand` that reaches every method.** The list setter had bullet and ordered but no task, so an exclusive list picker could not offer one. `runCommand` now also takes `codeBlock`, `setHeading`, `setList`, `indent`, `outdent`, `undo` and `redo`; our own toolbar story needed a wrapper around it for exactly those. A name that is not a command warns instead of doing nothing, so a typo in a toolbar shows up.
+
 - **`insertAtCursor(text)` on `nldd-text-editor`.** Puts text at the caret, in place of a selection, and leaves the caret after it with focus kept. Setting `value` replaced the whole document and reset the caret, and `paste()` reads the clipboard, so there was no way to insert a piece of text from a button of your own. (#200)
 
 - **`toggleTaskList()` on `nldd-text-editor`, and `taskList` in its state.** The parser already read GFM task items; there was no command to make one. It turns the selected lines into `- [ ] ` items, keeping a bullet's or numbered item's indent, and back into bullets once they all are tasks, so only the box goes and the list stays. Checking a box is not a command. `runCommand('taskList')` reaches it too, and `getState().active.taskList` reports it for a toolbar.
@@ -71,6 +75,8 @@ here; consult the commit history if you need that level of detail.
 - **`size` on `nldd-avatar` and `nldd-icon` defaults to `full` instead of an empty string.** `full` was already implemented on both, already in the type and already documented as the default. Only the property disagreed. Nothing renders differently. Read `size` back and you now get `full` where you got `''`.
 
 ### Fixed
+
+- **Switching a task list to another list type takes the checkbox along.** `setList('bullet')` on `- [x] klaar` stripped the bullet and wrote a new one, leaving `- [x] klaar` unchanged; ordered gave `1. [x] klaar`. The box belongs to the marker, so it goes with it, on a line that was a list item. A paragraph that happens to start with `[x]` is text and stays as it is.
 
 - **Wrapping a selection in `nldd-text-editor` leaves the space out.** A drag or a double-click usually takes the space after a word along, and `toggleBold()`, `toggleItalic()` and `toggleStrikethrough()` wrapped it as it was: `**woord **`, which is not bold, since a closing run may not follow whitespace. The markers now go around the text and the whitespace stays where it was, `**woord** `. A selection of nothing but whitespace is left alone. (#212)
 

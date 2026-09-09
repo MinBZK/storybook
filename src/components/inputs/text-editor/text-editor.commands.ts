@@ -250,11 +250,16 @@ export function toggleTaskList(view: EditorView): void {
 }
 
 const LIST_STRIP_RE = /^(\s*)(?:[-*+]|\d+[.)])(?:\s+|$)/;
+// The checkbox of a task item, once its bullet has been stripped. It belongs to
+// the marker, so switching a task list to another type takes it along.
+const TASK_BOX_RE = /^(\s*)\[[ xX]\]\s+/;
+
+export type ListType = 'none' | 'bullet' | 'ordered' | 'task';
 
 /** Set the selected lines to a list of `type`, replacing any existing list
  *  marker; `'none'` strips it. Ordered items are numbered within the selection.
  *  Unlike the toggles, this cleanly switches between list types (for a picker). */
-export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): void {
+export function setList(view: EditorView, type: ListType): void {
 	if (view.state.readOnly) return;
 	const { state } = view;
 	const { first, last, loneBlank } = selectedLines(view);
@@ -265,15 +270,17 @@ export function setList(view: EditorView, type: 'none' | 'bullet' | 'ordered'): 
 		// 'none' clears the leading indent too — bare text can't carry list
 		// indentation (4+ spaces would even parse as a code block); the list types
 		// keep it ($1) so nesting survives a switch between bullet and ordered.
-		const stripped = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
+		const withoutMarker = line.text.replace(LIST_STRIP_RE, type === 'none' ? '' : '$1');
 		// A blank line between items separates them and takes no marker. A line
 		// that carried a marker stays an item across the switch, even with no text
 		// behind it yet, and a lone blank line is the whole target.
-		const wasItem = stripped !== line.text;
+		const wasItem = withoutMarker !== line.text;
+		// Only on a line that was an item: elsewhere a leading "[x] " is text.
+		const stripped = wasItem ? withoutMarker.replace(TASK_BOX_RE, type === 'none' ? '' : '$1') : withoutMarker;
 		let next = stripped;
 		if (type !== 'none' && (stripped.trim() !== '' || wasItem || loneBlank)) {
 			number += 1;
-			const marker = type === 'bullet' ? '- ' : `${number}. `;
+			const marker = type === 'bullet' ? '- ' : type === 'task' ? '- [ ] ' : `${number}. `;
 			next = stripped.replace(/^(\s*)/, `$1${marker}`);
 		}
 		// Only rewrite the marker, not the whole line — keeps annotations alive.
