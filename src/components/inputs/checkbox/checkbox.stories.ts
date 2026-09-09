@@ -62,6 +62,11 @@ export default {
 			description: 'Verplichte staat.',
 			table: { defaultValue: { summary: false } },
 		},
+		decorative: {
+			control: 'boolean',
+			description: 'Tekent het vakje zonder input: geen focus, geen naam/waarde, niets aangekondigd. Voor een control die zijn staat elders heeft, zoals een lijstrij die zelf de checkbox is.',
+			table: { defaultValue: { summary: false } },
+		},
 
 	},
 	args: {
@@ -73,16 +78,18 @@ export default {
 		invalid: false,
 		disabled: false,
 		required: false,
+		decorative: false,
 	},
 };
 
-const Template = ({ name, value, checked, indeterminate, accessibleLabel, invalid, disabled, required }: Record<string, any>) => html`
+const Template = ({ name, value, checked, indeterminate, accessibleLabel, invalid, disabled, required, decorative }: Record<string, any>) => html`
 	<nldd-checkbox
 		?checked=${checked}
 		?indeterminate=${indeterminate}
 		?invalid=${invalid}
 		?required=${required}
 		?disabled=${disabled}
+		?decorative=${decorative}
 		value=${value}
 		name=${name}
 		accessible-label=${accessibleLabel || nothing}

@@ -61,6 +61,11 @@ export default {
 			description: 'Verplichte staat.',
 			table: { defaultValue: { summary: false } },
 		},
+		decorative: {
+			control: 'boolean',
+			description: 'Tekent de vorm zonder input: geen focus, geen naam/waarde, niets aangekondigd. Voor een control die zijn staat elders heeft, zoals een lijstrij die zelf de radio is.',
+			table: { defaultValue: { summary: false } },
+		},
 
 	},
 	args: {
@@ -71,15 +76,17 @@ export default {
 		invalid: false,
 		disabled: false,
 		required: false,
+		decorative: false,
 	},
 };
 
-const Template = ({ name, value, checked, accessibleLabel, invalid, disabled, required }: Record<string, any>) => html`
+const Template = ({ name, value, checked, accessibleLabel, invalid, disabled, required, decorative }: Record<string, any>) => html`
 	<nldd-radio-button
 		?checked=${checked}
 		?invalid=${invalid}
 		?required=${required}
 		?disabled=${disabled}
+		?decorative=${decorative}
 		name=${name}
 		value=${value}
 		accessible-label=${accessibleLabel || nothing}
