@@ -17884,6 +17884,102 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/components/inputs/text-editor/text-editor.syntax.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "enclosingNode",
+          "return": {
+            "type": {
+              "text": "SyntaxNode | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "side",
+              "type": {
+                "text": "-1 | 0 | 1"
+              }
+            },
+            {
+              "name": "match",
+              "type": {
+                "text": "(node: SyntaxNode) => boolean"
+              }
+            }
+          ],
+          "description": "The innermost node at `pos` that `match` accepts, looking outward from there.\n`side` decides which node a position between two of them belongs to: -1 the\none that ends there, 1 the one that starts there. Null when none matches."
+        },
+        {
+          "kind": "function",
+          "name": "enclosingNamed",
+          "return": {
+            "type": {
+              "text": "SyntaxNode | null"
+            }
+          },
+          "parameters": [
+            {
+              "name": "state",
+              "type": {
+                "text": "EditorState"
+              }
+            },
+            {
+              "name": "pos",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "side",
+              "type": {
+                "text": "-1 | 0 | 1"
+              }
+            },
+            {
+              "name": "names",
+              "type": {
+                "text": "string | ReadonlySet<string>"
+              }
+            }
+          ],
+          "description": "`enclosingNode` for the common case: a node that goes by one of these names."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "enclosingNode",
+          "declaration": {
+            "name": "enclosingNode",
+            "module": "src/components/inputs/text-editor/text-editor.syntax.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "enclosingNamed",
+          "declaration": {
+            "name": "enclosingNamed",
+            "module": "src/components/inputs/text-editor/text-editor.syntax.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/components/inputs/text-editor/text-editor.ts",
       "declarations": [
         {
