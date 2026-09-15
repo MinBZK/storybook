@@ -9,6 +9,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.88](https://github.com/MinBZK/storybook/compare/v0.8.87...v0.8.88) (2026-09-15)
+
 ### Fixed
 
 - **`nldd-page` no longer runs its own measurements into a loop.** Chromium reported `ResizeObserver loop completed with undelivered notifications` every time a page mounted or its chrome resized, and an app with a global error listener surfaced that as a red error it could do nothing about. Nothing looked wrong, because the layout settled on the next frame, but the page never reached `document_idle`, which is what browser automation waits on, and the console filled with a message that buried the real ones. Two observers were measuring the same header and writing styles that resized what the other was watching: one set `padding-top` on the scroller, and because the scroller's outer height is fixed by the flex layout, that padding shrinks the content box the other observer was measuring. There is one observer now. The padding comes from the header height that was already being measured, and a published value is written only when it changed, so a measurement that has settled cannot feed the next notification. The padding still freezes once you scroll, so a top title bar that shrinks past its anchor does not drag the content up with it.
