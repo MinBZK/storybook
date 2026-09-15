@@ -15,6 +15,10 @@ export function windowTemplate(component: NLDDWindow): TemplateResult {
 			<div class="window__body">
 				<slot></slot>
 			</div>
+			<!-- Where the notification region lands while this is the topmost open
+			     overlay. Inside the dialog, so it escapes the inertness, and beside
+			     the content rather than in it. Plumbing, not consumer API. -->
+			<slot name="nldd-overlay-layer"></slot>
 		</dialog>
 	`;
 }

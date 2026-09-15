@@ -34,6 +34,74 @@ const MAX_DEPTH = 2;
 let frontObserver: ResizeObserver | null = null;
 let expanded = false;
 
+/**
+ * A modal overlay paints in the browser's top layer, above the whole document
+ * and out of reach of any z-index, and while one is open everything outside it
+ * is inert: a region left on the body is not merely behind the sheet, it is
+ * unclickable even once you put it in the top layer yourself. So the region
+ * travels. It lives in the topmost open overlay and sinks back as they close,
+ * which is also what makes a notification raised before the sheet opened come
+ * along rather than stay behind it.
+ *
+ * Innermost last. Entries are verified on read rather than trusted, so an
+ * overlay torn out of the DOM without closing cannot strand the region.
+ */
+const overlays: HTMLElement[] = [];
+let watchingOverlays = false;
+
+function modalOf(host: HTMLElement): HTMLElement | null {
+	const dialog = host.shadowRoot?.querySelector('dialog') ?? null;
+	return dialog?.matches(':modal') ? dialog : null;
+}
+
+function regionHost(): HTMLElement {
+	while (overlays.length) {
+		const top = overlays[overlays.length - 1];
+		if (top.isConnected && modalOf(top)) return top;
+		overlays.pop();
+	}
+	return document.body;
+}
+
+function placeRegion(region: HTMLElement): void {
+	const host = regionHost();
+	if (region.parentElement === host) return;
+	// Slotted rather than put in the overlay's shadow root: it has to be a flat
+	// tree descendant of the dialog to escape the inertness, and its own slot
+	// keeps it out of the default one, whose content decides how an
+	// nldd-modal-dialog aligns.
+	if (host === document.body) region.removeAttribute('slot');
+	else region.setAttribute('slot', 'nldd-overlay-layer');
+	const carried = notifications(region);
+	carried.forEach((item) => item._setMoving?.(true));
+	host.appendChild(region);
+	carried.forEach((item) => item._setMoving?.(false));
+}
+
+function relocateRegion(): void {
+	const region = document.getElementById(REGION_ID);
+	if (region) placeRegion(region);
+}
+
+function watchOverlays(): void {
+	if (watchingOverlays) return;
+	watchingOverlays = true;
+	document.addEventListener('open', (event) => {
+		const host = event.target as HTMLElement | null;
+		if (!host?.shadowRoot || !modalOf(host)) return;
+		if (!overlays.includes(host)) overlays.push(host);
+		relocateRegion();
+	});
+	// close does not bubble, so it is caught on the way down instead.
+	document.addEventListener('close', (event) => {
+		const host = event.target as HTMLElement | null;
+		const at = host ? overlays.indexOf(host) : -1;
+		if (at === -1) return;
+		overlays.splice(at, 1);
+		relocateRegion();
+	}, true);
+}
+
 function notifications(region: HTMLElement): NLDDNotification[] {
 	return Array.from(region.querySelectorAll<NLDDNotification>(':scope > nldd-notification'));
 }
@@ -81,7 +149,7 @@ function ensureRegion(label: string): HTMLElement {
 	region.setAttribute('role', 'region');
 	region.setAttribute('aria-label', label);
 	region.appendChild(makeExpander(region));
-	document.body.appendChild(region);
+	placeRegion(region);
 	return region;
 }
 
@@ -113,7 +181,9 @@ function makeExpander(region: HTMLElement): HTMLElement {
 /** Newest in front: what just happened is what you want to read, and the older
  *  ones slide back and downwards behind it. */
 export function joinRegion(notification: NLDDNotification, label: string): void {
+	watchOverlays();
 	const region = ensureRegion(label);
+	placeRegion(region);
 	notification.style.pointerEvents = 'auto';
 	region.prepend(notification);
 	syncStack(region);

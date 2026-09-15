@@ -10,6 +10,13 @@
  * Nothing about the position is settable, so notifications from anywhere in an
  * application land in the same place and stack in the same order.
  *
+ * A modal overlay is the one thing that moves it. An nldd-sheet, nldd-window or
+ * nldd-modal-dialog paints in the browser's top layer, above the whole page and
+ * out of reach of any z-index, and while one is open everything outside it is
+ * inert. So the region goes in: into the topmost overlay that is open, and back
+ * down as they close. A notification already on screen travels with it, and one
+ * raised from inside a sheet is readable and reachable where it is raised.
+ *
  * ## The stack
  * More than one is a deck, not a list: the front one is readable and the older
  * ones peek out below it, so a burst of messages takes the room of roughly one.
@@ -176,6 +183,13 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 			this.setAttribute('role', this.variant === 'critical' ? 'alert' : 'status');
 		}
 		if (changed.has('duration')) this._remainingDuration = this.duration;
+	}
+
+	/** Called by the region while it carries this notification to another
+	 *  parent. A move disconnects the element, and without this the
+	 *  notification would read its own disconnect as having been dismissed. */
+	_setMoving(moving: boolean): void {
+		this._moving = moving;
 	}
 
 	/** Called by the region. Starting the clock here rather than on connect is
