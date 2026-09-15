@@ -68,6 +68,32 @@ describe('nldd-page', () => {
 		expect(getComputedStyle(scroll).paddingTop).toBe('60px');
 	});
 
+	it('lets the insets follow a collapsing header down while the reserved space stays put', async () => {
+		el = await fixture(`
+			<nldd-page sticky-header style="height: 200px;">
+				<div slot="header" id="header" style="height: 60px;">Header</div>
+				<div id="probe" style="position: sticky; top: var(--context-inset-top, 0px);">Probe</div>
+				<div style="height: 900px;">Content</div>
+			</nldd-page>
+		`);
+		await waitForUpdate(el);
+		await new Promise(r => setTimeout(r, 100));
+		const scroll = el.shadowRoot!.querySelector('.page__scroll') as HTMLElement;
+		const probeTop = () => getComputedStyle(el.querySelector('#probe')!).top;
+		expect(probeTop()).toBe('60px');
+
+		scroll.scrollTop = 200;
+		el.querySelector<HTMLElement>('#header')!.style.height = '30px';
+		await nextFrames();
+		await nextFrames();
+
+		// The two measurements part company here, which is the whole reason there
+		// are two. The bar is 30px now, so that is what sticky content has to
+		// clear, while the padding keeps the space the content started under.
+		expect(probeTop()).toBe('30px');
+		expect(getComputedStyle(scroll).paddingTop).toBe('60px');
+	});
+
 	it('does not run its observer into an undelivered-notification loop', async () => {
 		const errors: string[] = [];
 		const onError = (event: ErrorEvent) => {
