@@ -26,7 +26,7 @@ export function modalDialogTemplate(component: NLDDModalDialog) {
 			<!-- Where the notification region lands while this is the topmost open
 			     overlay. Inside the dialog, so it escapes the inertness, and beside
 			     the content rather than in it. Plumbing, not consumer API. -->
-			<slot name="nldd-overlay-layer"></slot>
+			<slot name="overlay-layer"></slot>
 		</dialog>
 	`;
 }
