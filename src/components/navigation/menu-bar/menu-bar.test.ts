@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, nextFrames } from '../../../test-utils.js';
 import type { NLDDMenuBar } from './menu-bar.js';
 import './menu-bar.js';
 
@@ -127,7 +127,7 @@ describe('nldd-menu-bar', () => {
 	it('renders an expandable overflowed item as a real nested submenu (not flattened)', async () => {
 		el = await fixture(`
 			<nldd-menu-bar>
-				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+				<nldd-menu-bar-item text="Mijn DigID" expandable>
 					<nldd-menu>
 						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
 						<nldd-menu-divider></nldd-menu-divider>
@@ -137,7 +137,14 @@ describe('nldd-menu-bar', () => {
 			</nldd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
+		// _updateOverflow runs a frame after connect and resets display and
+		// data-overflow on every item, so let that pass finish before simulating
+		// the overflowed state it would have produced. Marking the item up front
+		// races that reset and wins or loses on how fast the machine is.
+		await nextFrames();
+		const item = el.querySelector('nldd-menu-bar-item') as HTMLElement;
+		item.style.display = 'none';
+		item.setAttribute('data-overflow', 'true');
 
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
 		await waitForUpdate(el);
@@ -164,7 +171,7 @@ describe('nldd-menu-bar', () => {
 	it('selecting a nested submenu leaf delegates to the original and does not jump off-screen', async () => {
 		el = await fixture(`
 			<nldd-menu-bar>
-				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+				<nldd-menu-bar-item text="Mijn DigID" expandable>
 					<nldd-menu>
 						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
 						<nldd-menu-item text="Instellingen"></nldd-menu-item>
@@ -173,15 +180,12 @@ describe('nldd-menu-bar', () => {
 			</nldd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		// _toggleOverflowMenu clones the slotted items synchronously, so wait
-		// for the slot assignment to settle first — otherwise (CI timing) it
-		// reads an empty slot and no clone is built.
+		// _updateOverflow runs a frame after connect and resets display and
+		// data-overflow on every item, so let that pass finish before simulating
+		// the overflowed state it would have produced. It also settles the slot
+		// assignment that _toggleOverflowMenu reads synchronously.
+		await nextFrames();
 		const item = el.querySelector('nldd-menu-bar-item') as HTMLElement;
-		for (let i = 0; i < 10 && !item.assignedSlot; i++) await waitForUpdate(el);
-		// Simulate the overflowed (hidden) state the real layout produces. Marking
-		// happens in the same synchronous block as the toggle: _updateOverflow runs
-		// in a frame and clears data-overflow first, and the waiting above gives it
-		// room to do exactly that.
 		item.style.display = 'none';
 		item.setAttribute('data-overflow', 'true');
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
