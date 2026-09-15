@@ -15,10 +15,9 @@ export function sheetTemplate(component: NLDDSheet) {
 			<div class="sheet__body">
 				<slot></slot>
 			</div>
-			<!-- Where the notification region lands while this is the topmost open
-			     overlay. Inside the dialog, so it escapes the inertness, and beside
-			     the content rather than in it. Plumbing, not consumer API. -->
-			<slot name="overlay-layer"></slot>
+			<!-- Inside the dialog, so it escapes the inertness a modal imposes on
+			     everything outside it. Plumbing, not consumer API. -->
+			<slot name="notifications"></slot>
 		</dialog>
 	`;
 }

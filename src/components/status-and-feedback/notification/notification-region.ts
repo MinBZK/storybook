@@ -71,7 +71,7 @@ function placeRegion(region: HTMLElement): void {
 	// keeps it out of the default one, whose content decides how an
 	// nldd-modal-dialog aligns.
 	if (host === document.body) region.removeAttribute('slot');
-	else region.setAttribute('slot', 'overlay-layer');
+	else region.setAttribute('slot', 'notifications');
 	const carried = notifications(region);
 	carried.forEach((item) => item._setMoving?.(true));
 	host.appendChild(region);
