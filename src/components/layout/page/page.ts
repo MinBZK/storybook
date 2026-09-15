@@ -59,7 +59,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	private _scrollTarget: EventTarget | null = null;
 	private _scrollProvider: ScrollModeProvider | null = null;
 	private _insetObserver: ResizeObserver | null = null;
-	private _headerPad = 0;
+	private _headerFullHeight = 0;
 	private _mainSlot: HTMLSlotElement | null = null;
 	private _resizeRaf = 0;
 
@@ -184,7 +184,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	private _configureScroll() {
 		this._teardownScrollListener();
 		this._setupScrollListener();
-		this._headerPad = 0;
+		this._headerFullHeight = 0;
 		this._setupInsetObserver();
 		this._onScroll();
 	}
@@ -212,7 +212,7 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		const publish = () => {
 			this._publish('--_header-height', `${this.stickyHeader ? header.offsetHeight : 0}px`);
 			this._publish('--_footer-height', `${this.stickyFooter ? footer.offsetHeight : 0}px`);
-			this._publish('--_header-pad', `${this._measureHeaderPad(header)}px`);
+			this._publish('--_header-full-height', `${this._measureHeaderFullHeight(header)}px`);
 			// How tall the scroller actually is. Sticky content inside it caps its
 			// height on what it can see, and while the page owns the scroller that
 			// is not the viewport: the chrome around the page eats into it. In root
@@ -246,16 +246,15 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	}
 
 	/**
-	 * The space .page__scroll reserves for an absolutely positioned sticky
-	 * header. Frozen once you scroll: a top title bar shrinks as you pass its
-	 * anchor, and padding that followed it would drag the content up under the
-	 * cursor. Root mode keeps it at zero, where the header sits in flow and
-	 * reserves its own space.
+	 * The header at its full height: the last measurement taken at scroll top.
+	 * A top title bar shrinks as you pass its anchor, and the space reserved for
+	 * it must not shrink along, or the content it starts under is dragged up
+	 * from under the cursor. Which mode reserves that space is the CSS's call.
 	 */
-	private _measureHeaderPad(header: HTMLElement): number {
-		if (!this.stickyHeader || this._isRoot) return 0;
-		if ((this._scrollEl?.scrollTop ?? 0) === 0) this._headerPad = header.offsetHeight;
-		return this._headerPad;
+	private _measureHeaderFullHeight(header: HTMLElement): number {
+		if (!this.stickyHeader) return 0;
+		if (this.scrollTarget.scrollTop === 0) this._headerFullHeight = header.offsetHeight;
+		return this._headerFullHeight;
 	}
 
 	private _setupScrollListener() {
