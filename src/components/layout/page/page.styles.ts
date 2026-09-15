@@ -17,6 +17,7 @@ export const pageStyles = css`
 		--_outer-inset-bottom: var(--context-inset-bottom, 0px);
 		--_header-height: 0px;
 		--_footer-height: 0px;
+		--_header-pad: 0px;
 		/* Set from JS while the page owns the scroller. initial, not a length, so
 		   the fallback stands when the document scrolls instead. */
 		--_scroll-height: initial;
@@ -163,6 +164,7 @@ export const pageStyles = css`
 		min-height: 0;
 		flex-direction: column;
 		flex-grow: 1;
+		padding-top: var(--_header-pad);
 	}
 
 	/* Nested scrolling: a sticky child is measured against this element, so the
