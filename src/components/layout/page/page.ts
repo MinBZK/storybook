@@ -4,8 +4,9 @@
  * A page layout with optional sticky header and footer.
  * Without sticky-header, the host is the scroll container and the header
  * is in normal flow. With sticky-header, the header becomes absolute and
- * .page__scroll takes over scrolling. A ResizeObserver on the header
- * sets padding-top on the scroll wrapper (only when not scrolled).
+ * .page__scroll takes over scrolling, padded by the measured header height.
+ * That padding freezes once you scroll, so a collapsing bar cannot drag the
+ * content up under the cursor.
  *
  * In root-scroll mode (--context-scroll-mode: root, derived upstream by
  * nldd-app-view) the page stops owning a scroller: the document scrolls and the
@@ -57,8 +58,8 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	private _scrollMode: 'nested' | 'root' = 'nested';
 	private _scrollTarget: EventTarget | null = null;
 	private _scrollProvider: ScrollModeProvider | null = null;
-	private _headerObserver: ResizeObserver | null = null;
 	private _insetObserver: ResizeObserver | null = null;
+	private _headerFullHeight = 0;
 	private _mainSlot: HTMLSlotElement | null = null;
 	private _resizeRaf = 0;
 
@@ -134,7 +135,6 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		this._scrollProvider = null;
 		if (this._resizeRaf) cancelAnimationFrame(this._resizeRaf);
 		this._teardownScrollListener();
-		this._teardownHeaderObserver();
 		this._teardownInsetObserver();
 		this._teardownMainSlotListener();
 	}
@@ -180,15 +180,11 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		});
 	};
 
-	// (Re)wire the scroll listener + header observer for the current mode.
+	// (Re)wire the scroll listener + inset observer for the current mode.
 	private _configureScroll() {
 		this._teardownScrollListener();
-		this._teardownHeaderObserver();
-		if (this._scrollEl) this._scrollEl.style.paddingTop = '';
 		this._setupScrollListener();
-		// The absolute-header padding hack is nested-mode only; a root-mode
-		// sticky header sits in flow and reserves its own space.
-		if (this.stickyHeader && !this._isRoot) this._setupHeaderObserver();
+		this._headerFullHeight = 0;
 		this._setupInsetObserver();
 		this._onScroll();
 	}
@@ -201,6 +197,11 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 	 * its anchor, and a consumer that had written the number down would be wrong
 	 * from that moment on. A bar that is not sticky scrolls away and adds
 	 * nothing, so it stays at zero.
+	 *
+	 * It also measures the padding the scroll wrapper reserves for an absolute
+	 * sticky header. One observer owns both, because two of them writing styles
+	 * that resize what the other watches is what leaves ResizeObserver
+	 * notifications undelivered.
 	 */
 	private _setupInsetObserver() {
 		this._teardownInsetObserver();
@@ -209,20 +210,15 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		if (!header || !footer) return;
 
 		const publish = () => {
-			this.style.setProperty(
-				'--_header-height',
-				`${this.stickyHeader ? header.offsetHeight : 0}px`,
-			);
-			this.style.setProperty(
-				'--_footer-height',
-				`${this.stickyFooter ? footer.offsetHeight : 0}px`,
-			);
+			this._publish('--_header-height', `${this.stickyHeader ? header.offsetHeight : 0}px`);
+			this._publish('--_footer-height', `${this.stickyFooter ? footer.offsetHeight : 0}px`);
+			this._publish('--_header-full-height', `${this._measureHeaderFullHeight(header)}px`);
 			// How tall the scroller actually is. Sticky content inside it caps its
 			// height on what it can see, and while the page owns the scroller that
 			// is not the viewport: the chrome around the page eats into it. In root
 			// mode the document scrolls, so nothing is published and 100dvh stands.
 			if (this._isRoot) this.style.removeProperty('--_scroll-height');
-			else this.style.setProperty('--_scroll-height', `${this._scrollEl?.clientHeight ?? 0}px`);
+			else this._publish('--_scroll-height', `${this._scrollEl?.clientHeight ?? 0}px`);
 		};
 		publish();
 		this._insetObserver = new ResizeObserver(publish);
@@ -238,6 +234,29 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		}
 	}
 
+	/**
+	 * Writes a published variable only when it changes. These values size the
+	 * elements the observer watches, so a rewrite feeds the callback its own
+	 * next notification, which is what Chromium reports as "ResizeObserver
+	 * loop completed with undelivered notifications".
+	 */
+	private _publish(name: string, value: string) {
+		if (this.style.getPropertyValue(name) === value) return;
+		this.style.setProperty(name, value);
+	}
+
+	/**
+	 * The header at its full height: the last measurement taken at scroll top.
+	 * A top title bar shrinks as you pass its anchor, and the space reserved for
+	 * it must not shrink along, or the content it starts under is dragged up
+	 * from under the cursor. Which mode reserves that space is the CSS's call.
+	 */
+	private _measureHeaderFullHeight(header: HTMLElement): number {
+		if (!this.stickyHeader) return 0;
+		if (this.scrollTarget.scrollTop === 0) this._headerFullHeight = header.offsetHeight;
+		return this._headerFullHeight;
+	}
+
 	private _setupScrollListener() {
 		// Root mode scrolls the document (listen on window); nested mode scrolls
 		// the host, or .page__scroll with a sticky header. See scrollEventTarget.
@@ -250,26 +269,6 @@ export class NLDDPage extends LitElement implements ScrollModeConsumer {
 		if (this._scrollTarget) {
 			this._scrollTarget.removeEventListener('scroll', this._onScroll);
 			this._scrollTarget = null;
-		}
-	}
-
-	private _setupHeaderObserver() {
-		this._teardownHeaderObserver();
-		const header = this._headerEl;
-		const scroll = this._scrollEl;
-		if (!header || !scroll) return;
-
-		this._headerObserver = new ResizeObserver(() => {
-			if (scroll.scrollTop > 0) return;
-			scroll.style.paddingTop = `${header.offsetHeight}px`;
-		});
-		this._headerObserver.observe(header);
-	}
-
-	private _teardownHeaderObserver() {
-		if (this._headerObserver) {
-			this._headerObserver.disconnect();
-			this._headerObserver = null;
 		}
 	}
 

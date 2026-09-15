@@ -9,6 +9,14 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **`nldd-page` no longer runs its own measurements into a loop.** Chromium reported `ResizeObserver loop completed with undelivered notifications` every time a page mounted or its chrome resized, and an app with a global error listener surfaced that as a red error it could do nothing about. Nothing looked wrong, because the layout settled on the next frame, but the page never reached `document_idle`, which is what browser automation waits on, and the console filled with a message that buried the real ones. Two observers were measuring the same header and writing styles that resized what the other was watching: one set `padding-top` on the scroller, and because the scroller's outer height is fixed by the flex layout, that padding shrinks the content box the other observer was measuring. There is one observer now. The padding comes from the header height that was already being measured, and a published value is written only when it changed, so a measurement that has settled cannot feed the next notification. The padding still freezes once you scroll, so a top title bar that shrinks past its anchor does not drag the content up with it.
+
+- **`nldd-notification` works from inside a sheet, a window and a modal dialog.** A notification raised while one of those was open was created, joined the deck, counted down and removed itself without ever being seen, and nothing was logged. A modal overlay paints in the browser's top layer, above the whole page and beyond the reach of any z-index, so the region sitting on the body was behind it. Promoting the region to the top layer would not have been enough either: while a modal is open everything outside it is inert, so the message would have been visible and every click on it would have gone through to whatever sat underneath. So the region travels instead. It moves into the topmost open overlay and sinks back as they close, a notification already on screen comes along rather than being left behind, and one raised from inside a sheet is readable and reachable where it was raised. Nothing changes for a page with no overlay open, and the position is still not settable.
+
+- **`package-lock.json` travels with the release again.** The release bumps it along with `package.json`, but it was not in the list of files the release commit carries, so that bump was thrown away every time: the lockfile sat at 0.8.83 while the package ran on to 0.8.87. Anyone installing the repository from a release tag got a lockfile naming a version four releases old. Both files are committed together from now on, and they are back in step.
+
 ## [0.8.87](https://github.com/MinBZK/storybook/compare/v0.8.86...v0.8.87) (2026-09-09)
 
 ### Highlights

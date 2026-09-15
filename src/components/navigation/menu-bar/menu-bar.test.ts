@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, nextFrames, until } from '../../../test-utils.js';
 import type { NLDDMenuBar } from './menu-bar.js';
 import './menu-bar.js';
 
@@ -127,7 +127,7 @@ describe('nldd-menu-bar', () => {
 	it('renders an expandable overflowed item as a real nested submenu (not flattened)', async () => {
 		el = await fixture(`
 			<nldd-menu-bar>
-				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+				<nldd-menu-bar-item text="Mijn DigID" expandable>
 					<nldd-menu>
 						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
 						<nldd-menu-divider></nldd-menu-divider>
@@ -137,7 +137,14 @@ describe('nldd-menu-bar', () => {
 			</nldd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		(el.querySelector('nldd-menu-bar-item') as HTMLElement).style.display = 'none';
+		// _updateOverflow runs a frame after connect and resets display and
+		// data-overflow on every item, so let that pass finish before simulating
+		// the overflowed state it would have produced. Marking the item up front
+		// races that reset and wins or loses on how fast the machine is.
+		await nextFrames();
+		const item = el.querySelector('nldd-menu-bar-item') as HTMLElement;
+		item.style.display = 'none';
+		item.setAttribute('data-overflow', 'true');
 
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
 		await waitForUpdate(el);
@@ -164,7 +171,7 @@ describe('nldd-menu-bar', () => {
 	it('selecting a nested submenu leaf delegates to the original and does not jump off-screen', async () => {
 		el = await fixture(`
 			<nldd-menu-bar>
-				<nldd-menu-bar-item text="Mijn DigID" expandable data-overflow>
+				<nldd-menu-bar-item text="Mijn DigID" expandable>
 					<nldd-menu>
 						<nldd-menu-item text="Mijn gegevens"></nldd-menu-item>
 						<nldd-menu-item text="Instellingen"></nldd-menu-item>
@@ -173,15 +180,12 @@ describe('nldd-menu-bar', () => {
 			</nldd-menu-bar>
 		`);
 		await waitForUpdate(el);
-		// _toggleOverflowMenu clones the slotted items synchronously, so wait
-		// for the slot assignment to settle first — otherwise (CI timing) it
-		// reads an empty slot and no clone is built.
+		// _updateOverflow runs a frame after connect and resets display and
+		// data-overflow on every item, so let that pass finish before simulating
+		// the overflowed state it would have produced. It also settles the slot
+		// assignment that _toggleOverflowMenu reads synchronously.
+		await nextFrames();
 		const item = el.querySelector('nldd-menu-bar-item') as HTMLElement;
-		for (let i = 0; i < 10 && !item.assignedSlot; i++) await waitForUpdate(el);
-		// Simulate the overflowed (hidden) state the real layout produces. Marking
-		// happens in the same synchronous block as the toggle: _updateOverflow runs
-		// in a frame and clears data-overflow first, and the waiting above gives it
-		// room to do exactly that.
 		item.style.display = 'none';
 		item.setAttribute('data-overflow', 'true');
 		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
@@ -334,5 +338,102 @@ describe('nldd-menu-bar – overflow detection', () => {
 		expect(items[0].hasAttribute('data-overflow')).toBe(false);
 		expect(items[1].hasAttribute('data-overflow')).toBe(false);
 		expect(overflowButton.style.display).toBe('none');
+	});
+});
+
+
+describe('nldd-menu-bar – overflow detection with real layout', () => {
+	// The block above mocks clientWidth and offsetWidth and calls _updateOverflow
+	// directly, so it covers the arithmetic. These run the whole path instead —
+	// the ResizeObserver, the frame it schedules and real measurements — and
+	// assert the contract rather than pixel values, so the item's padding or
+	// font can change without touching the test.
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+		document.querySelectorAll('nldd-menu').forEach(m => m.remove());
+	});
+
+	const markup = (width: number) => `
+		<nldd-menu-bar style="width: ${width}px;">
+			<nldd-menu-bar-item text="Home"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="About"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Contact"></nldd-menu-bar-item>
+			<nldd-menu-bar-item text="Support"></nldd-menu-bar-item>
+		</nldd-menu-bar>
+	`;
+
+	const itemsOf = () => [...el.querySelectorAll('nldd-menu-bar-item')] as HTMLElement[];
+	const buttonOf = () =>
+		el.shadowRoot!.querySelector('.menu-bar__overflow-button') as HTMLElement;
+	const overflowed = () => itemsOf().map(item => item.hasAttribute('data-overflow'));
+
+	/** Render wide enough for everything, then narrow until items drop off. */
+	async function narrowUntilOverflow(): Promise<void> {
+		el = await fixture(markup(2000));
+		await waitForUpdate(el);
+		await until(() => buttonOf().style.display === 'none');
+		// Half of what the items need together forces a cutoff wherever their
+		// own width happens to put it, so no measurement is hard-coded.
+		const total = itemsOf().reduce((sum, item) => sum + item.offsetWidth, 0);
+		el.style.width = `${Math.round(total / 2)}px`;
+		await until(() => overflowed().some(Boolean));
+	}
+
+	it('leaves every item in place when they all fit', async () => {
+		el = await fixture(markup(2000));
+		await waitForUpdate(el);
+		await until(() => buttonOf().style.display === 'none');
+
+		expect(overflowed()).toEqual([false, false, false, false]);
+		expect(itemsOf().every(item => item.style.display !== 'none')).toBe(true);
+		expect(buttonOf().style.display).toBe('none');
+	});
+
+	it('hides the items that no longer fit once the container narrows', async () => {
+		await narrowUntilOverflow();
+
+		const hidden = overflowed();
+		expect(hidden.some(Boolean)).toBe(true);
+		expect(buttonOf().style.display).toBe('inline-block');
+		// The hidden ones are the last ones: nothing visible sits after a hidden item.
+		expect(hidden.indexOf(true)).toBe(hidden.lastIndexOf(false) + 1);
+		// display and the attribute say the same thing about every item.
+		itemsOf().forEach((item, i) => {
+			expect(item.style.display === 'none').toBe(hidden[i]);
+		});
+	});
+
+	it('puts the items back when the container grows again', async () => {
+		await narrowUntilOverflow();
+
+		el.style.width = '2000px';
+		await until(() => !overflowed().some(Boolean));
+
+		expect(itemsOf().every(item => item.style.display !== 'none')).toBe(true);
+		expect(buttonOf().style.display).toBe('none');
+	});
+
+	it('defers the recalc while the overflow menu is open, and flushes it on close', async () => {
+		await narrowUntilOverflow();
+
+		(el as unknown as { _toggleOverflowMenu(): void })._toggleOverflowMenu();
+		await waitForUpdate(el);
+		const menu = document.querySelector('nldd-menu') as HTMLElement;
+		await until(() => menu.matches(':popover-open'));
+
+		// Widening would normally put the items back. While the menu is open it
+		// must not: nldd-menu is anchored to the trigger inside the overflow
+		// button, and relaying out underneath it sends the menu off-screen.
+		const before = itemsOf().map(item => item.style.display);
+		el.style.width = '2000px';
+		await nextFrames();
+		await nextFrames();
+		expect(itemsOf().map(item => item.style.display)).toEqual(before);
+
+		menu.hidePopover();
+		await until(() => !overflowed().some(Boolean));
+		expect(itemsOf().every(item => item.style.display !== 'none')).toBe(true);
 	});
 });

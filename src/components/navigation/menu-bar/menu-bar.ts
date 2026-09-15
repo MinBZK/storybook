@@ -178,8 +178,10 @@ export class NLDDMenuBar extends withTranslations(LitElement, nlddMenuBarTransla
 
 	/**
 	 * Calculate which slotted items overflow and hide them behind an overflow button.
-	 * Note: not unit-tested — JSDOM lacks layout support (offsetWidth, clientWidth).
-	 * Covered by visual/E2E testing via Storybook stories.
+	 * Tested both ways in menu-bar.test.ts: with real layout for the whole path, and
+	 * with mocked widths for the arithmetic. The space reserved for the button needs
+	 * the mocks — the button is a shrinkable flex item, so the rendered layout
+	 * absorbs whatever the arithmetic leaves over and always looks right.
 	 */
 	private _updateOverflow(): void {
 		const overflowButton = this._overflowButton;

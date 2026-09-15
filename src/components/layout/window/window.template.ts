@@ -15,6 +15,9 @@ export function windowTemplate(component: NLDDWindow): TemplateResult {
 			<div class="window__body">
 				<slot></slot>
 			</div>
+			<!-- Inside the dialog, so it escapes the inertness a modal imposes on
+			     everything outside it. Plumbing, not consumer API. -->
+			<slot name="notifications"></slot>
 		</dialog>
 	`;
 }

@@ -1,6 +1,8 @@
-import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import { fixture, cleanup, waitForUpdate, until } from '../../../test-utils.js';
 import './notification.js';
+import '../../layout/sheet/sheet.js';
+import '../modal-dialog/modal-dialog.js';
 import type { NLDDNotification } from './notification.js';
 
 /** The component moves itself out of the fixture and into the shared region, so
@@ -210,5 +212,103 @@ describe('nldd-notification', () => {
 		`);
 		expect(warn).toHaveBeenCalled();
 		warn.mockRestore();
+	});
+});
+
+describe('nldd-notification in a modal overlay', () => {
+	const REGION = 'nldd-notification-region';
+	let sheet: HTMLElement;
+
+	// The token stylesheet is not loaded in tests, and without this value the
+	// region's top/right are invalid and it falls back to its static position,
+	// which would make a hit test say nothing about the real layout.
+	beforeEach(() => {
+		document.documentElement.style.setProperty('--semantics-overlays-inset', '16px');
+	});
+
+	afterEach(() => {
+		document.documentElement.style.removeProperty('--semantics-overlays-inset');
+		if (sheet) cleanup(sheet);
+		document.getElementById(REGION)?.remove();
+		document.querySelectorAll('nldd-notification').forEach((n) => n.remove());
+	});
+
+	const region = () => document.getElementById(REGION);
+	const settle = () => new Promise((r) => setTimeout(r, 150));
+
+	async function openSheet(): Promise<HTMLElement> {
+		const el = await fixture('<nldd-sheet accessible-label="Sheet"><div style="height:120px">x</div></nldd-sheet>');
+		await waitForUpdate(el);
+		(el as unknown as { show(): void }).show();
+		await settle();
+		return el;
+	}
+
+	async function raise(): Promise<HTMLElement> {
+		const note = document.createElement('nldd-notification');
+		note.setAttribute('text', 'Bericht');
+		note.setAttribute('duration', '0');
+		document.body.appendChild(note);
+		await settle();
+		return note;
+	}
+
+	/** What the consumer actually cares about: can the message be clicked. */
+	function hitTagAt(el: HTMLElement): string {
+		const r = el.getBoundingClientRect();
+		const hit = document.elementFromPoint(Math.round(r.left + r.width / 2), Math.round(r.top + r.height / 2));
+		return hit ? hit.tagName : 'NULL';
+	}
+
+	it('reaches a notification raised while a sheet is open, instead of leaving it behind the sheet', async () => {
+		sheet = await openSheet();
+		const note = await raise();
+
+		expect(region()!.parentElement).toBe(sheet);
+		expect(note.isConnected).toBe(true);
+		expect(hitTagAt(note)).toBe('NLDD-NOTIFICATION');
+	});
+
+	it('carries a notification that was already on screen into a sheet that opens over it', async () => {
+		const note = await raise();
+		expect(region()!.parentElement).toBe(document.body);
+
+		sheet = await openSheet();
+
+		expect(region()!.parentElement).toBe(sheet);
+		// The move disconnects the region; a notification must not read that as
+		// having been dismissed.
+		expect(note.isConnected).toBe(true);
+		expect(region()!.contains(note)).toBe(true);
+	});
+
+	it('sinks back to the body when the sheet closes', async () => {
+		sheet = await openSheet();
+		const note = await raise();
+		expect(region()!.parentElement).toBe(sheet);
+
+		(sheet as unknown as { hide(): void }).hide();
+		await until(() => region()?.parentElement === document.body);
+
+		expect(region()!.parentElement).toBe(document.body);
+		expect(note.isConnected).toBe(true);
+	});
+
+	it('follows the topmost overlay when one opens over another, and one level back when it closes', async () => {
+		sheet = await openSheet();
+		await raise();
+		expect(region()!.parentElement).toBe(sheet);
+
+		const dialog = await fixture('<nldd-modal-dialog accessible-label="Dialog" text="Zeker weten?"></nldd-modal-dialog>');
+		await waitForUpdate(dialog);
+		(dialog as unknown as { show(): void }).show();
+		await settle();
+		expect(region()!.parentElement).toBe(dialog);
+
+		(dialog as unknown as { hide(): void }).hide();
+		await until(() => region()?.parentElement === sheet);
+		expect(region()!.parentElement).toBe(sheet);
+
+		cleanup(dialog);
 	});
 });

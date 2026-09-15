@@ -23,6 +23,9 @@ export function modalDialogTemplate(component: NLDDModalDialog) {
 				<slot></slot>
 				<slot slot="actions" name="actions"></slot>
 			</nldd-inline-dialog>
+			<!-- Inside the dialog, so it escapes the inertness a modal imposes on
+			     everything outside it. Plumbing, not consumer API. -->
+			<slot name="notifications"></slot>
 		</dialog>
 	`;
 }
