@@ -100,6 +100,7 @@
       {
         "assets": [
           "package.json",
+          "package-lock.json",
           "CHANGELOG.md",
           "skills/nldd/changelog.md",
           "skills/nldd/reference.md",
