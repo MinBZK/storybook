@@ -31365,7 +31365,7 @@
             },
             {
               "name": "empty",
-              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type=\"listbox\"` and a `[slot=\"toolbar\"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
+              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so a `[slot=\"toolbar\"]` is hidden along with them, and an unfilled slot takes the whole list off the page. A `type=\"listbox\"` is the exception on both counts: its search field is where the rows come from, so the field, the toolbar and the list itself stay, and the message waits until there is a query, the same as `no-results` does. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
             },
             {
               "name": "no-results",

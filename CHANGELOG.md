@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **A `type="listbox"` keeps its search field, whatever its rows do.** Since 0.8.84 a list with no rows at all takes its search field and its `[slot="toolbar"]` off the page along with them, on the reasoning that there is nothing left to search in. That is right for rows that are already on the page and get filtered by hiding them. It is wrong for a listbox, where the search field is where the rows come from in the first place. A consumer that queries its backend per keystroke and slots the matches back in, which is the only way to reach every entry in an index of thousands, has no rows before the first query and none after a query that matched nothing, so the field went missing in exactly the two states that need it: an opening popover showed a message and no way to type. The field, the toolbar and the list itself now stay in listbox mode. And because an untouched listbox has no question to answer yet, `[slot="empty"]` waits for a query the way `[slot="no-results"]` already did: an empty search is not an empty list.
+
 ## [0.8.88](https://github.com/MinBZK/storybook/compare/v0.8.87...v0.8.88) (2026-09-15)
 
 ### Fixed
