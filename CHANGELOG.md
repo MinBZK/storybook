@@ -9,6 +9,12 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Highlights
+
+- **A notification reaches you wherever you are working.** Since 0.8.88 a notification moves into the topmost open overlay, and this release finishes that job. One raised in a sheet, a window or a modal dialog that was already open before the first notification arrived now finds it, where it used to sit behind the backdrop, dimmed and out of reach of a click. In an overlay notifications show in the browser's top layer, in the corner of the screen, instead of inside the sheet that slides them away or the dialog that cuts them off. Escape dismisses the notification and leaves the overlay open behind it. And in Chrome and Edge the open deck stays open while you work through it: dismissing one used to fold the rest away, so every next notification meant opening the list again.
+
+- **A radio group is one group again, and a screen reader counts it as one.** VoiceOver announced every option as "1 of 1", in `nldd-segmented-control` and just as much in `nldd-radio-button-group`, `nldd-toggle-button-group type="radio"` and loose radio buttons. Each option rendered a native radio in a shadow root of its own, and the browser groups radios within one tree only, so every option was a group of one. `aria-setsize` does not fix that: VoiceOver counts the native group it sees and ignores the number. The option itself is the radio now, and a group is one tree again. The count is right, Tab stops once per group instead of once per option, the arrow keys move and choose the way they do for native radios, and a required group holds the form until something is chosen.
+
 ### Changed
 
 - **The edge of a surface is lighter than a line inside it.** `--semantics-surfaces-base-border-color` and `--semantics-surfaces-tinted-border-color` followed `--semantics-dividers-color`, so the outline of a card, a table or a list was drawn in the same grey as a rule between two rows. That reads hard: the edge that holds a container together was as loud as a line that separates its content. Both are one step lighter on the grey ramp now, `neutral-50` in light mode and `neutral-150` in dark, which takes a third to a half off their contrast with the surface they sit on. Everything that draws its edge from these tokens follows: `nldd-table`, `nldd-list`, `nldd-code-viewer` and `nldd-rich-text`. Dividers keep the grey they had.
