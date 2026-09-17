@@ -149,11 +149,11 @@ function ensureRegion(label: string): HTMLElement {
 	// deliberately cannot be set. Top right from md so it stays clear of the
 	// content, full width across the top below that, where there is no corner to
 	// spare. One grid cell holds every notification, so the deck stacks without
-	// any of them taking room of its own. The rows keep their own height: Safari
-	// makes the region as tall as its max-height inside an overlay, and stretched
-	// rows would carry the strip under the deck away from it. The rest undoes
-	// what the browser gives a popover, which the region is inside an overlay:
-	// centered, bordered, padded, on a background of its own, and scrolling.
+	// any of them taking room of its own. The rows keep their own height: left to
+	// stretch, they make Safari size the region to its max-height inside an
+	// overlay. The rest undoes what the browser gives a popover, which the region
+	// is inside an overlay: centered, bordered, padded, on a background of its
+	// own, and scrolling.
 	region.style.cssText = [
 		'box-sizing: border-box',
 		'position: fixed',
@@ -207,10 +207,10 @@ function ensureRegion(label: string): HTMLElement {
  * it stays exactly as tall as the deck is when it fans out, so what you point
  * at is what you get.
  *
- * A second row of the region's grid rather than hung below the region. Safari
- * makes the region as tall as its max-height inside an overlay, and a strip at
- * the region's bottom edge ended up at the bottom of the screen, far from the
- * deck it opens.
+ * A second row of the region's grid rather than hung below the region, so it
+ * follows the deck and not the region's edge. A region taller than its deck,
+ * as Safari made it inside an overlay while the rows still stretched, would
+ * otherwise put the strip far from the deck it opens.
  */
 function makeExpander(region: HTMLElement): HTMLElement {
 	const strip = document.createElement('div');

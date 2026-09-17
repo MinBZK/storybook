@@ -486,7 +486,8 @@ describe('nldd-notification in a modal overlay', () => {
 	});
 
 	it('keeps the strip right under the front notification when the region is taller than the deck', async () => {
-		// What Safari does in an overlay: the region as tall as its max-height.
+		// A region taller than its deck, as Safari made it in an overlay while the
+		// rows still stretched.
 		const root = document.documentElement.style;
 		root.setProperty('--primitives-space-24', '24px');
 		try {
