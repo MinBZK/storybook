@@ -175,7 +175,20 @@ const cursorLayer = layer({
 					// period after a link goes, the caret does not hop over the badge.
 					// Editing at the badge itself keeps the side it was on, which is the
 					// URL being typed.
-					const fromOutside = linkEndsAt(update.state, head) && !linkEndsAt(update.startState, oldHead);
+					//
+					// A link that only now ends here is one the edit just made, and what
+					// it is decides where the caret belongs. A `[text](url)` link is
+					// finished by its `)`, so the caret goes after the badge. A bare URL
+					// is still growing: `www.apple.c` parses as a whole link the moment
+					// it is typed, while the user is on their way to `.com`, so the caret
+					// stays on the link's side and the next letter extends the URL. A
+					// space, or anything else that ends a URL, is what puts you outside.
+					// Only while typing: a Backspace that eats the period behind a URL
+					// arrives at the badge from the right and stays there.
+					const grew = tr.isUserEvent('input') && bareUrlEndsAt(update.state, head);
+					const fromOutside = linkEndsAt(update.state, head)
+						&& !linkEndsAt(update.startState, oldHead)
+						&& !grew;
 					hint = { head, side: fromOutside ? 1 : -1 };
 				}
 				else if (tr.isUserEvent('delete.forward')) hint = { head, side: 1 };
