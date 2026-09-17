@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, until } from '../../../test-utils.js';
 import type { NLDDToggleButton } from './toggle-button.js';
 import './toggle-button.js';
 
@@ -477,10 +477,12 @@ describe('nldd-toggle-button – tooltip', () => {
 		await waitForUpdate(tooltip);
 		expect(bubble.matches(':popover-open')).toBe(true);
 
+		// The tooltip waits 50ms before it goes, and a test that budgets
+		// wall-clock time for that measures how busy the machine is.
+		tooltip.style.setProperty('--_hide-delay', '0');
 		// WCAG 1.4.13: away without moving focus.
 		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
-		await new Promise((resolve) => setTimeout(resolve, 400));
-		await waitForUpdate(tooltip);
+		await until(() => !bubble.matches(':popover-open'));
 		expect(bubble.matches(':popover-open')).toBe(false);
 	});
 
