@@ -48,10 +48,18 @@ describe('nldd-segmented-control-item', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders a native input', async () => {
+	it('is the radio itself in radio mode, without an input of its own', async () => {
 		el = await fixture('<nldd-segmented-control-item></nldd-segmented-control-item>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')).not.toBeNull();
+		expect(el.getAttribute('role')).toBe('radio');
+		expect(el.shadowRoot!.querySelector('input')).toBeNull();
+	});
+
+	it('renders a native input in checkbox mode', async () => {
+		el = await fixture('<nldd-segmented-control-item input-type="checkbox"></nldd-segmented-control-item>');
+		await waitForUpdate(el);
+		expect(el.shadowRoot!.querySelector('input')!.type).toBe('checkbox');
+		expect(el.hasAttribute('role')).toBe(false);
 	});
 });
 
@@ -160,11 +168,12 @@ describe('nldd-segmented-control – state sync', () => {
 
 	it('forwards name as groupName to items', async () => {
 		el = await fixture<NLDDSegmentedControl>(`
-			<nldd-segmented-control name="view">
+			<nldd-segmented-control name="view" type="checkbox">
 				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
 			</nldd-segmented-control>
 		`);
 		await waitForUpdate(el);
+		expect(getItems(el)[0].groupName).toBe('view');
 		expect(getInput(getItems(el)[0]).name).toBe('view');
 	});
 });
@@ -182,9 +191,7 @@ describe('nldd-segmented-control – radio change', () => {
 		await waitForUpdate(el);
 		let detail: any;
 		el.addEventListener('change', ((e: CustomEvent) => { detail = e.detail; }) as EventListener);
-		const input = getInput(getItems(el)[1]);
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		getItems(el)[1].click();
 		expect(detail?.value).toBe('b');
 	});
 
@@ -193,9 +200,7 @@ describe('nldd-segmented-control – radio change', () => {
 		await waitForUpdate(el);
 		let fired = false;
 		el.addEventListener('change', () => { fired = true; });
-		const input = getInput(getItems(el)[0]);
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		getItems(el)[0].click();
 		expect(fired).toBe(false);
 	});
 });
@@ -314,6 +319,46 @@ describe('nldd-segmented-control – keyboard navigation', () => {
 		await waitForUpdate(el);
 		expect(el.value).toBe('c');
 	});
+
+	it('the space bar selects the option it is pressed on', async () => {
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
+		await waitForUpdate(el);
+		const item = getItems(el)[2];
+		item.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+		await waitForUpdate(el);
+		expect(el.value).toBe('c');
+	});
+
+	it('the space bar leaves a disabled option alone', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control value="a">
+				<nldd-segmented-control-item value="a" text="A"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="B" disabled></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		await waitForUpdate(el);
+		const item = getItems(el)[1];
+		item.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
+		item.click();
+		await waitForUpdate(el);
+		expect(el.value).toBe('a');
+	});
+
+	it('Enter submits the form the group belongs to', async () => {
+		const form = document.createElement('form');
+		document.body.appendChild(form);
+		el = await fixture<NLDDSegmentedControl>(radioFixture('a'));
+		form.appendChild(el);
+		form.appendChild(document.createElement('button'));
+		await waitForUpdate(el);
+
+		const submitted = vi.fn((e: Event) => e.preventDefault());
+		form.addEventListener('submit', submitted);
+		getItems(el)[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+
+		expect(submitted).toHaveBeenCalledTimes(1);
+		form.remove();
+	});
 });
 
 
@@ -344,12 +389,12 @@ describe('nldd-segmented-control – ARIA', () => {
 		expect(el.getAttribute('role')).toBe('group');
 	});
 
-	it('native radio input has correct checked state', async () => {
+	it('announces the checked state on the item that is the radio', async () => {
 		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
 		await waitForUpdate(el);
 		const items = getItems(el);
-		expect(getInput(items[0]).checked).toBe(false);
-		expect(getInput(items[1]).checked).toBe(true);
+		for (const item of items) await waitForUpdate(item);
+		expect(items.map((item) => item.getAttribute('aria-checked'))).toEqual(['false', 'true', 'false']);
 	});
 });
 
@@ -423,6 +468,25 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		expect(tooltip!.getAttribute('text')).toBe('Zoom in');
 	});
 
+	it('shows the tooltip on focus in radio mode, where the focus is on the item', async () => {
+		el = await fixture<NLDDSegmentedControlItem>(`
+			<nldd-segmented-control-item variant="icon" text="Zoom in" icon="zoom-in"></nldd-segmented-control-item>
+		`);
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip') as HTMLElement;
+		const bubble = tooltip.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+
+		(el as NLDDSegmentedControlItem).focus();
+		await waitForUpdate(tooltip);
+		expect(bubble.matches(':popover-open')).toBe(true);
+
+		// WCAG 1.4.13: away without moving focus.
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+		await new Promise((resolve) => setTimeout(resolve, 400));
+		await waitForUpdate(tooltip);
+		expect(bubble.matches(':popover-open')).toBe(false);
+	});
+
 	it('does not wrap in nldd-tooltip when variant is text', async () => {
 		el = await fixture<NLDDSegmentedControlItem>(`
 			<nldd-segmented-control-item variant="text" text="Label"></nldd-segmented-control-item>
@@ -449,10 +513,10 @@ describe('nldd-segmented-control-item – tooltip', () => {
 		expect(icon).not.toBeNull();
 		expect(icon!.getAttribute('name')).toBe('bold');
 		expect(text.textContent?.trim()).toBe('Vet');
-		// The visible text carries the accessible name, so it must not be hidden
-		// and the input must not also carry an aria-label.
+		// The visible text stays readable, and the item carries the name it is
+		// announced by: it is the radio.
 		expect(text.getAttribute('aria-hidden')).toBeNull();
-		expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-label')).toBeNull();
+		expect(el.getAttribute('aria-label')).toBe('Vet');
 	});
 
 	it('shows the icon-placeholder for variant icon without an icon', async () => {
@@ -533,7 +597,7 @@ describe('nldd-segmented-control – focus()', () => {
 		const items = getItems(el);
 		await waitForUpdate(items[1]);
 		el.focus();
-		expect(deepActiveElement()).toBe(items[1].shadowRoot!.querySelector('.segmented-control__item-input'));
+		expect(deepActiveElement()).toBe(items[1]);
 	});
 
 	it('focus() falls back to the first enabled item when nothing is selected', async () => {
@@ -547,7 +611,7 @@ describe('nldd-segmented-control – focus()', () => {
 		const items = getItems(el);
 		await waitForUpdate(items[1]);
 		el.focus();
-		expect(deepActiveElement()).toBe(items[1].shadowRoot!.querySelector('.segmented-control__item-input'));
+		expect(deepActiveElement()).toBe(items[1]);
 	});
 
 	it('leaves an aria-label the consumer put on the group', async () => {
@@ -558,5 +622,53 @@ describe('nldd-segmented-control – focus()', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-label')).toBe('Weergave');
+	});
+});
+
+describe('nldd-segmented-control – place in the group', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	async function settle(control: NLDDSegmentedControl): Promise<NLDDSegmentedControlItem[]> {
+		await waitForUpdate(control);
+		const items = getItems(control);
+		for (const item of items) await waitForUpdate(item);
+		return items;
+	}
+
+	it('in radio mode tells each item its place and keeps one stop for Tab', async () => {
+		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
+		const items = await settle(el as NLDDSegmentedControl);
+
+		expect(items.map((item) => item.getAttribute('aria-posinset'))).toEqual(['1', '2', '3']);
+		expect(items.map((item) => item.getAttribute('aria-setsize'))).toEqual(['3', '3', '3']);
+		expect(items.map((item) => item.getAttribute('tabindex'))).toEqual(['-1', '0', '-1']);
+	});
+
+	it('moves the stop for Tab to the item that gets selected', async () => {
+		el = await fixture<NLDDSegmentedControl>(radioFixture('b'));
+		const control = el as NLDDSegmentedControl;
+		await settle(control);
+
+		control.value = 'c';
+		const items = await settle(control);
+
+		expect(items.map((item) => item.getAttribute('tabindex'))).toEqual(['-1', '-1', '0']);
+	});
+
+	it('in checkbox mode leaves every item in the tab order and uncounted', async () => {
+		el = await fixture<NLDDSegmentedControl>(`
+			<nldd-segmented-control type="checkbox" name="opmaak">
+				<nldd-segmented-control-item value="a" text="Alpha"></nldd-segmented-control-item>
+				<nldd-segmented-control-item value="b" text="Beta"></nldd-segmented-control-item>
+			</nldd-segmented-control>
+		`);
+		const items = await settle(el as NLDDSegmentedControl);
+
+		expect(items.map((item) => getInput(item).hasAttribute('aria-setsize'))).toEqual([false, false]);
+		expect(items.map((item) => getInput(item).hasAttribute('tabindex'))).toEqual([false, false]);
 	});
 });

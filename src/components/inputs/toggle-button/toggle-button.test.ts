@@ -467,6 +467,23 @@ describe('nldd-toggle-button – tooltip', () => {
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
 	});
 
+	it('shows the tooltip on focus in radio mode, where the focus is on the host', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="radio" name="opmaak" value="vet" icon="bold" accessible-label="Vet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip') as HTMLElement & { _visible?: boolean };
+		const bubble = tooltip.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+
+		(el as NLDDToggleButton).focus();
+		await waitForUpdate(tooltip);
+		expect(bubble.matches(':popover-open')).toBe(true);
+
+		// WCAG 1.4.13: away without moving focus.
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+		await new Promise((resolve) => setTimeout(resolve, 400));
+		await waitForUpdate(tooltip);
+		expect(bubble.matches(':popover-open')).toBe(false);
+	});
+
 	it('participates in FormData when type="checkbox" and selected', async () => {
 		const form = await fixture<HTMLFormElement>('<form><nldd-toggle-button type="checkbox" name="fav" value="star" text="Favoriet" selected></nldd-toggle-button></form>');
 		el = form;

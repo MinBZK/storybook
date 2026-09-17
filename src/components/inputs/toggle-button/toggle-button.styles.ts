@@ -27,6 +27,7 @@ export const toggleButtonStyles = css`
 
 		${inheritedTextReset}
 		display: inline-block;
+		position: relative;
 		-webkit-user-select: none;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -34,6 +35,10 @@ export const toggleButtonStyles = css`
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host(:focus-visible) {
+		outline: none;
 	}
 
 	:host([size="xs"]) {
@@ -145,7 +150,8 @@ export const toggleButtonStyles = css`
 	}
 
 	.toggle-button:focus-visible,
-	.toggle-button:has(.toggle-button__input:focus-visible) {
+	.toggle-button:has(.toggle-button__input:focus-visible),
+	:host(:focus-visible) .toggle-button {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
@@ -202,6 +208,16 @@ export const toggleButtonStyles = css`
 		opacity: 0;
 		z-index: 1;
 		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.toggle-button__validation-input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		margin: 0;
+		pointer-events: none;
 		width: 100%;
 		height: 100%;
 	}

@@ -1088,7 +1088,7 @@ A password input field with visibility toggle and validation states.
 
 ### `<nldd-radio-button>`
 
-WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="radiogroup" and aria-labelledby for proper group semantics. <fieldset> <legend>Kies een optie</legend> <nldd-radio-button name="options" value="1">Optie 1</nldd-radio-button> <nldd-radio-button name="options" value="2">Optie 2</nldd-radio-button> </fieldset>
+WAI-ARIA: put the buttons of one group in a container with role="radiogroup" and a name of its own. A screen reader counts the options from that container, so a bare <fieldset> (which is a group, not a radiogroup) leaves them uncounted. nldd-radio-button-group does this for you. Radio buttons with the same name, in the same form and the same tree, form one group the way native radios do: checking one unchecks the others, the arrow keys move between them, Tab stops at the group once, and a screen reader hears each one's place in it. The element itself is the radio, because an input per shadow root would leave every button a group of one. The shape is all this component draws. A radio with a label beside it is nldd-radio-button-field. <fieldset role="radiogroup" aria-labelledby="options-label"> <legend id="options-label">Kies een optie</legend> <nldd-radio-button name="options" value="1" accessible-label="Optie 1"></nldd-radio-button> <nldd-radio-button name="options" value="2" accessible-label="Optie 2"></nldd-radio-button> </fieldset>
 
 **Attributes**
 
@@ -1097,11 +1097,12 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
 | `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for a control owned by a roving container (a row of an nldd-list, where the arrow keys move between rows) that manages focus itself. Still mouse- and script-focusable. |
-| `decorative` | `boolean` | Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control. |
-| `required` | `boolean` | Required state |
+| `decorative` | `boolean` | Renders the shape only: no role, no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row or an nldd-radio-button-field that is itself the radio; putting a second radio in there would nest a control inside a control. |
+| `required` | `boolean` | Required state. What it asks is whether anything in the group is checked, as a native radio does. |
+| `focus-ring` | `boolean` | Draws the focus ring around the shape. Set by nldd-radio-button-field, which is the radio itself and holds the focus. Not part of the public API. |
 | `name` | `string` | Radio group name for form submission; ties the buttons of one group together |
 | `value` | `string` | Value submitted with the form when this radio button is checked |
-| `accessible-label` | `string` | Accessible label forwarded as aria-label to the native input. |
+| `accessible-label` | `string` | Accessible label, set as aria-label on this element: it is the radio. |
 | `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. Note: aria-labelledby is not supported as IDREF resolution cannot cross shadow DOM boundaries. |
 
 **Events**
@@ -1112,7 +1113,7 @@ WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role="
 
 ### `<nldd-radio-button-field>`
 
-A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name. Form-associated: the checked field submits its `value` under `name` (the inner nldd-radio-button sits in the shadow root and never joins the consumer's form; the field submits on its behalf). Unchecking siblings is the group's job, so exactly one value per group reaches the form.
+A radio button with an inline label. Use inside nldd-radio-button-group, which sets the name and labels the group. Fields that stand on their own group by name, the way native radios do: checking one unchecks the others, the arrow keys move between them and Tab stops at the group once. Put them in a container with role="radiogroup", or a screen reader has nothing to count them from. The field is the radio: it carries the role, the state, the label it is announced by and the focus, and the nldd-radio-button inside only draws the shape. A radio of its own in there would be a second control inside a control, and a group of one to count. Form-associated: the checked field submits its `value` under `name`. Unchecking siblings is the group's job, so exactly one value per group reaches the form.
 
 **Attributes**
 
@@ -1121,8 +1122,8 @@ A radio button with an inline label. Use inside nldd-radio-button-group for keyb
 | `checked` | `boolean` | Checked state |
 | `disabled` | `boolean` | Disabled state |
 | `value` | `string` | Value for form submission |
-| `name` | `string` | Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
-| `required` | `boolean` | Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group. |
+| `name` | `string` | Radio group name for form submission; ties the fields of one group together. Set automatically by nldd-radio-button-group. |
+| `required` | `boolean` | Required state. What it asks is whether anything in the group is checked, as a native radio does. Set automatically by nldd-radio-button-group. |
 | `label` | `string` | Label text for the radio button |
 | `invalid` | `boolean` | Marks the control as invalid. Announced with aria-invalid; nothing is drawn for it. |
 
@@ -1201,11 +1202,11 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | --- | --- | --- |
 | `value` | `string` | Selected value for radio type |
 | `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md') |
-| `type` | `string` | Input type: 'radio' \| 'checkbox' (default: 'radio'). |
+| `type` | `string` | Selection mode: 'radio' \| 'checkbox' (default: 'radio'). |
 | `variant` | `string` | Content type for all items: 'text' \| 'icon' \| 'icon-and-text' (default: 'text') |
 | `disabled` | `boolean` | Disabled state for all items |
 | `width` | `string` | Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px') |
-| `name` | `string` | Name for form submission, forwarded to native inputs |
+| `name` | `string` | Name for form submission |
 | `accessible-label` | `string` | Accessible name for the group, set as aria-label |
 | `accessible-labeled-by` | `string` | Id of an external label element, set as aria-labelledby on the group |
 | `required` | `boolean` | Marks the group as required. Enforced in radio mode; in checkbox mode only announced. |
@@ -1236,9 +1237,9 @@ A horizontal group of mutually exclusive (radio) or multi-select (checkbox) opti
 | `icon` | `string` | Icon name for nldd-icon |
 | `size` | `string` | Control size: 'sm' \| 'md' \| 'lg' (default: 'md'). Set by nldd-segmented-control. |
 | `variant` | `string` | Content type: 'text' \| 'icon' \| 'icon-and-text' (default: 'text'). Set by nldd-segmented-control. |
-| `input-type` | `string` | Type of the native input: 'radio' \| 'checkbox' (default: 'radio'). Set by nldd-segmented-control. |
-| `group-name` | `string` | Name of the group for form submission, put on the native input. Set by nldd-segmented-control. |
-| `required` | `boolean` | Required state. Set by nldd-segmented-control. |
+| `input-type` | `string` | Selection mode: 'radio' \| 'checkbox' (default: 'radio'). In radio mode the item is the radio itself, in checkbox mode it renders a native checkbox. Set by nldd-segmented-control. |
+| `group-name` | `string` | Name of the group for form submission, put on the native checkbox. Set by nldd-segmented-control. |
+| `required` | `boolean` | Required state of the native checkbox. In radio mode the group carries the constraint. |
 
 **Slots**
 
@@ -1459,13 +1460,13 @@ Two columns, hours and minutes, that slide like a wheel past the selection in th
 
 ### `<nldd-toggle-button>`
 
-A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.
+A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), a checkbox, or a radio. In radio mode the button itself is the radio: it carries the role, the state and its place in the group. A native radio in a shadow root of its own would be a group of one, counted as "1 of 1" and stopped at by Tab.
 
 **Attributes**
 
 | Attribute | Type | Description |
 | --- | --- | --- |
-| `type` | `'button' \| 'checkbox' \| 'radio'` | Underlying element (default: 'button') |
+| `type` | `'button' \| 'checkbox' \| 'radio'` | What the button is: a button with aria-pressed, a native checkbox, or a radio (default: 'button') |
 | `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | Button size (default: 'md') |
 | `selected` | `boolean` | Selected state |
 | `disabled` | `boolean` | Disabled state |

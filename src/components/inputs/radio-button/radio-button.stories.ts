@@ -5,12 +5,19 @@ import './radio-button.js';
  * De Radio Button component wordt gebruikt voor exclusieve keuzes binnen een groep opties.
  * Slechts één radio button binnen een groep (met dezelfde `name`) kan tegelijkertijd geselecteerd zijn.
  *
+ * Dit component tekent alleen de vorm. Wil je een zichtbaar label ernaast, gebruik
+ * dan `nldd-radio-button-field`, en voor een hele groep `nldd-radio-button-group`.
+ *
+ * Zet de opties van een groep in een container met `role="radiogroup"` en een eigen
+ * naam: een schermlezer telt de opties daar. Een kale `<fieldset>` is een group en
+ * geen radiogroup, en dan blijven ze ongeteld.
+ *
  * ## Gebruik
  * ```html
- * <fieldset>
- *   <legend>Kies een optie</legend>
- *   <nldd-radio-button name="option" value="1">Optie 1</nldd-radio-button>
- *   <nldd-radio-button name="option" value="2">Optie 2</nldd-radio-button>
+ * <fieldset role="radiogroup" aria-labelledby="optie-label">
+ *   <legend id="optie-label">Kies een optie</legend>
+ *   <nldd-radio-button name="option" value="1" accessible-label="Optie 1"></nldd-radio-button>
+ *   <nldd-radio-button name="option" value="2" accessible-label="Optie 2"></nldd-radio-button>
  * </fieldset>
  * ```
  */
@@ -98,30 +105,34 @@ export const Standaard = {
 	args: {},
 };
 
+/* Elke toestand krijgt een eigen naam. Op de docs-pagina staan deze voorbeelden
+ * onder elkaar in één document, en radio buttons met dezelfde naam vormen daar
+ * samen één groep: dan zou er van al deze demo's maar één aangevinkt kunnen
+ * zijn en maar één te focussen met Tab. */
 export const Geselecteerd = {
 	render: Template,
-	args: { checked: true },
+	args: { checked: true, name: 'demo-geselecteerd' },
 };
 
 export const Uitgeschakeld = {
 	render: Template,
-	args: { disabled: true },
+	args: { disabled: true, name: 'demo-uitgeschakeld' },
 };
 
 export const GeselecteerdUitgeschakeld = {
 	render: Template,
-	args: { checked: true, disabled: true },
+	args: { checked: true, disabled: true, name: 'demo-geselecteerd-uitgeschakeld' },
 };
 
 export const RadioGroep = {
 	render: () => html`
-	<fieldset style="border: none; padding: 0; margin: 0;">
-		<legend style="font-size: 16px; font-weight: 550; margin-bottom: 12px;">Kies een optie</legend>
+	<fieldset role="radiogroup" aria-labelledby="radio-groep-label" style="border: none; padding: 0; margin: 0;">
+		<legend id="radio-groep-label" style="font-size: 16px; font-weight: 550; margin-bottom: 12px;">Kies een optie</legend>
 		<div style="display: flex; flex-direction: column; gap: 12px;">
-			<nldd-radio-button name="groep" value="1" checked>Optie 1</nldd-radio-button>
-			<nldd-radio-button name="groep" value="2">Optie 2</nldd-radio-button>
-			<nldd-radio-button name="groep" value="3">Optie 3</nldd-radio-button>
-			<nldd-radio-button name="groep" value="4" disabled>Optie 4 (uitgeschakeld)</nldd-radio-button>
+			<nldd-radio-button name="groep" value="1" checked accessible-label="Optie 1"></nldd-radio-button>
+			<nldd-radio-button name="groep" value="2" accessible-label="Optie 2"></nldd-radio-button>
+			<nldd-radio-button name="groep" value="3" accessible-label="Optie 3"></nldd-radio-button>
+			<nldd-radio-button name="groep" value="4" disabled accessible-label="Optie 4 (uitgeschakeld)"></nldd-radio-button>
 		</div>
 	</fieldset>
 `,

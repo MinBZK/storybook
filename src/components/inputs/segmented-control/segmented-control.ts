@@ -8,11 +8,11 @@
  * @attr {string} value - Selected value for radio type
  * @prop {string[]} values - Selected values for checkbox type (property binding only, not an attribute)
  * @attr {string} size - Control size: 'sm' | 'md' | 'lg' (default: 'md')
- * @attr {string} type - Input type: 'radio' | 'checkbox' (default: 'radio').
+ * @attr {string} type - Selection mode: 'radio' | 'checkbox' (default: 'radio').
  * @attr {string} variant - Content type for all items: 'text' | 'icon' | 'icon-and-text' (default: 'text')
  * @attr {boolean} disabled - Disabled state for all items
  * @attr {string} width - Width mode: 'full' (stretches to container), 'fit-content' (per-item content size), or any CSS length (e.g. '240px')
- * @attr {string} name - Name for form submission, forwarded to native inputs
+ * @attr {string} name - Name for form submission
  * @attr {string} accessible-label - Accessible name for the group, set as aria-label
  * @attr {string} accessible-labeled-by - Id of an external label element, set as aria-labelledby on the group
  * @attr {boolean} required - Marks the group as required. Enforced in radio mode; in checkbox mode only announced.
@@ -32,18 +32,19 @@
  * @attr {string} icon - Icon name for nldd-icon
  * @attr {string} size - Control size: 'sm' | 'md' | 'lg' (default: 'md'). Set by nldd-segmented-control.
  * @attr {string} variant - Content type: 'text' | 'icon' | 'icon-and-text' (default: 'text'). Set by nldd-segmented-control.
- * @attr {string} input-type - Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.
- * @attr {string} group-name - Name of the group for form submission, put on the native input. Set by nldd-segmented-control.
- * @attr {boolean} required - Required state. Set by nldd-segmented-control.
+ * @attr {string} input-type - Selection mode: 'radio' | 'checkbox' (default: 'radio'). In radio mode the item is the radio itself, in checkbox mode it renders a native checkbox. Set by nldd-segmented-control.
+ * @attr {string} group-name - Name of the group for form submission, put on the native checkbox. Set by nldd-segmented-control.
+ * @attr {boolean} required - Required state of the native checkbox. In radio mode the group carries the constraint.
  *
  * @slot icon - Slot for a custom icon (e.g. custom SVG). Only used when icon attribute is not set.
  *
  * @fires item-change - When item is activated; detail: { value: string, checked: boolean }
  */
 import { LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import { radioPositions, type RadioPosition } from '../../../utilities/radio-position.js';
 import {
 	segmentedControlStyles,
 	segmentedControlItemStyles,
@@ -53,7 +54,9 @@ import {
 	segmentedControlItemTemplate,
 } from './segmented-control.template.js';
 import './../../content/icon/icon.js';
+import type { NLDDTooltip } from '../../content/tooltip/tooltip.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg';
 export type SegmentedControlType = 'radio' | 'checkbox';
@@ -106,6 +109,116 @@ export class NLDDSegmentedControlItem extends LitElement {
 	@property({ type: String })
 	icon = '';
 
+	/** Set by nldd-segmented-control in radio mode: this item's place in the
+	 *  group, which it cannot count by itself. */
+	@state()
+	_groupPosition: RadioPosition | null = null;
+
+	/** The aria-label this item wrote on itself, so it only takes back its own. */
+	private _appliedRadioLabel: string | null = null;
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('click', this._onRadioClick);
+		this.addEventListener('keydown', this._onRadioKeyDown);
+		this.addEventListener('focus', this._onRadioFocus);
+		this.addEventListener('blur', this._onRadioBlur);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('click', this._onRadioClick);
+		this.removeEventListener('keydown', this._onRadioKeyDown);
+		this.removeEventListener('focus', this._onRadioFocus);
+		this.removeEventListener('blur', this._onRadioBlur);
+	}
+
+	/**
+	 * The tooltip of the icon variant, which shows itself when focus moves into
+	 * it. In radio mode the focus is on this element, outside it, so it hears
+	 * about focus and Escape from here.
+	 */
+	private get _tooltip(): NLDDTooltip | null {
+		return this.inputType === 'radio'
+			? this.shadowRoot?.querySelector('nldd-tooltip') ?? null
+			: null;
+	}
+
+	private _onRadioFocus = (): void => {
+		this._tooltip?._handleFocusIn();
+	};
+
+	private _onRadioBlur = (): void => {
+		this._tooltip?._handleTriggerLeave();
+	};
+
+	override updated(): void {
+		this._syncRadioAria();
+	}
+
+	/**
+	 * In radio mode this element is the radio.
+	 *
+	 * A native radio in a shadow root of its own is a group of one: a screen
+	 * reader counts it as "1 of 1" and Tab stops at every option. The role on the
+	 * element itself puts the whole group back in one tree, under the radiogroup
+	 * the control carries. Checkbox mode keeps its native input.
+	 */
+	private _syncRadioAria(): void {
+		if (this.inputType !== 'radio') {
+			for (const name of ['role', 'aria-checked', 'aria-disabled', 'aria-posinset', 'aria-setsize', 'tabindex']) {
+				this.removeAttribute(name);
+			}
+			this._appliedRadioLabel = setOwnedAttribute(this, 'aria-label', '', this._appliedRadioLabel);
+			return;
+		}
+		this.setAttribute('role', 'radio');
+		this.setAttribute('aria-checked', String(this.selected));
+		this._appliedRadioLabel = setOwnedAttribute(this, 'aria-label', this.text, this._appliedRadioLabel);
+		if (this.disabled) this.setAttribute('aria-disabled', 'true');
+		else this.removeAttribute('aria-disabled');
+
+		const position = this._groupPosition;
+		if (position) {
+			this.setAttribute('aria-posinset', String(position.posInSet));
+			this.setAttribute('aria-setsize', String(position.setSize));
+		} else {
+			this.removeAttribute('aria-posinset');
+			this.removeAttribute('aria-setsize');
+		}
+		// A disabled option is not in the tab order, as a native one is not.
+		const tabbable = !this.disabled && position?.tabbable !== false;
+		this.setAttribute('tabindex', tabbable ? '0' : '-1');
+	}
+
+	/** Checked, the way a click or the space bar does it. A radio never
+	 *  unchecks itself, so an option that is already selected says nothing. */
+	private _select(): void {
+		if (this.disabled || this.selected) return;
+		this.dispatchEvent(new CustomEvent('item-change', {
+			detail: { value: this.value, checked: true },
+			bubbles: true,
+			composed: true,
+		}));
+	}
+
+	private _onRadioClick = (): void => {
+		if (this.inputType !== 'radio') return;
+		this._select();
+	};
+
+	private _onRadioKeyDown = (e: KeyboardEvent): void => {
+		if (this.inputType !== 'radio' || this.disabled) return;
+		// Space is the key a radio answers to itself. The arrow keys and Enter
+		// belong to the group: it knows the form.
+		if (e.key === ' ') {
+			e.preventDefault();
+			this._select();
+			return;
+		}
+		// Escape puts the tooltip away without moving focus, as WCAG 1.4.13 asks.
+		if (e.key === 'Escape') this._tooltip?._handleTriggerLeave();
+	};
 
 	public _handleChange(e: Event): void {
 		const input = e.target as HTMLInputElement;
@@ -117,10 +230,15 @@ export class NLDDSegmentedControlItem extends LitElement {
 	}
 
 	/**
-	 * Delegates focus to the inner native `<input>`, so consumers can call
+	 * Delegates focus to whichever control this mode renders: the element itself
+	 * in radio mode, the native `<input>` in checkbox mode. Lets consumers call
 	 * `itemEl.focus()` without reaching into shadow DOM.
 	 */
 	override focus(options?: FocusOptions): void {
+		if (this.inputType === 'radio') {
+			super.focus(options);
+			return;
+		}
 		this.shadowRoot
 			?.querySelector<HTMLInputElement>('.segmented-control__item-input')
 			?.focus(options);
@@ -140,15 +258,16 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	/**
 	 * Marks the group as required: something has to be selected.
 	 *
-	 * Handed to the items, because that is where the platform reads it. One
-	 * required radio makes the whole group required, and the browser writes its
-	 * own message in the user's language.
+	 * The group carries the constraint, on a radio of its own that is checked as
+	 * soon as anything is selected. The items are the radios the user meets, and
+	 * they have no input left to read it from. The browser writes the message in
+	 * the user's language.
 	 *
 	 * Only in radio mode. The same attribute on a checkbox means that box has to
-	 * be ticked, so spreading it over a checkbox group would demand all of them
-	 * instead of one. HTML has no way to say "at least one of these", and
-	 * neither do we: `aria-required` still goes on the group so assistive
-	 * software says it, but nothing enforces it.
+	 * be ticked, so a required checkbox group would demand all of them instead of
+	 * one. HTML has no way to say "at least one of these", and neither do we:
+	 * `aria-required` still goes on the group so assistive software says it, but
+	 * nothing enforces it.
 	 */
 	@property({ type: Boolean, reflect: true })
 	required = false;
@@ -341,7 +460,6 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 
 	private _syncItems(): void {
 		const items = this._getItems();
-		items.forEach(item => { item.required = this.required && this.type !== 'checkbox'; });
 		this.toggleAttribute('aria-required', this.required);
 		// Announced, not drawn. See the note on `invalid`.
 		if (this.invalid) this.setAttribute('aria-invalid', 'true');
@@ -382,6 +500,16 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 			item.selected = this.type === 'checkbox'
 				? selectedValues.includes(item.value)
 				: item.value === this.value;
+		});
+
+		// Radio mode only: each item its place in the group, and the group one stop
+		// for Tab. Every item renders its input in a shadow root of its own, so the
+		// browser would count each as a group of one.
+		const positions = this.type === 'radio'
+			? radioPositions(items, (item) => item.selected, (item) => item.disabled)
+			: [];
+		items.forEach((item, index) => {
+			item._groupPosition = positions[index] ?? null;
 		});
 	}
 
@@ -437,6 +565,13 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 	private _handleKeydown = (e: KeyboardEvent): void => {
 		if (this.disabled || this.type === 'checkbox') return;
 
+		// Enter on a radio submits the form it belongs to, and the group is what
+		// the form knows.
+		if (e.key === 'Enter') {
+			submitOnEnter(this, e);
+			return;
+		}
+
 		const items = this._getItems().filter(item => !item.disabled);
 		if (items.length === 0) return;
 
@@ -471,7 +606,7 @@ export class NLDDSegmentedControl extends FormAssociated(LitElement) {
 			this.value = items[nextIndex].value;
 			this._syncItems();
 			this.commitFormValue();
-			items[nextIndex].shadowRoot?.querySelector('input')?.focus();
+			items[nextIndex].focus();
 			this.dispatchEvent(new CustomEvent('change', {
 				detail: { value: this.value },
 				bubbles: true,
