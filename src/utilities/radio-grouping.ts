@@ -136,8 +136,16 @@ export class RadioGrouping implements ReactiveController {
 		return { root: this.host.getRootNode(), name: this.host.name, form: this.host.internals.form };
 	}
 
+	/** Compared by value: a recount hands out new objects for the same place, and
+	 *  asking for a render on every one of those is a render per radio per
+	 *  keystroke, each of them scheduled from inside an update that had just
+	 *  finished. */
 	private _apply(position: RadioPosition | null, answered: boolean): void {
-		if (this.position === position && this.answered === answered) return;
+		const same = this.answered === answered
+			&& this.position?.posInSet === position?.posInSet
+			&& this.position?.setSize === position?.setSize
+			&& this.position?.tabbable === position?.tabbable;
+		if (same) return;
 		this.position = position;
 		this.answered = answered;
 		this.host.requestUpdate();

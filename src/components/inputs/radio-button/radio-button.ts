@@ -138,12 +138,18 @@ export class NLDDRadioButton extends DescribedBy(FormAssociated(LitElement)) {
 		this._initialChecked = this.checked;
 	}
 
-	override updated(changed: PropertyValues<this>): void {
-		super.updated(changed);
-		this._syncHostAria();
+	/** Counting happens before the render, not after it: the place this radio is
+	 *  given decides what `updated()` writes on it, and a count from there would
+	 *  ask for a second render of what was just drawn. */
+	override willUpdate(changed: PropertyValues<this>): void {
 		if (changed.has('checked') && this.checked) this._grouping.uncheckOthers();
 		if (changed.has('name') || changed.has('decorative')) this._grouping.regroup();
 		else if (changed.has('checked') || changed.has('disabled')) this._grouping.refresh();
+	}
+
+	override updated(changed: PropertyValues<this>): void {
+		super.updated(changed);
+		this._syncHostAria();
 	}
 
 	/**
