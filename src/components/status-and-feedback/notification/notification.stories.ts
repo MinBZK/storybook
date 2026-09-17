@@ -1,6 +1,14 @@
-import { html } from 'lit';
+import { html, render } from 'lit';
 import './notification.js';
+import '../modal-dialog/modal-dialog.js';
 import '../../actions/button/button.js';
+import '../../content/rich-text/rich-text.js';
+import '../../layout/container/container.js';
+import '../../layout/page/page.js';
+import '../../layout/page-sections/simple-section/simple-section.js';
+import '../../layout/sheet/sheet.js';
+import '../../layout/window/window.js';
+import '../../navigation/top-title-bar/top-title-bar.js';
 import { ICONS } from '../../content/icon/icon.js';
 
 export default {
@@ -179,4 +187,112 @@ export const Stapel = {
 	// Hoog genoeg voor de uitgeklapte lijst, anders klapt hij open buiten zijn
 	// eigen frame.
 	parameters: { controls: { disable: true }, docs: { story: { height: '320px' } } },
+};
+
+/** The buttons and the overlays are siblings in the story, so the overlay to
+ *  open is looked up by its tag next to the row of buttons. */
+const openOverlay = (tag: string) => (e: Event) => {
+	const buttons = (e.currentTarget as HTMLElement).closest('nldd-container');
+	buttons?.parentElement?.querySelector<HTMLElement & { show(): void }>(`:scope > ${tag}`)?.show();
+};
+
+const sluitDialog = (e: Event) => {
+	(e.currentTarget as HTMLElement).closest<HTMLElement & { hide(): void }>('nldd-modal-dialog')?.hide();
+};
+
+/** The action does something you can see, so a click on it is a click that
+ *  arrived: the failure makes way for a success. */
+const probeerOpnieuw = (e: Event) => {
+	(e.currentTarget as HTMLElement).closest('nldd-notification')?.remove();
+	const gelukt = document.createElement('nldd-notification');
+	gelukt.setAttribute('variant', 'success');
+	gelukt.setAttribute('text', 'Wijzigingen opgeslagen');
+	gelukt.addEventListener('dismiss', weg);
+	document.body.append(gelukt);
+};
+
+/** What an application does after a failed save: put a new notification on the
+ *  page, wherever the code happens to be. Where it ends up is the notification's
+ *  business. */
+const meldFout = () => {
+	const houder = document.createElement('div');
+	render(html`
+		<nldd-notification
+			variant="critical"
+			text="Opslaan is mislukt"
+			supporting-text="De server gaf geen antwoord."
+			@dismiss=${weg}
+		>
+			<nldd-button slot="actions" size="sm" text="Probeer opnieuw" @click=${probeerOpnieuw}></nldd-button>
+		</nldd-notification>
+	`, houder);
+	const melding = houder.querySelector('nldd-notification');
+	if (melding) document.body.append(melding);
+};
+
+/**
+ * Een modal dialog, sheet of venster maakt alles eromheen onbereikbaar. Een
+ * melding verhuist daarom naar de bovenste overlay die openstaat, en gaat terug
+ * naar de hoek van de pagina zodra die sluit. Meld een fout vóór of nadat je een
+ * overlay opent. Het kruisje en "Probeer opnieuw" blijven met muis en
+ * toetsenbord bereikbaar zolang de overlay openstaat.
+ */
+export const BovenEenOverlay = {
+	// Stacked on the left, clear of the corner the notifications take, so the
+	// buttons stay reachable while one is showing.
+	render: () => html`
+		<nldd-container
+			gap="8"
+			horizontal-alignment="left"
+		>
+			<nldd-button text="Meld een fout" @click=${meldFout}></nldd-button>
+			<nldd-button text="Open modal dialog" @click=${openOverlay('nldd-modal-dialog')}></nldd-button>
+			<nldd-button text="Open sheet" @click=${openOverlay('nldd-sheet')}></nldd-button>
+			<nldd-button text="Open venster" @click=${openOverlay('nldd-window')}></nldd-button>
+		</nldd-container>
+		<nldd-modal-dialog
+			text="Modal dialog"
+			supporting-text="Meld een fout terwijl deze dialog openstaat."
+		>
+			<nldd-button slot="actions" text="Meld een fout" @click=${meldFout}></nldd-button>
+			<nldd-button slot="actions" text="Sluit" @click=${sluitDialog}></nldd-button>
+		</nldd-modal-dialog>
+		<nldd-sheet accessible-label="Sheet">
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
+					slot="header"
+					text="Sheet"
+					dismiss-text="Sluit"
+				></nldd-top-title-bar>
+				<nldd-simple-section>
+					<nldd-container gap="16">
+						<nldd-rich-text>
+							<p>Meld een fout terwijl deze sheet openstaat.</p>
+						</nldd-rich-text>
+						<nldd-button text="Meld een fout" @click=${meldFout}></nldd-button>
+					</nldd-container>
+				</nldd-simple-section>
+			</nldd-page>
+		</nldd-sheet>
+		<nldd-window accessible-label="Venster">
+			<nldd-page sticky-header>
+				<nldd-top-title-bar
+					slot="header"
+					text="Venster"
+					dismiss-text="Sluit"
+				></nldd-top-title-bar>
+				<nldd-simple-section>
+					<nldd-container gap="16">
+						<nldd-rich-text>
+							<p>Meld een fout terwijl dit venster openstaat.</p>
+						</nldd-rich-text>
+						<nldd-button text="Meld een fout" @click=${meldFout}></nldd-button>
+					</nldd-container>
+				</nldd-simple-section>
+			</nldd-page>
+		</nldd-window>
+	`,
+	// Tall enough for a sheet and a window, which have no room in the frame the
+	// docs page gives a story otherwise.
+	parameters: { controls: { disable: true }, docs: { story: { height: '480px' } } },
 };

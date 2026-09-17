@@ -1,3 +1,4 @@
+import { isKeyboardMode } from '../../../utilities/input-modality.js';
 import type { NLDDNotification } from './notification.js';
 
 /**
@@ -18,11 +19,12 @@ import type { NLDDNotification } from './notification.js';
  * ## Opening it
  * Under the front notification sits a strip as wide as the deck and as tall as
  * the deck is when it fans out. That strip is the handle: pointing at it fans
- * the deck out to fill it, clicking it lays the deck out as a list. Moving
- * focus into the region does the same, and clicking or tabbing away puts it
- * back. Nothing counts down while the list is open, because open means someone
- * is reading. The notification itself is not a button, so a click on the
- * message you are reading does nothing, which is what it says it does.
+ * the deck out to fill it, clicking it lays the deck out as a list. Tabbing
+ * into the region does the same, and clicking outside it or tabbing away puts
+ * it back. Dismissing one keeps the list open for the rest. Nothing counts down
+ * while the list is open, because open means someone is reading. The
+ * notification itself is not a button, so a click on the message you are
+ * reading does nothing, which is what it says it does.
  */
 const REGION_ID = 'nldd-notification-region';
 
@@ -47,17 +49,20 @@ let expanded = false;
  * overlay torn out of the DOM without closing cannot strand the region.
  */
 const overlays: HTMLElement[] = [];
-let watchingOverlays = false;
+let overlayWatch: AbortController | null = null;
 
-function modalOf(host: HTMLElement): HTMLElement | null {
-	const dialog = host.shadowRoot?.querySelector('dialog') ?? null;
-	return dialog?.matches(':modal') ? dialog : null;
+/** Open as a modal, and with a slot to take the region in. A modal without one
+ *  would swallow the region, which is worse than leaving it behind. */
+function isOpenOverlay(el: Element): el is HTMLElement {
+	const root = el.shadowRoot;
+	if (!root?.querySelector('slot[name="notifications"]')) return false;
+	return root.querySelector('dialog')?.matches(':modal') ?? false;
 }
 
 function regionHost(): HTMLElement {
 	while (overlays.length) {
 		const top = overlays[overlays.length - 1];
-		if (top.isConnected && modalOf(top)) return top;
+		if (top.isConnected && isOpenOverlay(top)) return top;
 		overlays.pop();
 	}
 	return document.body;
@@ -66,15 +71,25 @@ function regionHost(): HTMLElement {
 function placeRegion(region: HTMLElement): void {
 	const host = regionHost();
 	if (region.parentElement === host) return;
+	const inOverlay = host !== document.body;
 	// Slotted rather than put in the overlay's shadow root: it has to be a flat
 	// tree descendant of the dialog to escape the inertness, and its own slot
 	// keeps it out of the default one, whose content decides how an
 	// nldd-modal-dialog aligns.
-	if (host === document.body) region.removeAttribute('slot');
-	else region.setAttribute('slot', 'notifications');
+	if (inOverlay) region.setAttribute('slot', 'notifications');
+	else region.removeAttribute('slot');
+	// And a popover while it is there. A sheet or dialog that keeps a transform
+	// after its opening animation becomes the box a fixed element is placed in,
+	// and its overflow cuts that element off. The top layer is out of reach of
+	// both, and above the overlay. On the page the region stays an ordinary fixed
+	// element, below whatever the page itself puts in the top layer.
+	if (inOverlay) region.setAttribute('popover', 'manual');
+	else region.removeAttribute('popover');
 	const carried = notifications(region);
 	carried.forEach((item) => item._setMoving?.(true));
 	host.appendChild(region);
+	// Moving it hid it, so it is shown again in its new place.
+	if (inOverlay) region.showPopover();
 	carried.forEach((item) => item._setMoving?.(false));
 }
 
@@ -84,14 +99,21 @@ function relocateRegion(): void {
 }
 
 function watchOverlays(): void {
-	if (watchingOverlays) return;
-	watchingOverlays = true;
+	if (overlayWatch) return;
+	overlayWatch = new AbortController();
+	const { signal } = overlayWatch;
+	// Whatever opened before anyone was listening, which happens when this code
+	// loads after the page opened a sheet. Nothing records which of those opened
+	// last, so document order stands in for the stacking.
+	document.querySelectorAll('*').forEach((el) => {
+		if (isOpenOverlay(el)) overlays.push(el);
+	});
 	document.addEventListener('open', (event) => {
 		const host = event.target as HTMLElement | null;
-		if (!host?.shadowRoot || !modalOf(host)) return;
+		if (!host || !isOpenOverlay(host)) return;
 		if (!overlays.includes(host)) overlays.push(host);
 		relocateRegion();
-	});
+	}, { signal });
 	// close does not bubble, so it is caught on the way down instead.
 	document.addEventListener('close', (event) => {
 		const host = event.target as HTMLElement | null;
@@ -99,8 +121,14 @@ function watchOverlays(): void {
 		if (at === -1) return;
 		overlays.splice(at, 1);
 		relocateRegion();
-	}, true);
+	}, { capture: true, signal });
 }
+
+// At import, not at the first notification: an overlay that opened in between
+// went unnoticed, and the first notification raised in it landed behind it on
+// the body. Listening this early also keeps the order in which overlays open,
+// which the scan above can only guess.
+if (typeof document !== 'undefined') watchOverlays();
 
 function notifications(region: HTMLElement): NLDDNotification[] {
 	return Array.from(region.querySelectorAll<NLDDNotification>(':scope > nldd-notification'));
@@ -121,27 +149,47 @@ function ensureRegion(label: string): HTMLElement {
 	// deliberately cannot be set. Top right from md so it stays clear of the
 	// content, full width across the top below that, where there is no corner to
 	// spare. One grid cell holds every notification, so the deck stacks without
-	// any of them taking room of its own.
+	// any of them taking room of its own. The rows keep their own height: Safari
+	// makes the region as tall as its max-height inside an overlay, and stretched
+	// rows would carry the strip under the deck away from it. The rest undoes
+	// what the browser gives a popover, which the region is inside an overlay:
+	// centered, bordered, padded, on a background of its own, and scrolling.
 	region.style.cssText = [
 		'box-sizing: border-box',
 		'position: fixed',
 		'z-index: 1000',
 		'top: max(var(--semantics-overlays-inset), env(safe-area-inset-top))',
 		'right: max(var(--semantics-overlays-inset), env(safe-area-inset-right))',
+		'bottom: auto',
 		'left: auto',
 		'display: grid',
+		'align-content: start',
 		'align-items: start',
+		'margin: 0',
+		'border: none',
+		'background: none',
 		'pointer-events: none',
 		'max-height: calc(100dvh - 2 * var(--semantics-overlays-inset))',
+		'overflow: visible',
+		'padding: 0',
+		'color: inherit',
 	].join(';');
 	// The stack itself catches no clicks, only the notifications in it, so the
 	// empty space beside them stays part of the page.
 	region.addEventListener('pointerdown', () => {}, { passive: true });
 	// Focus is the keyboard's way of reaching for the deck. Without this, tabbing
-	// would land on a button in a notification nobody can see.
-	region.addEventListener('focusin', () => setExpanded(region, true));
+	// would land on a button in a notification nobody can see. Only the
+	// keyboard's: Chromium focuses a button on click, so a click on the front
+	// notification would open the deck, and a click inside the open list would
+	// close it. Clicks are the pointerdown listener's to judge.
+	region.addEventListener('focusin', () => {
+		if (isKeyboardMode()) setExpanded(region, true);
+	});
 	region.addEventListener('focusout', (e) => {
-		if (region.contains((e as FocusEvent).relatedTarget as Node)) return;
+		const next = (e as FocusEvent).relatedTarget as Node | null;
+		// Focus that goes nowhere left with a dismissed notification, not with
+		// the reader.
+		if (!next || !isKeyboardMode() || region.contains(next)) return;
 		setExpanded(region, false);
 	});
 	// A live region so a notification is announced wherever it was written; the
@@ -158,19 +206,22 @@ function ensureRegion(label: string): HTMLElement {
  * behind it, which on their own are a few pixels tall and no target at all, and
  * it stays exactly as tall as the deck is when it fans out, so what you point
  * at is what you get.
+ *
+ * A second row of the region's grid rather than hung below the region. Safari
+ * makes the region as tall as its max-height inside an overlay, and a strip at
+ * the region's bottom edge ended up at the bottom of the screen, far from the
+ * deck it opens.
  */
 function makeExpander(region: HTMLElement): HTMLElement {
 	const strip = document.createElement('div');
 	strip.dataset.expander = '';
 	strip.style.cssText = [
-		'position: absolute',
-		'z-index: 1000',
-		'top: 100%',
-		'right: 0',
-		'left: 0',
 		'display: none',
-		'height: var(--primitives-space-24)',
+		'position: relative',
+		'grid-area: 2 / 1',
+		'z-index: 1000',
 		'pointer-events: auto',
+		'height: var(--primitives-space-24)',
 	].join(';');
 	strip.addEventListener('pointerenter', () => setFanned(region, true));
 	strip.addEventListener('pointerleave', () => setFanned(region, false));
@@ -260,15 +311,17 @@ function applyOverflow(region: HTMLElement): void {
 function setScrolling(region: HTMLElement, on: boolean): void {
 	const inset = 'var(--semantics-overlays-inset)';
 	const shadow = 'var(--primitives-space-48)';
-	region.style.overflow = on ? 'auto' : '';
+	// Off means the values set when the region was made, not cleared ones: a
+	// cleared value falls through to the browser's styling for a popover.
+	region.style.overflow = on ? 'auto' : 'visible';
 	region.style.overscrollBehavior = on ? 'contain' : '';
 	// Room inside the scroll box for the shadow, taken straight back off the
 	// outside again, so nothing moves when the list starts to scroll. Left and
 	// below it needs the reach of the shadow itself; above and to the right the
 	// box lands on the edge of the screen, where a clip and a shadow running off
 	// the screen look the same.
-	region.style.padding = on ? `${inset} ${inset} ${shadow} ${shadow}` : '';
-	region.style.margin = on ? `calc(-1 * ${inset}) calc(-1 * ${inset}) 0 calc(-1 * ${shadow})` : '';
+	region.style.padding = on ? `${inset} ${inset} ${shadow} ${shadow}` : '0';
+	region.style.margin = on ? `calc(-1 * ${inset}) calc(-1 * ${inset}) 0 calc(-1 * ${shadow})` : '0';
 	region.style.maxHeight = on ? '100dvh' : `calc(100dvh - 2 * ${inset})`;
 }
 
@@ -321,4 +374,14 @@ function cutToFront(region: HTMLElement, height: number): void {
 	notifications(region).forEach((item, index) => {
 		item.style.height = index === 0 ? '' : `${height}px`;
 	});
+}
+
+/** @internal Reset state for testing only. Forgets every overlay and listens
+ *  again straight away, the way importing the module does, so a test sees the
+ *  same starting position as a freshly loaded page. */
+export function _resetOverlayWatchForTesting(): void {
+	overlayWatch?.abort();
+	overlayWatch = null;
+	overlays.length = 0;
+	if (typeof document !== 'undefined') watchOverlays();
 }

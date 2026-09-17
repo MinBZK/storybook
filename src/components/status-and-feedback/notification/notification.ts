@@ -152,6 +152,7 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		this.addEventListener('focusin', this._onFocusIn);
 		this.addEventListener('focusout', this._onFocusOut);
 		this.addEventListener('keydown', this._onKeyDown);
+		this.addEventListener('animationend', this._onAnimationEnd);
 		// Moving itself has to wait a tick: a framework that just created this
 		// element is still holding it, and pulling it out mid-render confuses
 		// the very thing that will later remove it.
@@ -174,6 +175,9 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		this.removeEventListener('focusin', this._onFocusIn);
 		this.removeEventListener('focusout', this._onFocusOut);
 		this.removeEventListener('keydown', this._onKeyDown);
+		this.removeEventListener('animationend', this._onAnimationEnd);
+		// Put back on a page later, it arrives again.
+		this.removeAttribute('data-arrived');
 		leaveRegion(this);
 	}
 
@@ -187,9 +191,13 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 
 	/** Called by the region while it carries this notification to another
 	 *  parent. A move disconnects the element, and without this the
-	 *  notification would read its own disconnect as having been dismissed. */
+	 *  notification would read its own disconnect as having been dismissed.
+	 *  It also counts as having arrived: the browser starts a CSS animation over
+	 *  when its element comes back, and one caught halfway in would slide in
+	 *  from off the screen a second time. */
 	_setMoving(moving: boolean): void {
 		this._moving = moving;
+		if (moving) this.toggleAttribute('data-arrived', true);
 	}
 
 	/** Called by the region. Starting the clock here rather than on connect is
@@ -229,6 +237,13 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 		this._resumeTimer();
 	};
 
+	/** Once in, it stays in: every move to another overlay would otherwise
+	 *  replay the arrival. */
+	private _onAnimationEnd = (e: AnimationEvent): void => {
+		if (e.target !== this || e.animationName !== 'notification-arrive') return;
+		this.toggleAttribute('data-arrived', true);
+	};
+
 	private _onFocusIn = (): void => {
 		this._focusInside = true;
 		this._clearTimer();
@@ -262,6 +277,10 @@ export class NLDDNotification extends withTranslations(LitElement, nlddNotificat
 
 	private _onKeyDown = (e: KeyboardEvent): void => {
 		if (e.key !== 'Escape') return;
+		// Escape dismisses this notification and stops there. Stopping the event is
+		// not enough: the close signal a sheet or dialog listens for is the key's
+		// default action, and it would take the overlay along. Same as nldd-popover.
+		e.preventDefault();
 		e.stopPropagation();
 		this._dismiss();
 	};
