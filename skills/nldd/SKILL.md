@@ -135,7 +135,7 @@ werkt hier niet.
 
 RijksSans is uitsluitend bestemd voor publicaties van de Rijksoverheid en voor
 partijen die in haar opdracht werken. De voorwaarden staan in
-[`NOTICES.md`](https://github.com/MinBZK/storybook/blob/main/NOTICES.md). Bouw
+[`NOTICES.md`](https://github.com/NederlandseDigitaleDienst/design-system/blob/main/NOTICES.md). Bouw
 je iets daarbuiten, dan kun je 2 kanten op:
 
 1. **Importeer `@nldd/design-system/styles/system-font`** in plaats van

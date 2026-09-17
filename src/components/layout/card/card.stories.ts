@@ -35,7 +35,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/layout/card/card.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'experimental' },
 	},

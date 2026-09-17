@@ -33,7 +33,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/content/icon/icon.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'stable' },
 		docs: {

@@ -28,7 +28,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/radio-button/radio-button.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

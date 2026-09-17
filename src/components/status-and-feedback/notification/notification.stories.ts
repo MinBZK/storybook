@@ -18,7 +18,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/status-and-feedback/notification/notification.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'stable' },
 		// Every notification leaves the story it was written in and joins the one

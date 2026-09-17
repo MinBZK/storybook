@@ -27,7 +27,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/status-and-feedback/progress-circle/progress-circle.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'beta' },
 	},

@@ -29,7 +29,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/content/code-viewer/code-viewer.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'beta' },
 	},

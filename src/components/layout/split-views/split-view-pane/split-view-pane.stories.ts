@@ -34,7 +34,7 @@ export default {
 		layout: 'fullscreen',
 		componentSource: {
 			file: 'src/components/layout/split-views/split-view-pane/split-view-pane.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',
