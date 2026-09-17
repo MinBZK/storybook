@@ -38145,7 +38145,8 @@
                     "text": "boolean"
                   }
                 }
-              ]
+              ],
+              "description": "Compared by value: a recount hands out new objects for the same place, and\nasking for a render on every one of those is a render per radio per\nkeystroke, each of them scheduled from inside an update that had just\nfinished."
             },
             {
               "kind": "method",
