@@ -445,7 +445,7 @@ Wraps a native `<img>` with design-system styling: corner radius variants, aspec
 | Attribute | Type | Description |
 | --- | --- | --- |
 | `src` | `string` | Image URL |
-| `alt` | `string` | Alt text. Required unless `decorative`. |
+| `alt` | `string` | Alt text for the image from `src`. Required unless `decorative`; slotted media carries its own. |
 | `srcset` | `string` | Responsive source set |
 | `sizes` | `string` | Source sizes hint |
 | `width` | `number\|'full'` | Display width. `full` (default) fills the parent. A numeric value sets host `max-width` AND the `<img>` layout-hint width. |
@@ -467,7 +467,7 @@ Wraps a native `<img>` with design-system styling: corner radius variants, aspec
 
 | Slot | Description |
 | --- | --- |
-| _(default)_ | Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback). |
+| _(default)_ | Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. Slotted media carries its own text alternative: an `alt` on the img (empty when it conveys nothing), or `role="img"` with an `aria-label`, `aria-labelledby` or `<title>` on the svg. The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback). |
 | `caption` | Rich caption content (overrides the `caption` attribute) |
 
 ### `<nldd-keyboard-shortcut>`

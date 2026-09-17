@@ -13,7 +13,7 @@
  * @element nldd-image
  *
  * @attr {string} src - Image URL
- * @attr {string} alt - Alt text. Required unless `decorative`.
+ * @attr {string} alt - Alt text for the image from `src`. Required unless `decorative`; slotted media carries its own.
  * @attr {string} srcset - Responsive source set
  * @attr {string} sizes - Source sizes hint
  * @attr {number|'full'} width - Display width. `full` (default) fills the parent.
@@ -50,7 +50,7 @@
  * @attr {object} translations - Override translation keys (e.g. the message
  *   shown when the image fails to load); unset keys fall back to Dutch.
  *
- * @slot - Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo.
+ * @slot - Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. Slotted media carries its own text alternative: an `alt` on the img (empty when it conveys nothing), or `role="img"` with an `aria-label`, `aria-labelledby` or `<title>` on the svg.
  *   The internal `error` listener is attached only to the built-in `<img>`, so
  *   slotted content does not trigger the error-state overlay automatically.
  *   Consumers slotting their own image are responsible for handling its
@@ -73,6 +73,32 @@ export type ImageObjectPosition = 'center' | 'top' | 'bottom' | 'left' | 'right'
 export type ImageLoading = 'lazy' | 'eager';
 export type ImageDecoding = 'async' | 'sync' | 'auto';
 export type ImageFetchPriority = 'high' | 'low' | 'auto';
+
+/**
+ * Whether slotted media carries a text alternative, or takes itself out of the
+ * accessibility tree the way HTML and ARIA intend. An element that is not media
+ * itself is judged by the first media inside it; with none, there is nothing to
+ * judge and it passes.
+ */
+function hasTextAlternative(el: Element): boolean {
+	const media = el.matches('img, picture, svg') ? el : el.querySelector('img, picture, svg');
+	if (!media) return true;
+	if (media.getAttribute('aria-hidden') === 'true') return true;
+	if (media.localName === 'picture') {
+		const img = media.querySelector('img');
+		return img !== null && hasTextAlternative(img);
+	}
+	if (media.localName === 'svg') {
+		const title = media.querySelector(':scope > title')?.textContent?.trim();
+		return media.getAttribute('role') === 'img' && (hasAriaName(media) || Boolean(title));
+	}
+	// An empty alt counts too: that is how an img says it is decorative.
+	return media.hasAttribute('alt') || hasAriaName(media);
+}
+
+function hasAriaName(el: Element): boolean {
+	return Boolean(el.getAttribute('aria-label')?.trim() || el.getAttribute('aria-labelledby')?.trim());
+}
 
 @customElement('nldd-image')
 export class NLDDImage extends LitElement {
@@ -249,19 +275,7 @@ export class NLDDImage extends LitElement {
 				this.style.removeProperty('--_max-width');
 			}
 		}
-		// Non-decorative images without alt text are a silent a11y failure
-		// (WCAG H37). Warn once in dev so the issue surfaces during build /
-		// Storybook, but stay quiet in production. Reset the flag when the
-		// situation is resolved so re-introducing the bug warns again.
-		if (import.meta.env?.DEV) {
-			const inaccessible = !this.decorative && !this.alt.trim();
-			if (inaccessible && !this._warnedAlt) {
-				this._warnedAlt = true;
-				console.warn('<nldd-image>: Non-decorative images need a non-empty `alt`. Set `decorative` if the image conveys no information.');
-			} else if (!inaccessible) {
-				this._warnedAlt = false;
-			}
-		}
+		this._warnMissingAlt();
 		// Reflect load/error state to host attributes so the whole component —
 		// and consumer CSS (`nldd-image[loaded]` / `[errored]`) — can react to
 		// it, not just the internal <img>.
@@ -269,8 +283,56 @@ export class NLDDImage extends LitElement {
 		this.toggleAttribute('errored', this._imageErrored);
 	}
 
-	/** DEV-only "missing alt" warning latch; see updated(). */
+	/**
+	 * Says in DEV when an image has no text alternative. A non-decorative image
+	 * without one is a silent a11y failure (WCAG H37), so this surfaces it
+	 * during build and Storybook and stays quiet in production.
+	 *
+	 * Slotted media replaces the built-in `<img>` and carries its own
+	 * alternative, so once something is slotted, that is what gets judged.
+	 * With neither slotted media nor a `src` or `srcset` there is no image yet:
+	 * a source or media that arrives later is judged when it does. The latch
+	 * resets once the problem is solved, so bringing it back warns again.
+	 */
+	private _warnMissingAlt(): void {
+		if (!import.meta.env?.DEV) return;
+		const slotted = this._slottedMedia();
+		const inaccessible = !this.decorative && (slotted.length > 0
+			? !slotted.every(hasTextAlternative)
+			: Boolean(this.src || this.srcset) && !this.alt.trim());
+		if (!inaccessible) {
+			this._warnedAlt = false;
+			return;
+		}
+		if (this._warnedAlt) return;
+		this._warnedAlt = true;
+		console.warn(
+			slotted.length > 0
+				? '<nldd-image>: The slotted image has no text alternative. Give the `<img>` an `alt` (empty when the image conveys no information), or give the `<svg>` `role="img"` and an `aria-label`, `aria-labelledby` or `<title>`.'
+				: '<nldd-image>: Non-decorative images need a non-empty `alt`. Set `decorative` if the image conveys no information.',
+			this,
+		);
+	}
+
+	/** DEV-only "missing alt" warning latch; see _warnMissingAlt(). */
 	private _warnedAlt = false;
+
+	/**
+	 * What the consumer put in the default slot, followed through a forwarded
+	 * slot. The top level is deliberately not flattened: with nothing assigned,
+	 * flattening returns the built-in fallback `<img>`, which always has an
+	 * `alt` attribute and would pass every time.
+	 */
+	private _slottedMedia(): Element[] {
+		const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+		return (slot?.assignedElements() ?? []).flatMap(el => el instanceof HTMLSlotElement
+			? el.assignedElements({ flatten: true })
+			: [el]);
+	}
+
+	_onMediaSlotChange = (): void => {
+		this._warnMissingAlt();
+	};
 
 	override firstUpdated(): void {
 		// If the image was cached or already loaded by the time the listener

@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi, type MockInstance } from 'vitest';
 import { fixture, cleanup, waitForUpdate } from '../../../test-utils.js';
 import type { NLDDImage } from './image.js';
 import './image.js';
@@ -266,5 +266,125 @@ describe('nldd-image with an inline svg', () => {
 		const svg = el.querySelector('svg') as SVGElement;
 		expect(getComputedStyle(svg).display).toBe('block');
 		expect(svg.getBoundingClientRect().width).toBe(240);
+	});
+});
+
+describe('nldd-image missing-alt warning', () => {
+	let el: HTMLElement;
+	let warn: MockInstance<typeof console.warn>;
+
+	/** The alt warnings logged so far, apart from anything else in the console. */
+	const altWarnings = () => warn.mock.calls
+		.map(([message]) => String(message))
+		.filter(message => message.startsWith('<nldd-image>') && message.includes('`alt`'));
+
+	beforeEach(() => {
+		warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+	});
+
+	afterEach(() => {
+		warn.mockRestore();
+		if (el) cleanup(el);
+	});
+
+	it('warns once when an image from src has no alt', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg"></nldd-image>');
+		await waitForUpdate(el);
+		(el as unknown as NLDDImage).shape = 'rounded';
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+		expect(altWarnings()[0]).toContain('non-empty `alt`');
+	});
+
+	it('warns again when an alt that was added is taken away', async () => {
+		el = await fixture<NLDDImage>('<nldd-image src="/foo.jpg"></nldd-image>');
+		await waitForUpdate(el);
+		const image = el as unknown as NLDDImage;
+		image.alt = 'Foo';
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+		image.alt = '';
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(2);
+	});
+
+	it('waits for a src before it judges the alt', async () => {
+		el = await fixture<NLDDImage>('<nldd-image lqip="98,154,162,99,99,99,100"></nldd-image>');
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(0);
+		(el as unknown as NLDDImage).src = '/foo.jpg';
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+	});
+
+	it.each([
+		['an image from src with an alt', '<nldd-image src="/foo.jpg" alt="Foo"></nldd-image>'],
+		['a decorative image from src', '<nldd-image src="/foo.jpg" decorative></nldd-image>'],
+		['a slotted img with an alt', '<nldd-image><img src="/foo.jpg" alt="Foo"></nldd-image>'],
+		['a slotted img with an empty alt', '<nldd-image><img src="/foo.jpg" alt=""></nldd-image>'],
+		['a slotted img named by aria-label', '<nldd-image><img src="/foo.jpg" aria-label="Foo"></nldd-image>'],
+		['a slotted picture around an img with an alt', '<nldd-image><picture><source srcset="/foo.webp" type="image/webp"><img src="/foo.jpg" alt="Foo"></picture></nldd-image>'],
+		['a slotted svg named by aria-label', '<nldd-image><svg role="img" aria-label="Foo" viewBox="0 0 10 10"></svg></nldd-image>'],
+		['a slotted svg named by aria-labelledby', '<nldd-image><svg role="img" aria-labelledby="foo-title" viewBox="0 0 10 10"><text id="foo-title">Foo</text></svg></nldd-image>'],
+		['a slotted svg named by its title', '<nldd-image><svg role="img" viewBox="0 0 10 10"><title>Foo</title></svg></nldd-image>'],
+		['a slotted svg hidden with aria-hidden', '<nldd-image><svg aria-hidden="true" viewBox="0 0 10 10"></svg></nldd-image>'],
+		['a decorative image with a slotted svg', '<nldd-image decorative><svg viewBox="0 0 10 10"></svg></nldd-image>'],
+	])('stays quiet for %s', async (_, markup) => {
+		el = await fixture(markup);
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(0);
+	});
+
+	it.each([
+		['a slotted img without an alt', '<nldd-image alt="Not this one"><img src="/foo.jpg"></nldd-image>'],
+		['a slotted picture around an img without an alt', '<nldd-image><picture><img src="/foo.jpg"></picture></nldd-image>'],
+		['a slotted svg without role="img"', '<nldd-image><svg aria-label="Foo" viewBox="0 0 10 10"></svg></nldd-image>'],
+		['a slotted svg with role="img" and no name', '<nldd-image><svg role="img" viewBox="0 0 10 10"><title> </title></svg></nldd-image>'],
+	])('warns for %s, whatever the host alt says', async (_, markup) => {
+		el = await fixture(markup);
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+		expect(altWarnings()[0]).toContain('slotted image');
+	});
+
+	it('judges slotted media again when the slot content changes', async () => {
+		el = await fixture('<nldd-image></nldd-image>');
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(0);
+
+		const bare = document.createElement('img');
+		bare.src = '/foo.jpg';
+		el.append(bare);
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+
+		const named = document.createElement('img');
+		named.src = '/foo.jpg';
+		named.alt = 'Foo';
+		bare.replaceWith(named);
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(1);
+
+		named.replaceWith(bare);
+		await waitForUpdate(el);
+		expect(altWarnings()).toHaveLength(2);
+	});
+
+	it('looks through a forwarded slot at the media that fills it', async () => {
+		const host = document.createElement('div');
+		host.attachShadow({ mode: 'open' }).innerHTML = '<nldd-image><slot></slot></nldd-image>';
+		host.innerHTML = '<img src="/foo.jpg" alt="Foo">';
+		document.body.append(host);
+		try {
+			const image = host.shadowRoot!.querySelector('nldd-image')!;
+			await waitForUpdate(image);
+			expect(altWarnings()).toHaveLength(0);
+
+			host.innerHTML = '<img src="/foo.jpg">';
+			await waitForUpdate(image);
+			expect(altWarnings()).toHaveLength(1);
+		} finally {
+			host.remove();
+		}
 	});
 });
