@@ -15,7 +15,13 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Changed
+
+- **The edge of a surface is lighter than a line inside it.** `--semantics-surfaces-base-border-color` and `--semantics-surfaces-tinted-border-color` followed `--semantics-dividers-color`, so the outline of a card, a table or a list was drawn in the same grey as a rule between two rows. That reads hard: the edge that holds a container together was as loud as a line that separates its content. Both are one step lighter on the grey ramp now, `neutral-50` in light mode and `neutral-150` in dark, which takes a third to a half off their contrast with the surface they sit on. Everything that draws its edge from these tokens follows: `nldd-table`, `nldd-list`, `nldd-code-viewer` and `nldd-rich-text`. Dividers keep the grey they had.
+
 ### Fixed
+
+- **A typeahead popup in `nldd-text-editor` looks like the menu it says it is.** It carried a hairline where `nldd-menu` has none and leans on its shadow alone. CodeMirror gives every tooltip a border of its own, and the popup re-themed that one instead of taking it off. It is off now.
 
 - **Typing a bare URL in `nldd-text-editor` keeps the whole address in the link.** A `www.` address parses as a finished link long before it is finished being typed: at `www.apple.c` the editor already had a link with a badge, put the caret on the far side of that badge, and wrote the rest of the address behind a space of its own. You ended up with `www.apple.c om`, and the link pointed at `https://www.apple.c`. The caret now stays on the link's side while the address grows, so every next letter joins it. What ends a URL is what ends one in Markdown: a space, a `<`, or the punctuation GFM leaves off the end. A `[text](url)` link is unaffected, because its `)` really does finish it.
 
