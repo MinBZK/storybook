@@ -110,7 +110,7 @@ export const Hyphenation = {
 		`;
 	},
 	parameters: { controls: { disable: true } },
-	storyName: 'Woordafbreking',
+	name: 'Woordafbreking',
 };
 
 export const Lists = {
@@ -206,7 +206,7 @@ export const DefinitionList = {
 			</div>
 		`;
 	},
-	storyName: 'Definitielijst',
+	name: 'Definitielijst',
 };
 
 export const InlineElements = {
