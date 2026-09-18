@@ -4,7 +4,7 @@
 
 Begin bij de documentatie, want daar staat het meeste al in.
 
-- **[Storybook](https://minbzk.github.io/storybook/)** toont elk component met
+- **[Storybook](https://nederlandsedigitaledienst.github.io/design-system/)** toont elk component met
   z'n varianten en attributen, en je kunt er zelf aan draaien. Dit is de plek
   om te zien hoe iets eruitziet en werkt.
 - **De [README](./README.md)** legt de installatie uit, de vijf lagen van

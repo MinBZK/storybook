@@ -21,7 +21,7 @@ Twee bestanden horen hierbij:
   platte HTML, Vue 3, layout-patronen en een complete content-pagina.
 
 De levende documentatie met visuele voorbeelden staat in
-[Storybook](https://minbzk.github.io/storybook/). De exacte types staan in de
+[Storybook](https://nederlandsedigitaledienst.github.io/design-system/). De exacte types staan in de
 `.d.ts` bestanden van het pakket. Gebruik die twee als bron van waarheid voor
 detailvragen; deze skill leert je hoe je het systeem *goed* gebruikt.
 
@@ -517,7 +517,7 @@ bestaat, zonder foutmelding, alleen een stille terugval op de default.
 
 ## Bron van waarheid
 
-1. **[Storybook](https://minbzk.github.io/storybook/)**: levende voorbeelden en
+1. **[Storybook](https://nederlandsedigitaledienst.github.io/design-system/)**: levende voorbeelden en
    controls per component.
 2. **`.d.ts` types in het pakket**: de exacte, actuele API.
 3. **[`reference.md`](reference.md)**: offline snelreferentie van alle elementen.
