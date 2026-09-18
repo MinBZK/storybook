@@ -22,7 +22,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/forms/form-section/form-section.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'experimental' },
 	},

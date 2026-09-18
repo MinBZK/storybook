@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDRadioButtonGroup } from './radio-button-group.js';
 import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
@@ -188,10 +189,8 @@ describe('nldd-radio-button-group – accessibility', () => {
 		await waitForUpdate(el);
 		const fields = el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field');
 		await waitForUpdate(fields[1]);
-		const radio = fields[1].shadowRoot!.querySelector('nldd-radio-button')!;
-		await waitForUpdate(radio as HTMLElement);
 		el.focus();
-		expect(deepActiveElement()).toBe(radio.shadowRoot!.querySelector('.radio-button__input'));
+		expect(deepActiveElement()).toBe(fields[1]);
 	});
 
 	it('focus() falls back to the first enabled option when nothing is checked', async () => {
@@ -204,10 +203,8 @@ describe('nldd-radio-button-group – accessibility', () => {
 		await waitForUpdate(el);
 		const fields = el.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field');
 		await waitForUpdate(fields[1]);
-		const radio = fields[1].shadowRoot!.querySelector('nldd-radio-button')!;
-		await waitForUpdate(radio as HTMLElement);
 		el.focus();
-		expect(deepActiveElement()).toBe(radio.shadowRoot!.querySelector('.radio-button__input'));
+		expect(deepActiveElement()).toBe(fields[1]);
 	});
 
 	it('sets accessible-label as aria-label on the group', async () => {
@@ -253,5 +250,57 @@ describe('nldd-radio-button-group – accessibility', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-label')).toBe('Bezorgwijze');
+	});
+});
+
+describe('nldd-radio-button-group – place in the group', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	/** The field is the radio: role, state and place sit on it. */
+	const radioInput = (field: Element) => field;
+
+	/** Every field renders its radio in a shadow root of its own, so the group's
+	 *  word reaches the input two updates later. */
+	async function settle(group: Element): Promise<NLDDRadioButtonField[]> {
+		await waitForUpdate(group as HTMLElement);
+		const fields = Array.from(group.querySelectorAll<NLDDRadioButtonField>('nldd-radio-button-field'));
+		for (const field of fields) await waitForUpdate(field);
+		return fields;
+	}
+
+	it('tells each radio its place and keeps one stop for Tab', async () => {
+		el = await fixture<NLDDRadioButtonGroup>(groupFixture());
+		const fields = await settle(el);
+
+		expect(fields.map((field) => radioInput(field).getAttribute('aria-posinset'))).toEqual(['1', '2', '3']);
+		expect(fields.map((field) => radioInput(field).getAttribute('aria-setsize'))).toEqual(['3', '3', '3']);
+		expect(fields.map((field) => radioInput(field).getAttribute('tabindex'))).toEqual(['0', '-1', '-1']);
+	});
+
+	it('moves the stop for Tab along with the arrow keys', async () => {
+		el = await fixture<NLDDRadioButtonGroup>(groupFixture());
+		const fields = await settle(el);
+		fields[0].focus();
+
+		await userEvent.keyboard('{ArrowDown}');
+		await settle(el);
+
+		expect(fields.map((field) => radioInput(field).getAttribute('tabindex'))).toEqual(['-1', '0', '-1']);
+	});
+
+	it('is one stop for Tab between the controls around it', async () => {
+		el = await fixture(`<div><button id="voor">Voor</button>${groupFixture()}<button id="na">Na</button></div>`);
+		const fields = await settle(el.querySelector('nldd-radio-button-group')!);
+		el.querySelector<HTMLButtonElement>('#voor')!.focus();
+
+		await userEvent.keyboard('{Tab}');
+		expect(deepActiveElement()).toBe(radioInput(fields[0]));
+
+		await userEvent.keyboard('{Tab}');
+		expect(document.activeElement).toBe(el.querySelector('#na'));
 	});
 });

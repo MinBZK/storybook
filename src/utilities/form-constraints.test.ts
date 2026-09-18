@@ -32,6 +32,11 @@ import '../components/forms/validation-list/validation-list.js';
  * that is not there.
  */
 
+/** What the host reports to the form around it, as its own verdict. */
+function internalsOf(el: HTMLElement): ElementInternals {
+	return (el as HTMLElement & { internals: ElementInternals }).internals;
+}
+
 interface Case {
 	name: string;
 	/** The native control inside the shadow root. */
@@ -172,9 +177,16 @@ describe('required on a group of controls', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('aria-required')).toBe(true);
-		const input = el.querySelector('nldd-segmented-control-item')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		// The items are the radios and have no input left, so the group carries
+		// the constraint and reports it as its own.
+		const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
 		expect(input.required).toBe(true);
 		expect(input.validity.valueMissing).toBe(true);
+		expect(internalsOf(el).validity.valueMissing).toBe(true);
+
+		(el as HTMLElement & { value: string }).value = 'list';
+		await waitForUpdate(el);
+		expect(internalsOf(el).validity.valid).toBe(true);
 	});
 
 	it('nldd-segmented-control: checkbox mode announces it without demanding every box', async () => {
@@ -185,8 +197,9 @@ describe('required on a group of controls', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.hasAttribute('aria-required')).toBe(true);
-		const input = el.querySelector('nldd-segmented-control-item')!.shadowRoot!.querySelector('input') as HTMLInputElement;
+		const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
 		expect(input.required).toBe(false);
+		expect(internalsOf(el).validity.valid).toBe(true);
 	});
 
 	it('nldd-toggle-button-group: radio mode makes the group required', async () => {

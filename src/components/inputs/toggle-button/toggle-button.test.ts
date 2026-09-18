@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
+import { fixture, cleanup, waitForUpdate, deepActiveElement, until } from '../../../test-utils.js';
 import type { NLDDToggleButton } from './toggle-button.js';
 import './toggle-button.js';
 
@@ -465,6 +465,25 @@ describe('nldd-toggle-button – tooltip', () => {
 		el = await fixture<NLDDToggleButton>('<nldd-toggle-button icon="star" text="Favoriet"></nldd-toggle-button>');
 		await waitForUpdate(el);
 		expect(el.shadowRoot!.querySelector('nldd-tooltip')).toBeNull();
+	});
+
+	it('shows the tooltip on focus in radio mode, where the focus is on the host', async () => {
+		el = await fixture<NLDDToggleButton>('<nldd-toggle-button type="radio" name="opmaak" value="vet" icon="bold" accessible-label="Vet"></nldd-toggle-button>');
+		await waitForUpdate(el);
+		const tooltip = el.shadowRoot!.querySelector('nldd-tooltip') as HTMLElement & { _visible?: boolean };
+		const bubble = tooltip.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+
+		(el as NLDDToggleButton).focus();
+		await waitForUpdate(tooltip);
+		expect(bubble.matches(':popover-open')).toBe(true);
+
+		// The tooltip waits 50ms before it goes, and a test that budgets
+		// wall-clock time for that measures how busy the machine is.
+		tooltip.style.setProperty('--_hide-delay', '0');
+		// WCAG 1.4.13: away without moving focus.
+		el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true }));
+		await until(() => !bubble.matches(':popover-open'));
+		expect(bubble.matches(':popover-open')).toBe(false);
 	});
 
 	it('participates in FormData when type="checkbox" and selected', async () => {

@@ -28,7 +28,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/file-field/file-field.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

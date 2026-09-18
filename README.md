@@ -41,7 +41,7 @@ juiste tags, attributen, CSS-tokens en patronen.
 Toevoegen en installeren:
 
 ```
-/plugin marketplace add MinBZK/storybook
+/plugin marketplace add NederlandseDigitaleDienst/design-system
 /plugin install nldd@nldd-plugins
 ```
 
@@ -121,7 +121,7 @@ huisstijlkleur van het hele systeem bepaalt.
 
 ## Feedback en verzoeken
 
-Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/MinBZK/storybook/issues).
+Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/NederlandseDigitaleDienst/design-system/issues).
 
 ## Fonts
 

@@ -55,11 +55,33 @@ export function toggleButtonTemplate(component: NLDDToggleButton): TemplateResul
 
 	let result: TemplateResult;
 
-	if (component.type === 'checkbox' || component.type === 'radio') {
+	if (component.type === 'radio') {
+		// The radio is this element: the role, the state and the place in the
+		// group sit on it, and nothing here is announced or focused. The input
+		// only answers `required` for the form, and what a radio asks there is
+		// whether anything in its group is selected. The name is for the platform:
+		// a radio without one is in no group, and a radio in no group never reports
+		// a missing value.
+		result = html`
+			<div class="toggle-button">
+				<input class="toggle-button__validation-input"
+					type="radio"
+					name="nldd-validation"
+					?required=${component.required}
+					?disabled=${component.disabled}
+					.checked=${component._groupHasSelection}
+					tabindex="-1"
+					aria-hidden="true"
+				>
+				${icon}
+				${textContent}
+			</div>
+		`;
+	} else if (component.type === 'checkbox') {
 		result = html`
 			<label class="toggle-button">
 				<input class="toggle-button__input"
-					type=${component.type}
+					type="checkbox"
 					.checked=${component.selected}
 					?disabled=${component.disabled}
 					?required=${component.required}

@@ -71,6 +71,16 @@ export const segmentedControlStyles = css`
 
 	/* # Elements */
 
+	.segmented-control__validation-input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		margin: 0;
+		pointer-events: none;
+		width: 100%;
+		height: 100%;
+	}
+
 	::slotted(nldd-segmented-control-item[selected]) {
 		position: relative;
 		z-index: var(--_selected-z-index);
@@ -226,12 +236,18 @@ export const segmentedControlItemStyles = css`
 		opacity: var(--primitives-opacity-disabled);
 	}
 
+	:host(:focus-visible) {
+		outline: none;
+	}
+
+	:host(:focus-visible) .segmented-control__item,
 	.segmented-control__item:has(:focus-visible) {
 		outline: var(--semantics-focus-ring-outline);
 		outline-offset: var(--semantics-focus-ring-outline-offset);
 		box-shadow: var(--semantics-focus-ring-box-shadow);
 	}
 
+	:host([selected]:focus-visible) .segmented-control__item,
 	:host([selected]) .segmented-control__item:has(:focus-visible) {
 		box-shadow: var(--semantics-focus-ring-box-shadow), inset 0 0 0 var(--primitives-border-width-thin) var(--_highlight-border-color);
 	}

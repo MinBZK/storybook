@@ -37,7 +37,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/content/image/image.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'beta' },
 	},
@@ -65,7 +65,7 @@ export default {
 		},
 		alt: {
 			control: 'text',
-			description: 'Alt-tekst. Verplicht tenzij `decorative` is gezet.',
+			description: 'Alt-tekst voor de afbeelding uit `src`. Verplicht tenzij `decorative` is gezet; geslotte media heeft een eigen alt.',
 		},
 		width: {
 			control: 'select',

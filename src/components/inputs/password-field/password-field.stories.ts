@@ -16,7 +16,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/password-field/password-field.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

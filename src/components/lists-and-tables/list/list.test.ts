@@ -1544,7 +1544,8 @@ describe('nldd-list roving and the controls in a row', () => {
 // Two ways to show nothing, and they are not the same state. Rows filtered away
 // is "no results": the search field and the toolbar are the way back, so they
 // stay. No rows at all is "empty": there is nothing to search or filter, so the
-// controls go with them.
+// controls go with them — except in a listbox, where the search field is what
+// the rows come from.
 describe('nldd-list – empty and no-results', () => {
 	let el: HTMLElement;
 
@@ -1605,10 +1606,23 @@ describe('nldd-list – empty and no-results', () => {
 		expect(surface(el)).toBe(false);
 	});
 
-	it('hides a listbox search field when there are no options at all', async () => {
+	it('keeps a listbox and its search field when no options arrived at all', async () => {
 		el = await fixture(`<nldd-list type="listbox" variant="box">${noResults}</nldd-list>`);
 		await waitForUpdate(el);
-		expect(display(el)).toBe('none');
+		expect(display(el)).not.toBe('none');
+		expect(shown(el.shadowRoot!.querySelector('.list__search-field-input'))).toBe(true);
+	});
+
+	it('says nothing in a listbox until a query asks the question', async () => {
+		el = await fixture(`<nldd-list type="listbox" variant="box">${emptyState}</nldd-list>`);
+		await waitForUpdate(el);
+		expect(shown(el.querySelector('[slot="empty"]'))).toBe(false);
+
+		const field = el.shadowRoot!.querySelector<HTMLInputElement>('.list__search-field-input')!;
+		field.value = 'zzz';
+		field.dispatchEvent(new Event('input', { bubbles: true }));
+		await waitForUpdate(el);
+		expect(shown(el.querySelector('[slot="empty"]'))).toBe(true);
 	});
 
 	it('keeps a listbox search field when a query matches nothing', async () => {

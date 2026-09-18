@@ -31,6 +31,15 @@ function type(view: EditorView, text: string): void {
 	view.dispatch({ changes: { from: head, insert: text }, selection: { anchor: head + text.length }, userEvent: 'input.type' });
 }
 
+/** A keystroke: the input handlers get first say, and the plain insert runs when
+ *  none of them claims the character. */
+function keystroke(view: EditorView, text: string): void {
+	const { head } = view.state.selection.main;
+	const handled = view.state.facet(EditorView.inputHandler)
+		.some((handle) => handle(view, head, head, text, () => view.state.update()));
+	if (!handled) type(view, text);
+}
+
 /** The side the layer will draw the main caret on, from the live selection. */
 function drawn(view: EditorView): -1 | 1 {
 	const { head, assoc } = view.state.selection.main;
@@ -267,6 +276,39 @@ describe('nldd-text-editor caret side', () => {
 		await waitForUpdate(el);
 		expect(el.value).toBe('Zie https://example.co');
 		expect(drawn(el.view)).toBe(-1);
+	});
+
+	// #244: a URL parses as a whole link well before it is finished, and the caret
+	// went outside it there, so the rest of the address landed behind a space.
+	it('typing a bare URL keeps every letter in it, and a space is what ends it', async () => {
+		el = await make('');
+		for (const ch of 'www.apple.com') {
+			keystroke(el.view, ch);
+			await waitForUpdate(el);
+		}
+		expect(el.value).toBe('www.apple.com');
+		expect(drawn(el.view)).toBe(-1);
+
+		// A space is the boundary, and the editor does not write one of its own.
+		keystroke(el.view, ' ');
+		keystroke(el.view, 'x');
+		await waitForUpdate(el);
+		expect(el.value).toBe('www.apple.com x');
+	});
+
+	it('typing a [tekst](url) link leaves it whole, and what follows needs no space', async () => {
+		el = await make('');
+		for (const ch of '[Apple](https://apple.com)') {
+			keystroke(el.view, ch);
+			await waitForUpdate(el);
+		}
+		expect(el.value).toBe('[Apple](https://apple.com)');
+
+		// The `)` ended the link, so the next character is outside it already and
+		// the editor has no boundary to write.
+		keystroke(el.view, 'x');
+		await waitForUpdate(el);
+		expect(el.value).toBe('[Apple](https://apple.com)x');
 	});
 
 	it('measures the same place on both sides of an annotation end', async () => {

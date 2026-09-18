@@ -4109,7 +4109,7 @@
               },
               "default": "''",
               "fieldName": "alt",
-              "description": "Alt text. Required unless `decorative`."
+              "description": "Alt text for the image from `src`. Required unless `decorative`; slotted media carries its own."
             },
             {
               "name": "srcset",
@@ -4263,7 +4263,7 @@
           "slots": [
             {
               "name": "",
-              "description": "Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback)."
+              "description": "Custom `<img>`, `<picture>` or inline `<svg>` (overrides the src-based default). An inline svg keeps its own colors and scales by its viewBox, so a drawing gets the same box, ratio and caption as a photo. Slotted media carries its own text alternative: an `alt` on the img (empty when it conveys nothing), or `role=\"img\"` with an `aria-label`, `aria-labelledby` or `<title>` on the svg. The internal `error` listener is attached only to the built-in `<img>`, so slotted content does not trigger the error-state overlay automatically. Consumers slotting their own image are responsible for handling its error state (e.g. swapping the slot content or styling a fallback)."
             },
             {
               "name": "caption",
@@ -12763,7 +12763,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A radio button with an inline label. Use inside nldd-radio-button-group for keyboard navigation and group semantics. The group sets the name. Form-associated: the checked field submits its `value` under `name` (the inner nldd-radio-button sits in the shadow root and never joins the consumer's form; the field submits on its behalf). Unchecking siblings is the group's job, so exactly one value per group reaches the form.",
+          "description": "A radio button with an inline label. Use inside nldd-radio-button-group, which sets the name and labels the group. Fields that stand on their own group by name, the way native radios do: checking one unchecks the others, the arrow keys move between them and Tab stops at the group once. Put them in a container with role=\"radiogroup\", or a screen reader has nothing to count them from. The field is the radio: it carries the role, the state, the label it is announced by and the focus, and the nldd-radio-button inside only draws the shape. A radio of its own in there would be a second control inside a control, and a group of one to count. Form-associated: the checked field submits its `value` under `name`. Unchecking siblings is the group's job, so exactly one value per group reaches the form.",
           "name": "NLDDRadioButtonField",
           "members": [
             {
@@ -12888,22 +12888,14 @@
             },
             {
               "kind": "method",
-              "name": "focus",
+              "name": "select",
+              "privacy": "public",
               "return": {
                 "type": {
                   "text": "void"
                 }
               },
-              "parameters": [
-                {
-                  "name": "options",
-                  "optional": true,
-                  "type": {
-                    "text": "FocusOptions"
-                  }
-                }
-              ],
-              "description": "Delegates focus to the inner `<nldd-radio-button>`, which in turn focuses\nits native input. Lets consumers call `radioFieldEl.focus()` without\nreaching into shadow DOM."
+              "description": "Checks this field, the way a click or the space bar does. The group hears\nthe change and unchecks the others; without a group the fields that share\nits name are unchecked here."
             },
             {
               "kind": "method",
@@ -12913,7 +12905,7 @@
                   "text": "Element | null"
                 }
               },
-              "description": "The radio button it renders knows which element inside itself is the control.",
+              "description": "The element assistive software meets is this one, so the description and\nthe invalid state belong here rather than on the shape inside.",
               "inheritedFrom": {
                 "name": "DescribedBy",
                 "module": "src/utilities/described-by-mixin.ts"
@@ -13094,7 +13086,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Radio group name for form submission, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group.",
+              "description": "Radio group name for form submission; ties the fields of one group together. Set automatically by nldd-radio-button-group.",
               "fieldName": "name"
             },
             {
@@ -13104,7 +13096,7 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Required state, forwarded to the inner nldd-radio-button. Set automatically by nldd-radio-button-group."
+              "description": "Required state. What it asks is whether anything in the group is checked, as a native radio does. Set automatically by nldd-radio-button-group."
             },
             {
               "name": "label",
@@ -13361,7 +13353,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "WAI-ARIA: Wrap radio buttons in a <fieldset>/<legend> or a container with role=\"radiogroup\" and aria-labelledby for proper group semantics. <fieldset> <legend>Kies een optie</legend> <nldd-radio-button name=\"options\" value=\"1\">Optie 1</nldd-radio-button> <nldd-radio-button name=\"options\" value=\"2\">Optie 2</nldd-radio-button> </fieldset>",
+          "description": "WAI-ARIA: put the buttons of one group in a container with role=\"radiogroup\" and a name of its own. A screen reader counts the options from that container, so a bare <fieldset> (which is a group, not a radiogroup) leaves them uncounted. nldd-radio-button-group does this for you. Radio buttons with the same name, in the same form and the same tree, form one group the way native radios do: checking one unchecks the others, the arrow keys move between them, Tab stops at the group once, and a screen reader hears each one's place in it. The element itself is the radio, because an input per shadow root would leave every button a group of one. The shape is all this component draws. A radio with a label beside it is nldd-radio-button-field. <fieldset role=\"radiogroup\" aria-labelledby=\"options-label\"> <legend id=\"options-label\">Kies een optie</legend> <nldd-radio-button name=\"options\" value=\"1\" accessible-label=\"Optie 1\"></nldd-radio-button> <nldd-radio-button name=\"options\" value=\"2\" accessible-label=\"Optie 2\"></nldd-radio-button> </fieldset>",
           "name": "NLDDRadioButton",
           "members": [
             {
@@ -13427,6 +13419,17 @@
             },
             {
               "kind": "field",
+              "name": "focusRing",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Set by nldd-radio-button-field. Not part of the public API: that field is\nthe radio and holds the focus, while the shape it rings is drawn here.",
+              "attribute": "focus-ring",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "name",
               "type": {
                 "text": "string"
@@ -13463,6 +13466,20 @@
               "description": "Marks the control as invalid.\n\nAnnounced and not drawn. What is wrong belongs in an\nnldd-validation-list, in words: a red ring around a single\ncheckbox or radio would say the option is wrong, while it is the question\nthat is unanswered. `aria-invalid` still goes on the control, because\nchoosing not to show something is not a reason to keep quiet about it.",
               "attribute": "invalid",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "describedTarget",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              },
+              "description": "The element assistive software meets is this one, so the description and\nthe invalid state belong here rather than on something inside.",
+              "inheritedFrom": {
+                "name": "DescribedBy",
+                "module": "src/utilities/described-by-mixin.ts"
+              }
             },
             {
               "kind": "method",
@@ -13512,26 +13529,8 @@
                 "type": {
                   "text": "void"
                 }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "focus",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
               },
-              "parameters": [
-                {
-                  "name": "options",
-                  "optional": true,
-                  "type": {
-                    "text": "FocusOptions"
-                  }
-                }
-              ],
-              "description": "Delegates focus to the inner native radio `<input>`, so consumers can\ncall `radioEl.focus()` without reaching into shadow DOM."
+              "description": "Checks this radio, the way a click or the space bar does."
             },
             {
               "kind": "field",
@@ -13541,20 +13540,6 @@
               },
               "default": "[]",
               "description": "Set by nldd-form-field. A consumer never writes this.",
-              "inheritedFrom": {
-                "name": "DescribedBy",
-                "module": "src/utilities/described-by-mixin.ts"
-              }
-            },
-            {
-              "kind": "method",
-              "name": "describedTarget",
-              "return": {
-                "type": {
-                  "text": "Element | null"
-                }
-              },
-              "description": "The element the description belongs to. Override where it differs.\n\nPublic rather than protected because TypeScript refuses to emit a\ndeclaration for an anonymous class with protected members, and a mixin\nreturns exactly that. Same reason `formValue()` is public in\nFormAssociated.",
               "inheritedFrom": {
                 "name": "DescribedBy",
                 "module": "src/utilities/described-by-mixin.ts"
@@ -13705,7 +13690,7 @@
               },
               "default": "false",
               "fieldName": "decorative",
-              "description": "Renders the shape without the input: no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row that is itself the radio; putting a real input in there would nest a control inside a control."
+              "description": "Renders the shape only: no role, no focus, no name/value, nothing announced. For a control that owns the state elsewhere, such as a list row or an nldd-radio-button-field that is itself the radio; putting a second radio in there would nest a control inside a control."
             },
             {
               "name": "disabled",
@@ -13732,7 +13717,16 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Required state"
+              "description": "Required state. What it asks is whether anything in the group is checked, as a native radio does."
+            },
+            {
+              "name": "focus-ring",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Draws the focus ring around the shape. Set by nldd-radio-button-field, which is the radio itself and holds the focus. Not part of the public API.",
+              "fieldName": "focusRing"
             },
             {
               "name": "name",
@@ -13759,7 +13753,7 @@
               },
               "default": "''",
               "fieldName": "accessibleLabel",
-              "description": "Accessible label forwarded as aria-label to the native input."
+              "description": "Accessible label, set as aria-label on this element: it is the radio."
             },
             {
               "name": "invalid",
@@ -14511,7 +14505,7 @@
                   }
                 }
               ],
-              "description": "Delegates focus to the inner native `<input>`, so consumers can call\n`itemEl.focus()` without reaching into shadow DOM."
+              "description": "Delegates focus to whichever control this mode renders: the element itself\nin radio mode, the native `<input>` in checkbox mode. Lets consumers call\n`itemEl.focus()` without reaching into shadow DOM."
             }
           ],
           "events": [
@@ -14528,7 +14522,7 @@
               },
               "default": "false",
               "fieldName": "required",
-              "description": "Required state. Set by nldd-segmented-control."
+              "description": "Required state of the native checkbox. In radio mode the group carries the constraint."
             },
             {
               "name": "value",
@@ -14581,7 +14575,7 @@
                 "text": "SegmentedControlType"
               },
               "default": "'radio'",
-              "description": "Type of the native input: 'radio' | 'checkbox' (default: 'radio'). Set by nldd-segmented-control.",
+              "description": "Selection mode: 'radio' | 'checkbox' (default: 'radio'). In radio mode the item is the radio itself, in checkbox mode it renders a native checkbox. Set by nldd-segmented-control.",
               "fieldName": "inputType"
             },
             {
@@ -14590,7 +14584,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Name of the group for form submission, put on the native input. Set by nldd-segmented-control.",
+              "description": "Name of the group for form submission, put on the native checkbox. Set by nldd-segmented-control.",
               "fieldName": "groupName"
             },
             {
@@ -14637,7 +14631,7 @@
                 "text": "boolean"
               },
               "default": "false",
-              "description": "Marks the group as required: something has to be selected.\n\nHanded to the items, because that is where the platform reads it. One\nrequired radio makes the whole group required, and the browser writes its\nown message in the user's language.\n\nOnly in radio mode. The same attribute on a checkbox means that box has to\nbe ticked, so spreading it over a checkbox group would demand all of them\ninstead of one. HTML has no way to say \"at least one of these\", and\nneither do we: `aria-required` still goes on the group so assistive\nsoftware says it, but nothing enforces it.",
+              "description": "Marks the group as required: something has to be selected.\n\nThe group carries the constraint, on a radio of its own that is checked as\nsoon as anything is selected. The items are the radios the user meets, and\nthey have no input left to read it from. The browser writes the message in\nthe user's language.\n\nOnly in radio mode. The same attribute on a checkbox means that box has to\nbe ticked, so a required checkbox group would demand all of them instead of\none. HTML has no way to say \"at least one of these\", and neither do we:\n`aria-required` still goes on the group so assistive software says it, but\nnothing enforces it.",
               "attribute": "required",
               "reflects": true
             },
@@ -14989,7 +14983,7 @@
               },
               "default": "'radio'",
               "fieldName": "type",
-              "description": "Input type: 'radio' | 'checkbox' (default: 'radio')."
+              "description": "Selection mode: 'radio' | 'checkbox' (default: 'radio')."
             },
             {
               "name": "variant",
@@ -15025,7 +15019,7 @@
               },
               "default": "''",
               "fieldName": "name",
-              "description": "Name for form submission, forwarded to native inputs"
+              "description": "Name for form submission"
             },
             {
               "name": "accessible-label",
@@ -20959,7 +20953,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), checkbox, or radio input.",
+          "description": "A selectable button that toggles between selected and unselected. Available as a button (aria-pressed), a checkbox, or a radio. In radio mode the button itself is the radio: it carries the role, the state and its place in the group. A native radio in a shadow root of its own would be a group of one, counted as \"1 of 1\" and stopped at by Tab.",
           "name": "NLDDToggleButton",
           "members": [
             {
@@ -21344,7 +21338,7 @@
               },
               "default": "'button'",
               "fieldName": "type",
-              "description": "Underlying element (default: 'button')"
+              "description": "What the button is: a button with aria-pressed, a native checkbox, or a radio (default: 'button')"
             },
             {
               "name": "size",
@@ -31365,7 +31359,7 @@
             },
             {
               "name": "empty",
-              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type=\"listbox\"` and a `[slot=\"toolbar\"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
+              "description": "Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so a `[slot=\"toolbar\"]` is hidden along with them, and an unfilled slot takes the whole list off the page. A `type=\"listbox\"` is the exception on both counts: its search field is where the rows come from, so the field, the toolbar and the list itself stay, and the message waits until there is a query, the same as `no-results` does. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant=\"loading\"` here to hold the place rather than have the controls appear a moment later."
             },
             {
               "name": "no-results",
@@ -36916,6 +36910,10 @@
               "type": {
                 "text": "readonly Element[]"
               }
+            },
+            {
+              "name": "onSelf",
+              "default": "false"
             }
           ],
           "description": "Points an element at the elements that describe it.\n\nElement references and not ids, because an id only resolves inside the tree\nof the element that carries it. An `aria-describedby=\"err\"` on an input in a\nshadow root cannot find an error text in the light DOM: the attribute is\nwritten, the id is right, and the description comes out empty.\n`ariaDescribedByElements` takes the elements themselves and crosses the\nboundary."
@@ -36940,6 +36938,10 @@
               "type": {
                 "text": "boolean"
               }
+            },
+            {
+              "name": "onSelf",
+              "default": "false"
             }
           ],
           "description": "Announces that a control is invalid, on the element assistive software meets.\n\nNothing is drawn for it, and that is a decision rather than an omission: what\nis wrong belongs in an nldd-validation-list, in words. A red ring\naround a single checkbox would say the option is wrong, while it is the\nquestion that is unanswered. Choosing not to show it is no reason to keep\nquiet about it, so `aria-invalid` goes on regardless.\n\nA component that wraps another one hands the state on, the same way it hands\non the description."
@@ -38004,6 +38006,243 @@
           "declaration": {
             "name": "PopupAnchorController",
             "module": "src/utilities/popup-anchor-controller.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/radio-grouping.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RadioGrouping",
+          "members": [
+            {
+              "kind": "field",
+              "name": "position",
+              "type": {
+                "text": "RadioPosition | null"
+              },
+              "default": "null",
+              "description": "Its place among the radios that share its name, or null when it has none."
+            },
+            {
+              "kind": "field",
+              "name": "answered",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether anything in the group is checked, which is what `required` asks of\na radio: one of these, not this one. A radio without a group answers for\nitself, because it is the whole group."
+            },
+            {
+              "kind": "field",
+              "name": "_groupedIn",
+              "type": {
+                "text": "RadioGroupKey | null"
+              },
+              "privacy": "private",
+              "default": "null",
+              "description": "Where it was grouped last, so the radios it leaves behind hear of it."
+            },
+            {
+              "kind": "method",
+              "name": "hostConnected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "hostDisconnected",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "regroup",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Reads which group this radio is in now, and recounts the one it left."
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Counts the group again, after this radio was checked or disabled."
+            },
+            {
+              "kind": "method",
+              "name": "uncheckOthers",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "description": "Unchecks the others, as checking a native radio does."
+            },
+            {
+              "kind": "method",
+              "name": "moveWithArrow",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              },
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                }
+              ],
+              "description": "Moves to the next radio of the group and checks it, as the arrow keys do\nfor native radios. Disabled options are stepped over, and the ends wrap."
+            },
+            {
+              "kind": "method",
+              "name": "_key",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "RadioGroupKey | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "_apply",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "position",
+                  "type": {
+                    "text": "RadioPosition | null"
+                  }
+                },
+                {
+                  "name": "answered",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "description": "Compared by value: a recount hands out new objects for the same place, and\nasking for a render on every one of those is a render per radio per\nkeystroke, each of them scheduled from inside an update that had just\nfinished."
+            },
+            {
+              "kind": "method",
+              "name": "_radiosIn",
+              "privacy": "private",
+              "static": true,
+              "return": {
+                "type": {
+                  "text": "GroupedRadio[]"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "{ root, name, form }",
+                  "type": {
+                    "text": "RadioGroupKey"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "_recount",
+              "privacy": "private",
+              "static": true,
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "key",
+                  "type": {
+                    "text": "RadioGroupKey"
+                  }
+                }
+              ],
+              "description": "A radio on its own keeps the place the browser gives it: none."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RadioGrouping",
+          "declaration": {
+            "name": "RadioGrouping",
+            "module": "src/utilities/radio-grouping.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/radio-position.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "radioPositions",
+          "return": {
+            "type": {
+              "text": "RadioPosition[]"
+            }
+          },
+          "parameters": [
+            {
+              "name": "radios",
+              "type": {
+                "text": "readonly T[]"
+              }
+            },
+            {
+              "name": "isChecked",
+              "type": {
+                "text": "(radio: T) => boolean"
+              }
+            },
+            {
+              "name": "isDisabled",
+              "type": {
+                "text": "(radio: T) => boolean"
+              }
+            }
+          ],
+          "description": "A position for every radio of a group, in the order given."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "radioPositions",
+          "declaration": {
+            "name": "radioPositions",
+            "module": "src/utilities/radio-position.ts"
           }
         }
       ]

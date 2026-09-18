@@ -36,7 +36,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/code-editor/code-editor.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'beta' },
 	},

@@ -48,7 +48,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/layout/container/container.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',
@@ -345,7 +345,7 @@ export const LayoutLanes = {
 			</nldd-card>
 		</nldd-container>
 	`,
-	storyName: 'Layout — lanes (native grid-lanes, multicol fallback)',
+	name: 'Layout — lanes (native grid-lanes, multicol fallback)',
 };
 
 export const OrderRow = {

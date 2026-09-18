@@ -15,7 +15,7 @@ Bij elke merge naar `main` zet semantic-release bovenaan een nieuw versieblok:
 ```
 ## <small>0.8.57 (2026-06-08)</small>
 
-* feat(button): add variant ([a1b2c3d](https://github.com/MinBZK/storybook/commit/a1b2c3d))
+* feat(button): add variant ([a1b2c3d](https://github.com/NederlandseDigitaleDienst/design-system/commit/a1b2c3d))
 ```
 
 → De `## <small>{versie} ({datum})</small>`-kop **én** de (squashed) commit-regels komen **van de pipeline**. Die schrijf je dus **nooit zelf**.

@@ -31,6 +31,7 @@ import { toggleButtonGroupStyles } from './toggle-button-group.styles.js';
 import { toggleButtonGroupTemplate } from './toggle-button-group.template.js';
 import type { NLDDToggleButton, ToggleButtonSize } from '../toggle-button/toggle-button.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { radioPositions } from '../../../utilities/radio-position.js';
 
 type GroupType = 'button' | 'checkbox' | 'radio';
 
@@ -180,6 +181,24 @@ export class NLDDToggleButtonGroup extends LitElement {
 				button.disabled = false;
 			}
 		});
+		this._positionButtons();
+	}
+
+	/** In radio mode, each button its place in the group and the group one stop
+	 *  for Tab. Every button renders its input in a shadow root of its own, so
+	 *  the browser would count each as a group of one. */
+	private _positionButtons(): void {
+		const buttons = this._getButtons();
+		if (this.type !== 'radio') {
+			buttons.forEach((button) => { button._groupPosition = null; });
+			return;
+		}
+		const answered = buttons.some((button) => button.selected);
+		radioPositions(buttons, (button) => button.selected, (button) => button.disabled)
+			.forEach((position, index) => {
+				buttons[index]._groupPosition = position;
+				buttons[index]._groupHasSelection = answered;
+			});
 	}
 
 	private _handleChange = (e: Event): void => {
@@ -197,6 +216,7 @@ export class NLDDToggleButtonGroup extends LitElement {
 			// its listener would otherwise still see this button's old value.
 			button.commitFormValue?.();
 		});
+		this._positionButtons();
 	};
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
@@ -226,9 +246,9 @@ export class NLDDToggleButtonGroup extends LitElement {
 		}
 		nextButton.selected = true;
 		nextButton.commitFormValue?.();
+		this._positionButtons();
 
-		const input = nextButton.shadowRoot?.querySelector<HTMLInputElement>('.toggle-button__input');
-		input?.focus();
+		nextButton.focus();
 
 		nextButton.dispatchEvent(new CustomEvent('change', {
 			detail: { selected: true, value: nextButton.value },

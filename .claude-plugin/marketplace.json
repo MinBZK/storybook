@@ -5,7 +5,7 @@
     "description": "Plugin voor het NLDD Design System (Nederlandse Digitale Dienst, Rijksoverheid)"
   },
   "owner": {
-    "name": "MinBZK"
+    "name": "Nederlandse Digitale Dienst"
   },
   "plugins": [
     {
@@ -13,7 +13,7 @@
       "description": "Bouw applicaties met het NLDD Design System (@nldd/design-system): de visie erachter en hoe je de web components goed gebruikt. Voor consumenten van het pakket, niet voor wie het systeem zelf onderhoudt.",
       "version": "0.8.88",
       "author": {
-        "name": "MinBZK"
+        "name": "Nederlandse Digitale Dienst"
       },
       "source": "./",
       "category": "productivity",

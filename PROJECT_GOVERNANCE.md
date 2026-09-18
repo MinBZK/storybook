@@ -22,7 +22,7 @@ maintainer persoonlijk.
 ## Besluiten
 
 De maintainer beslist. Voorstellen lopen via een
-[issue](https://github.com/MinBZK/storybook/issues), zodat de afweging
+[issue](https://github.com/NederlandseDigitaleDienst/design-system/issues), zodat de afweging
 vindbaar blijft voor wie later dezelfde vraag heeft. Wat afvalt krijgt een
 reden in dat issue.
 
@@ -49,7 +49,7 @@ De prioriteiten komen uit de behoefte van de teams die het systeem gebruiken.
 Die backlog is nu niet openbaar, dus er staat geen roadmap in deze repository.
 
 Wat wel openbaar is: de
-[issues](https://github.com/MinBZK/storybook/issues), de
+[issues](https://github.com/NederlandseDigitaleDienst/design-system/issues), de
 [`CHANGELOG.md`](./CHANGELOG.md) en de releases. Daarmee zie je wat er speelt
 en wat er is gewijzigd, ook zonder inzage in de planning erachter.
 

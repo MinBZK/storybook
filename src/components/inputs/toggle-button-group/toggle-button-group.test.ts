@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDToggleButtonGroup } from './toggle-button-group.js';
 import type { NLDDToggleButton } from '../toggle-button/toggle-button.js';
@@ -512,5 +513,55 @@ describe('nldd-toggle-button-group – toetsenbordnavigatie', () => {
 		`);
 		await waitForUpdate(el);
 		expect(el.getAttribute('aria-label')).toBe('Opmaak');
+	});
+});
+
+describe('nldd-toggle-button-group – place in the group', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	/** In radio mode the button is the radio; in checkbox mode it renders one. */
+	const toggleInput = (button: Element) => button.shadowRoot!.querySelector<HTMLInputElement>('.toggle-button__input') ?? button;
+
+	async function group(type: 'radio' | 'checkbox'): Promise<NLDDToggleButton[]> {
+		el = await fixture<NLDDToggleButtonGroup>(`
+			<nldd-toggle-button-group type="${type}" name="weergave" accessible-label="Weergave">
+				<nldd-toggle-button value="lijst" text="Lijst"></nldd-toggle-button>
+				<nldd-toggle-button value="kaart" text="Kaart" selected></nldd-toggle-button>
+				<nldd-toggle-button value="tabel" text="Tabel"></nldd-toggle-button>
+			</nldd-toggle-button-group>
+		`);
+		await waitForUpdate(el);
+		const buttons = Array.from(el.querySelectorAll<NLDDToggleButton>('nldd-toggle-button'));
+		for (const button of buttons) await waitForUpdate(button);
+		return buttons;
+	}
+
+	it('in radio mode tells each button its place and keeps one stop for Tab', async () => {
+		const buttons = await group('radio');
+
+		expect(buttons.map((button) => toggleInput(button).getAttribute('aria-posinset'))).toEqual(['1', '2', '3']);
+		expect(buttons.map((button) => toggleInput(button).getAttribute('aria-setsize'))).toEqual(['3', '3', '3']);
+		expect(buttons.map((button) => toggleInput(button).getAttribute('tabindex'))).toEqual(['-1', '0', '-1']);
+	});
+
+	it('in radio mode moves the stop for Tab along with the arrow keys', async () => {
+		const buttons = await group('radio');
+		buttons[1].focus();
+
+		await userEvent.keyboard('{ArrowDown}');
+		for (const button of buttons) await waitForUpdate(button);
+
+		expect(buttons.map((button) => toggleInput(button).getAttribute('tabindex'))).toEqual(['-1', '-1', '0']);
+	});
+
+	it('in checkbox mode leaves every button in the tab order and uncounted', async () => {
+		const buttons = await group('checkbox');
+
+		expect(buttons.map((button) => toggleInput(button).hasAttribute('aria-setsize'))).toEqual([false, false, false]);
+		expect(buttons.map((button) => toggleInput(button).hasAttribute('tabindex'))).toEqual([false, false, false]);
 	});
 });

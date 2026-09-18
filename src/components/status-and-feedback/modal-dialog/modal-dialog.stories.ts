@@ -27,7 +27,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/status-and-feedback/modal-dialog/modal-dialog.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'stable' },
 	},

@@ -32,7 +32,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/status-and-feedback/status-bar/status-bar.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'beta' },
 		docs: {
@@ -68,9 +68,9 @@ export default {
 		},
 		target: {
 			control: 'select',
-			options: ['(geen)', '_blank', '_self'],
+			options: ['(geen)', '_self', '_blank', '_parent', '_top'],
 			mapping: { '(geen)': '' },
-			description: 'Link target; alleen gebruikt bij href',
+			description: 'Link target (alleen gebruikt als href is gezet)',
 			table: { defaultValue: { summary: '(geen)' } },
 		},
 		button: {

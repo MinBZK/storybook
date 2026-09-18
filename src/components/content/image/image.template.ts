@@ -88,7 +88,7 @@ export function imageTemplate(component: NLDDImage) {
 		<div class=${mediaClasses}
 			style=${styleMap(mediaStyles)}
 		>
-			<slot>${fallbackImg}</slot>
+			<slot @slotchange=${component._onMediaSlotChange}>${fallbackImg}</slot>
 			${errorOverlay}
 			${liveRegion}
 		</div>

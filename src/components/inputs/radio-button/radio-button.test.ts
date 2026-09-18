@@ -1,4 +1,5 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { fixture, cleanup, waitForUpdate, deepActiveElement } from '../../../test-utils.js';
 import type { NLDDRadioButton } from './radio-button.js';
 import './radio-button.js';
@@ -16,10 +17,11 @@ describe('nldd-radio-button', () => {
 		expect(el.shadowRoot).not.toBeNull();
 	});
 
-	it('renders a native radio input', async () => {
+	it('is the radio itself, so a group of them can be counted', async () => {
 		el = await fixture('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input[type="radio"]')).not.toBeNull();
+		expect(el.getAttribute('role')).toBe('radio');
+		expect(el.getAttribute('aria-checked')).toBe('false');
 	});
 });
 
@@ -38,31 +40,20 @@ describe('nldd-radio-button – state', () => {
 	it('is unchecked by default', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.checked).toBe(false);
+		expect(el.getAttribute('aria-checked')).toBe('false');
 	});
 
 	it('is checked when checked attribute is set', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button checked></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.checked).toBe(true);
+		expect(el.getAttribute('aria-checked')).toBe('true');
 	});
 
-	it('is disabled when disabled attribute is set', async () => {
+	it('says it is disabled and leaves the tab order when disabled', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button disabled></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.disabled).toBe(true);
-	});
-
-	it('forwards value to the native input', async () => {
-		el = await fixture<NLDDRadioButton>('<nldd-radio-button value="option-a"></nldd-radio-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.value).toBe('option-a');
-	});
-
-	it('forwards name to the native input', async () => {
-		el = await fixture<NLDDRadioButton>('<nldd-radio-button name="group1"></nldd-radio-button>');
-		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('input')!.name).toBe('group1');
+		expect(el.getAttribute('aria-disabled')).toBe('true');
+		expect(el.getAttribute('tabindex')).toBe('-1');
 	});
 });
 
@@ -78,14 +69,24 @@ describe('nldd-radio-button – change event', () => {
 		if (el) cleanup(el);
 	});
 
-	it('updates checked property when native input changes', async () => {
+	it('checks itself when it is clicked', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button></nldd-radio-button>');
 		await waitForUpdate(el);
-		const input = el.shadowRoot!.querySelector('input')!;
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		(el as NLDDRadioButton).click();
 		await waitForUpdate(el);
-		expect(el.checked).toBe(true);
+		expect((el as NLDDRadioButton).checked).toBe(true);
+		expect(el.getAttribute('aria-checked')).toBe('true');
+	});
+
+	it('checks itself when the space bar is pressed', async () => {
+		el = await fixture<NLDDRadioButton>('<nldd-radio-button accessible-label="Optie"></nldd-radio-button>');
+		await waitForUpdate(el);
+		(el as NLDDRadioButton).focus();
+
+		await userEvent.keyboard('{ }');
+		await waitForUpdate(el);
+
+		expect((el as NLDDRadioButton).checked).toBe(true);
 	});
 
 	it('dispatches a change event with checked, value and name detail', async () => {
@@ -97,9 +98,7 @@ describe('nldd-radio-button – change event', () => {
 			detail = e.detail;
 		}) as EventListener);
 
-		const input = el.shadowRoot!.querySelector('input')!;
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		(el as NLDDRadioButton).click();
 
 		expect(detail).toBeDefined();
 		expect(detail.checked).toBe(true);
@@ -150,11 +149,11 @@ describe('nldd-radio-button – change event', () => {
 	});
 
 
-	it('focus() lands on the inner native input', async () => {
+	it('focus() lands on the radio itself', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="Optie"></nldd-radio-button>');
 		await waitForUpdate(el);
 		el.focus();
-		expect(deepActiveElement()).toBe(el.shadowRoot!.querySelector('.radio-button__input'));
+		expect(deepActiveElement()).toBe(el);
 	});
 });
 
@@ -165,15 +164,169 @@ describe('nldd-radio-button no-tab', () => {
 		if (el) cleanup(el);
 	});
 
-	it('takes the input out of the tab order', async () => {
+	it('takes the radio out of the tab order', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="X" no-tab></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.radio-button__input')!.getAttribute('tabindex')).toBe('-1');
+		expect(el.getAttribute('tabindex')).toBe('-1');
 	});
 
-	it('is in the tab order by default (no tabindex attribute)', async () => {
+	it('is in the tab order by default', async () => {
 		el = await fixture<NLDDRadioButton>('<nldd-radio-button label="X"></nldd-radio-button>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('.radio-button__input')!.hasAttribute('tabindex')).toBe(false);
+		expect(el.getAttribute('tabindex')).toBe('0');
+	});
+});
+
+describe('nldd-radio-button grouped by name', () => {
+	let el: HTMLElement;
+
+	afterEach(() => {
+		if (el) cleanup(el);
+	});
+
+	/** The radio is the element itself: role, state and place sit on it. */
+	const input = (radio: Element) => radio;
+
+	/** Radios in one container. They group a tick after connecting, once the
+	 *  ones parsed after them are there too. */
+	async function radios(html: string): Promise<NLDDRadioButton[]> {
+		el = await fixture(`<div>${html}</div>`);
+		const found = Array.from(el.querySelectorAll<NLDDRadioButton>('nldd-radio-button'));
+		await Promise.resolve();
+		await Promise.all(found.map((radio) => waitForUpdate(radio)));
+		return found;
+	}
+
+	const three = `
+		<nldd-radio-button name="kleur" value="rood" checked accessible-label="Rood"></nldd-radio-button>
+		<nldd-radio-button name="kleur" value="groen" accessible-label="Groen"></nldd-radio-button>
+		<nldd-radio-button name="kleur" value="blauw" accessible-label="Blauw"></nldd-radio-button>
+	`;
+
+	it('checks one radio at a time', async () => {
+		const [rood, groen, blauw] = await radios(three);
+
+		// The click the browser does for the user: the tokens that give the radio
+		// its size are not loaded here, so there is nothing to point at.
+		groen.click();
+		await Promise.all([rood, groen, blauw].map((radio) => waitForUpdate(radio)));
+
+		expect([rood.checked, groen.checked, blauw.checked]).toEqual([false, true, false]);
+		expect(rood.getAttribute('aria-checked')).toBe('false');
+	});
+
+	it('unchecks the others when one is checked from script', async () => {
+		const [rood, , blauw] = await radios(three);
+
+		blauw.checked = true;
+		await waitForUpdate(blauw);
+
+		expect(rood.checked).toBe(false);
+	});
+
+	it('tells each radio its place in the group', async () => {
+		const found = await radios(three);
+
+		expect(found.map((radio) => input(radio).getAttribute('aria-posinset'))).toEqual(['1', '2', '3']);
+		expect(found.map((radio) => input(radio).getAttribute('aria-setsize'))).toEqual(['3', '3', '3']);
+	});
+
+	it('puts only the checked radio in the tab order, and moves it along', async () => {
+		const [rood, groen, blauw] = await radios(three);
+		expect([rood, groen, blauw].map((radio) => input(radio).getAttribute('tabindex'))).toEqual(['0', '-1', '-1']);
+
+		blauw.checked = true;
+		await Promise.all([rood, groen, blauw].map((radio) => waitForUpdate(radio)));
+
+		expect([rood, groen, blauw].map((radio) => input(radio).getAttribute('tabindex'))).toEqual(['-1', '-1', '0']);
+	});
+
+	it('puts the first enabled radio in the tab order when none is checked', async () => {
+		const found = await radios(`
+			<nldd-radio-button name="maat" value="s" disabled></nldd-radio-button>
+			<nldd-radio-button name="maat" value="m"></nldd-radio-button>
+			<nldd-radio-button name="maat" value="l"></nldd-radio-button>
+		`);
+
+		expect(found.map((radio) => input(radio).getAttribute('tabindex'))).toEqual(['-1', '0', '-1']);
+	});
+
+	it('moves and checks with the arrow keys, past a disabled radio and around', async () => {
+		const found = await radios(`
+			<nldd-radio-button name="maat" value="s" checked></nldd-radio-button>
+			<nldd-radio-button name="maat" value="m" disabled></nldd-radio-button>
+			<nldd-radio-button name="maat" value="l"></nldd-radio-button>
+		`);
+		const [s, , l] = found;
+		const changed = vi.fn();
+		el.addEventListener('change', changed);
+		s.focus();
+
+		await userEvent.keyboard('{ArrowDown}');
+		expect(l.checked).toBe(true);
+		expect(s.checked).toBe(false);
+		expect(deepActiveElement()).toBe(input(l));
+		expect(changed).toHaveBeenCalled();
+
+		await userEvent.keyboard('{ArrowDown}');
+		expect(s.checked).toBe(true);
+		expect(deepActiveElement()).toBe(input(s));
+	});
+
+	it('leaves a radio with a name of its own as the browser has it', async () => {
+		const [alone] = await radios('<nldd-radio-button name="alleen" value="1"></nldd-radio-button>');
+
+		expect(input(alone).hasAttribute('aria-setsize')).toBe(false);
+		expect(input(alone).getAttribute('tabindex')).toBe('0');
+	});
+
+	it('keeps radios in different forms apart', async () => {
+		const found = await radios(`
+			<form><nldd-radio-button name="keuze" value="a" checked></nldd-radio-button></form>
+			<form><nldd-radio-button name="keuze" value="b" checked></nldd-radio-button></form>
+		`);
+
+		expect(found.map((radio) => radio.checked)).toEqual([true, true]);
+		expect(found.map((radio) => input(radio).hasAttribute('aria-setsize'))).toEqual([false, false]);
+	});
+
+	it('recounts the group when a radio leaves it or is renamed', async () => {
+		const [rood, groen, blauw] = await radios(three);
+
+		blauw.remove();
+		await Promise.all([rood, groen].map((radio) => waitForUpdate(radio)));
+		expect(input(rood).getAttribute('aria-setsize')).toBe('2');
+
+		groen.name = 'ander';
+		await Promise.all([rood, groen].map((radio) => waitForUpdate(radio)));
+		expect(input(rood).hasAttribute('aria-setsize')).toBe(false);
+		expect(input(groen).hasAttribute('aria-setsize')).toBe(false);
+	});
+
+	it('leaves Tab and the arrow keys to a roving container that set no-tab', async () => {
+		const [rood, groen] = await radios(`
+			<nldd-radio-button name="rij" value="1" checked no-tab></nldd-radio-button>
+			<nldd-radio-button name="rij" value="2" no-tab></nldd-radio-button>
+		`);
+		expect([rood, groen].map((radio) => input(radio).getAttribute('tabindex'))).toEqual(['-1', '-1']);
+		expect(input(rood).getAttribute('aria-setsize')).toBe('2');
+
+		rood.focus();
+		await userEvent.keyboard('{ArrowDown}');
+
+		expect(rood.checked).toBe(true);
+		expect(groen.checked).toBe(false);
+	});
+
+	it('a radio on its own is the whole group its `required` asks about', async () => {
+		const [los] = await radios('<nldd-radio-button required checked accessible-label="Los"></nldd-radio-button>');
+		const validity = los.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+		expect(validity.validity.valueMissing).toBe(false);
+		expect(los.internals.validity.valid).toBe(true);
+
+		los.checked = false;
+		await waitForUpdate(los);
+		expect(validity.validity.valueMissing).toBe(true);
 	});
 });

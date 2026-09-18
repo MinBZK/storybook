@@ -34,7 +34,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/inputs/text-field/text-field.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

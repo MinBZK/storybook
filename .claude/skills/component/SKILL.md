@@ -445,7 +445,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/{categorie}/{naam}/{naam}.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'stable' },
 	},
