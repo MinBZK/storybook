@@ -345,7 +345,7 @@ export const LayoutLanes = {
 			</nldd-card>
 		</nldd-container>
 	`,
-	storyName: 'Layout — lanes (native grid-lanes, multicol fallback)',
+	name: 'Layout — lanes (native grid-lanes, multicol fallback)',
 };
 
 export const OrderRow = {

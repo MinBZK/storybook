@@ -62,6 +62,12 @@ export const notificationStyles = css`
 		display: none;
 	}
 
+	/* Off for good once it has arrived: a move between overlays reinserts the
+	   element, and the browser would play the arrival again. */
+	:host([data-arrived]) {
+		animation: none;
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		:host {
 			transition: none;

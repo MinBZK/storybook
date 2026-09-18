@@ -171,7 +171,7 @@ const SHADOW_TAB_STOP = ':is(a[href], button, input, select, textarea, [tabindex
  * @slot        - List items (`nldd-list-item`)
  * @slot toolbar - Controls below the search field (filters, sort, counts, view toggles). Available for every type; collapses when empty.
  * @slot search-bar-end - Controls inline at the end of the search bar, beside the search field (e.g. a filter or options button). Listbox only; collapses when empty.
- * @slot empty - Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so the search field of a `type="listbox"` and a `[slot="toolbar"]` are hidden along with them, and an unfilled slot takes the whole list off the page. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant="loading"` here to hold the place rather than have the controls appear a moment later.
+ * @slot empty - Shown when the list has no items at all. Empty by default: what an empty list should say is the app's to write, so put an `nldd-inline-dialog` here. There is nothing to search or filter in a list with no rows, so a `[slot="toolbar"]` is hidden along with them, and an unfilled slot takes the whole list off the page. A `type="listbox"` is the exception on both counts: its search field is where the rows come from, so the field, the toolbar and the list itself stay, and the message waits until there is a query, the same as `no-results` does. A list that fetches its rows is in this state until they arrive: put an `nldd-inline-dialog variant="loading"` here to hold the place rather than have the controls appear a moment later.
  * @slot no-results - Shown when the list has items but every one of them is `[hidden]`, which is what consumer-driven filtering leaves behind. A different state from `empty` and a different sentence: here the search field and the `[slot="toolbar"]` stay, because they are the way back to the rows. Falls back to `[slot="empty"]` when not given. In `type="listbox"` it is suppressed while the search field is empty (no query yet), so the consumer can show just the search field or its own hint outside the list.
  *
  * @fires nldd-reorder - Reorderable `type="list"`: `{ fromIndex, toIndex }` on drop
@@ -562,10 +562,11 @@ export class NLDDList extends LitElement {
 		// No rows at all and nothing said about that: not a thing on the page, so
 		// a parent that spaces its children keeps no room for it either. Rows that
 		// are only filtered away are a different state: the list stays, because
-		// the search field and the toolbar in it are the way back.
+		// the search field and the toolbar in it are the way back. A listbox stays
+		// as well: its search field is the way to any rows at all.
 		this.classList.toggle(
 			'is-blank',
-			this._isEmpty && !this._hasItems && !this._hasEmptyState,
+			this._isEmpty && !this._hasItems && !this._hasEmptyState && this.type !== 'listbox',
 		);
 		this._warnSilentEmpty();
 	}

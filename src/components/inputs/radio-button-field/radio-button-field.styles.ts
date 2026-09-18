@@ -12,10 +12,27 @@ export const radioButtonFieldStyles = css`
 	:host {
 		${inheritedTextReset}
 		display: block;
+		position: relative;
+		cursor: default;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	:host([hidden]) {
 		display: none;
+	}
+
+	:host(:focus-visible) {
+		outline: none;
+	}
+
+	.radio-button-field__validation-input {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		margin: 0;
+		pointer-events: none;
+		width: 100%;
+		height: 100%;
 	}
 
 

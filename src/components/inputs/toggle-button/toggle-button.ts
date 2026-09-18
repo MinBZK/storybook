@@ -2,11 +2,15 @@
  * Nederlandse Digitale Dienst Toggle Button Component (Lit + TypeScript)
  *
  * A selectable button that toggles between selected and unselected.
- * Available as a button (aria-pressed), checkbox, or radio input.
+ * Available as a button (aria-pressed), a checkbox, or a radio.
+ *
+ * In radio mode the button itself is the radio: it carries the role, the state
+ * and its place in the group. A native radio in a shadow root of its own would
+ * be a group of one, counted as "1 of 1" and stopped at by Tab.
  *
  * @element nldd-toggle-button
  *
- * @attr {'button' | 'checkbox' | 'radio'} type - Underlying element (default: 'button')
+ * @attr {'button' | 'checkbox' | 'radio'} type - What the button is: a button with aria-pressed, a native checkbox, or a radio (default: 'button')
  * @attr {'xs' | 'sm' | 'md' | 'lg'} size - Button size (default: 'md')
  * @attr {boolean} selected - Selected state
  * @attr {boolean} disabled - Disabled state
@@ -26,12 +30,16 @@
  */
 
 import { LitElement, type PropertyValues } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { FormAssociated, type FormValue } from '../../../utilities/form-associated-mixin.js';
 import { reflectNonDefault } from '../../../utilities/reflect-non-default.js';
+import type { RadioPosition } from '../../../utilities/radio-position.js';
+import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { submitOnEnter } from '../../../utilities/implicit-submission.js';
 import { toggleButtonStyles } from './toggle-button.styles.js';
 import { toggleButtonTemplate } from './toggle-button.template.js';
 import './../../content/icon/icon.js';
+import type { NLDDTooltip } from '../../content/tooltip/tooltip.js';
 import { DescribedBy } from '../../../utilities/described-by-mixin.js';
 
 export type ToggleButtonType = 'button' | 'checkbox' | 'radio';
@@ -121,6 +129,19 @@ export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 	@property({ type: Boolean, reflect: true })
 	invalid = false;
 
+	/** Set by nldd-toggle-button-group in radio mode: this button's place in the
+	 *  group, which it cannot count by itself. */
+	@state()
+	_groupPosition: RadioPosition | null = null;
+
+	/** Set by nldd-toggle-button-group. What `required` asks of a radio is
+	 *  whether anything in the group is selected, not this one. */
+	@state()
+	_groupHasSelection = false;
+
+	/** The aria-label this button wrote on itself, so it only takes back its own. */
+	private _appliedRadioLabel: string | null = null;
+
 	override firstUpdated(): void {
 		this._initialSelected = this.selected;
 	}
@@ -147,7 +168,63 @@ export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 		if (changed.has('selected') || changed.has('value') || changed.has('type')) {
 			this.commitFormValue();
 		}
+		this._syncRadioAria();
 	}
+
+	/**
+	 * In radio mode this element is the radio.
+	 *
+	 * A native radio in a shadow root of its own is a group of one: a screen
+	 * reader counts it as "1 of 1" and Tab stops at every option. The role on the
+	 * element itself puts the group back in one tree. The other two types keep
+	 * the control they render: a checkbox input, or a button with aria-pressed.
+	 */
+	private _syncRadioAria(): void {
+		if (this.type !== 'radio') {
+			for (const name of ['role', 'aria-checked', 'aria-disabled', 'aria-posinset', 'aria-setsize', 'tabindex']) {
+				this.removeAttribute(name);
+			}
+			this._appliedRadioLabel = setOwnedAttribute(this, 'aria-label', '', this._appliedRadioLabel);
+			return;
+		}
+		this.setAttribute('role', 'radio');
+		this.setAttribute('aria-checked', String(this.selected));
+		this._appliedRadioLabel = setOwnedAttribute(this, 'aria-label', this.accessibleLabel || this.text, this._appliedRadioLabel);
+		if (this.disabled) this.setAttribute('aria-disabled', 'true');
+		else this.removeAttribute('aria-disabled');
+
+		const position = this._groupPosition;
+		if (position) {
+			this.setAttribute('aria-posinset', String(position.posInSet));
+			this.setAttribute('aria-setsize', String(position.setSize));
+		} else {
+			this.removeAttribute('aria-posinset');
+			this.removeAttribute('aria-setsize');
+		}
+		const tabbable = !this.disabled && !this.noTab && position?.tabbable !== false;
+		this.setAttribute('tabindex', tabbable ? '0' : '-1');
+	}
+
+	private _onRadioClick = (): void => {
+		if (this.type !== 'radio') return;
+		this.toggle();
+	};
+
+	private _onRadioKeyDown = (e: KeyboardEvent): void => {
+		if (this.type !== 'radio' || this.disabled) return;
+		// The keys a native radio answers to. The arrow keys belong to the group.
+		if (e.key === ' ') {
+			e.preventDefault();
+			this.toggle();
+			return;
+		}
+		if (e.key === 'Enter') {
+			submitOnEnter(this, e);
+			return;
+		}
+		// Escape puts the tooltip away without moving focus, as WCAG 1.4.13 asks.
+		if (e.key === 'Escape') this._tooltip?._handleTriggerLeave();
+	};
 
 	override formValue(): FormValue {
 		// Only checkbox/radio variants participate in form submission.
@@ -163,6 +240,41 @@ export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 	formStateRestoreCallback(state: File | string | FormData | null): void {
 		this.selected = state !== null;
 	}
+
+	override connectedCallback(): void {
+		super.connectedCallback();
+		this.addEventListener('click', this._onRadioClick);
+		this.addEventListener('keydown', this._onRadioKeyDown);
+		this.addEventListener('focus', this._onRadioFocus);
+		this.addEventListener('blur', this._onRadioBlur);
+	}
+
+	override disconnectedCallback(): void {
+		super.disconnectedCallback();
+		this.removeEventListener('click', this._onRadioClick);
+		this.removeEventListener('keydown', this._onRadioKeyDown);
+		this.removeEventListener('focus', this._onRadioFocus);
+		this.removeEventListener('blur', this._onRadioBlur);
+	}
+
+	/**
+	 * The tooltip of an icon-only button, which shows itself when focus moves
+	 * into it. In radio mode the focus is on this element, outside it, so it
+	 * hears about focus and Escape from here.
+	 */
+	private get _tooltip(): NLDDTooltip | null {
+		return this.type === 'radio'
+			? this.shadowRoot?.querySelector('nldd-tooltip') ?? null
+			: null;
+	}
+
+	private _onRadioFocus = (): void => {
+		this._tooltip?._handleFocusIn();
+	};
+
+	private _onRadioBlur = (): void => {
+		this._tooltip?._handleTriggerLeave();
+	};
 
 	_handleButtonClick(): void {
 		if (this.disabled) return;
@@ -206,6 +318,11 @@ export class NLDDToggleButton extends DescribedBy(FormAssociated(LitElement)) {
 	 * reaching into shadow DOM.
 	 */
 	override focus(options?: FocusOptions): void {
+		// In radio mode this element is the control, and it is focusable itself.
+		if (this.type === 'radio') {
+			super.focus(options);
+			return;
+		}
 		this.shadowRoot
 			?.querySelector<HTMLElement>('.toggle-button__input, button.toggle-button')
 			?.focus(options);

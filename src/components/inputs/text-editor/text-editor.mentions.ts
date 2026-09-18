@@ -265,7 +265,9 @@ function completionSource(
 // The suggestion popup styled to match nldd-menu.
 const popupTheme = EditorView.theme({
 	'.cm-tooltip.cm-tooltip-autocomplete': {
-		border: '1px solid var(--semantics-surfaces-tinted-border-color)',
+		// CodeMirror gives every tooltip a hairline of its own; an nldd-menu has
+		// none and leans on its shadow, so this one drops it too.
+		border: 'none',
 		// No radius on the menu itself, like nldd-menu (overlays-corner-radius).
 		borderRadius: 'var(--semantics-overlays-corner-radius)',
 		backgroundColor: 'var(--semantics-surfaces-base-background-color)',

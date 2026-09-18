@@ -23,6 +23,7 @@ import { radioButtonGroupStyles } from './radio-button-group.styles.js';
 import { radioButtonGroupTemplate } from './radio-button-group.template.js';
 import type { NLDDRadioButtonField } from '../radio-button-field/radio-button-field.js';
 import { setOwnedAttribute } from '../../../utilities/owned-attribute.js';
+import { radioPositions } from '../../../utilities/radio-position.js';
 
 @customElement('nldd-radio-button-group')
 export class NLDDRadioButtonGroup extends LitElement {
@@ -136,6 +137,19 @@ export class NLDDRadioButtonGroup extends LitElement {
 				field.disabled = false;
 			}
 		});
+		this._positionFields();
+	}
+
+	/** Each field its place in the group, and the group one stop for Tab. A
+	 *  field cannot count its siblings: it only sees itself. */
+	private _positionFields(): void {
+		const fields = this._getFields();
+		const answered = fields.some((field) => field.checked);
+		radioPositions(fields, (field) => field.checked, (field) => field.disabled)
+			.forEach((position, index) => {
+				fields[index]._groupPosition = position;
+				fields[index]._groupHasSelection = answered;
+			});
 	}
 
 	private _handleChange = (e: Event): void => {
@@ -149,6 +163,7 @@ export class NLDDRadioButtonGroup extends LitElement {
 			// its listener would otherwise still see this field's old value.
 			field.commitFormValue?.();
 		});
+		this._positionFields();
 	};
 
 	private _handleKeyDown = (e: KeyboardEvent): void => {
@@ -174,11 +189,9 @@ export class NLDDRadioButtonGroup extends LitElement {
 		activeField.commitFormValue?.();
 		nextField.checked = true;
 		nextField.commitFormValue?.();
+		this._positionFields();
 
-		const input = nextField.shadowRoot
-			?.querySelector('nldd-radio-button')
-			?.shadowRoot?.querySelector('input');
-		input?.focus();
+		nextField.focus();
 
 		nextField.dispatchEvent(new CustomEvent('change', {
 			detail: { checked: true, value: nextField.value },

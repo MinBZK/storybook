@@ -62,22 +62,27 @@ export const template = ({
 	// Two ways to show nothing, and they are not the same thing. Rows that exist
 	// but are all filtered away is "no results": the way back is the search field
 	// and the toolbar, so those stay. No rows at all is "empty": there is nothing
-	// to search or filter, so the controls go with it. A list that loads its rows
+	// to search or filter, so the controls go with it, except in a listbox (see
+	// showControls). A list that loads its rows
 	// later is empty for a moment; that is the consumer's to cover, with a
 	// loading state in [slot="empty"].
 	const isNoResults = isEmpty && hasItems;
-	// In listbox mode an empty search has no "no results" meaning yet, so the
-	// message is suppressed — the consumer shows just the search field (and may
-	// place its own hint outside the list). It appears only once a query is
-	// present. A slot with nothing in it is nothing to show either: the surface
-	// would be a bare box, which reads as a skeleton that never loaded.
+	// In listbox mode an empty search has no "no results" meaning yet, and no
+	// "empty" one either: both are an answer to a question nobody has asked, so
+	// both are suppressed and the consumer shows just the search field (and may
+	// place its own hint outside the list). They appear once a query is present.
+	// A slot with nothing in it is nothing to show either: the surface would be a
+	// bare box, which reads as a skeleton that never loaded.
+	const untouched = isListbox && listbox.searchValue === '';
 	const noResultsFallsBack = isNoResults && !hasNoResultsState && hasEmptyState;
-	const showNoResults = isNoResults && hasNoResultsState && !(isListbox && listbox.searchValue === '');
-	const showEmpty = (!isNoResults && isEmpty && hasEmptyState)
-		|| (noResultsFallsBack && !(isListbox && listbox.searchValue === ''));
+	const showNoResults = isNoResults && hasNoResultsState && !untouched;
+	const showEmpty = ((!isNoResults && isEmpty && hasEmptyState) || noResultsFallsBack) && !untouched;
 	const showMain = !isEmpty || showEmpty || showNoResults;
 	// Nothing to search in and nothing to filter: the controls belong to the rows.
-	const showControls = hasItems;
+	// A listbox is the exception, because its search field is where the rows come
+	// from: the consumer either hides the rows that do not match or fetches them
+	// per query, and a field that leaves with the rows leaves no way back to any.
+	const showControls = hasItems || isListbox;
 	return html`
 		<div class="list">
 			<div class="list__header">

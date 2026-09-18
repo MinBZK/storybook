@@ -22,13 +22,17 @@ export interface DescribedElement {
  * `ariaDescribedByElements` takes the elements themselves and crosses the
  * boundary.
  */
-export function applyDescribedBy(target: Element | null | undefined, elements: readonly Element[]): void {
+export function applyDescribedBy(
+	target: Element | null | undefined,
+	elements: readonly Element[],
+	onSelf = false,
+): void {
 	if (!target) return;
 
 	// A component that wraps another one hands the question on rather than
 	// answering it. nldd-checkbox-field renders an nldd-checkbox, and only that
 	// one knows which element inside itself is the control.
-	if ('describedByElements' in target) {
+	if (!onSelf && 'describedByElements' in target) {
 		(target as unknown as DescribedElement).describedByElements = [...elements];
 		return;
 	}
@@ -49,9 +53,9 @@ export function applyDescribedBy(target: Element | null | undefined, elements: r
  * A component that wraps another one hands the state on, the same way it hands
  * on the description.
  */
-export function applyInvalid(target: Element | null | undefined, invalid: boolean): void {
+export function applyInvalid(target: Element | null | undefined, invalid: boolean, onSelf = false): void {
 	if (!target) return;
-	if ('invalid' in target) {
+	if (!onSelf && 'invalid' in target) {
 		(target as Element & { invalid: boolean }).invalid = invalid;
 		return;
 	}
@@ -86,11 +90,16 @@ export function DescribedBy<T extends Constructor<LitElement>>(
 			const apply: ReactiveController = {
 				hostUpdated: () => {
 					const target = this.describedTarget();
-					applyDescribedBy(target, this.describedByElements);
+					// A component that is the control itself, such as an
+					// nldd-radio-button carrying role="radio", puts the ARIA on its own
+					// element. Handing it on there would hand it to itself, and a
+					// component that does that renders forever.
+					const onSelf = target === this;
+					applyDescribedBy(target, this.describedByElements, onSelf);
 					// Optional: nldd-button carries this mixin for its description and
 					// has no validity of its own.
 					const invalid = (this as { invalid?: boolean }).invalid;
-					if (invalid !== undefined) applyInvalid(target, invalid);
+					if (invalid !== undefined) applyInvalid(target, invalid, onSelf);
 				},
 			};
 			this.addController(apply);

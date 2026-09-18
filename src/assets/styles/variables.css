@@ -951,9 +951,9 @@
 	--semantics-surfaces-corner-radius: var(--primitives-corner-radius-lg);
 	--semantics-surfaces-ring-thickness: var(--primitives-border-width-regular);
 	--semantics-surfaces-base-background-color: light-dark(var(--primitives-color-neutral-0), var(--primitives-color-neutral-100));
-	--semantics-surfaces-base-border-color: var(--semantics-dividers-color);
+	--semantics-surfaces-base-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 	--semantics-surfaces-tinted-background-color: light-dark(var(--primitives-color-neutral-25), var(--primitives-color-neutral-75));
-	--semantics-surfaces-tinted-border-color: var(--semantics-dividers-color);
+	--semantics-surfaces-tinted-border-color: light-dark(var(--primitives-color-neutral-50), var(--primitives-color-neutral-150));
 
 	/* ## Text */
 

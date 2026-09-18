@@ -48,6 +48,12 @@ function type(el: HTMLElement, value: string, selector = 'input'): void {
 	input.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
+/** Clicks a control that is the radio itself: nldd-radio-button carries the
+ *  role and has no input of its own to check. */
+function click(el: HTMLElement): void {
+	el.click();
+}
+
 function check(el: HTMLElement): void {
 	const input = innerInput(el);
 	input.checked = true;
@@ -70,7 +76,7 @@ const cases: Case[] = [
 	{
 		name: 'nldd-radio-button',
 		html: '<nldd-radio-button name="field" value="on"></nldd-radio-button>',
-		act: check,
+		act: click,
 		expected: 'on',
 	},
 	{
@@ -202,9 +208,7 @@ describe('form value is committed before the change event', () => {
 		});
 
 		const item = root.querySelectorAll('nldd-segmented-control-item')[1] as HTMLElement;
-		const input = item.shadowRoot!.querySelector('input') as HTMLInputElement;
-		input.checked = true;
-		input.dispatchEvent(new Event('change', { bubbles: true }));
+		click(item);
 
 		expect(seen).toBe('grid');
 	});
