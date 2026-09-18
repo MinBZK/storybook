@@ -5,7 +5,7 @@ Alles begint bij een issue. Wie beslist en waarom staat in
 
 ## Een probleem melden of iets voorstellen
 
-Open een [issue](https://github.com/MinBZK/storybook/issues). Zet er bij een
+Open een [issue](https://github.com/NederlandseDigitaleDienst/design-system/issues). Zet er bij een
 bug in welke versie van `@nldd/design-system` je gebruikt, welk component het
 betreft en wat je verwachtte. Een klein stukje HTML dat het laat zien scheelt
 het meeste heen en weer.

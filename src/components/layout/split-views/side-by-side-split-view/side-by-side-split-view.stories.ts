@@ -27,7 +27,7 @@ export default {
 		layout: 'fullscreen',
 		componentSource: {
 			file: 'src/components/layout/split-views/side-by-side-split-view/side-by-side-split-view.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

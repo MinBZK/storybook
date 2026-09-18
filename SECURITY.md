@@ -53,5 +53,5 @@ release is veranderd staat in [`CHANGELOG.md`](./CHANGELOG.md).
 ## Geen kwetsbaarheid, wel een bug
 
 Gaat het om een gewone fout in een component, gebruik dan de
-[issues](https://github.com/MinBZK/storybook/issues). Hoe je dat het beste doet
+[issues](https://github.com/NederlandseDigitaleDienst/design-system/issues). Hoe je dat het beste doet
 staat in [`CONTRIBUTING.md`](./CONTRIBUTING.md).

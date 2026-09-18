@@ -25,7 +25,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/content/token/token.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

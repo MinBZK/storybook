@@ -30,7 +30,7 @@ import { NLDDButton, NLDDCheckbox, NLDDSwitch } from '@nldd/design-system';
 
 ## Storybook
 
-Bekijk de live component documentatie: **https://minbzk.github.io/storybook/**
+Bekijk de live component documentatie: **https://nederlandsedigitaledienst.github.io/design-system/**
 
 ## Claude Code plugin
 
@@ -41,7 +41,7 @@ juiste tags, attributen, CSS-tokens en patronen.
 Toevoegen en installeren:
 
 ```
-/plugin marketplace add MinBZK/storybook
+/plugin marketplace add NederlandseDigitaleDienst/design-system
 /plugin install nldd@nldd-plugins
 ```
 
@@ -78,7 +78,7 @@ npm run storybook
 | `accessible-label` | string  | `''`             | Toegankelijk label voor schermlezers                                                                                                                     |
 | `popovertarget`    | string  | `''`             | ID van het popover-element                                                                                                                               |
 
-Zie de [Storybook-documentatie](https://minbzk.github.io/storybook/) voor alle componenten.
+Zie de [Storybook-documentatie](https://nederlandsedigitaledienst.github.io/design-system/) voor alle componenten.
 
 ## Styling structuur
 
@@ -121,7 +121,7 @@ huisstijlkleur van het hele systeem bepaalt.
 
 ## Feedback en verzoeken
 
-Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/MinBZK/storybook/issues).
+Mis je een component of wil je een wijziging voorstellen? [Maak een issue aan](https://github.com/NederlandseDigitaleDienst/design-system/issues).
 
 ## Fonts
 

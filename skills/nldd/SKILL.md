@@ -21,7 +21,7 @@ Twee bestanden horen hierbij:
   platte HTML, Vue 3, layout-patronen en een complete content-pagina.
 
 De levende documentatie met visuele voorbeelden staat in
-[Storybook](https://minbzk.github.io/storybook/). De exacte types staan in de
+[Storybook](https://nederlandsedigitaledienst.github.io/design-system/). De exacte types staan in de
 `.d.ts` bestanden van het pakket. Gebruik die twee als bron van waarheid voor
 detailvragen; deze skill leert je hoe je het systeem *goed* gebruikt.
 
@@ -135,7 +135,7 @@ werkt hier niet.
 
 RijksSans is uitsluitend bestemd voor publicaties van de Rijksoverheid en voor
 partijen die in haar opdracht werken. De voorwaarden staan in
-[`NOTICES.md`](https://github.com/MinBZK/storybook/blob/main/NOTICES.md). Bouw
+[`NOTICES.md`](https://github.com/NederlandseDigitaleDienst/design-system/blob/main/NOTICES.md). Bouw
 je iets daarbuiten, dan kun je 2 kanten op:
 
 1. **Importeer `@nldd/design-system/styles/system-font`** in plaats van
@@ -517,7 +517,7 @@ bestaat, zonder foutmelding, alleen een stille terugval op de default.
 
 ## Bron van waarheid
 
-1. **[Storybook](https://minbzk.github.io/storybook/)**: levende voorbeelden en
+1. **[Storybook](https://nederlandsedigitaledienst.github.io/design-system/)**: levende voorbeelden en
    controls per component.
 2. **`.d.ts` types in het pakket**: de exacte, actuele API.
 3. **[`reference.md`](reference.md)**: offline snelreferentie van alle elementen.

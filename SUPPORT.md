@@ -4,7 +4,7 @@
 
 Begin bij de documentatie, want daar staat het meeste al in.
 
-- **[Storybook](https://minbzk.github.io/storybook/)** toont elk component met
+- **[Storybook](https://nederlandsedigitaledienst.github.io/design-system/)** toont elk component met
   z'n varianten en attributen, en je kunt er zelf aan draaien. Dit is de plek
   om te zien hoe iets eruitziet en werkt.
 - **De [README](./README.md)** legt de installatie uit, de vijf lagen van
@@ -18,7 +18,7 @@ Begin bij de documentatie, want daar staat het meeste al in.
 ## Waar je een vraag stelt
 
 Kom je er niet uit, open dan een
-[issue](https://github.com/MinBZK/storybook/issues). Dat geldt voor alles:
+[issue](https://github.com/NederlandseDigitaleDienst/design-system/issues). Dat geldt voor alles:
 een bug, een component dat je mist, een patroon waarvan je niet weet hoe je het
 hoort te bouwen. Vragen zijn welkom, ook als het achteraf in de documentatie
 bleek te staan, want dan weten we dat die documentatie niet vindbaar genoeg is.

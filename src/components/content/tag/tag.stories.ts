@@ -23,7 +23,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/content/tag/tag.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: {
 			type: 'stable',

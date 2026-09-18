@@ -9,7 +9,7 @@ export default {
 	parameters: {
 		componentSource: {
 			file: 'src/components/status-and-feedback/just-in-time-education/just-in-time-education.ts',
-			repository: 'https://github.com/MinBZK/storybook',
+			repository: 'https://github.com/NederlandseDigitaleDienst/design-system',
 		},
 		status: { type: 'experimental' },
 	},
