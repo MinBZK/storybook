@@ -15,6 +15,8 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+## [0.8.89](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.88...v0.8.89) (2026-09-18)
+
 ### Highlights
 
 - **A notification reaches you wherever you are working.** Since 0.8.88 a notification moves into the topmost open overlay, and this release finishes that job. One raised in a sheet, a window or a modal dialog that was already open before the first notification arrived now finds it, where it used to sit behind the backdrop, dimmed and out of reach of a click. In an overlay notifications show in the browser's top layer, in the corner of the screen, instead of inside the sheet that slides them away or the dialog that cuts them off. Escape dismisses the notification and leaves the overlay open behind it. And in Chrome and Edge the open deck stays open while you work through it: dismissing one used to fold the rest away, so every next notification meant opening the list again.
