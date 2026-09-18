@@ -15,6 +15,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **A `rel` of your own adds to `noopener noreferrer` instead of replacing it.** On a link that opens a new tab, `nldd-button`, `nldd-icon-button` and `nldd-status-bar` dropped their `noopener noreferrer` the moment you set a `rel` yourself, so `target="_blank" rel="external"` sent the page it opened the address you came from. `nldd-list-item` and `nldd-list-item-segment` never added it at all. Every component that renders a link now does what `nldd-link`, `nldd-card` and `nldd-avatar` already did: with `target="_blank"`, `noopener noreferrer` is added to the `rel` you set.
+
 ## [0.8.89](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.88...v0.8.89) (2026-09-18)
 
 ### Highlights

@@ -104,10 +104,10 @@ describe('nldd-status-bar', () => {
 		expect(link.getAttribute('rel')).toBe('noopener noreferrer');
 	});
 
-	it('respects an explicit rel over the _blank default', async () => {
-		el = await fixture('<nldd-status-bar text="Status" href="https://example.org" target="_blank" rel="noopener"></nldd-status-bar>');
+	it('adds noopener noreferrer to a rel of your own with target="_blank"', async () => {
+		el = await fixture('<nldd-status-bar text="Status" href="https://example.org" target="_blank" rel="external"></nldd-status-bar>');
 		await waitForUpdate(el);
-		expect(el.shadowRoot!.querySelector('a.status-bar')!.getAttribute('rel')).toBe('noopener');
+		expect(el.shadowRoot!.querySelector('a.status-bar')!.getAttribute('rel')).toBe('external noopener noreferrer');
 	});
 
 	it('omits rel without target="_blank"', async () => {

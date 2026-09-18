@@ -46,7 +46,7 @@ de `.d.ts` bestanden van het pakket.
 | `accessible-label` | `string` | Accessible label for the button, overrides text for screen readers |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
 | `target` | `string` | Link target (e.g. '_blank'); only used when href is set. With '_blank' the button adds a visually hidden "opens in new tab" announcement for screen readers (WCAG 2.1 SC 3.2.2). |
-| `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+| `rel` | `string` | Link rel attribute, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `translations` | `object` | Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch. |
 
 **Slots**
@@ -127,7 +127,7 @@ A container for grouping related buttons together, either horizontally or vertic
 | `tooltip-timing` | `string` | Forwarded to the inner nldd-tooltip's `timing`: 'delay' (the default, a 700 ms show-delay), 'instant', or 'never' (suppress the visual tooltip; screen readers still get the aria-label). Use 'never' when the surrounding context already explains the button (e.g. spin buttons in nldd-number-field, the chevron in nldd-split-button). |
 | `href` | `string` | When set, renders an <a> element instead of <button> |
 | `target` | `string` | Link target (e.g. '_blank'); only used when href is set. With '_blank' the "opens in new tab" announcement is folded into the aria-label for screen readers (WCAG 2.1 SC 3.2.2). |
-| `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank' |
+| `rel` | `string` | Link rel attribute, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `translations` | `object` | Override translation keys (e.g. the "opens in new tab" announcement); unset keys fall back to Dutch. |
 | `popovertarget` | `string` | ID of a popover element to toggle; forwarded to the inner <button> |
 
@@ -342,7 +342,7 @@ Shows one person or organization as a compact, round (person) or rounded (organi
 | `no-tab` | `boolean` | Takes the control out of the tab order (tabindex="-1"), for an avatar that is a link or a button inside a roving container (a row of an nldd-list). Does nothing on a decorative avatar. |
 | `button` | `boolean` | Makes the avatar a button; ignored when `href` is set |
 | `target` | `string` | Link target for href (e.g. '_blank'); completes rel and announces "Opens in a new tab" |
-| `rel` | `string` | Link rel for href; defaults to 'noopener noreferrer' when target='_blank' |
+| `rel` | `string` | Link rel for href; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `translations` | `object` | Override translation keys; unset keys fall back to Dutch |
 
 ### `<nldd-avatar-group>`
@@ -1627,7 +1627,7 @@ A visually bounded card with optional header, body and footer sections. The card
 | `href` | `string` | Makes the whole card a link to this URL (empty = no link) |
 | `button` | `boolean` | Makes the whole card a button; ignored when `href` is set |
 | `target` | `string` | Link target for href (e.g. '_blank'); adjusts rel automatically and adds an "Opent in nieuw tabblad" announcement for '_blank' |
-| `rel` | `string` | Link rel for href; defaults to 'noopener noreferrer' with target='_blank' |
+| `rel` | `string` | Link rel for href; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `translations` | `object` | Override translation keys (e.g. the "Opent in nieuw tabblad" announcement) |
 
 **Slots**
@@ -2295,7 +2295,7 @@ Hyperlink component with two modes: 1. **Standalone (sized)**: set `size="xs"|"s
 | --- | --- | --- |
 | `href` | `string` | Link target |
 | `target` | `string` | Link target (e.g. '_blank'); adjusts rel automatically. With '_blank' the link adds a visually hidden "Opent in nieuw tabblad" announcement for screen readers (WCAG 2.1 SC 3.2.2). |
-| `rel` | `string` | Link rel attribute; defaults to 'noopener noreferrer' with target='_blank' |
+| `rel` | `string` | Link rel attribute; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `size` | `string` | Text size: 'inherit' (the default) follows the surrounding text and lays the link out inline, so it wraps in running prose. 'xs' \| 'sm' \| 'md' \| 'lg' pin a size and switch to inline-flex, which baseline-aligns a start or end icon with an explicit gap. |
 | `text` | `string` | Link text (alternative to the default slot) |
 | `start-icon` | `string` | Icon before the text |
@@ -2766,7 +2766,7 @@ A narrow, page-wide status bar (24px) with a deep background color per variant. 
 | `text` | `string` | The status text (one line; truncated with an ellipsis) |
 | `href` | `string` | Makes the whole bar a link (renders an <a>) |
 | `target` | `string` | Link target (e.g. '_blank'); only used with href |
-| `rel` | `string` | Link rel; defaults to 'noopener noreferrer' with target='_blank' |
+| `rel` | `string` | Link rel, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `button` | `boolean` | Makes the whole bar a button; ignored when href is set |
 
 ### `<nldd-step-indicator>`
@@ -2939,7 +2939,7 @@ A row within an `nldd-list`. Renders as a link when `href` is set, as a checkbox
 | `expanded` | `boolean` | Disclosure state. Drives the `children` group's visibility AND supplies `aria-expanded` — to the row's own control when the row is interactive, or to the segment marked `disclosure`. Written once either way; the item DEV-warns when there is nowhere for it to live. |
 | `href` | `string` | Renders the item as an `<a>` with this URL. Wins over `checkbox` and `button`; without any of the three the item is a plain container with no action. |
 | `target` | `string` | Link target forwarded to the `<a>` (e.g. '_blank'); only applies with `href`. With '_blank' a visually hidden "opens in new tab" announcement is added for assistive technology. |
-| `rel` | `string` | Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href` |
+| `rel` | `string` | Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `reorderable` | `boolean` | Set by the parent `nldd-list` when its own `reorderable` is on (with `type="list"`); consumers do not set this. Serves as a CSS hook for drag handle visibility. |
 
 **Slots**
@@ -2966,7 +2966,7 @@ A segment inside an `nldd-list-item`: it groups a run of cells and makes just th
 | `button` | `boolean` | Renders the segment as a `<button>`. Last of the three: `href` and `checkbox` both win over it. |
 | `href` | `string` | Renders the segment as an `<a>` with this URL. Wins over `checkbox` and `button`. |
 | `target` | `string` | Link target forwarded to the `<a>`; only applies with `href` |
-| `rel` | `string` | Link rel forwarded to the `<a>`; only applies with `href` |
+| `rel` | `string` | Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you set |
 | `checkbox` | `boolean` | Makes the segment a `role="checkbox"` control. Wins over `button`, loses to `href`. |
 | `checked` | `boolean` | Checked state of a `checkbox` segment; it toggles on activation |
 | `expanded` | `boolean` | Disclosure state, reflected as `aria-expanded` on the control, and painted: the segment stays lit a step above hover for as long as what it opened is on screen, so a menu reads as hanging off this row rather than floating over the list. Set it on the segment that opens something (a tree row's chevron, a menu). Leave it off entirely when the segment discloses nothing — an absent attribute emits no aria-expanded. |

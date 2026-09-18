@@ -481,7 +481,7 @@
                 "text": "string | undefined"
               },
               "default": "undefined",
-              "description": "Link rel attribute. Only used when href is set.\nDefaults to 'noopener noreferrer' when target is '_blank' and rel is not explicitly set.",
+              "description": "Link rel attribute. Only used when href is set.\nWith target '_blank', 'noopener noreferrer' is added to it.",
               "attribute": "rel"
             },
             {
@@ -748,7 +748,7 @@
                 "text": "string | undefined"
               },
               "default": "undefined",
-              "description": "Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'",
+              "description": "Link rel attribute, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set",
               "fieldName": "rel"
             },
             {
@@ -1066,7 +1066,7 @@
                 "text": "string | undefined"
               },
               "default": "undefined",
-              "description": "Link rel attribute. Only used when href is set.\nDefaults to 'noopener noreferrer' when target is '_blank' and rel is not explicitly set.",
+              "description": "Link rel attribute. Only used when href is set.\nWith target '_blank', 'noopener noreferrer' is added to it.",
               "attribute": "rel"
             },
             {
@@ -1279,7 +1279,7 @@
                 "text": "string | undefined"
               },
               "default": "undefined",
-              "description": "Link rel attribute; defaults to 'noopener noreferrer' when target is '_blank'",
+              "description": "Link rel attribute, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set",
               "fieldName": "rel"
             },
             {
@@ -3314,7 +3314,7 @@
               },
               "default": "''",
               "fieldName": "rel",
-              "description": "Link rel for href; defaults to 'noopener noreferrer' when target='_blank'"
+              "description": "Link rel for href; with target '_blank', 'noopener noreferrer' is added to whatever you set"
             },
             {
               "name": "translations",
@@ -22307,7 +22307,7 @@
               },
               "default": "''",
               "fieldName": "rel",
-              "description": "Link rel for href; defaults to 'noopener noreferrer' with target='_blank'"
+              "description": "Link rel for href; with target '_blank', 'noopener noreferrer' is added to whatever you set"
             },
             {
               "name": "translations",
@@ -30860,7 +30860,7 @@
               "type": {
                 "text": "string | undefined"
               },
-              "description": "Link rel forwarded to the `<a>`; only applies with `href`",
+              "description": "Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you set",
               "name": "rel",
               "fieldName": "rel"
             },
@@ -31104,7 +31104,7 @@
               "type": {
                 "text": "string | undefined"
               },
-              "description": "Link rel (e.g. 'noopener noreferrer'). Forwarded to the `<a>`; only applies with href.",
+              "description": "Link rel, forwarded to the `<a>` with href. With target '_blank',\n'noopener noreferrer' is added to it.",
               "attribute": "rel",
               "reflects": true
             },
@@ -31277,7 +31277,7 @@
               "type": {
                 "text": "string | undefined"
               },
-              "description": "Link rel forwarded to the `<a>` (e.g. 'noopener noreferrer'); only applies with `href`",
+              "description": "Link rel forwarded to the `<a>`, only with `href`; with target '_blank', 'noopener noreferrer' is added to whatever you set",
               "name": "rel",
               "fieldName": "rel"
             },
@@ -32437,7 +32437,7 @@
               },
               "default": "undefined",
               "fieldName": "rel",
-              "description": "Link rel attribute; defaults to 'noopener noreferrer' with target='_blank'"
+              "description": "Link rel attribute; with target '_blank', 'noopener noreferrer' is added to whatever you set"
             },
             {
               "name": "size",
@@ -36474,7 +36474,7 @@
                 "text": "string"
               },
               "default": "''",
-              "description": "Link rel; defaults to 'noopener noreferrer' with target='_blank'",
+              "description": "Link rel, used with href; with target '_blank', 'noopener noreferrer' is added to whatever you set",
               "fieldName": "rel"
             },
             {
@@ -37311,6 +37311,46 @@
           "declaration": {
             "name": "isTouchMode",
             "module": "src/utilities/input-modality.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utilities/link-rel.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "linkRel",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "rel",
+              "type": {
+                "text": "string | null | undefined"
+              }
+            },
+            {
+              "name": "target",
+              "type": {
+                "text": "string | null | undefined"
+              }
+            }
+          ],
+          "description": "The `rel` of a link that may open in a new tab.\n\nA link with `target=\"_blank\"` gets `noopener noreferrer`: the page it opens\ngets no handle on this one through `window.opener`, and no referrer. A `rel`\nthe consumer sets is added to, never replaced. `rel=\"external\"` on a `_blank`\nlink describes the link, and it is no reason to leave that door open.\n\nReturns an empty string when there is nothing to write, so a template can\nleave the attribute off with `|| nothing`."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "linkRel",
+          "declaration": {
+            "name": "linkRel",
+            "module": "src/utilities/link-rel.ts"
           }
         }
       ]
