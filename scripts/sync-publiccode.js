@@ -23,11 +23,15 @@ if (!version) {
 	process.exit(1);
 }
 
-// The changelog header semantic-release writes: ## <small>0.8.73 (2026-07-30)</small>
+// The changelog header semantic-release writes:
+// ## [0.8.90](https://github.com/.../compare/v0.8.89...v0.8.90) (2026-09-19)
+// Only the newest block is checked: matching the first dated header anywhere in
+// the file would silently return an older release's date if the format changes.
 const changelog = readFileSync(join(root, 'CHANGELOG.md'), 'utf-8');
-const dateMatch = changelog.match(/^## <small>[\d.]+ \((\d{4}-\d{2}-\d{2})\)<\/small>/m);
+const newestHeader = changelog.match(/^## .*$/m)?.[0] ?? '';
+const dateMatch = newestHeader.match(/^## \[[\d.]+\]\([^)]*\) \((\d{4}-\d{2}-\d{2})\)$/);
 if (!dateMatch) {
-	console.error('No dated version block found in CHANGELOG.md.');
+	console.error(`No date found in the newest version block of CHANGELOG.md: ${newestHeader}`);
 	process.exit(1);
 }
 const releaseDate = dateMatch[1];
