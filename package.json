@@ -539,7 +539,7 @@
     "@storybook/addon-vitest": "^10.6.0",
     "@storybook/web-components-vite": "^10.6.0",
     "@vitest/browser-playwright": "4.1.11",
-    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/coverage-v8": "5.0.0",
     "conventional-changelog": "^8.1.0",
     "conventional-changelog-conventionalcommits": "10.2.1",
     "eslint": "^10.8.0",
