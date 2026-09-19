@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **A page with `nldd-code-viewer` passes axe again.** The viewer's content carried `role="document"` together with CodeMirror's `aria-multiline` and `aria-readonly`, two attributes that belong to a text field and are invalid on a document. axe reported that as a critical `aria-allowed-attr` violation on every page with a viewer. Both attributes are gone now.
+
 ## [0.8.90](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.89...v0.8.90) (2026-09-19)
 
 ## [0.8.89](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.88...v0.8.89) (2026-09-18)
