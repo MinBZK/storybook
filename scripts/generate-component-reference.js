@@ -245,7 +245,7 @@ function main() {
 
 Elk custom element met zijn attributen, slots en events. Dit is een offline
 snelreferentie; de levende documentatie met voorbeelden staat in
-[Storybook](https://minbzk.github.io/storybook/), en de exacte types staan in
+[Storybook](https://nederlandsedigitaledienst.github.io/design-system/), en de exacte types staan in
 de \`.d.ts\` bestanden van het pakket.
 
 > Deze referentie komt uit de JSDoc van de componenten. Dat elk attribuut er
