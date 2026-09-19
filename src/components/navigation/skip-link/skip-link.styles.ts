@@ -28,23 +28,31 @@ export const skipLinkStyles = css`
 
 	/* # Block */
 
+	/* fixed: max-width resolves against the viewport (or nldd-page, a container),
+	   not the host, which can be 0px wide. Hidden at 1px with overflow: hidden, as
+	   opacity or clip-path alone still add the label's width to the page scroll. */
 	.skip-link {
 		display: flex;
-		position: absolute;
+		position: fixed;
 		top: 0;
 		left: 0;
-		opacity: 0;
+		overflow: hidden;
 		z-index: var(--_z-index);
+		width: 1px;
+		height: 1px;
+		max-width: 100%;
 		border-radius: var(--semantics-controls-md-corner-radius);
 		box-shadow: var(--_box-shadow);
 		background-color: var(--semantics-surfaces-base-background-color);
-		pointer-events: none;
+		clip-path: inset(50%);
 		justify-content: center;
 	}
 
 	.skip-link:has(:focus-visible) {
-		opacity: 1;
-		pointer-events: auto;
+		overflow: visible;
+		width: auto;
+		height: auto;
+		clip-path: none;
 	}
 
 
@@ -59,9 +67,8 @@ export const skipLinkStyles = css`
 		padding: var(--primitives-space-4) var(--primitives-space-16);
 		align-items: center;
 		color: var(--semantics-links-color);
-		font: var(--primitives-font-body-md-medium-flat);
+		font: var(--primitives-font-body-md-medium-tight);
 		text-decoration: underline;
-		white-space: nowrap;
 		appearance: none;
 	}
 

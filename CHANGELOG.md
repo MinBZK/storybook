@@ -9,6 +9,10 @@ the type of conventional-commit determines the release. Conventional types
 `chore`, `docs`, `ci`, `style`, `test`, `build` are intentionally omitted
 here; consult the commit history if you need that level of detail.
 
+### Fixed
+
+- **`nldd-skip-link` no longer makes the page scroll sideways on a narrow screen.** Hidden, the skip-link still took up the width of its label, so a long label widened the page even while nothing was visible. At 320px wide and 200% text size, `Direct naar de inhoud` was enough. Hidden, it now takes up no space. On focus it appears at the top left of the screen (or of `nldd-page`), stays within its width and wraps the label onto a second line when it has to.
+
 ## [0.8.90](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.89...v0.8.90) (2026-09-19)
 
 ## [0.8.89](https://github.com/NederlandseDigitaleDienst/design-system/compare/v0.8.88...v0.8.89) (2026-09-18)
